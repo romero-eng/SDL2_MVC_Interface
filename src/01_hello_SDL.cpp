@@ -57,7 +57,7 @@ int main( int argc, char* args[] )
 	}
 	catch(std::string error_message)
 	{
-		std::cout << error_message;
+		std::cerr << error_message;
 	}
 
 	SDL::DestroyWindow(window);
