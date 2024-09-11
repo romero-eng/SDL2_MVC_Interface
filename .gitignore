@@ -1,5 +1,5 @@
-# Python Virtual Environments
-/*_venv
+# Windows Subsystem for Linux Configuration Files
+/wsl_config
 
 # Prerequisites
 *.d
@@ -33,6 +33,3 @@
 *.exe
 *.out
 *.app
-
-# Python-implemented MinGW Build Tool
-compile.py
