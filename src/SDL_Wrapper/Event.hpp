@@ -8,7 +8,7 @@ namespace SDL
 
 using Event = SDL_Event;
 
-int PollEvent(SDL_Event* event);
+int PollEvent(Event& event);
 
 enum class EventTypes
 {
