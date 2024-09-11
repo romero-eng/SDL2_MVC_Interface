@@ -6,7 +6,7 @@
 #include <iostream>
 
 
-SDL_Window* SDL::CreateWindow(const char* title, int x, int y, int w, int h, Uint32 flags)
+SDL::Window* SDL::CreateWindow(const char* title, int x, int y, int w, int h, Uint32 flags)
 {
 	SDL::Window* window {SDL_CreateWindow(title, x, y, w, h, flags)};
 
