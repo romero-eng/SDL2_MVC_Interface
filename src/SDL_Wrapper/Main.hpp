@@ -16,8 +16,6 @@ void Init(Uint32 flags);
 
 void Quit(void);
 
-Uint32 MapRGB(const SDL_PixelFormat* format, Uint8 r, Uint8 g, Uint8 b);
-
 }
 
 #endif

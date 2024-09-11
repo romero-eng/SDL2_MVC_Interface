@@ -20,11 +20,6 @@ void SDL::Quit(void)
 	SDL_Quit();
 }
 
-Uint32 SDL::MapRGB(const SDL_PixelFormat* format, Uint8 r, Uint8 g, Uint8 b)
-{
-	return SDL_MapRGB(format, r, g, b);
-}
-
 
 #else
 #error "This file is only meant to be compiled on a Windows, Macintosh, or Linux OS"
