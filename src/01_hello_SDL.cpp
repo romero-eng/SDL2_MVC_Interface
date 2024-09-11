@@ -21,6 +21,7 @@ int main( int argc, char* args[] )
 {
 	SDL::Window* window {nullptr};
 	SDL::Surface* screenSurface {nullptr};
+	SDL::Surface* bitmapSurface {nullptr};
 
 	try
 	{
@@ -59,6 +60,7 @@ int main( int argc, char* args[] )
 		std::cerr << error_message;
 	}
 
+	SDL::FreeSurface(bitmapSurface);
 	SDL::DestroyWindow(window);
 	SDL::Quit();
 

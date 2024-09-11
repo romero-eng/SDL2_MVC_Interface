@@ -13,6 +13,8 @@ Surface* GetWindowSurface(Window* window);
 
 int UpdateWindowSurface(Window* window);
 
+void FreeSurface(Surface* surface);
+
 }
 
 

@@ -28,6 +28,11 @@ int SDL::UpdateWindowSurface(SDL::Window* window)
 }
 
 
+void SDL::FreeSurface(Surface* surface)
+{
+	SDL_FreeSurface(surface);
+}
+
 #else
 #error "This file is only meant to be compiled on a Windows, Macintosh, or Linux OS"
 #endif
