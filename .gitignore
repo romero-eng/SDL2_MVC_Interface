@@ -1,6 +1,9 @@
 # Windows Subsystem for Linux Configuration Files
 /wsl_config
 
+# Resource files
+/resources
+
 # Prerequisites
 *.d
 
