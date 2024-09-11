@@ -15,6 +15,7 @@
 //Screen dimension constants
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
+const char* bitmap_path {"../../resources/hello_world.bmp"};
 
 int main( int argc, char* args[] )
 {
@@ -36,10 +37,8 @@ int main( int argc, char* args[] )
 
 		screenSurface = SDL::GetWindowSurface(window);
 
-		SDL::FillRect(screenSurface,
-					  NULL,
-					  SDL::MapRGB(screenSurface->format,
-					 			  0xAF, 0xAF, 0x2b));
+		SDL::Surface* bitmapSurface = SDL::Load_BMP(bitmap_path);
+		SDL::BlitSurface(bitmapSurface, nullptr, screenSurface, nullptr);
 			
 		SDL::UpdateWindowSurface(window);
             
