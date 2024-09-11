@@ -10,6 +10,12 @@ int SDL::PollEvent(SDL::Event* event)
 }
 
 
+bool operator==(Uint32 type, SDL::EventTypes event_type)
+{
+    return type == static_cast<Uint32>(event_type);
+}
+
+
 #else
 #error "This file is only meant to be compiled on a Windows, Macintosh, or Linux OS"
 #endif

@@ -49,7 +49,7 @@ int main( int argc, char* args[] )
 		{
 			while(SDL::PollEvent( &current_event ))
 			{
-				if(current_event.type == SDL_QUIT)
+				if(current_event.type == SDL::EventTypes::QUIT)
 				{
 					quit = true;
 				}
