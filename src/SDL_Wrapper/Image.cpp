@@ -22,7 +22,7 @@ SDL::Surface* SDL::Load_BMP(const char* bitmap_path)
 	}
 	else
 	{
-		std::cout << fmt::format("Loaded '{:s}' bitmap as Surface", bitmap_path);
+		std::cout << fmt::format("Loaded '{:s}' bitmap as Surface\n", bitmap_path);
 	}
 	
 	return bitmap;
@@ -32,7 +32,7 @@ void SDL::BlitSurface(SDL::Surface* src, const SDL::Rect* srcrect, SDL::Surface*
 {
 	if(SDL_BlitSurface(src, srcrect, dst, dstrect) == 0)
 	{
-		std::cout << "Blitted 'src' Surface onto 'dst' Surface";
+		std::cout << "Blitted 'src' Surface onto 'dst' Surface\n";
 	}
 	else
 	{
