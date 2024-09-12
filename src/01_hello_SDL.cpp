@@ -8,7 +8,7 @@
 #include "SDL_Wrapper/Image.hpp"
 #include "SDL_Wrapper/Rectangle.hpp"
 
-#include "Resource_Paths.hpp"
+#include "Resources.hpp"
 
 #include <string>
 #include <iostream>
@@ -23,7 +23,6 @@ int main( int argc, char* args[] )
 	SDL::Window* window {nullptr};
 	SDL::Surface* screenSurface {nullptr};
 	SDL::Surface* bitmapSurface {nullptr};
-	fs::path bitmap_path { RESOURCE_DIRECTORY/"hello_world.bmp" };
 
 	try
 	{
@@ -40,7 +39,7 @@ int main( int argc, char* args[] )
 
 		screenSurface = SDL::GetWindowSurface(window);
 
-		SDL::Surface* bitmapSurface = SDL::Load_BMP(bitmap_path);
+		SDL::Surface* bitmapSurface = SDL::Load_BMP(Resources::bitmap_path);
 		SDL::BlitSurface(bitmapSurface, nullptr, screenSurface, nullptr);
 			
 		SDL::UpdateWindowSurface(window);
