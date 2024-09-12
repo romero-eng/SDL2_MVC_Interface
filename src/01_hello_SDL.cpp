@@ -39,11 +39,11 @@ int main( int argc, char* args[] )
 							  SCREEN_HEIGHT,
 							  SDL::WINDOW_SHOWN);
 
-		renderer \
-			= SDL::CreateRenderer(window,
-								  -1,
-								  SDL::RendererFlags::ACCELERATED | SDL::RendererFlags::PRESENTVSYNC,
-								  0xFF, 0xFF, 0xFF, 0xFF);
+		renderer  = \
+			SDL::CreateRenderer(window,
+								-1,
+								SDL::RendererFlags::ACCELERATED | SDL::RendererFlags::PRESENTVSYNC,
+								0xFF, 0xFF, 0xFF, 0xFF);
 
         SDL::Event current_event;
 		bool quit = false;
