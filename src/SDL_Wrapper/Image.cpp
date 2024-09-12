@@ -4,6 +4,7 @@
 #include "Image.hpp"
 #include <fmt/format.h>
 #include <iostream>
+#include <utility>
 
 
 Uint32 SDL::MapRGB(const PixelFormat* format, Uint8 r, Uint8 g, Uint8 b)
@@ -50,6 +51,43 @@ void SDL::BlitSurface(SDL::Surface* src, const SDL::Rect* srcrect, SDL::Surface*
 	{
 		throw fmt::format("Could not blit 'src' Surface onto 'dst' Surface: {:s}", SDL_GetError());
 	}
+}
+
+void IMG::Init(InitFlags flag)
+{
+	IMG::Init(std::to_underlying(flag));
+}
+
+void IMG::Init(Uint32 flags)
+{
+	if(!( static_cast<Uint32>(IMG_Init(static_cast<int>(flags))) & flags ))
+	{
+		throw fmt::format("SDL Images could not be initialized: {:s}\n", IMG_GetError());
+	}
+	else
+	{
+		std::cout << "Initialized SDL Images\n";
+	}
+}
+
+void IMG::Quit(void)
+{
+	IMG_Quit();
+}
+
+Uint32 operator|(IMG::InitFlags first_flag, IMG::InitFlags second_flag)
+{
+	return std::to_underlying(first_flag) | std::to_underlying(second_flag);
+}
+
+Uint32 operator|(Uint32 first_flag, IMG::InitFlags second_flag)
+{
+	return first_flag | std::to_underlying(second_flag);
+}
+
+Uint32 operator|(IMG::InitFlags first_flag, Uint32 second_flag)
+{
+	return std::to_underlying(first_flag) | second_flag;
 }
 
 #endif

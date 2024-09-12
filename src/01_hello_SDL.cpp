@@ -30,6 +30,7 @@ int main( int argc, char* args[] )
 	{
 
 		SDL::Init(SDL::INIT_VIDEO);
+		IMG::Init(IMG::InitFlags::PNG);
 
 		window = \
 			SDL::CreateWindow("SDL Tutorial",
@@ -72,6 +73,7 @@ int main( int argc, char* args[] )
 	Media::FreeResources(loaded_resources);
 	SDL::DestroyRenderer(renderer);
 	SDL::DestroyWindow(window);
+	IMG::Quit();
 	SDL::Quit();
 
 	return 0;
