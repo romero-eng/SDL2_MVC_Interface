@@ -42,7 +42,7 @@ int main( int argc, char* args[] )
 		renderer  = \
 			SDL::CreateRenderer(window,
 								-1,
-								SDL::RendererFlags::ACCELERATED | SDL::RendererFlags::PRESENTVSYNC,
+								SDL::RendererFlags::ACCELERATED,
 								0xFF, 0xFF, 0xFF, 0xFF);
 
         SDL::Event current_event;
