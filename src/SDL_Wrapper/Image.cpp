@@ -11,6 +11,11 @@ Uint32 SDL::MapRGB(const PixelFormat* format, Uint8 r, Uint8 g, Uint8 b)
 	return SDL_MapRGB(format, r, g, b);
 }
 
+SDL::Surface* SDL::Load_BMP(fs::path&& bitmap_path)
+{	
+	return SDL::Load_BMP(bitmap_path);
+}
+
 SDL::Surface* SDL::Load_BMP(fs::path& bitmap_path)
 {
 	SDL::Surface* bitmap{SDL_LoadBMP(bitmap_path.string().c_str())};

@@ -39,12 +39,6 @@ int main( int argc, char* args[] )
 
 		screenSurface = SDL::GetWindowSurface(window);
 
-		SDL::Surface* bitmapSurface = SDL::Load_BMP(Resources::bitmap_path);
-		SDL::BlitSurface(bitmapSurface, nullptr, screenSurface, nullptr);
-			
-		SDL::UpdateWindowSurface(window);
-            
-        //Hack to get window to stay up
         SDL::Event current_event;
 		bool quit = false;
 		while(!quit)
@@ -53,6 +47,10 @@ int main( int argc, char* args[] )
 			{
 				quit |= current_event.type == SDL::EventTypes::QUIT;
 			}
+
+			
+			SDL::BlitSurface(Resources::HelloWorldSurface, nullptr, screenSurface, nullptr);
+			SDL::UpdateWindowSurface(window);
 		}
 
 	}

@@ -14,6 +14,8 @@ using PixelFormat = SDL_PixelFormat;
 
 Uint32 MapRGB(const PixelFormat* format, Uint8 r, Uint8 g, Uint8 b);
 
+SDL::Surface* Load_BMP(fs::path&& bitmap_path);
+
 Surface* Load_BMP(fs::path& bitmap_path);
 
 void BlitSurface(Surface* src, const Rect* srcrect, Surface* dst, Rect* dstrect);
