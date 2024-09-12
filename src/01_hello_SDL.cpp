@@ -47,7 +47,7 @@ int main( int argc, char* args[] )
         //Hack to get window to stay up
         SDL::Event current_event;
 		bool quit = false;
-		while(quit == false)
+		while(!quit)
 		{
 			if(SDL::PollEvent(current_event))
 			{
