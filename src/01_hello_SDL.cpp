@@ -8,7 +8,7 @@
 #include "SDL_Wrapper/Image.hpp"
 #include "SDL_Wrapper/Rectangle.hpp"
 
-#include "Resources.hpp"
+#include "Media.hpp"
 
 #include <string>
 #include <iostream>
@@ -21,7 +21,7 @@ const int SCREEN_HEIGHT = 480;
 int main( int argc, char* args[] )
 {
 	SDL::Window* window {nullptr};
-	Resources::Surfaces resource_surfaces { Resources::LoadResources() };
+	Media::Resources loaded_resources { Media::LoadResources() };
 
 	try
 	{
@@ -47,7 +47,7 @@ int main( int argc, char* args[] )
 
 			
 			SDL::BlitSurfaceOntoWindow(window,
-						 			   resource_surfaces.helloWorld,
+						 			   loaded_resources.helloWorld,
 									   nullptr,
 									   nullptr);
 
@@ -60,7 +60,7 @@ int main( int argc, char* args[] )
 		std::cerr << error_message;
 	}
 
-	Resources::FreeResources(resource_surfaces);
+	Media::FreeResources(loaded_resources);
 	SDL::DestroyWindow(window);
 	SDL::Quit();
 

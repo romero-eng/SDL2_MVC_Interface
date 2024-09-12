@@ -3,17 +3,17 @@
 
 #include "SDL_Wrapper/Surface.hpp"
 
-namespace Resources
+namespace Media
 {
 
-struct Surfaces
+struct Resources
 {
     SDL::Surface* helloWorld;
 };
 
-Surfaces LoadResources(void);
+Resources LoadResources(void);
 
-void FreeResources(Surfaces surface_resources);
+void FreeResources(Resources surface_resources);
 
 }
 
