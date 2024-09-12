@@ -16,7 +16,7 @@ SDL::Window* SDL::CreateWindow(const char* title, int x, int y, int w, int h, Ui
 	}
 	else
 	{
-		std::cout << fmt::format("\nCreated '{:s}' Window\n", title);
+		std::cout << fmt::format("Created '{:s}' Window", title);
 	}
 
 	return window;
