@@ -194,7 +194,7 @@ def main() -> None:
     repository_path: Path = Path.cwd()
     executable_name: str = '01_hello_SDL'
     language_standard: str = 'C++ 2023'
-    dependency_names: list[str] = ['SDL2', 'fmt']
+    dependency_names: list[str] = ['SDL2', 'SDL2_image', 'fmt']
     #============================================================================================================# noqa: E265, E501
     #============================================================================================================# noqa: E265, E501
 
