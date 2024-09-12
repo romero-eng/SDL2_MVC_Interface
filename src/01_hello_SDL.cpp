@@ -24,6 +24,8 @@ int main( int argc, char* args[] )
 {
 	SDL::Window* window {nullptr};
 	SDL::Renderer* renderer {nullptr};
+
+	SDL::SetHint(SDL::HINT_RENDER_SCALE_QUALITY, "1", "Warning: Linear texture filtering not enabled!");
 	Media::Resources loaded_resources { Media::LoadResources() };
 
 	try

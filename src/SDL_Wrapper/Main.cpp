@@ -3,6 +3,7 @@
 
 #include "Main.hpp"
 #include <fmt/format.h>
+#include <iostream>
 
 
 void SDL::Init(Uint32 flags)
@@ -18,6 +19,14 @@ void SDL::Init(Uint32 flags)
 void SDL::Quit(void)
 {
 	SDL_Quit();
+}
+
+void SDL::SetHint(const char name, const char* value, const char* failure_msg)
+{
+	if(!(SDL_SetHint(&name, value)))
+	{
+		std::cout << failure_msg << "\n";
+	}
 }
 
 
