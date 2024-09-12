@@ -1,7 +1,6 @@
 
 #if defined(__linux__) || defined(_WIN32) || defined(__APPLE__)
 
-#include "Surface.hpp"
 #include "Image.hpp"
 #include <fmt/format.h>
 #include <iostream>
@@ -12,17 +11,17 @@ Uint32 SDL::MapRGB(const PixelFormat* format, Uint8 r, Uint8 g, Uint8 b)
 	return SDL_MapRGB(format, r, g, b);
 }
 
-SDL::Surface* SDL::Load_BMP(const char* bitmap_path)
+SDL::Surface* SDL::Load_BMP(fs::path& bitmap_path)
 {
-	SDL::Surface* bitmap{SDL_LoadBMP(bitmap_path)};
+	SDL::Surface* bitmap{SDL_LoadBMP(bitmap_path.string().c_str())};
 
 	if(bitmap == nullptr)
 	{
-		throw fmt::format("Could not load '{:s}' bitmap: {:s}", bitmap_path, SDL_GetError());
+		throw fmt::format("Could not load '{:s}' bitmap: {:s}", bitmap_path.stem().string(), SDL_GetError());
 	}
 	else
 	{
-		std::cout << fmt::format("Loaded '{:s}' bitmap as Surface\n", bitmap_path);
+		std::cout << fmt::format("Loaded '{:s}' bitmap as Surface\n", bitmap_path.stem().string());
 	}
 	
 	return bitmap;

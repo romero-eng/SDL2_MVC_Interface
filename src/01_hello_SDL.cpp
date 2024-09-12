@@ -8,14 +8,18 @@
 #include "SDL_Wrapper/Image.hpp"
 #include "SDL_Wrapper/Rectangle.hpp"
 
+#include <filesystem>
 #include <string>
 #include <iostream>
+namespace fs = std::filesystem;
 
 
 //Screen dimension constants
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
-const char* bitmap_path {"../../res/hello_world.bmp"};
+
+fs::path RESOURCE_DIRECTORY { fs::current_path().parent_path().parent_path()/"res" };
+fs::path bitmap_path { RESOURCE_DIRECTORY/"hello_world.bmp" };
 
 int main( int argc, char* args[] )
 {
