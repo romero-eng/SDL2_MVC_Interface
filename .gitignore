@@ -2,7 +2,7 @@
 /wsl_config
 
 # Resource files
-/resources
+/res
 
 # Prerequisites
 *.d

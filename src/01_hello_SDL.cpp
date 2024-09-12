@@ -15,7 +15,7 @@
 //Screen dimension constants
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
-const char* bitmap_path {"../../resources/hello_world.bmp"};
+const char* bitmap_path {"../../res/hello_world.bmp"};
 
 int main( int argc, char* args[] )
 {
