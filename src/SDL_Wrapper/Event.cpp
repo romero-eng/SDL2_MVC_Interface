@@ -2,6 +2,7 @@
 #if defined(__linux__) || defined(_WIN32) || defined(__APPLE__)
 
 #include "Event.hpp"
+#include <utility>
 
 
 bool SDL::PollEvent(SDL::Event& event)
@@ -12,7 +13,7 @@ bool SDL::PollEvent(SDL::Event& event)
 
 bool operator==(Uint32 type, SDL::EventTypes event_type)
 {
-    return type == static_cast<Uint32>(event_type);
+    return type == std::to_underlying(event_type);
 }
 
 

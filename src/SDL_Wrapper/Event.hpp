@@ -2,6 +2,7 @@
 #define EVENT_WRAPPER_h
 
 #include <SDL2/SDL.h>
+#include <cstdint>
 
 namespace SDL
 {
@@ -10,7 +11,7 @@ using Event = SDL_Event;
 
 bool PollEvent(Event& event);
 
-enum class EventTypes
+enum class EventTypes : Uint32
 {
     FIRSTEVENT = SDL_FIRSTEVENT,     /**< Unused (do not remove) */
 
