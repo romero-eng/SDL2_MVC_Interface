@@ -21,8 +21,7 @@ const int SCREEN_HEIGHT = 480;
 int main( int argc, char* args[] )
 {
 	SDL::Window* window {nullptr};
-	SDL::Surface* screenSurface {nullptr};
-	SDL::Surface* bitmapSurface {nullptr};
+	Resources::Surfaces resource_surfaces { Resources::LoadResources() };
 
 	try
 	{
@@ -37,8 +36,6 @@ int main( int argc, char* args[] )
 							  SCREEN_HEIGHT,
 							  SDL::WINDOW_SHOWN);
 
-		screenSurface = SDL::GetWindowSurface(window);
-
         SDL::Event current_event;
 		bool quit = false;
 		while(!quit)
@@ -49,7 +46,11 @@ int main( int argc, char* args[] )
 			}
 
 			
-			SDL::BlitSurface(Resources::HelloWorldSurface, nullptr, screenSurface, nullptr);
+			SDL::BlitSurfaceOntoWindow(window,
+						 			   resource_surfaces.helloWorld,
+									   nullptr,
+									   nullptr);
+
 			SDL::UpdateWindowSurface(window);
 		}
 
@@ -59,7 +60,7 @@ int main( int argc, char* args[] )
 		std::cerr << error_message;
 	}
 
-	SDL::FreeSurface(bitmapSurface);
+	Resources::FreeResources(resource_surfaces);
 	SDL::DestroyWindow(window);
 	SDL::Quit();
 

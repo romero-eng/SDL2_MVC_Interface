@@ -1,13 +1,20 @@
+#ifndef RESOURCES_H
+#define RESOURCES_H
 
-#include <filesystem>
-namespace fs = std::filesystem;
+#include "SDL_Wrapper/Surface.hpp"
 
 namespace Resources
 {
 
-const fs::path RESOURCE_DIRECTORY { fs::current_path().parent_path().parent_path()/"res" };
-fs::path bitmap_path { RESOURCE_DIRECTORY/"hello_world.bmp" };
+struct Surfaces
+{
+    SDL::Surface* helloWorld;
+};
 
-SDL::Surface* HelloWorldSurface {SDL::Load_BMP({ RESOURCE_DIRECTORY/"hello_world.bmp" })};
+Surfaces LoadResources(void);
+
+void FreeResources(Surfaces surface_resources);
 
 }
+
+#endif

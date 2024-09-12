@@ -24,12 +24,14 @@ SDL::Surface* SDL::GetWindowSurface(SDL::Window* window)
 
 int SDL::UpdateWindowSurface(SDL::Window* window)
 {
+	std::cout << fmt::format("Updating surface for '{:s} Window'\n", GetWindowTitle(window));
 	return SDL_UpdateWindowSurface(window);
 }
 
 
 void SDL::FreeSurface(Surface* surface)
 {
+	std::cout << "Freeing Surface\n";
 	SDL_FreeSurface(surface);
 }
 

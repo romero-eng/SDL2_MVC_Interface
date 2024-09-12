@@ -18,6 +18,8 @@ SDL::Surface* Load_BMP(fs::path&& bitmap_path);
 
 Surface* Load_BMP(fs::path& bitmap_path);
 
+void BlitSurfaceOntoWindow(Window* window, Surface* src, const Rect* srcrect, Rect* dstrect);
+
 void BlitSurface(Surface* src, const Rect* srcrect, Surface* dst, Rect* dstrect);
 
 }
