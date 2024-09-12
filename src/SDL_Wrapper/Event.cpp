@@ -4,9 +4,9 @@
 #include "Event.hpp"
 
 
-int SDL::PollEvent(SDL::Event& event)
+bool SDL::PollEvent(SDL::Event& event)
 {
-	return SDL_PollEvent(&event);
+	return SDL_PollEvent(&event) == 1;
 }
 
 
