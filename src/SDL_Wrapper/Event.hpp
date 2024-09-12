@@ -11,7 +11,7 @@ using Event = SDL_Event;
 
 bool PollEvent(Event& event);
 
-enum class EventTypes : Uint32
+enum class EventTypes : std::uint32_t
 {
     FIRSTEVENT = SDL_FIRSTEVENT,     /**< Unused (do not remove) */
 
