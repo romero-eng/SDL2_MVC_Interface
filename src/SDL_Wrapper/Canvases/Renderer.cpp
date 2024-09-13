@@ -12,24 +12,24 @@
 #include <utility> // Needed for retrieving underlying type of scoped enumerations
 
 
-SDL::Rendering::Renderer* SDL::Rendering::CreateRenderer(SDL::Window* window,
-                                   int index,
-                                   SDL::Rendering::RendererFlags flag,
-                                   Uint8 r,
-                                   Uint8 g,
-                                   Uint8 b,
-                                   Uint8 a)
+SDL::Rendering::Renderer* SDL::Rendering::Create(SDL::Window* window,
+                                                 int index,
+                                                 SDL::Rendering::Flags flag,
+                                                 Uint8 r,
+                                                 Uint8 g,
+                                                 Uint8 b,
+                                                 Uint8 a)
 {
-    return SDL::Rendering::CreateRenderer(window, index, static_cast<Uint32>(flag), r, g, b, a);
+    return SDL::Rendering::Create(window, index, static_cast<Uint32>(flag), r, g, b, a);
 }
 
-SDL::Rendering::Renderer* SDL::Rendering::CreateRenderer(SDL::Window* window,
-                                   int index,
-                                   Uint32 flags,
-                                   Uint8 r,
-                                   Uint8 g,
-                                   Uint8 b,
-                                   Uint8 a)
+SDL::Rendering::Renderer* SDL::Rendering::Create(SDL::Window* window,
+                                                 int index,
+                                                 Uint32 flags,
+                                                 Uint8 r,
+                                                 Uint8 g,
+                                                 Uint8 b,
+                                                 Uint8 a)
 {
     SDL::Rendering::Renderer* renderer {SDL_CreateRenderer(window, index, flags)};
     
@@ -39,30 +39,30 @@ SDL::Rendering::Renderer* SDL::Rendering::CreateRenderer(SDL::Window* window,
     }
     else
     {
-        SDL::Rendering::SetRenderDrawColor(renderer, r, g, b, a);
+        SDL::Rendering::SetDrawColor(renderer, r, g, b, a);
         std::cout << fmt::format("Renderer created for the '{:s}' Window\n", SDL::GetWindowTitle(window));
     }
 
     return renderer;
 }
 
-void SDL::Rendering::DestroyRenderer(SDL::Rendering::Renderer* renderer)
+void SDL::Rendering::Destroy(SDL::Rendering::Renderer* renderer)
 {
     std::cout << "Destroyed Renderer\n";
     SDL_DestroyRenderer(renderer);
 }
 
-bool SDL::Rendering::SetRenderDrawColor(SDL::Rendering::Renderer* renderer,
-                             Uint8 r,
-                             Uint8 g,
-                             Uint8 b,
-                             Uint8 a)
+bool SDL::Rendering::SetDrawColor(SDL::Rendering::Renderer* renderer,
+                                  Uint8 r,
+                                  Uint8 g,
+                                  Uint8 b,
+                                  Uint8 a)
 {
     std::cout << fmt::format("Renderer set with the following RBG Values for Drawing Operations: (Red: {:d} | Green {:d} | Blue {:d} | Alpha {:d})\n", r, g, b, a);
     return SDL_SetRenderDrawColor(renderer, r, g, b, a) >= 0;
 }
 
-void SDL::Rendering::RenderClear(SDL::Rendering::Renderer* renderer)
+void SDL::Rendering::Clear(SDL::Rendering::Renderer* renderer)
 {
     if (SDL_RenderClear(renderer) < 0)
     {
@@ -70,14 +70,14 @@ void SDL::Rendering::RenderClear(SDL::Rendering::Renderer* renderer)
     }
     else
     {
-        std::cout << "Cleared the Renderer";
+        std::cout << "Cleared the Renderer\n";
     }
 }
 
-void SDL::Rendering::RenderCopy(SDL::Rendering::Renderer* renderer,
-                     SDL::Texture* texture,
-                     const SDL::Rect* srcrect,
-                     const SDL::Rect* dstrect)
+void SDL::Rendering::Copy(SDL::Rendering::Renderer* renderer,
+                          SDL::Texture* texture,
+                          const SDL::Rect* srcrect,
+                          const SDL::Rect* dstrect)
 {
     if (SDL_RenderCopy(renderer, texture, srcrect, dstrect) < 0)
     {
@@ -85,17 +85,17 @@ void SDL::Rendering::RenderCopy(SDL::Rendering::Renderer* renderer,
     }
     else
     {
-        std::cout << "Copied from the texture to the renderer";
+        std::cout << "Copied from the texture to the renderer\n";
     }
 }
 
-void SDL::Rendering::RenderPresent(SDL::Rendering::Renderer* renderer)
+void SDL::Rendering::Present(SDL::Rendering::Renderer* renderer)
 {
     SDL_RenderPresent(renderer);
 }
 
-Uint32 operator|(SDL::Rendering::RendererFlags first_flag,
-                 SDL::Rendering::RendererFlags second_flag)
+Uint32 operator|(SDL::Rendering::Flags first_flag,
+                 SDL::Rendering::Flags second_flag)
 {
     return std::to_underlying(first_flag) | std::to_underlying(second_flag);
 }

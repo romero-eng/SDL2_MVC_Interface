@@ -18,7 +18,7 @@ namespace SDL
 {
     namespace Rendering
     {
-        enum class RendererFlags : std::uint32_t
+        enum class Flags : std::uint32_t
         {
             SOFTWARE      = SDL_RENDERER_SOFTWARE,      /**< The renderer is a software fallback           */
             ACCELERATED   = SDL_RENDERER_ACCELERATED,   /**< The renderer uses hardware acceleration       */
@@ -26,42 +26,42 @@ namespace SDL
             TARGETTEXTURE = SDL_RENDERER_TARGETTEXTURE  /**< The renderer supports rendering to texture    */                    
         };
 
-            Renderer* CreateRenderer(Window* window,
-                                     int index,
-                                     RendererFlags flag,
-                                     Uint8 r,
-                                     Uint8 g,
-                                     Uint8 b,
-                                     Uint8 a);
+            Renderer* Create(Window* window,
+                             int index,
+                             Flags flag,
+                             Uint8 r,
+                             Uint8 g,
+                             Uint8 b,
+                             Uint8 a);
 
-            Renderer* CreateRenderer(Window* window,
-                                     int index,
-                                     Uint32 flags,
-                                     Uint8 r,
-                                     Uint8 g,
-                                     Uint8 b,
-                                     Uint8 a);
+            Renderer* Create(Window* window,
+                             int index,
+                             Uint32 flags,
+                             Uint8 r,
+                             Uint8 g,
+                             Uint8 b,
+                             Uint8 a);
 
-            void DestroyRenderer(Renderer* renderer);
+            void Destroy(Renderer* renderer);
 
-            bool SetRenderDrawColor(Renderer* renderer,
-                                    Uint8 r,
-                                    Uint8 g,
-                                    Uint8 b,
-                                    Uint8 a);
+            bool SetDrawColor(Renderer* renderer,
+                              Uint8 r,
+                              Uint8 g,
+                              Uint8 b,
+                              Uint8 a);
 
-            void RenderClear(Renderer* renderer);
+            void Clear(Renderer* renderer);
 
-            void RenderCopy(Renderer* renderer,
-                            Texture* texture,
-                            const Rect* srcrect,
-                            const Rect* dstrect);
+            void Copy(Renderer* renderer,
+                      Texture* texture,
+                      const Rect* srcrect,
+                      const Rect* dstrect);
 
-            void RenderPresent(Renderer* renderer);
+            void Present(Renderer* renderer);
     }
 }
 
-Uint32 operator|(SDL::Rendering::RendererFlags first_flag,
-                 SDL::Rendering::RendererFlags second_flag);
+Uint32 operator|(SDL::Rendering::Flags first_flag,
+                 SDL::Rendering::Flags second_flag);
 
 #endif

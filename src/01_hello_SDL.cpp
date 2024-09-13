@@ -44,10 +44,10 @@ int main( int argc, char* args[] )
 							  SDL::WINDOW_SHOWN);
 
 		renderer  = \
-			SDL::Rendering::CreateRenderer(window,
-								-1,
-								SDL::Rendering::RendererFlags::ACCELERATED,
-								0xFF, 0xFF, 0xFF, 0xFF);
+			SDL::Rendering::Create(window,
+								   -1,
+								   SDL::Rendering::Flags::ACCELERATED,
+								   0xFF, 0xFF, 0xFF, 0xFF);
 		
 		loaded_resources = Media::LoadResources(renderer);
 
@@ -69,11 +69,11 @@ int main( int argc, char* args[] )
 			SDL::UpdateWindowSurface(window);
 			*/
 
-			SDL_RenderClear( renderer );
+			SDL::Rendering::Clear(renderer);
 
-			SDL_RenderCopy(renderer, loaded_resources.renderingPNG, NULL, NULL );
+			SDL::Rendering::Copy(renderer, loaded_resources.renderingPNG, NULL, NULL );
 
-			SDL_RenderPresent(renderer);
+			SDL::Rendering::Present(renderer);
 		}
 
 	}
@@ -83,7 +83,7 @@ int main( int argc, char* args[] )
 	}
 
 	Media::FreeResources(loaded_resources);
-	SDL::Rendering::DestroyRenderer(renderer);
+	SDL::Rendering::Destroy(renderer);
 	SDL::DestroyWindow(window);
 	IMG::Quit();
 	SDL::Quit();
