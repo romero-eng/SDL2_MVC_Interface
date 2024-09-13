@@ -4,7 +4,7 @@
 #include "SDL_Wrapper/Main.hpp"
 #include "SDL_Wrapper/Window.hpp"
 #include "SDL_Wrapper/Surface.hpp"
-#include "SDL_Wrapper/TexturesAndRenderers.hpp"
+#include "SDL_Wrapper/Canvases/TexturesAndRenderers.hpp"
 #include "SDL_Wrapper/Event.hpp"
 #include "SDL_Wrapper/Image.hpp"
 #include "SDL_Wrapper/Rectangle.hpp"

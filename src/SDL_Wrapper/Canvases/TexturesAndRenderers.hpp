@@ -1,9 +1,9 @@
 #ifndef RENDER_WRAPPER_H
 #define RENDER_WRAPPER_H
 
-#include "Window.hpp"
-#include "Surface.hpp"
-#include "Rectangle.hpp"
+#include "../Window.hpp"
+#include "../Surface.hpp"
+#include "../Rectangle.hpp"
 #include <SDL2/SDL.h>
 #include <cstdint>
 
