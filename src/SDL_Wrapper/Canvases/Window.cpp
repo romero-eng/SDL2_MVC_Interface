@@ -1,9 +1,14 @@
 
 #if defined(__linux__) || defined(_WIN32) || defined(__APPLE__)
 
+// Custom wrapper code for SDL2 API
 #include "Window.hpp"
-#include <fmt/format.h>
-#include <iostream>
+
+// Third-Party Libaries
+#include <fmt/format.h> // Needed for formatting Exception messages
+
+// C++ Standard Libaries
+#include <iostream> // Needed for printing info to stdout
 
 
 SDL::Windowing::Window* SDL::Windowing::Create(const char* title, int x, int y, int w, int h, Uint32 flags)
