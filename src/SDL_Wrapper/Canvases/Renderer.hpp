@@ -8,7 +8,7 @@
 namespace SDL { namespace Rendering { using Renderer = SDL_Renderer; } }
 #include "Texture.hpp"
 #include "../Window.hpp"
-#include "../Surface.hpp"
+#include "Surface.hpp"
 #include "../Rectangle.hpp"
 
 // C++ Standard Libaries

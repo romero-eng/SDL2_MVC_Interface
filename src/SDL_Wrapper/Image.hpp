@@ -2,7 +2,7 @@
 #define IMAGE_WRAPPER_h
 
 #include <filesystem>
-#include "Surface.hpp"
+#include "Canvases/Surface.hpp"
 
 #include "Canvases/Texture.hpp"
 #include "Canvases/Renderer.hpp"

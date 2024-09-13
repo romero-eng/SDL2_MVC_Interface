@@ -1,7 +1,7 @@
 #ifndef RESOURCES_H
 #define RESOURCES_H
 
-#include "SDL_Wrapper/Surface.hpp"
+#include "SDL_Wrapper/Canvases/Surface.hpp"
 #include "SDL_Wrapper/Image.hpp"
 #include "SDL_Wrapper/Canvases/Renderer.hpp"
 

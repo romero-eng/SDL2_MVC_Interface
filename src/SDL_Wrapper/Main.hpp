@@ -1,7 +1,6 @@
 #ifndef MAIN_WRAPPER_h
 #define MAIN_WRAPPER_h
 
-#include "Surface.hpp"
 #include <SDL2/SDL.h>
 #include <string>
 
