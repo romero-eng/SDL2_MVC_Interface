@@ -1,7 +1,8 @@
 
 #if defined(__linux__) || defined(_WIN32) || defined(__APPLE__)
 
-#include "TexturesAndRenderers.hpp"
+#include "Renderer.hpp"
+
 #include <fmt/format.h>
 #include <iostream>
 #include <utility>
@@ -39,18 +40,6 @@ bool SDL::SetRenderDrawColor(SDL::Renderer* renderer, Uint8 r, Uint8 g, Uint8 b,
 {
     std::cout << fmt::format("Renderer set with the following RBG Values for Drawing Operations: (Red: {:d} | Green {:d} | Blue {:d} | Alpha {:d})\n", r, g, b, a);
     return SDL_SetRenderDrawColor(renderer, r, g, b, a) >= 0;
-}
-
-SDL::Texture* SDL::CreateTextureFromSurface(SDL::Renderer* renderer, SDL::Surface* surfaceToConvert)
-{
-    std::cout << "Created Texture\n";
-    return SDL_CreateTextureFromSurface(renderer, surfaceToConvert);
-}
-
-void SDL::DestroyTexture(SDL::Texture* texture)
-{
-    std::cout << "Destroyed Texture\n";
-    SDL_DestroyTexture(texture);
 }
 
 void SDL::RenderClear(SDL::Renderer* renderer)

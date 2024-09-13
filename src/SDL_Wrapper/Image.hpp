@@ -3,7 +3,10 @@
 
 #include <filesystem>
 #include "Surface.hpp"
-#include "Canvases/TexturesAndRenderers.hpp"
+
+#include "Canvases/Texture.hpp"
+#include "Canvases/Renderer.hpp"
+
 #include "Rectangle.hpp"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
