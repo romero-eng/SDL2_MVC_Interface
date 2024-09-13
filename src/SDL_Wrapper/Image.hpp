@@ -3,6 +3,7 @@
 
 #include <filesystem>
 #include "Surface.hpp"
+#include "TexturesAndRenderers.hpp"
 #include "Rectangle.hpp"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -42,6 +43,14 @@ enum class InitFlags : std::uint32_t
 void Init(InitFlags flag);
 
 void Init(Uint32 flags);
+
+SDL::Surface* LoadSurface(fs::path&& bitmap_path);
+
+SDL::Surface* LoadSurface(fs::path& bitmap_path);
+
+SDL::Texture* LoadTexture(fs::path&& bitmap_path, SDL::Renderer* render);
+
+SDL::Texture* LoadTexture(fs::path& bitmap_path, SDL::Renderer* render);
 
 void Quit(void);
 

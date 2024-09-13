@@ -2,21 +2,22 @@
 #if defined(__linux__) || defined(_WIN32) || defined(__APPLE__)
 
 #include "Media.hpp"
-#include "SDL_Wrapper/Image.hpp"
 #include <filesystem>
 namespace fs = std::filesystem;
 
 
-Media::Resources Media::LoadResources(void)
+Media::Resources Media::LoadResources(SDL::Renderer* renderer)
 {
     fs::path RESOURCE_DIRECTORY { fs::current_path().parent_path().parent_path()/"res" };
 
-    return Media::Resources {SDL::Load_BMP({ RESOURCE_DIRECTORY/"hello_world.bmp" })};
+    return Media::Resources {SDL::Load_BMP(RESOURCE_DIRECTORY/"hello_world.bmp"),
+                             IMG::LoadTexture(RESOURCE_DIRECTORY/"texture.png", renderer)};
 }
 
-void Media::FreeResources(Media::Resources surface_resources)
+void Media::FreeResources(Media::Resources loaded_resources)
 {
-    SDL::FreeSurface(surface_resources.helloWorld);
+    SDL::FreeSurface(loaded_resources.helloWorld);
+    SDL::DestroyTexture(loaded_resources.renderingPNG);
 }
 
 #else

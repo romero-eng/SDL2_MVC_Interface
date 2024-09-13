@@ -2,6 +2,8 @@
 #define RENDER_WRAPPER_H
 
 #include "Window.hpp"
+#include "Surface.hpp"
+#include "Rectangle.hpp"
 #include <SDL2/SDL.h>
 #include <cstdint>
 
@@ -9,6 +11,7 @@ namespace SDL
 {
 
 using Renderer = SDL_Renderer;
+using Texture = SDL_Texture;
 
 enum class RendererFlags : std::uint32_t
 {
@@ -25,6 +28,19 @@ Renderer* CreateRenderer(Window* window, int index, Uint32 flags, Uint8 r, Uint8
 void DestroyRenderer(Renderer* renderer);
 
 bool SetRenderDrawColor(Renderer* renderer, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
+
+Texture* CreateTextureFromSurface(Renderer* renderer, Surface* surfaceToConvert);
+
+void DestroyTexture(Texture* texture);
+
+void RenderClear(Renderer* renderer);
+
+void RenderCopy(Renderer* renderer,
+                Texture* texture,
+                const Rect* srcrect,
+                const Rect* dstrect);
+
+void RenderPresent(Renderer* renderer);
 
 }
 

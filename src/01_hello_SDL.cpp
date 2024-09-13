@@ -4,7 +4,7 @@
 #include "SDL_Wrapper/Main.hpp"
 #include "SDL_Wrapper/Window.hpp"
 #include "SDL_Wrapper/Surface.hpp"
-#include "SDL_Wrapper/Render.hpp"
+#include "SDL_Wrapper/TexturesAndRenderers.hpp"
 #include "SDL_Wrapper/Event.hpp"
 #include "SDL_Wrapper/Image.hpp"
 #include "SDL_Wrapper/Rectangle.hpp"
@@ -24,15 +24,16 @@ int main( int argc, char* args[] )
 {
 	SDL::Window* window {nullptr};
 	SDL::Renderer* renderer {nullptr};
-
-	SDL::SetHint(SDL::HINT_RENDER_SCALE_QUALITY, "1", "Warning: Linear texture filtering not enabled!");
-	Media::Resources loaded_resources { Media::LoadResources() };
+	Media::Resources loaded_resources {NULL};
 
 	try
 	{
 
 		SDL::Init(SDL::INIT_VIDEO);
 		IMG::Init(IMG::InitFlags::PNG);
+
+		SDL::SetHint(SDL::HINT_RENDER_SCALE_QUALITY, "1",
+					 "Warning: Linear texture filtering not enabled!");
 
 		window = \
 			SDL::CreateWindow("SDL Tutorial",
@@ -47,6 +48,8 @@ int main( int argc, char* args[] )
 								-1,
 								SDL::RendererFlags::ACCELERATED,
 								0xFF, 0xFF, 0xFF, 0xFF);
+		
+		loaded_resources = Media::LoadResources(renderer);
 
         SDL::Event current_event;
 		bool quit = false;
@@ -57,13 +60,20 @@ int main( int argc, char* args[] )
 				quit |= current_event.type == SDL::EventTypes::QUIT;
 			}
 
-			
+			/*
 			SDL::BlitSurfaceOntoWindow(window,
 						 			   loaded_resources.helloWorld,
 									   nullptr,
 									   nullptr);
 
 			SDL::UpdateWindowSurface(window);
+			*/
+
+			SDL_RenderClear( renderer );
+
+			SDL_RenderCopy(renderer, loaded_resources.renderingPNG, NULL, NULL );
+
+			SDL_RenderPresent(renderer);
 		}
 
 	}

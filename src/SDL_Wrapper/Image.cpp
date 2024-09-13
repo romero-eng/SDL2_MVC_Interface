@@ -70,6 +70,43 @@ void IMG::Init(Uint32 flags)
 	}
 }
 
+SDL::Surface* IMG::LoadSurface(fs::path&& bitmap_path)
+{
+	return IMG::LoadSurface(bitmap_path);
+}
+
+SDL::Surface* IMG::LoadSurface(fs::path& bitmap_path)
+{
+	SDL::Surface* tmpSurface { IMG_Load(bitmap_path.string().c_str()) };
+
+	if (tmpSurface == nullptr)
+	{
+		throw fmt::format("Could not load the '{:s}' Image", bitmap_path.filename().c_str());
+	}
+
+	return tmpSurface;
+}
+
+SDL::Texture* IMG::LoadTexture(fs::path&& bitmap_path, SDL::Renderer* renderer)
+{
+	return IMG::LoadTexture(bitmap_path, renderer);
+}
+
+SDL::Texture* IMG::LoadTexture(fs::path& bitmap_path, SDL::Renderer* renderer)
+{
+	SDL::Surface* tmpSurface { IMG::LoadSurface(bitmap_path) };
+	SDL::Texture* loaded_texture { SDL_CreateTextureFromSurface(renderer, tmpSurface) };
+	SDL::FreeSurface(tmpSurface);
+
+	if (loaded_texture == nullptr)
+	{
+		throw fmt::format("Could not load the '{:s}' Image", bitmap_path.filename().c_str()); 
+	}
+
+	return loaded_texture;
+}
+
+
 void IMG::Quit(void)
 {
 	IMG_Quit();
@@ -90,4 +127,7 @@ Uint32 operator|(IMG::InitFlags first_flag, Uint32 second_flag)
 	return std::to_underlying(first_flag) | second_flag;
 }
 
+
+#else
+#error "This file is only meant to be compiled on a Windows, Macintosh, or Linux OS"
 #endif
