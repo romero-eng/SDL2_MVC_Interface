@@ -11,10 +11,10 @@
 #include <iostream> // Needed for printing info to stdout
 
 
-SDL::Texture* SDL::CreateTextureFromSurface(SDL::Rendering::Renderer* renderer,
-                                            SDL::Surface* surfaceToConvert)
+SDL::Textures::Texture* SDL::Textures::CreateFromSurface(SDL::Rendering::Renderer* renderer,
+                                                         SDL::Surface* surfaceToConvert)
 {
-    SDL::Texture* texture {SDL_CreateTextureFromSurface(renderer, surfaceToConvert)};
+    SDL::Textures::Texture* texture {SDL_CreateTextureFromSurface(renderer, surfaceToConvert)};
 
     if (texture == nullptr)
     {
@@ -28,7 +28,7 @@ SDL::Texture* SDL::CreateTextureFromSurface(SDL::Rendering::Renderer* renderer,
     return texture;
 }
 
-void SDL::DestroyTexture(SDL::Texture* texture)
+void SDL::Textures::Destroy(SDL::Textures::Texture* texture)
 {
     std::cout << "Destroyed Texture\n";
     SDL_DestroyTexture(texture);

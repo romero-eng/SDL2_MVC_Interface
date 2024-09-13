@@ -87,15 +87,15 @@ SDL::Surface* IMG::LoadSurface(fs::path& bitmap_path)
 	return tmpSurface;
 }
 
-SDL::Texture* IMG::LoadTexture(fs::path&& bitmap_path, SDL::Rendering::Renderer* renderer)
+SDL::Textures::Texture* IMG::LoadTexture(fs::path&& bitmap_path, SDL::Rendering::Renderer* renderer)
 {
 	return IMG::LoadTexture(bitmap_path, renderer);
 }
 
-SDL::Texture* IMG::LoadTexture(fs::path& bitmap_path, SDL::Rendering::Renderer* renderer)
+SDL::Textures::Texture* IMG::LoadTexture(fs::path& bitmap_path, SDL::Rendering::Renderer* renderer)
 {
 	SDL::Surface* tmpSurface { IMG::LoadSurface(bitmap_path) };
-	SDL::Texture* loaded_texture { SDL_CreateTextureFromSurface(renderer, tmpSurface) };
+	SDL::Textures::Texture* loaded_texture { SDL::Textures::CreateFromSurface(renderer, tmpSurface) };
 	SDL::FreeSurface(tmpSurface);
 
 	if (loaded_texture == nullptr)

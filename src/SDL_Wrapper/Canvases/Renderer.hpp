@@ -53,7 +53,7 @@ namespace SDL
             void Clear(Renderer* renderer);
 
             void Copy(Renderer* renderer,
-                      Texture* texture,
+                      Textures::Texture* texture,
                       const Rect* srcrect,
                       const Rect* dstrect);
 

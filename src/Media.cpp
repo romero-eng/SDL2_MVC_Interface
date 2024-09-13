@@ -17,7 +17,7 @@ Media::Resources Media::LoadResources(SDL::Rendering::Renderer* renderer)
 void Media::FreeResources(Media::Resources loaded_resources)
 {
     SDL::FreeSurface(loaded_resources.helloWorld);
-    SDL::DestroyTexture(loaded_resources.renderingPNG);
+    SDL::Textures::Destroy(loaded_resources.renderingPNG);
 }
 
 #else

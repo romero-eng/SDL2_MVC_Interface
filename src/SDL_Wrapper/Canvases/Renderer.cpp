@@ -75,7 +75,7 @@ void SDL::Rendering::Clear(SDL::Rendering::Renderer* renderer)
 }
 
 void SDL::Rendering::Copy(SDL::Rendering::Renderer* renderer,
-                          SDL::Texture* texture,
+                          SDL::Textures::Texture* texture,
                           const SDL::Rect* srcrect,
                           const SDL::Rect* dstrect)
 {
