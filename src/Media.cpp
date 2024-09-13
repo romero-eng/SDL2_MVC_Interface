@@ -6,7 +6,7 @@
 namespace fs = std::filesystem;
 
 
-Media::Resources Media::LoadResources(SDL::Renderer* renderer)
+Media::Resources Media::LoadResources(SDL::Rendering::Renderer* renderer)
 {
     fs::path RESOURCE_DIRECTORY { fs::current_path().parent_path().parent_path()/"res" };
 

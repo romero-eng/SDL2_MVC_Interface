@@ -1,21 +1,37 @@
 
 #if defined(__linux__) || defined(_WIN32) || defined(__APPLE__)
 
+// Custom wrapper code for SDL2 API
 #include "Renderer.hpp"
 
-#include <fmt/format.h>
-#include <iostream>
-#include <utility>
+// Third-Party Libaries
+#include <fmt/format.h> // Needed for formatting Exception messages
+
+// C++ Standard Libaries
+#include <iostream> // Needed for printing info to stdout
+#include <utility> // Needed for retrieving underlying type of scoped enumerations
 
 
-SDL::Renderer* SDL::CreateRenderer(SDL::Window* window, int index, SDL::RendererFlags flag, Uint8 r, Uint8 g, Uint8 b, Uint8 a)
+SDL::Rendering::Renderer* SDL::Rendering::CreateRenderer(SDL::Window* window,
+                                   int index,
+                                   SDL::Rendering::RendererFlags flag,
+                                   Uint8 r,
+                                   Uint8 g,
+                                   Uint8 b,
+                                   Uint8 a)
 {
-    return SDL::CreateRenderer(window, index, static_cast<Uint32>(flag), r, g, b, a);
+    return SDL::Rendering::CreateRenderer(window, index, static_cast<Uint32>(flag), r, g, b, a);
 }
 
-SDL::Renderer* SDL::CreateRenderer(SDL::Window* window, int index, Uint32 flags, Uint8 r, Uint8 g, Uint8 b, Uint8 a)
+SDL::Rendering::Renderer* SDL::Rendering::CreateRenderer(SDL::Window* window,
+                                   int index,
+                                   Uint32 flags,
+                                   Uint8 r,
+                                   Uint8 g,
+                                   Uint8 b,
+                                   Uint8 a)
 {
-    SDL::Renderer* renderer {SDL_CreateRenderer(window, index, flags)};
+    SDL::Rendering::Renderer* renderer {SDL_CreateRenderer(window, index, flags)};
     
     if (renderer == nullptr)
     {
@@ -23,26 +39,30 @@ SDL::Renderer* SDL::CreateRenderer(SDL::Window* window, int index, Uint32 flags,
     }
     else
     {
-        SDL::SetRenderDrawColor(renderer, r, g, b, a);
+        SDL::Rendering::SetRenderDrawColor(renderer, r, g, b, a);
         std::cout << fmt::format("Renderer created for the '{:s}' Window\n", SDL::GetWindowTitle(window));
     }
 
     return renderer;
 }
 
-void SDL::DestroyRenderer(SDL::Renderer* renderer)
+void SDL::Rendering::DestroyRenderer(SDL::Rendering::Renderer* renderer)
 {
     std::cout << "Destroyed Renderer\n";
     SDL_DestroyRenderer(renderer);
 }
 
-bool SDL::SetRenderDrawColor(SDL::Renderer* renderer, Uint8 r, Uint8 g, Uint8 b, Uint8 a)
+bool SDL::Rendering::SetRenderDrawColor(SDL::Rendering::Renderer* renderer,
+                             Uint8 r,
+                             Uint8 g,
+                             Uint8 b,
+                             Uint8 a)
 {
     std::cout << fmt::format("Renderer set with the following RBG Values for Drawing Operations: (Red: {:d} | Green {:d} | Blue {:d} | Alpha {:d})\n", r, g, b, a);
     return SDL_SetRenderDrawColor(renderer, r, g, b, a) >= 0;
 }
 
-void SDL::RenderClear(SDL::Renderer* renderer)
+void SDL::Rendering::RenderClear(SDL::Rendering::Renderer* renderer)
 {
     if (SDL_RenderClear(renderer) < 0)
     {
@@ -54,7 +74,7 @@ void SDL::RenderClear(SDL::Renderer* renderer)
     }
 }
 
-void SDL::RenderCopy(SDL::Renderer* renderer,
+void SDL::Rendering::RenderCopy(SDL::Rendering::Renderer* renderer,
                      SDL::Texture* texture,
                      const SDL::Rect* srcrect,
                      const SDL::Rect* dstrect)
@@ -69,12 +89,13 @@ void SDL::RenderCopy(SDL::Renderer* renderer,
     }
 }
 
-void SDL::RenderPresent(SDL::Renderer* renderer)
+void SDL::Rendering::RenderPresent(SDL::Rendering::Renderer* renderer)
 {
     SDL_RenderPresent(renderer);
 }
 
-Uint32 operator|(SDL::RendererFlags first_flag, SDL::RendererFlags second_flag)
+Uint32 operator|(SDL::Rendering::RendererFlags first_flag,
+                 SDL::Rendering::RendererFlags second_flag)
 {
     return std::to_underlying(first_flag) | std::to_underlying(second_flag);
 }

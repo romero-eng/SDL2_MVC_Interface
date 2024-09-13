@@ -51,9 +51,9 @@ SDL::Surface* LoadSurface(fs::path&& bitmap_path);
 
 SDL::Surface* LoadSurface(fs::path& bitmap_path);
 
-SDL::Texture* LoadTexture(fs::path&& bitmap_path, SDL::Renderer* render);
+SDL::Texture* LoadTexture(fs::path&& bitmap_path, SDL::Rendering::Renderer* render);
 
-SDL::Texture* LoadTexture(fs::path& bitmap_path, SDL::Renderer* render);
+SDL::Texture* LoadTexture(fs::path& bitmap_path, SDL::Rendering::Renderer* render);
 
 void Quit(void);
 

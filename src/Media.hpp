@@ -14,7 +14,7 @@ struct Resources
     SDL::Texture* renderingPNG;
 };
 
-Resources LoadResources(SDL::Renderer* renderer);
+Resources LoadResources(SDL::Rendering::Renderer* renderer);
 
 void FreeResources(Resources surface_resources);
 

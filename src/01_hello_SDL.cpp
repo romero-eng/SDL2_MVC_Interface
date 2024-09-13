@@ -23,7 +23,7 @@ const int SCREEN_HEIGHT = 480;
 int main( int argc, char* args[] )
 {
 	SDL::Window* window {nullptr};
-	SDL::Renderer* renderer {nullptr};
+	SDL::Rendering::Renderer* renderer {nullptr};
 	Media::Resources loaded_resources {NULL};
 
 	try
@@ -44,9 +44,9 @@ int main( int argc, char* args[] )
 							  SDL::WINDOW_SHOWN);
 
 		renderer  = \
-			SDL::CreateRenderer(window,
+			SDL::Rendering::CreateRenderer(window,
 								-1,
-								SDL::RendererFlags::ACCELERATED,
+								SDL::Rendering::RendererFlags::ACCELERATED,
 								0xFF, 0xFF, 0xFF, 0xFF);
 		
 		loaded_resources = Media::LoadResources(renderer);
@@ -83,7 +83,7 @@ int main( int argc, char* args[] )
 	}
 
 	Media::FreeResources(loaded_resources);
-	SDL::DestroyRenderer(renderer);
+	SDL::Rendering::DestroyRenderer(renderer);
 	SDL::DestroyWindow(window);
 	IMG::Quit();
 	SDL::Quit();
