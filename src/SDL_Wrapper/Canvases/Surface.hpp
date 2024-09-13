@@ -5,11 +5,14 @@
 #include <SDL2/SDL.h>
 
 // Type Aliases and Custom wrapper code for SDL2 API
-namespace SDL{ using Surface = SDL_Surface; }
+namespace SDL{ namespace Surfaces { using Surface = SDL_Surface; } }
 
 namespace SDL
 {
-    void FreeSurface(Surface* surface);
+    namespace Surfaces
+    {
+        void FreeSurface(Surface* surface);
+    }
 }
 
 

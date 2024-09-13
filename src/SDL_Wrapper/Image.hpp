@@ -20,13 +20,13 @@ using PixelFormat = SDL_PixelFormat;
 
 Uint32 MapRGB(const PixelFormat* format, Uint8 r, Uint8 g, Uint8 b);
 
-Surface* Load_BMP(fs::path&& bitmap_path);
+Surfaces::Surface* Load_BMP(fs::path&& bitmap_path);
 
-Surface* Load_BMP(fs::path& bitmap_path);
+Surfaces::Surface* Load_BMP(fs::path& bitmap_path);
 
-void BlitSurfaceOntoWindow(Window* window, Surface* src, const Rect* srcrect, Rect* dstrect);
+void BlitSurfaceOntoWindow(Window* window, Surfaces::Surface* src, const Rect* srcrect, Rect* dstrect);
 
-void BlitSurface(Surface* src, const Rect* srcrect, Surface* dst, Rect* dstrect);
+void BlitSurface(Surfaces::Surface* src, const Rect* srcrect, Surfaces::Surface* dst, Rect* dstrect);
 
 }
 
@@ -47,9 +47,9 @@ void Init(InitFlags flag);
 
 void Init(Uint32 flags);
 
-SDL::Surface* LoadSurface(fs::path&& bitmap_path);
+SDL::Surfaces::Surface* LoadSurface(fs::path&& bitmap_path);
 
-SDL::Surface* LoadSurface(fs::path& bitmap_path);
+SDL::Surfaces::Surface* LoadSurface(fs::path& bitmap_path);
 
 SDL::Textures::Texture* LoadTexture(fs::path&& bitmap_path, SDL::Rendering::Renderer* render);
 

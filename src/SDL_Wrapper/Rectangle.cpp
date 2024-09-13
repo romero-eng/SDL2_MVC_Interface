@@ -4,7 +4,7 @@
 #include "Rectangle.hpp"
 
 
-int SDL::FillRect(SDL::Surface* dst, const Rect* rect, Uint32 color)
+int SDL::FillRect(SDL::Surfaces::Surface* dst, const Rect* rect, Uint32 color)
 {
 	return SDL_FillRect(dst, rect, color);
 }

@@ -15,7 +15,7 @@ namespace SDL
     namespace Textures
     {
         Texture* CreateFromSurface(Rendering::Renderer* renderer,
-                                   Surface* surfaceToConvert);
+                                   Surfaces::Surface* surfaceToConvert);
 
         void Destroy(Texture* texture);
     }

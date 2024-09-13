@@ -11,7 +11,7 @@
 #include <iostream> // Needed for printing info to stdout
 
 
-void SDL::FreeSurface(Surface* surface)
+void SDL::Surfaces::FreeSurface(SDL::Surfaces::Surface* surface)
 {
 	std::cout << "Freeing Surface\n";
 	SDL_FreeSurface(surface);

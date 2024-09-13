@@ -9,7 +9,7 @@ namespace SDL
 
 using Rect = SDL_Rect;
 
-int FillRect(Surface* dst, const Rect* rect, Uint32 color);
+int FillRect(Surfaces::Surface* dst, const Rect* rect, Uint32 color);
 
 }
 

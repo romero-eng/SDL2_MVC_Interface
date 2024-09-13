@@ -32,9 +32,9 @@ const char* SDL::GetWindowTitle(SDL::Window* window)
 	return SDL_GetWindowTitle(window);
 }
 
-SDL::Surface* SDL::GetWindowSurface(SDL::Window* window)
+SDL::Surfaces::Surface* SDL::GetWindowSurface(SDL::Window* window)
 {
-	SDL::Surface* surface = SDL_GetWindowSurface(window);
+	SDL::Surfaces::Surface* surface = SDL_GetWindowSurface(window);
 
 	if (surface == nullptr)
 	{

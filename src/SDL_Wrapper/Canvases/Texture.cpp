@@ -12,7 +12,7 @@
 
 
 SDL::Textures::Texture* SDL::Textures::CreateFromSurface(SDL::Rendering::Renderer* renderer,
-                                                         SDL::Surface* surfaceToConvert)
+                                                         SDL::Surfaces::Surface* surfaceToConvert)
 {
     SDL::Textures::Texture* texture {SDL_CreateTextureFromSurface(renderer, surfaceToConvert)};
 

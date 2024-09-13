@@ -12,14 +12,14 @@ Uint32 SDL::MapRGB(const PixelFormat* format, Uint8 r, Uint8 g, Uint8 b)
 	return SDL_MapRGB(format, r, g, b);
 }
 
-SDL::Surface* SDL::Load_BMP(fs::path&& bitmap_path)
+SDL::Surfaces::Surface* SDL::Load_BMP(fs::path&& bitmap_path)
 {	
 	return SDL::Load_BMP(bitmap_path);
 }
 
-SDL::Surface* SDL::Load_BMP(fs::path& bitmap_path)
+SDL::Surfaces::Surface* SDL::Load_BMP(fs::path& bitmap_path)
 {
-	SDL::Surface* bitmap{SDL_LoadBMP(bitmap_path.string().c_str())};
+	SDL::Surfaces::Surface* bitmap{SDL_LoadBMP(bitmap_path.string().c_str())};
 
 	if(bitmap == nullptr)
 	{
@@ -33,7 +33,7 @@ SDL::Surface* SDL::Load_BMP(fs::path& bitmap_path)
 	return bitmap;
 }
 
-void SDL::BlitSurfaceOntoWindow(SDL::Window* window, SDL::Surface* src, const SDL::Rect* srcrect, SDL::Rect* dstrect)
+void SDL::BlitSurfaceOntoWindow(SDL::Window* window, SDL::Surfaces::Surface* src, const SDL::Rect* srcrect, SDL::Rect* dstrect)
 {
 	SDL::BlitSurface(src,
 					 srcrect,
@@ -41,7 +41,7 @@ void SDL::BlitSurfaceOntoWindow(SDL::Window* window, SDL::Surface* src, const SD
 					 dstrect);
 }
 
-void SDL::BlitSurface(SDL::Surface* src, const SDL::Rect* srcrect, SDL::Surface* dst, SDL::Rect* dstrect)
+void SDL::BlitSurface(SDL::Surfaces::Surface* src, const SDL::Rect* srcrect, SDL::Surfaces::Surface* dst, SDL::Rect* dstrect)
 {
 	if(SDL_BlitSurface(src, srcrect, dst, dstrect) == 0)
 	{
@@ -70,14 +70,14 @@ void IMG::Init(Uint32 flags)
 	}
 }
 
-SDL::Surface* IMG::LoadSurface(fs::path&& bitmap_path)
+SDL::Surfaces::Surface* IMG::LoadSurface(fs::path&& bitmap_path)
 {
 	return IMG::LoadSurface(bitmap_path);
 }
 
-SDL::Surface* IMG::LoadSurface(fs::path& bitmap_path)
+SDL::Surfaces::Surface* IMG::LoadSurface(fs::path& bitmap_path)
 {
-	SDL::Surface* tmpSurface { IMG_Load(bitmap_path.string().c_str()) };
+	SDL::Surfaces::Surface* tmpSurface { IMG_Load(bitmap_path.string().c_str()) };
 
 	if (tmpSurface == nullptr)
 	{
@@ -94,9 +94,9 @@ SDL::Textures::Texture* IMG::LoadTexture(fs::path&& bitmap_path, SDL::Rendering:
 
 SDL::Textures::Texture* IMG::LoadTexture(fs::path& bitmap_path, SDL::Rendering::Renderer* renderer)
 {
-	SDL::Surface* tmpSurface { IMG::LoadSurface(bitmap_path) };
+	SDL::Surfaces::Surface* tmpSurface { IMG::LoadSurface(bitmap_path) };
 	SDL::Textures::Texture* loaded_texture { SDL::Textures::CreateFromSurface(renderer, tmpSurface) };
-	SDL::FreeSurface(tmpSurface);
+	SDL::Surfaces::FreeSurface(tmpSurface);
 
 	if (loaded_texture == nullptr)
 	{

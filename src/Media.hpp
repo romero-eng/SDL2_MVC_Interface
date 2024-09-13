@@ -10,7 +10,7 @@ namespace Media
 
 struct Resources
 {
-    SDL::Surface* helloWorld;
+    SDL::Surfaces::Surface* helloWorld;
     SDL::Textures::Texture* renderingPNG;
 };
 

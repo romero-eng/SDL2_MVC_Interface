@@ -16,7 +16,7 @@ void DestroyWindow(Window* window);
 
 const char* GetWindowTitle(Window* window);
 
-Surface* GetWindowSurface(Window* window);
+Surfaces::Surface* GetWindowSurface(Window* window);
 
 int UpdateWindowSurface(Window* window);
 
