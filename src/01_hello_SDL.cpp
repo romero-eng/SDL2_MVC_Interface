@@ -2,7 +2,7 @@
 #if defined(__linux__) || defined(_WIN32) || defined(__APPLE__)
 
 #include "SDL_Wrapper/Main.hpp"
-#include "SDL_Wrapper/Window.hpp"
+#include "SDL_Wrapper/Canvases/Window.hpp"
 #include "SDL_Wrapper/Canvases/Surface.hpp"
 #include "SDL_Wrapper/Canvases/Renderer.hpp"
 #include "SDL_Wrapper/Event.hpp"

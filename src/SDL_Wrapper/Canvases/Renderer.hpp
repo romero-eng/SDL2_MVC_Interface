@@ -7,7 +7,7 @@
 // Type Aliases and Custom wrapper code for SDL2 API
 namespace SDL { namespace Rendering { using Renderer = SDL_Renderer; } }
 #include "Texture.hpp"
-#include "../Window.hpp"
+#include "Window.hpp"
 #include "../Rectangle.hpp"
 
 // C++ Standard Libaries

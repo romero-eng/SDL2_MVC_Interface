@@ -1,7 +1,7 @@
 #ifndef WINDOWS_WRAPPER_h
 #define WINDOWS_WRAPPER_h
 
-#include "Canvases/Surface.hpp"
+#include "Surface.hpp"
 
 #include <SDL2/SDL.h>
 
