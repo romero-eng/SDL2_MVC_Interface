@@ -6,9 +6,9 @@
 #include <iostream>
 
 
-SDL::Window* SDL::CreateWindow(const char* title, int x, int y, int w, int h, Uint32 flags)
+SDL::Windowing::Window* SDL::Windowing::Create(const char* title, int x, int y, int w, int h, Uint32 flags)
 {
-	SDL::Window* window {SDL_CreateWindow(title, x, y, w, h, flags)};
+	SDL::Windowing::Window* window {SDL_CreateWindow(title, x, y, w, h, flags)};
 
 	if (window == nullptr)
 	{
@@ -22,35 +22,35 @@ SDL::Window* SDL::CreateWindow(const char* title, int x, int y, int w, int h, Ui
 	return window;
 }
 
-void SDL::DestroyWindow(SDL::Window* window)
+void SDL::Windowing::Destroy(SDL::Windowing::Window* window)
 {
 	SDL_DestroyWindow(window);
 }
 
-const char* SDL::GetWindowTitle(SDL::Window* window)
+const char* SDL::Windowing::GetTitle(SDL::Windowing::Window* window)
 {
 	return SDL_GetWindowTitle(window);
 }
 
-SDL::Surfaces::Surface* SDL::GetWindowSurface(SDL::Window* window)
+SDL::Surfaces::Surface* SDL::Windowing::GetSurface(SDL::Windowing::Window* window)
 {
 	SDL::Surfaces::Surface* surface = SDL_GetWindowSurface(window);
 
 	if (surface == nullptr)
 	{
-		throw fmt::format("\nSurface could not be obtained from '{:s}' Window! SDL_Error:\n\n{:s}\n\n", GetWindowTitle(window), SDL_GetError() );
+		throw fmt::format("\nSurface could not be obtained from '{:s}' Window! SDL_Error:\n\n{:s}\n\n", GetTitle(window), SDL_GetError() );
 	}
 	else
 	{
-		std::cout << fmt::format("\nGot Surface from '{:s}' Window\n", GetWindowTitle(window));
+		std::cout << fmt::format("\nGot Surface from '{:s}' Window\n", GetTitle(window));
 	}
 
 	return surface;
 }
 
-int SDL::UpdateWindowSurface(SDL::Window* window)
+int SDL::Windowing::UpdateSurface(SDL::Windowing::Window* window)
 {
-	std::cout << fmt::format("Updating surface for '{:s} Window'\n", GetWindowTitle(window));
+	std::cout << fmt::format("Updating surface for '{:s} Window'\n", GetTitle(window));
 	return SDL_UpdateWindowSurface(window);
 }
 

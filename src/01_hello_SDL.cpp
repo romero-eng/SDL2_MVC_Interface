@@ -22,7 +22,7 @@ const int SCREEN_HEIGHT = 480;
 
 int main( int argc, char* args[] )
 {
-	SDL::Window* window {nullptr};
+	SDL::Windowing::Window* window {nullptr};
 	SDL::Rendering::Renderer* renderer {nullptr};
 	Media::Resources loaded_resources {NULL};
 
@@ -36,12 +36,12 @@ int main( int argc, char* args[] )
 					 "Warning: Linear texture filtering not enabled!");
 
 		window = \
-			SDL::CreateWindow("SDL Tutorial",
-  							  SDL::WINDOWPOS_UNDEFINED,
-							  SDL::WINDOWPOS_UNDEFINED,
-							  SCREEN_WIDTH,
-							  SCREEN_HEIGHT,
-							  SDL::WINDOW_SHOWN);
+			SDL::Windowing::Create("SDL Tutorial",
+	  							   SDL::WINDOWPOS_UNDEFINED,
+								   SDL::WINDOWPOS_UNDEFINED,
+								   SCREEN_WIDTH,
+								   SCREEN_HEIGHT,
+								   SDL::WINDOW_SHOWN);
 
 		renderer  = \
 			SDL::Rendering::Create(window,
@@ -66,7 +66,7 @@ int main( int argc, char* args[] )
 									   nullptr,
 									   nullptr);
 
-			SDL::UpdateWindowSurface(window);
+			SDL::UpdateSurface(window);
 			*/
 
 			SDL::Rendering::Clear(renderer);
@@ -84,7 +84,7 @@ int main( int argc, char* args[] )
 
 	Media::FreeResources(loaded_resources);
 	SDL::Rendering::Destroy(renderer);
-	SDL::DestroyWindow(window);
+	SDL::Windowing::Destroy(window);
 	IMG::Quit();
 	SDL::Quit();
 

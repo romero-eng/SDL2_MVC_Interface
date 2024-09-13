@@ -33,11 +33,11 @@ SDL::Surfaces::Surface* SDL::Load_BMP(fs::path& bitmap_path)
 	return bitmap;
 }
 
-void SDL::BlitSurfaceOntoWindow(SDL::Window* window, SDL::Surfaces::Surface* src, const SDL::Rect* srcrect, SDL::Rect* dstrect)
+void SDL::BlitSurfaceOntoWindow(SDL::Windowing::Window* window, SDL::Surfaces::Surface* src, const SDL::Rect* srcrect, SDL::Rect* dstrect)
 {
 	SDL::BlitSurface(src,
 					 srcrect,
-					 SDL::GetWindowSurface(window),
+					 SDL::Windowing::GetSurface(window),
 					 dstrect);
 }
 

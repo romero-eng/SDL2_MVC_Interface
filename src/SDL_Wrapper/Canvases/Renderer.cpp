@@ -12,7 +12,7 @@
 #include <utility> // Needed for retrieving underlying type of scoped enumerations
 
 
-SDL::Rendering::Renderer* SDL::Rendering::Create(SDL::Window* window,
+SDL::Rendering::Renderer* SDL::Rendering::Create(SDL::Windowing::Window* window,
                                                  int index,
                                                  SDL::Rendering::Flags flag,
                                                  Uint8 r,
@@ -23,7 +23,7 @@ SDL::Rendering::Renderer* SDL::Rendering::Create(SDL::Window* window,
     return SDL::Rendering::Create(window, index, static_cast<Uint32>(flag), r, g, b, a);
 }
 
-SDL::Rendering::Renderer* SDL::Rendering::Create(SDL::Window* window,
+SDL::Rendering::Renderer* SDL::Rendering::Create(SDL::Windowing::Window* window,
                                                  int index,
                                                  Uint32 flags,
                                                  Uint8 r,
@@ -35,12 +35,12 @@ SDL::Rendering::Renderer* SDL::Rendering::Create(SDL::Window* window,
     
     if (renderer == nullptr)
     {
-        throw fmt::format("Renderer could not be created for the '{:s}' Window:\n\n{:s}\n", SDL::GetWindowTitle(window), SDL_GetError());
+        throw fmt::format("Renderer could not be created for the '{:s}' Window:\n\n{:s}\n", SDL::Windowing::GetTitle(window), SDL_GetError());
     }
     else
     {
         SDL::Rendering::SetDrawColor(renderer, r, g, b, a);
-        std::cout << fmt::format("Renderer created for the '{:s}' Window\n", SDL::GetWindowTitle(window));
+        std::cout << fmt::format("Renderer created for the '{:s}' Window\n", SDL::Windowing::GetTitle(window));
     }
 
     return renderer;

@@ -24,7 +24,7 @@ Surfaces::Surface* Load_BMP(fs::path&& bitmap_path);
 
 Surfaces::Surface* Load_BMP(fs::path& bitmap_path);
 
-void BlitSurfaceOntoWindow(Window* window, Surfaces::Surface* src, const Rect* srcrect, Rect* dstrect);
+void BlitSurfaceOntoWindow(Windowing::Window* window, Surfaces::Surface* src, const Rect* srcrect, Rect* dstrect);
 
 void BlitSurface(Surfaces::Surface* src, const Rect* srcrect, Surfaces::Surface* dst, Rect* dstrect);
 
