@@ -7,8 +7,6 @@
 // Third-Party Libaries
 #include <fmt/format.h> // Needed for formatting Exception messages
 
-#include <iostream>
-#include <string>
 
 SDL::Surfaces::Surface* SDL::Surfaces::LoadFromFile(fs::path&& image_path)
 {
