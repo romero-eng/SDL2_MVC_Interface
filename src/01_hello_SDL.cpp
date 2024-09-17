@@ -66,14 +66,15 @@ int main( int argc, char* args[] )
 									   nullptr,
 									   nullptr);
 
-			SDL::UpdateSurface(window);
+			SDL::Windowing::UpdateSurface(window);
 			*/
 
 			SDL::Rendering::Clear(renderer);
 
-			SDL::Rendering::Copy(renderer, loaded_resources.renderingPNG, NULL, NULL );
+			SDL::Rendering::Copy(renderer, loaded_resources.renderingPNG, NULL, NULL);
 
 			SDL::Rendering::Present(renderer);
+
 		}
 
 	}

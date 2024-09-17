@@ -17,6 +17,27 @@ void SDL::Surfaces::FreeSurface(SDL::Surfaces::Surface* surface)
 	SDL_FreeSurface(surface);
 }
 
+SDL::Surfaces::Surface* SDL::Surfaces::Load_BMP(fs::path&& bitmap_path)
+{	
+	return SDL::Surfaces::Load_BMP(bitmap_path);
+}
+
+SDL::Surfaces::Surface* SDL::Surfaces::Load_BMP(fs::path& bitmap_path)
+{
+	SDL::Surfaces::Surface* bitmap{SDL_LoadBMP(bitmap_path.string().c_str())};
+
+	if(bitmap == nullptr)
+	{
+		throw fmt::format("Could not load '{:s}' bitmap: {:s}", bitmap_path.stem().string(), SDL_GetError());
+	}
+	else
+	{
+		std::cout << fmt::format("Loaded '{:s}' bitmap as Surface\n", bitmap_path.stem().string());
+	}
+	
+	return bitmap;
+}
+
 
 #else
 #error "This file is only meant to be compiled on a Windows, Macintosh, or Linux OS"

@@ -12,27 +12,6 @@ Uint32 SDL::MapRGB(const PixelFormat* format, Uint8 r, Uint8 g, Uint8 b)
 	return SDL_MapRGB(format, r, g, b);
 }
 
-SDL::Surfaces::Surface* SDL::Load_BMP(fs::path&& bitmap_path)
-{	
-	return SDL::Load_BMP(bitmap_path);
-}
-
-SDL::Surfaces::Surface* SDL::Load_BMP(fs::path& bitmap_path)
-{
-	SDL::Surfaces::Surface* bitmap{SDL_LoadBMP(bitmap_path.string().c_str())};
-
-	if(bitmap == nullptr)
-	{
-		throw fmt::format("Could not load '{:s}' bitmap: {:s}", bitmap_path.stem().string(), SDL_GetError());
-	}
-	else
-	{
-		std::cout << fmt::format("Loaded '{:s}' bitmap as Surface\n", bitmap_path.stem().string());
-	}
-	
-	return bitmap;
-}
-
 void SDL::BlitSurfaceOntoWindow(SDL::Windowing::Window* window, SDL::Surfaces::Surface* src, const SDL::Rect* srcrect, SDL::Rect* dstrect)
 {
 	SDL::BlitSurface(src,
