@@ -11,11 +11,11 @@ Uint32 SDL::MapRGB(const PixelFormat* format, Uint8 r, Uint8 g, Uint8 b)
 	return SDL_MapRGB(format, r, g, b);
 }
 
-void SDL::BlitSurfaceOntoWindow(SDL::Windowing::Window* window, SDL::Surfaces::Surface* src, const SDL::Rect* srcrect, SDL::Rect* dstrect)
+void SDL::BlitSurfaceOntoWindow(SDL::Canvassing::Canvas* window, SDL::Surfaces::Surface* src, const SDL::Rect* srcrect, SDL::Rect* dstrect)
 {
 	SDL::BlitSurface(src,
 					 srcrect,
-					 SDL::Windowing::GetSurface(window),
+					 SDL::Canvassing::GetSurface(window),
 					 dstrect);
 }
 

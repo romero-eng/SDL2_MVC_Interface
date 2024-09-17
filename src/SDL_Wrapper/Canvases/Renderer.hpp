@@ -25,7 +25,7 @@ namespace SDL
             TARGETTEXTURE = SDL_RENDERER_TARGETTEXTURE  /**< The renderer supports rendering to texture    */                    
         };
 
-            Renderer* Create(Windowing::Window* window,
+            Renderer* Create(Canvassing::Canvas* window,
                              int index,
                              Flags flag,
                              Uint8 r,
@@ -33,7 +33,7 @@ namespace SDL
                              Uint8 b,
                              Uint8 a);
 
-            Renderer* Create(Windowing::Window* window,
+            Renderer* Create(Canvassing::Canvas* window,
                              int index,
                              Uint32 flags,
                              Uint8 r,

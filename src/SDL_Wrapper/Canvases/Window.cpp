@@ -8,9 +8,9 @@
 #include <fmt/format.h> // Needed for formatting Exception messages
 
 
-SDL::Windowing::Window* SDL::Windowing::Create(const char* title, int x, int y, int w, int h, Uint32 flags)
+SDL::Canvassing::Canvas* SDL::Canvassing::Create(const char* title, int x, int y, int w, int h, Uint32 flags)
 {
-	SDL::Windowing::Window* window {SDL_CreateWindow(title, x, y, w, h, flags)};
+	SDL::Canvassing::Canvas* window {SDL_CreateWindow(title, x, y, w, h, flags)};
 
 	if (window == nullptr)
 	{
@@ -20,17 +20,17 @@ SDL::Windowing::Window* SDL::Windowing::Create(const char* title, int x, int y, 
 	return window;
 }
 
-void SDL::Windowing::Destroy(SDL::Windowing::Window* window)
+void SDL::Canvassing::Destroy(SDL::Canvassing::Canvas* window)
 {
 	SDL_DestroyWindow(window);
 }
 
-const char* SDL::Windowing::GetTitle(SDL::Windowing::Window* window)
+const char* SDL::Canvassing::GetTitle(SDL::Canvassing::Canvas* window)
 {
 	return SDL_GetWindowTitle(window);
 }
 
-SDL::Surfaces::Surface* SDL::Windowing::GetSurface(SDL::Windowing::Window* window)
+SDL::Surfaces::Surface* SDL::Canvassing::GetSurface(SDL::Canvassing::Canvas* window)
 {
 	SDL::Surfaces::Surface* surface = SDL_GetWindowSurface(window);
 
@@ -42,7 +42,7 @@ SDL::Surfaces::Surface* SDL::Windowing::GetSurface(SDL::Windowing::Window* windo
 	return surface;
 }
 
-int SDL::Windowing::UpdateSurface(SDL::Windowing::Window* window)
+int SDL::Canvassing::UpdateSurface(SDL::Canvassing::Canvas* window)
 {
 	return SDL_UpdateWindowSurface(window);
 }

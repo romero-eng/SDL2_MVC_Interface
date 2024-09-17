@@ -5,22 +5,22 @@
 #include <SDL2/SDL.h>
 
 // Type Aliases and Custom wrapper code for SDL2 API
-namespace SDL { namespace Windowing { using Window = SDL_Window; } }
+namespace SDL { namespace Canvassing { using Canvas = SDL_Window; } }
 #include "Surface.hpp"
 
 namespace SDL
 {
-    namespace Windowing
+    namespace Canvassing
     {
-        Window* Create(const char* title, int x, int y, int w, int h, Uint32 flags);
+        Canvas* Create(const char* title, int x, int y, int w, int h, Uint32 flags);
 
-        void Destroy(Window* window);
+        void Destroy(Canvas* window);
 
-        const char* GetTitle(Window* window);
+        const char* GetTitle(Canvas* window);
 
-        Surfaces::Surface* GetSurface(Window* window);
+        Surfaces::Surface* GetSurface(Canvas* window);
 
-        int UpdateSurface(Window* window);
+        int UpdateSurface(Canvas* window);
     }
 }
 

@@ -11,7 +11,7 @@
 #include <utility> // Needed for retrieving underlying type of scoped enumerations
 
 
-SDL::Rendering::Renderer* SDL::Rendering::Create(SDL::Windowing::Window* window,
+SDL::Rendering::Renderer* SDL::Rendering::Create(SDL::Canvassing::Canvas* window,
                                                  int index,
                                                  SDL::Rendering::Flags flag,
                                                  Uint8 r,
@@ -22,7 +22,7 @@ SDL::Rendering::Renderer* SDL::Rendering::Create(SDL::Windowing::Window* window,
     return SDL::Rendering::Create(window, index, static_cast<Uint32>(flag), r, g, b, a);
 }
 
-SDL::Rendering::Renderer* SDL::Rendering::Create(SDL::Windowing::Window* window,
+SDL::Rendering::Renderer* SDL::Rendering::Create(SDL::Canvassing::Canvas* window,
                                                  int index,
                                                  Uint32 flags,
                                                  Uint8 r,
@@ -34,7 +34,7 @@ SDL::Rendering::Renderer* SDL::Rendering::Create(SDL::Windowing::Window* window,
     
     if (renderer == nullptr)
     {
-        throw fmt::format("Renderer could not be created for the '{:s}' Window:\n\n{:s}\n", SDL::Windowing::GetTitle(window), SDL_GetError());
+        throw fmt::format("Renderer could not be created for the '{:s}' Window:\n\n{:s}\n", SDL::Canvassing::GetTitle(window), SDL_GetError());
     }
     else
     {
