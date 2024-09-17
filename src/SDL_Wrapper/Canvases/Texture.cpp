@@ -9,7 +9,7 @@
 
 
 SDL::Textures::Texture* SDL::Textures::CreateFromSurface(SDL::Rendering::Renderer* renderer,
-                                                         SDL::Surfaces::Surface* surfaceToConvert)
+                                                         SDL::CPU_Images::CPU_Image* surfaceToConvert)
 {
     SDL::Textures::Texture* texture {SDL_CreateTextureFromSurface(renderer, surfaceToConvert)};
 
@@ -30,9 +30,9 @@ SDL::Textures::Texture* SDL::Textures::LoadFromFile(fs::path&& bitmap_path,
 SDL::Textures::Texture* SDL::Textures::LoadFromFile(fs::path& bitmap_path,
                                                     SDL::Rendering::Renderer* renderer)
 {
-	SDL::Surfaces::Surface* tmpSurface { SDL::Surfaces::LoadFromFile(bitmap_path) };
+	SDL::CPU_Images::CPU_Image* tmpSurface { SDL::CPU_Images::LoadFromFile(bitmap_path) };
 	SDL::Textures::Texture* loaded_texture { SDL::Textures::CreateFromSurface(renderer, tmpSurface) };
-	SDL::Surfaces::FreeSurface(tmpSurface);
+	SDL::CPU_Images::FreeSurface(tmpSurface);
 
 	if (loaded_texture == nullptr)
 	{

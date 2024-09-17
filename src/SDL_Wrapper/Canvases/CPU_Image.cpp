@@ -2,18 +2,18 @@
 #if defined(__linux__) || defined(_WIN32) || defined(__APPLE__)
 
 // Custom wrapper code for SDL2 API
-#include "Surface.hpp"
+#include "CPU_Image.hpp"
 
 // Third-Party Libaries
 #include <fmt/format.h> // Needed for formatting Exception messages
 
 
-SDL::Surfaces::Surface* SDL::Surfaces::LoadFromFile(fs::path&& image_path)
+SDL::CPU_Images::CPU_Image* SDL::CPU_Images::LoadFromFile(fs::path&& image_path)
 {
-	return SDL::Surfaces::LoadFromFile(image_path);
+	return SDL::CPU_Images::LoadFromFile(image_path);
 }
 
-SDL::Surfaces::Surface* SDL::Surfaces::LoadFromFile(fs::path& image_path)
+SDL::CPU_Images::CPU_Image* SDL::CPU_Images::LoadFromFile(fs::path& image_path)
 {
 	if(!fs::exists(image_path))
 	{
@@ -25,7 +25,7 @@ SDL::Surfaces::Surface* SDL::Surfaces::LoadFromFile(fs::path& image_path)
 		throw fmt::format("The '{:s}' Image file does not seem to be a regular file", image_path.string().c_str());
 	}
 
-	SDL::Surfaces::Surface* tmpSurface;
+	SDL::CPU_Images::CPU_Image* tmpSurface;
 
 	if(image_path.extension() == ".bmp")
 	{
@@ -50,7 +50,7 @@ SDL::Surfaces::Surface* SDL::Surfaces::LoadFromFile(fs::path& image_path)
 	return tmpSurface;
 }
 
-void SDL::Surfaces::FreeSurface(SDL::Surfaces::Surface* surface)
+void SDL::CPU_Images::FreeSurface(SDL::CPU_Images::CPU_Image* surface)
 {
 	SDL_FreeSurface(surface);
 }

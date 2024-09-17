@@ -1,7 +1,7 @@
 #ifndef RESOURCES_H
 #define RESOURCES_H
 
-#include "SDL_Wrapper/Canvases/Surface.hpp"
+#include "SDL_Wrapper/Canvases/CPU_Image.hpp"
 #include "SDL_Wrapper/Image.hpp"
 #include "SDL_Wrapper/Canvases/Renderer.hpp"
 
@@ -10,7 +10,7 @@ namespace Media
 
 struct Resources
 {
-    SDL::Surfaces::Surface* helloWorld;
+    SDL::CPU_Images::CPU_Image* helloWorld;
     SDL::Textures::Texture* renderingPNG;
 };
 

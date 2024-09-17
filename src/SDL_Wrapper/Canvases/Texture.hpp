@@ -7,7 +7,7 @@
 // Type Aliases and Custom wrapper code for SDL2 API
 namespace SDL { namespace Textures { using Texture = SDL_Texture; } }
 #include "Renderer.hpp"
-#include "Surface.hpp"
+#include "CPU_Image.hpp"
 
 
 namespace SDL
@@ -15,7 +15,7 @@ namespace SDL
     namespace Textures
     {
         Texture* CreateFromSurface(Rendering::Renderer* renderer,
-                                   Surfaces::Surface* surfaceToConvert);
+                                   CPU_Images::CPU_Image* surfaceToConvert);
 
         Texture* LoadFromFile(fs::path&& bitmap_path,
                              SDL::Rendering::Renderer* render);

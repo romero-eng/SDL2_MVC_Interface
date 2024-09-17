@@ -10,17 +10,17 @@
 namespace fs = std::filesystem;
 
 // Type Aliases and Custom wrapper code for SDL2 API
-namespace SDL{ namespace Surfaces { using Surface = SDL_Surface; } }
+namespace SDL{ namespace CPU_Images { using CPU_Image = SDL_Surface; } }
 
 namespace SDL
 {
-    namespace Surfaces
+    namespace CPU_Images
     {
-        Surface* LoadFromFile(fs::path&& image_path);
+        CPU_Image* LoadFromFile(fs::path&& image_path);
 
-        Surface* LoadFromFile(fs::path& image_path);
+        CPU_Image* LoadFromFile(fs::path& image_path);
 
-        void FreeSurface(Surface* surface);
+        void FreeSurface(CPU_Image* surface);
     }
 }
 
