@@ -10,7 +10,7 @@ Media::Resources Media::LoadResources(SDL::Rendering::Renderer* renderer)
 {
     fs::path RESOURCE_DIRECTORY { fs::current_path().parent_path().parent_path()/"res" };
 
-    return Media::Resources {SDL::Surfaces::Load_BMP(RESOURCE_DIRECTORY/"hello_world.bmp"),
+    return Media::Resources {SDL::Surfaces::LoadFromFile(RESOURCE_DIRECTORY/"hello_world.bmp"),
                              IMG::LoadTexture(RESOURCE_DIRECTORY/"texture.png", renderer)};
 }
 

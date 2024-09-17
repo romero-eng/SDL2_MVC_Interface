@@ -30,10 +30,10 @@ def run_shell_command(description: str,
            'command': command}             # noqa: E127
 
     if shell_results.stdout:
-        command_results['Output'] = f'\n\n{'\n'.join([f'{line:s}' for line in shell_results.stdout.decode('utf-8').split('\n')]):s}'  # noqa: E501
+        command_results['Output'] = f'\n\n{'\n'.join([f'{line:s}' for line in shell_results.stdout.decode('latin1').split('\n')]):s}'  # noqa: E501
 
     if shell_results.stderr:
-        command_results['Error'] = f'\n\n{'\n'.join([f'{line:s}' for line in shell_results.stderr.decode('utf-8').split('\n')]):s}'  # noqa: E501
+        command_results['Error'] = f'\n\n{'\n'.join([f'{line:s}' for line in shell_results.stderr.decode('latin1').split('\n')]):s}'  # noqa: E501
 
     printable_shell_results: str = \
         mapping_to_string(description,

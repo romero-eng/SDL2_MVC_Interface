@@ -47,7 +47,7 @@ SDL::Textures::Texture* IMG::LoadTexture(fs::path&& bitmap_path, SDL::Rendering:
 
 SDL::Textures::Texture* IMG::LoadTexture(fs::path& bitmap_path, SDL::Rendering::Renderer* renderer)
 {
-	SDL::Surfaces::Surface* tmpSurface { SDL::Surfaces::LoadSurface(bitmap_path) };
+	SDL::Surfaces::Surface* tmpSurface { SDL::Surfaces::LoadFromFile(bitmap_path) };
 	SDL::Textures::Texture* loaded_texture { SDL::Textures::CreateFromSurface(renderer, tmpSurface) };
 	SDL::Surfaces::FreeSurface(tmpSurface);
 

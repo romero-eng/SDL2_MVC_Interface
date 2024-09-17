@@ -16,14 +16,9 @@ namespace SDL
 {
     namespace Surfaces
     {
-        
-        Surface* Load_BMP(fs::path&& bitmap_path);
+        Surface* LoadFromFile(fs::path&& image_path);
 
-        Surface* Load_BMP(fs::path& bitmap_path);
-
-        Surface* LoadSurface(fs::path&& bitmap_path);
-
-        Surface* LoadSurface(fs::path& bitmap_path);
+        Surface* LoadFromFile(fs::path& image_path);
 
         void FreeSurface(Surface* surface);
     }
