@@ -21,6 +21,27 @@ SDL::Textures::Texture* SDL::Textures::CreateFromSurface(SDL::Rendering::Rendere
     return texture;
 }
 
+SDL::Textures::Texture* SDL::Textures::LoadFromFile(fs::path&& bitmap_path,
+                                                    SDL::Rendering::Renderer* renderer)
+{
+	return SDL::Textures::LoadFromFile(bitmap_path, renderer);
+}
+
+SDL::Textures::Texture* SDL::Textures::LoadFromFile(fs::path& bitmap_path,
+                                                    SDL::Rendering::Renderer* renderer)
+{
+	SDL::Surfaces::Surface* tmpSurface { SDL::Surfaces::LoadFromFile(bitmap_path) };
+	SDL::Textures::Texture* loaded_texture { SDL::Textures::CreateFromSurface(renderer, tmpSurface) };
+	SDL::Surfaces::FreeSurface(tmpSurface);
+
+	if (loaded_texture == nullptr)
+	{
+		throw fmt::format("Could not load the '{:s}' Image", bitmap_path.filename().c_str()); 
+	}
+
+	return loaded_texture;
+}
+
 void SDL::Textures::Destroy(SDL::Textures::Texture* texture)
 {
     SDL_DestroyTexture(texture);

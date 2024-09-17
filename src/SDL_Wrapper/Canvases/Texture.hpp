@@ -17,6 +17,12 @@ namespace SDL
         Texture* CreateFromSurface(Rendering::Renderer* renderer,
                                    Surfaces::Surface* surfaceToConvert);
 
+        Texture* LoadFromFile(fs::path&& bitmap_path,
+                             SDL::Rendering::Renderer* render);
+
+        Texture* LoadFromFile(fs::path& bitmap_path,
+                             SDL::Rendering::Renderer* render);
+
         void Destroy(Texture* texture);
     }
 }

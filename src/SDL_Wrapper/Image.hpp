@@ -42,10 +42,6 @@ void Init(InitFlags flag);
 
 void Init(Uint32 flags);
 
-SDL::Textures::Texture* LoadTexture(fs::path&& bitmap_path, SDL::Rendering::Renderer* render);
-
-SDL::Textures::Texture* LoadTexture(fs::path& bitmap_path, SDL::Rendering::Renderer* render);
-
 void Quit(void);
 
 }
