@@ -3,6 +3,7 @@
 
 // Original SDL2 API
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 
 // C++ Standard Libaries
 #include <filesystem>  // Needed for specifying paths to Bitmaps and Image files
@@ -19,6 +20,10 @@ namespace SDL
         Surface* Load_BMP(fs::path&& bitmap_path);
 
         Surface* Load_BMP(fs::path& bitmap_path);
+
+        Surface* LoadSurface(fs::path&& bitmap_path);
+
+        Surface* LoadSurface(fs::path& bitmap_path);
 
         void FreeSurface(Surface* surface);
     }

@@ -60,21 +60,19 @@ int main( int argc, char* args[] )
 				quit |= current_event.type == SDL::EventTypes::QUIT;
 			}
 
-
+			/*
 			SDL::BlitSurfaceOntoWindow(window,
 						 			   loaded_resources.helloWorld,
 									   nullptr,
 									   nullptr);
 
 			SDL::Windowing::UpdateSurface(window);
-
-			/*
-			SDL::Rendering::Clear(renderer);
-
-			SDL::Rendering::Copy(renderer, loaded_resources.renderingPNG, NULL, NULL);
-
-			SDL::Rendering::Present(renderer);
 			*/
+
+			SDL::Rendering::Clear(renderer);
+			SDL::Rendering::Copy(renderer, loaded_resources.renderingPNG, NULL, NULL);
+			SDL::Rendering::Present(renderer);
+
 		}
 
 	}

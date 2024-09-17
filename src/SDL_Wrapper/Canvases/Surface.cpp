@@ -11,12 +11,6 @@
 #include <iostream> // Needed for printing info to stdout
 
 
-void SDL::Surfaces::FreeSurface(SDL::Surfaces::Surface* surface)
-{
-	std::cout << "Freeing Surface\n";
-	SDL_FreeSurface(surface);
-}
-
 SDL::Surfaces::Surface* SDL::Surfaces::Load_BMP(fs::path&& bitmap_path)
 {	
 	return SDL::Surfaces::Load_BMP(bitmap_path);
@@ -36,6 +30,29 @@ SDL::Surfaces::Surface* SDL::Surfaces::Load_BMP(fs::path& bitmap_path)
 	}
 	
 	return bitmap;
+}
+
+SDL::Surfaces::Surface* SDL::Surfaces::LoadSurface(fs::path&& bitmap_path)
+{
+	return SDL::Surfaces::LoadSurface(bitmap_path);
+}
+
+SDL::Surfaces::Surface* SDL::Surfaces::LoadSurface(fs::path& bitmap_path)
+{
+	SDL::Surfaces::Surface* tmpSurface { IMG_Load(bitmap_path.string().c_str()) };
+
+	if (tmpSurface == nullptr)
+	{
+		throw fmt::format("Could not load the '{:s}' Image", bitmap_path.filename().c_str());
+	}
+
+	return tmpSurface;
+}
+
+void SDL::Surfaces::FreeSurface(SDL::Surfaces::Surface* surface)
+{
+	std::cout << "Freeing Surface\n";
+	SDL_FreeSurface(surface);
 }
 
 

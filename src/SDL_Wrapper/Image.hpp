@@ -3,7 +3,6 @@
 
 #include <filesystem>
 #include "Canvases/Surface.hpp"
-
 #include "Canvases/Texture.hpp"
 #include "Canvases/Renderer.hpp"
 
@@ -42,10 +41,6 @@ enum class InitFlags : std::uint32_t
 void Init(InitFlags flag);
 
 void Init(Uint32 flags);
-
-SDL::Surfaces::Surface* LoadSurface(fs::path&& bitmap_path);
-
-SDL::Surfaces::Surface* LoadSurface(fs::path& bitmap_path);
 
 SDL::Textures::Texture* LoadTexture(fs::path&& bitmap_path, SDL::Rendering::Renderer* render);
 
