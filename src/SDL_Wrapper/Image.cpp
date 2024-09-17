@@ -11,7 +11,7 @@ Uint32 SDL::MapRGB(const PixelFormat* format, Uint8 r, Uint8 g, Uint8 b)
 	return SDL_MapRGB(format, r, g, b);
 }
 
-void SDL::BlitSurfaceOntoWindow(SDL::Canvassing::Canvas* window, SDL::CPU_Images::CPU_Image* src, const SDL::Rect* srcrect, SDL::Rect* dstrect)
+void SDL::BlitSurfaceOntoWindow(SDL::Canvassing::Canvas* window, SDL::CPU::Images::Image* src, const SDL::Rect* srcrect, SDL::Rect* dstrect)
 {
 	SDL::BlitSurface(src,
 					 srcrect,
@@ -19,7 +19,7 @@ void SDL::BlitSurfaceOntoWindow(SDL::Canvassing::Canvas* window, SDL::CPU_Images
 					 dstrect);
 }
 
-void SDL::BlitSurface(SDL::CPU_Images::CPU_Image* src, const SDL::Rect* srcrect, SDL::CPU_Images::CPU_Image* dst, SDL::Rect* dstrect)
+void SDL::BlitSurface(SDL::CPU::Images::Image* src, const SDL::Rect* srcrect, SDL::CPU::Images::Image* dst, SDL::Rect* dstrect)
 {
 	if(SDL_BlitSurface(src, srcrect, dst, dstrect) != 0)
 	{

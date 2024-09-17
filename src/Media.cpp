@@ -10,13 +10,13 @@ Media::Resources Media::LoadResources(SDL::GPU_Painting::GPU_Paintbrush* rendere
 {
     fs::path RESOURCE_DIRECTORY { fs::current_path().parent_path().parent_path()/"res" };
 
-    return Media::Resources {SDL::CPU_Images::LoadFromFile(RESOURCE_DIRECTORY/"hello_world.bmp"),
+    return Media::Resources {SDL::CPU::Images::LoadFromFile(RESOURCE_DIRECTORY/"hello_world.bmp"),
                              SDL::GPU_Images::LoadFromFile(RESOURCE_DIRECTORY/"texture.png", renderer)};
 }
 
 void Media::FreeResources(Media::Resources loaded_resources)
 {
-    SDL::CPU_Images::FreeSurface(loaded_resources.helloWorld);
+    SDL::CPU::Images::FreeSurface(loaded_resources.helloWorld);
     SDL::GPU_Images::Destroy(loaded_resources.GPU_PaintingPNG);
 }
 

@@ -3,7 +3,7 @@
 
 #include "SDL_Wrapper/Main.hpp"
 #include "SDL_Wrapper/Canvases/Canvas.hpp"
-#include "SDL_Wrapper/Canvases/CPU_Image.hpp"
+#include "SDL_Wrapper/Canvases/CPU/Image.hpp"
 #include "SDL_Wrapper/Canvases/GPU_Paintbrush.hpp"
 #include "SDL_Wrapper/Event.hpp"
 #include "SDL_Wrapper/Image.hpp"

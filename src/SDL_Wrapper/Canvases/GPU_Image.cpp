@@ -9,7 +9,7 @@
 
 
 SDL::GPU_Images::GPU_Image* SDL::GPU_Images::CreateFromSurface(SDL::GPU_Painting::GPU_Paintbrush* renderer,
-                                                         SDL::CPU_Images::CPU_Image* surfaceToConvert)
+                                                         SDL::CPU::Images::Image* surfaceToConvert)
 {
     SDL::GPU_Images::GPU_Image* texture {SDL_CreateTextureFromSurface(renderer, surfaceToConvert)};
 
@@ -30,9 +30,9 @@ SDL::GPU_Images::GPU_Image* SDL::GPU_Images::LoadFromFile(fs::path&& bitmap_path
 SDL::GPU_Images::GPU_Image* SDL::GPU_Images::LoadFromFile(fs::path& bitmap_path,
                                                     SDL::GPU_Painting::GPU_Paintbrush* renderer)
 {
-	SDL::CPU_Images::CPU_Image* tmpSurface { SDL::CPU_Images::LoadFromFile(bitmap_path) };
+	SDL::CPU::Images::Image* tmpSurface { SDL::CPU::Images::LoadFromFile(bitmap_path) };
 	SDL::GPU_Images::GPU_Image* loaded_texture { SDL::GPU_Images::CreateFromSurface(renderer, tmpSurface) };
-	SDL::CPU_Images::FreeSurface(tmpSurface);
+	SDL::CPU::Images::FreeSurface(tmpSurface);
 
 	if (loaded_texture == nullptr)
 	{
