@@ -108,14 +108,14 @@ def interpret_build_configuration(build_configuration: str) -> list[str]:
 
 def compile_object_file(compiler_cli_name: str,
                         source_file_path: Path,
-                        object_file_parent_directory: Path,
+                        object_file_path: Path,
                         language_standard: str,
                         build_configuration: str = 'Debug',
                         include_directories: list[Path] | None = None,
                         preprocessor_macros: list[str] | None = None,
                         warnings: list[str] | None = None,
                         treat_warnings_as_errors: bool = False,
-                        disable_compiler_extensions: bool = False) -> Path:
+                        disable_compiler_extensions: bool = False) -> None:
 
     if warnings:
 
@@ -140,11 +140,9 @@ def compile_object_file(compiler_cli_name: str,
 
     compile_command: str = '{compiler:s} -c {source_file:s} -o {object_file:s} {language_standard:s} {build_configuration:s} {miscellaneous:s} {header_locations:s} {warnings:s} {preprocessor_macros:s}'  # noqa: E501
 
-    object_file_path: Path = object_file_parent_directory/f'{source_file_path.stem:s}.o'
-
     common_path: Path = \
         Path(commonpath([source_file_path,
-                         object_file_parent_directory]))
+                         object_file_path]))
 
     run_shell_command(f'Compile \'{source_file_path.name:s}\'',
                       compile_command.format(compiler=compiler_cli_name,
@@ -157,8 +155,6 @@ def compile_object_file(compiler_cli_name: str,
                                              warnings=' '.join([f'-W{warning_flag:s}' for warning_flag in warning_flags]) if warnings else '',                                           # noqa: E501
                                              preprocessor_macros=' '.join([f'-D{macro:s}' for macro in preprocessor_macros]) if preprocessor_macros else '').rstrip(),                   # noqa: E501
                       common_path)
-
-    return object_file_path
 
 
 def link_object_files_into_executable(linker_cli_name: str,
@@ -204,6 +200,10 @@ def main() -> None:
     if not build_directory.exists():
         build_directory.mkdir()
 
+    object_directory: Path = build_directory/'obj'
+    if not object_directory.exists():
+        object_directory.mkdir()
+
     binary_directory: Path = build_directory/'bin'
     if not binary_directory.exists():
         binary_directory.mkdir()
@@ -236,18 +236,21 @@ def main() -> None:
             for file in files:
 
                 current_source_path = root/file
+                current_object_path = object_directory/root.relative_to(source_directory)/f'{current_source_path.stem:s}.o'  # noqa: E501
+
+                if not current_object_path.parent.exists():
+                    current_object_path.parent.mkdir()
 
                 if current_source_path.suffix in source_file_extensions:
 
                     try:
-                        current_object_path = \
-                            compile_object_file(compiler_cli_name,
-                                                root/file,
-                                                executable_path.parent,
-                                                language_standard,
-                                                warnings=reduced_warnings if current_source_path.stem == '01_hello_SDL' else warnings,  # noqa: E501
-                                                treat_warnings_as_errors=True,
-                                                disable_compiler_extensions=True)
+                        compile_object_file(compiler_cli_name,
+                                            current_source_path,
+                                            current_object_path,
+                                            language_standard,
+                                            warnings=reduced_warnings if current_source_path.stem == '01_hello_SDL' else warnings,  # noqa: E501
+                                            treat_warnings_as_errors=True,
+                                            disable_compiler_extensions=True)
 
                     except Exception as error:
                         raise error
@@ -266,8 +269,8 @@ def main() -> None:
     else:
         test_executable(executable_path)
 
-        if build_directory.exists():
-            shutil.rmtree(build_directory)
+        #if build_directory.exists():
+        #    shutil.rmtree(build_directory)
 
 
 if (__name__ == '__main__'):
