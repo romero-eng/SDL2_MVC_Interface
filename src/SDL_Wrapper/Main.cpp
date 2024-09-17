@@ -25,7 +25,7 @@ void SDL::SetHint(const char name, const char* value, const char* failure_msg)
 {
 	if(!(SDL_SetHint(&name, value)))
 	{
-		std::cout << failure_msg << "\n";
+		std::cerr << failure_msg << "\n";
 	}
 }
 

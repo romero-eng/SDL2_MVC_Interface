@@ -8,7 +8,6 @@
 #include <fmt/format.h> // Needed for formatting Exception messages
 
 // C++ Standard Libaries
-#include <iostream> // Needed for printing info to stdout
 #include <utility> // Needed for retrieving underlying type of scoped enumerations
 
 
@@ -40,7 +39,6 @@ SDL::Rendering::Renderer* SDL::Rendering::Create(SDL::Windowing::Window* window,
     else
     {
         SDL::Rendering::SetDrawColor(renderer, r, g, b, a);
-        std::cout << fmt::format("Renderer created for the '{:s}' Window\n", SDL::Windowing::GetTitle(window));
     }
 
     return renderer;
@@ -48,7 +46,6 @@ SDL::Rendering::Renderer* SDL::Rendering::Create(SDL::Windowing::Window* window,
 
 void SDL::Rendering::Destroy(SDL::Rendering::Renderer* renderer)
 {
-    std::cout << "Destroyed Renderer\n";
     SDL_DestroyRenderer(renderer);
 }
 
@@ -58,7 +55,6 @@ bool SDL::Rendering::SetDrawColor(SDL::Rendering::Renderer* renderer,
                                   Uint8 b,
                                   Uint8 a)
 {
-    std::cout << fmt::format("Renderer set with the following RBG Values for Drawing Operations: (Red: {:d} | Green {:d} | Blue {:d} | Alpha {:d})\n", r, g, b, a);
     return SDL_SetRenderDrawColor(renderer, r, g, b, a) >= 0;
 }
 
@@ -67,10 +63,6 @@ void SDL::Rendering::Clear(SDL::Rendering::Renderer* renderer)
     if (SDL_RenderClear(renderer) < 0)
     {
         throw fmt::format("Could not clear the Renderer: {:s}", SDL_GetError());
-    }
-    else
-    {
-        std::cout << "Cleared the Renderer\n";
     }
 }
 
@@ -82,10 +74,6 @@ void SDL::Rendering::Copy(SDL::Rendering::Renderer* renderer,
     if (SDL_RenderCopy(renderer, texture, srcrect, dstrect) < 0)
     {
         throw fmt::format("Could not copy from the texture to the renderer: {:s}", SDL_GetError());
-    }
-    else
-    {
-        std::cout << "Copied from the texture to the renderer\n";
     }
 }
 

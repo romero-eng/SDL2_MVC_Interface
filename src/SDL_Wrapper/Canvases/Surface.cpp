@@ -7,9 +7,6 @@
 // Third-Party Libaries
 #include <fmt/format.h> // Needed for formatting Exception messages
 
-// C++ Standard Libaries
-#include <iostream> // Needed for printing info to stdout
-
 
 SDL::Surfaces::Surface* SDL::Surfaces::Load_BMP(fs::path&& bitmap_path)
 {	
@@ -23,10 +20,6 @@ SDL::Surfaces::Surface* SDL::Surfaces::Load_BMP(fs::path& bitmap_path)
 	if(bitmap == nullptr)
 	{
 		throw fmt::format("Could not load '{:s}' bitmap: {:s}", bitmap_path.stem().string(), SDL_GetError());
-	}
-	else
-	{
-		std::cout << fmt::format("Loaded '{:s}' bitmap as Surface\n", bitmap_path.stem().string());
 	}
 	
 	return bitmap;
@@ -51,7 +44,6 @@ SDL::Surfaces::Surface* SDL::Surfaces::LoadSurface(fs::path& bitmap_path)
 
 void SDL::Surfaces::FreeSurface(SDL::Surfaces::Surface* surface)
 {
-	std::cout << "Freeing Surface\n";
 	SDL_FreeSurface(surface);
 }
 

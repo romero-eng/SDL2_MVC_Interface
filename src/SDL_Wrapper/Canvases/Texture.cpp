@@ -7,9 +7,6 @@
 // Third-Party Libaries
 #include <fmt/format.h> // Needed for formatting Exception messages
 
-// C++ Standard Libaries
-#include <iostream> // Needed for printing info to stdout
-
 
 SDL::Textures::Texture* SDL::Textures::CreateFromSurface(SDL::Rendering::Renderer* renderer,
                                                          SDL::Surfaces::Surface* surfaceToConvert)
@@ -20,17 +17,12 @@ SDL::Textures::Texture* SDL::Textures::CreateFromSurface(SDL::Rendering::Rendere
     {
         throw fmt::format("Could not create Texture from Surface: {:s}", SDL_GetError());
     }
-    else
-    {
-        std::cout << "Created Texture\n";
-    }
 
     return texture;
 }
 
 void SDL::Textures::Destroy(SDL::Textures::Texture* texture)
 {
-    std::cout << "Destroyed Texture\n";
     SDL_DestroyTexture(texture);
 }
 

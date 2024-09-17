@@ -3,7 +3,6 @@
 
 #include "Image.hpp"
 #include <fmt/format.h>
-#include <iostream>
 #include <utility>
 
 
@@ -22,11 +21,7 @@ void SDL::BlitSurfaceOntoWindow(SDL::Windowing::Window* window, SDL::Surfaces::S
 
 void SDL::BlitSurface(SDL::Surfaces::Surface* src, const SDL::Rect* srcrect, SDL::Surfaces::Surface* dst, SDL::Rect* dstrect)
 {
-	if(SDL_BlitSurface(src, srcrect, dst, dstrect) == 0)
-	{
-		std::cout << "Blitted 'src' Surface onto 'dst' Surface\n";
-	}
-	else
+	if(SDL_BlitSurface(src, srcrect, dst, dstrect) != 0)
 	{
 		throw fmt::format("Could not blit 'src' Surface onto 'dst' Surface: {:s}", SDL_GetError());
 	}
@@ -42,10 +37,6 @@ void IMG::Init(Uint32 flags)
 	if(!( static_cast<Uint32>(IMG_Init(static_cast<int>(flags))) & flags ))
 	{
 		throw fmt::format("SDL Images could not be initialized: {:s}\n", IMG_GetError());
-	}
-	else
-	{
-		std::cout << "Initialized SDL Images\n";
 	}
 }
 
