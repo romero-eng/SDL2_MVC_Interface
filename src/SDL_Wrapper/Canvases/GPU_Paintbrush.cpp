@@ -2,7 +2,7 @@
 #if defined(__linux__) || defined(_WIN32) || defined(__APPLE__)
 
 // Custom wrapper code for SDL2 API
-#include "Renderer.hpp"
+#include "GPU_Paintbrush.hpp"
 
 // Third-Party Libaries
 #include <fmt/format.h> // Needed for formatting Exception messages
@@ -11,18 +11,18 @@
 #include <utility> // Needed for retrieving underlying type of scoped enumerations
 
 
-SDL::Rendering::Renderer* SDL::Rendering::Create(SDL::Canvassing::Canvas* window,
+SDL::GPU_Painting::GPU_Paintbrush* SDL::GPU_Painting::Create(SDL::Canvassing::Canvas* window,
                                                  int index,
-                                                 SDL::Rendering::Flags flag,
+                                                 SDL::GPU_Painting::Flags flag,
                                                  Uint8 r,
                                                  Uint8 g,
                                                  Uint8 b,
                                                  Uint8 a)
 {
-    return SDL::Rendering::Create(window, index, static_cast<Uint32>(flag), r, g, b, a);
+    return SDL::GPU_Painting::Create(window, index, static_cast<Uint32>(flag), r, g, b, a);
 }
 
-SDL::Rendering::Renderer* SDL::Rendering::Create(SDL::Canvassing::Canvas* window,
+SDL::GPU_Painting::GPU_Paintbrush* SDL::GPU_Painting::Create(SDL::Canvassing::Canvas* window,
                                                  int index,
                                                  Uint32 flags,
                                                  Uint8 r,
@@ -30,7 +30,7 @@ SDL::Rendering::Renderer* SDL::Rendering::Create(SDL::Canvassing::Canvas* window
                                                  Uint8 b,
                                                  Uint8 a)
 {
-    SDL::Rendering::Renderer* renderer {SDL_CreateRenderer(window, index, flags)};
+    SDL::GPU_Painting::GPU_Paintbrush* renderer {SDL_CreateRenderer(window, index, flags)};
     
     if (renderer == nullptr)
     {
@@ -38,18 +38,18 @@ SDL::Rendering::Renderer* SDL::Rendering::Create(SDL::Canvassing::Canvas* window
     }
     else
     {
-        SDL::Rendering::SetDrawColor(renderer, r, g, b, a);
+        SDL::GPU_Painting::SetDrawColor(renderer, r, g, b, a);
     }
 
     return renderer;
 }
 
-void SDL::Rendering::Destroy(SDL::Rendering::Renderer* renderer)
+void SDL::GPU_Painting::Destroy(SDL::GPU_Painting::GPU_Paintbrush* renderer)
 {
     SDL_DestroyRenderer(renderer);
 }
 
-bool SDL::Rendering::SetDrawColor(SDL::Rendering::Renderer* renderer,
+bool SDL::GPU_Painting::SetDrawColor(SDL::GPU_Painting::GPU_Paintbrush* renderer,
                                   Uint8 r,
                                   Uint8 g,
                                   Uint8 b,
@@ -58,7 +58,7 @@ bool SDL::Rendering::SetDrawColor(SDL::Rendering::Renderer* renderer,
     return SDL_SetRenderDrawColor(renderer, r, g, b, a) >= 0;
 }
 
-void SDL::Rendering::Clear(SDL::Rendering::Renderer* renderer)
+void SDL::GPU_Painting::Clear(SDL::GPU_Painting::GPU_Paintbrush* renderer)
 {
     if (SDL_RenderClear(renderer) < 0)
     {
@@ -66,7 +66,7 @@ void SDL::Rendering::Clear(SDL::Rendering::Renderer* renderer)
     }
 }
 
-void SDL::Rendering::Copy(SDL::Rendering::Renderer* renderer,
+void SDL::GPU_Painting::Copy(SDL::GPU_Painting::GPU_Paintbrush* renderer,
                           SDL::GPU_Images::GPU_Image* texture,
                           const SDL::Rect* srcrect,
                           const SDL::Rect* dstrect)
@@ -77,13 +77,13 @@ void SDL::Rendering::Copy(SDL::Rendering::Renderer* renderer,
     }
 }
 
-void SDL::Rendering::Present(SDL::Rendering::Renderer* renderer)
+void SDL::GPU_Painting::Present(SDL::GPU_Painting::GPU_Paintbrush* renderer)
 {
     SDL_RenderPresent(renderer);
 }
 
-Uint32 operator|(SDL::Rendering::Flags first_flag,
-                 SDL::Rendering::Flags second_flag)
+Uint32 operator|(SDL::GPU_Painting::Flags first_flag,
+                 SDL::GPU_Painting::Flags second_flag)
 {
     return std::to_underlying(first_flag) | std::to_underlying(second_flag);
 }

@@ -8,7 +8,7 @@
 #include <fmt/format.h> // Needed for formatting Exception messages
 
 
-SDL::GPU_Images::GPU_Image* SDL::GPU_Images::CreateFromSurface(SDL::Rendering::Renderer* renderer,
+SDL::GPU_Images::GPU_Image* SDL::GPU_Images::CreateFromSurface(SDL::GPU_Painting::GPU_Paintbrush* renderer,
                                                          SDL::CPU_Images::CPU_Image* surfaceToConvert)
 {
     SDL::GPU_Images::GPU_Image* texture {SDL_CreateTextureFromSurface(renderer, surfaceToConvert)};
@@ -22,13 +22,13 @@ SDL::GPU_Images::GPU_Image* SDL::GPU_Images::CreateFromSurface(SDL::Rendering::R
 }
 
 SDL::GPU_Images::GPU_Image* SDL::GPU_Images::LoadFromFile(fs::path&& bitmap_path,
-                                                    SDL::Rendering::Renderer* renderer)
+                                                    SDL::GPU_Painting::GPU_Paintbrush* renderer)
 {
 	return SDL::GPU_Images::LoadFromFile(bitmap_path, renderer);
 }
 
 SDL::GPU_Images::GPU_Image* SDL::GPU_Images::LoadFromFile(fs::path& bitmap_path,
-                                                    SDL::Rendering::Renderer* renderer)
+                                                    SDL::GPU_Painting::GPU_Paintbrush* renderer)
 {
 	SDL::CPU_Images::CPU_Image* tmpSurface { SDL::CPU_Images::LoadFromFile(bitmap_path) };
 	SDL::GPU_Images::GPU_Image* loaded_texture { SDL::GPU_Images::CreateFromSurface(renderer, tmpSurface) };

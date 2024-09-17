@@ -4,7 +4,7 @@
 #include <filesystem>
 #include "Canvases/CPU_Image.hpp"
 #include "Canvases/GPU_Image.hpp"
-#include "Canvases/Renderer.hpp"
+#include "Canvases/GPU_Paintbrush.hpp"
 
 #include "Rectangle.hpp"
 #include <SDL2/SDL.h>

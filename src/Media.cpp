@@ -6,7 +6,7 @@
 namespace fs = std::filesystem;
 
 
-Media::Resources Media::LoadResources(SDL::Rendering::Renderer* renderer)
+Media::Resources Media::LoadResources(SDL::GPU_Painting::GPU_Paintbrush* renderer)
 {
     fs::path RESOURCE_DIRECTORY { fs::current_path().parent_path().parent_path()/"res" };
 
@@ -17,7 +17,7 @@ Media::Resources Media::LoadResources(SDL::Rendering::Renderer* renderer)
 void Media::FreeResources(Media::Resources loaded_resources)
 {
     SDL::CPU_Images::FreeSurface(loaded_resources.helloWorld);
-    SDL::GPU_Images::Destroy(loaded_resources.renderingPNG);
+    SDL::GPU_Images::Destroy(loaded_resources.GPU_PaintingPNG);
 }
 
 #else
