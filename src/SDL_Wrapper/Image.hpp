@@ -3,7 +3,7 @@
 
 #include <filesystem>
 #include "Canvases/CPU_Image.hpp"
-#include "Canvases/Texture.hpp"
+#include "Canvases/GPU_Image.hpp"
 #include "Canvases/Renderer.hpp"
 
 #include "Rectangle.hpp"

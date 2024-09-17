@@ -5,25 +5,25 @@
 #include <SDL2/SDL.h>
 
 // Type Aliases and Custom wrapper code for SDL2 API
-namespace SDL { namespace Textures { using Texture = SDL_Texture; } }
+namespace SDL { namespace GPU_Images { using GPU_Image = SDL_Texture; } }
 #include "Renderer.hpp"
 #include "CPU_Image.hpp"
 
 
 namespace SDL
 {
-    namespace Textures
+    namespace GPU_Images
     {
-        Texture* CreateFromSurface(Rendering::Renderer* renderer,
+        GPU_Image* CreateFromSurface(Rendering::Renderer* renderer,
                                    CPU_Images::CPU_Image* surfaceToConvert);
 
-        Texture* LoadFromFile(fs::path&& bitmap_path,
+        GPU_Image* LoadFromFile(fs::path&& bitmap_path,
                              SDL::Rendering::Renderer* render);
 
-        Texture* LoadFromFile(fs::path& bitmap_path,
+        GPU_Image* LoadFromFile(fs::path& bitmap_path,
                              SDL::Rendering::Renderer* render);
 
-        void Destroy(Texture* texture);
+        void Destroy(GPU_Image* texture);
     }
 }
 

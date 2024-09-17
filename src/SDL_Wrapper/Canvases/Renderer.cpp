@@ -67,7 +67,7 @@ void SDL::Rendering::Clear(SDL::Rendering::Renderer* renderer)
 }
 
 void SDL::Rendering::Copy(SDL::Rendering::Renderer* renderer,
-                          SDL::Textures::Texture* texture,
+                          SDL::GPU_Images::GPU_Image* texture,
                           const SDL::Rect* srcrect,
                           const SDL::Rect* dstrect)
 {

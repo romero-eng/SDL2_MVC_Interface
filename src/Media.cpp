@@ -11,13 +11,13 @@ Media::Resources Media::LoadResources(SDL::Rendering::Renderer* renderer)
     fs::path RESOURCE_DIRECTORY { fs::current_path().parent_path().parent_path()/"res" };
 
     return Media::Resources {SDL::CPU_Images::LoadFromFile(RESOURCE_DIRECTORY/"hello_world.bmp"),
-                             SDL::Textures::LoadFromFile(RESOURCE_DIRECTORY/"texture.png", renderer)};
+                             SDL::GPU_Images::LoadFromFile(RESOURCE_DIRECTORY/"texture.png", renderer)};
 }
 
 void Media::FreeResources(Media::Resources loaded_resources)
 {
     SDL::CPU_Images::FreeSurface(loaded_resources.helloWorld);
-    SDL::Textures::Destroy(loaded_resources.renderingPNG);
+    SDL::GPU_Images::Destroy(loaded_resources.renderingPNG);
 }
 
 #else

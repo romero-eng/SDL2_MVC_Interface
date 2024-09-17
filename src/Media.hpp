@@ -11,7 +11,7 @@ namespace Media
 struct Resources
 {
     SDL::CPU_Images::CPU_Image* helloWorld;
-    SDL::Textures::Texture* renderingPNG;
+    SDL::GPU_Images::GPU_Image* renderingPNG;
 };
 
 Resources LoadResources(SDL::Rendering::Renderer* renderer);

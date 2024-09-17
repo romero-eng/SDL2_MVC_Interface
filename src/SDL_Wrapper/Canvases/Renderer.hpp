@@ -6,7 +6,7 @@
 
 // Type Aliases and Custom wrapper code for SDL2 API
 namespace SDL { namespace Rendering { using Renderer = SDL_Renderer; } }
-#include "Texture.hpp"
+#include "GPU_Image.hpp"
 #include "Canvas.hpp"
 #include "../Rectangle.hpp"
 
@@ -52,7 +52,7 @@ namespace SDL
             void Clear(Renderer* renderer);
 
             void Copy(Renderer* renderer,
-                      Textures::Texture* texture,
+                      GPU_Images::GPU_Image* texture,
                       const Rect* srcrect,
                       const Rect* dstrect);
 

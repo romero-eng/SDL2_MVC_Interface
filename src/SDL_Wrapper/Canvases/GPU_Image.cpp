@@ -2,16 +2,16 @@
 #if defined(__linux__) || defined(_WIN32) || defined(__APPLE__)
 
 // Custom wrapper code for SDL2 API
-#include "Texture.hpp"
+#include "GPU_Image.hpp"
 
 // Third-Party Libaries
 #include <fmt/format.h> // Needed for formatting Exception messages
 
 
-SDL::Textures::Texture* SDL::Textures::CreateFromSurface(SDL::Rendering::Renderer* renderer,
+SDL::GPU_Images::GPU_Image* SDL::GPU_Images::CreateFromSurface(SDL::Rendering::Renderer* renderer,
                                                          SDL::CPU_Images::CPU_Image* surfaceToConvert)
 {
-    SDL::Textures::Texture* texture {SDL_CreateTextureFromSurface(renderer, surfaceToConvert)};
+    SDL::GPU_Images::GPU_Image* texture {SDL_CreateTextureFromSurface(renderer, surfaceToConvert)};
 
     if (texture == nullptr)
     {
@@ -21,17 +21,17 @@ SDL::Textures::Texture* SDL::Textures::CreateFromSurface(SDL::Rendering::Rendere
     return texture;
 }
 
-SDL::Textures::Texture* SDL::Textures::LoadFromFile(fs::path&& bitmap_path,
+SDL::GPU_Images::GPU_Image* SDL::GPU_Images::LoadFromFile(fs::path&& bitmap_path,
                                                     SDL::Rendering::Renderer* renderer)
 {
-	return SDL::Textures::LoadFromFile(bitmap_path, renderer);
+	return SDL::GPU_Images::LoadFromFile(bitmap_path, renderer);
 }
 
-SDL::Textures::Texture* SDL::Textures::LoadFromFile(fs::path& bitmap_path,
+SDL::GPU_Images::GPU_Image* SDL::GPU_Images::LoadFromFile(fs::path& bitmap_path,
                                                     SDL::Rendering::Renderer* renderer)
 {
 	SDL::CPU_Images::CPU_Image* tmpSurface { SDL::CPU_Images::LoadFromFile(bitmap_path) };
-	SDL::Textures::Texture* loaded_texture { SDL::Textures::CreateFromSurface(renderer, tmpSurface) };
+	SDL::GPU_Images::GPU_Image* loaded_texture { SDL::GPU_Images::CreateFromSurface(renderer, tmpSurface) };
 	SDL::CPU_Images::FreeSurface(tmpSurface);
 
 	if (loaded_texture == nullptr)
@@ -42,7 +42,7 @@ SDL::Textures::Texture* SDL::Textures::LoadFromFile(fs::path& bitmap_path,
 	return loaded_texture;
 }
 
-void SDL::Textures::Destroy(SDL::Textures::Texture* texture)
+void SDL::GPU_Images::Destroy(SDL::GPU_Images::GPU_Image* texture)
 {
     SDL_DestroyTexture(texture);
 }
