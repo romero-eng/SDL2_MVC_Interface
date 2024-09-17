@@ -269,8 +269,8 @@ def main() -> None:
     else:
         test_executable(executable_path)
 
-        #if build_directory.exists():
-        #    shutil.rmtree(build_directory)
+        if build_directory.exists():
+            shutil.rmtree(build_directory)
 
 
 if (__name__ == '__main__'):
