@@ -3,7 +3,7 @@
 
 #include "SDL_Wrapper/Canvases/CPU/Image.hpp"
 #include "SDL_Wrapper/Image.hpp"
-#include "SDL_Wrapper/Canvases/GPU_Paintbrush.hpp"
+#include "SDL_Wrapper/Canvases/GPU/Paintbrush.hpp"
 
 namespace Media
 {
@@ -11,10 +11,10 @@ namespace Media
 struct Resources
 {
     SDL::CPU::Images::Image* helloWorld;
-    SDL::GPU_Images::GPU_Image* GPU_PaintingPNG;
+    SDL::GPU::Images::Image* renderingPNG;
 };
 
-Resources LoadResources(SDL::GPU_Painting::GPU_Paintbrush* renderer);
+Resources LoadResources(SDL::GPU::Painting::Paintbrush* renderer);
 
 void FreeResources(Resources surface_resources);
 

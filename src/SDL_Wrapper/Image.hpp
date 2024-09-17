@@ -3,8 +3,8 @@
 
 #include <filesystem>
 #include "Canvases/CPU/Image.hpp"
-#include "Canvases/GPU_Image.hpp"
-#include "Canvases/GPU_Paintbrush.hpp"
+#include "Canvases/GPU/Image.hpp"
+#include "Canvases/GPU/Paintbrush.hpp"
 
 #include "Rectangle.hpp"
 #include <SDL2/SDL.h>

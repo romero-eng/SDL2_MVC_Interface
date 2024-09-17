@@ -2,7 +2,7 @@
 #if defined(__linux__) || defined(_WIN32) || defined(__APPLE__)
 
 // Custom wrapper code for SDL2 API
-#include "GPU_Paintbrush.hpp"
+#include "Paintbrush.hpp"
 
 // Third-Party Libaries
 #include <fmt/format.h> // Needed for formatting Exception messages
@@ -11,18 +11,18 @@
 #include <utility> // Needed for retrieving underlying type of scoped enumerations
 
 
-SDL::GPU_Painting::GPU_Paintbrush* SDL::GPU_Painting::Create(SDL::Canvassing::Canvas* window,
+SDL::GPU::Painting::Paintbrush* SDL::GPU::Painting::Create(SDL::Canvassing::Canvas* window,
                                                  int index,
-                                                 SDL::GPU_Painting::Flags flag,
+                                                 SDL::GPU::Painting::Flags flag,
                                                  Uint8 r,
                                                  Uint8 g,
                                                  Uint8 b,
                                                  Uint8 a)
 {
-    return SDL::GPU_Painting::Create(window, index, static_cast<Uint32>(flag), r, g, b, a);
+    return SDL::GPU::Painting::Create(window, index, static_cast<Uint32>(flag), r, g, b, a);
 }
 
-SDL::GPU_Painting::GPU_Paintbrush* SDL::GPU_Painting::Create(SDL::Canvassing::Canvas* window,
+SDL::GPU::Painting::Paintbrush* SDL::GPU::Painting::Create(SDL::Canvassing::Canvas* window,
                                                  int index,
                                                  Uint32 flags,
                                                  Uint8 r,
@@ -30,7 +30,7 @@ SDL::GPU_Painting::GPU_Paintbrush* SDL::GPU_Painting::Create(SDL::Canvassing::Ca
                                                  Uint8 b,
                                                  Uint8 a)
 {
-    SDL::GPU_Painting::GPU_Paintbrush* renderer {SDL_CreateRenderer(window, index, flags)};
+    SDL::GPU::Painting::Paintbrush* renderer {SDL_CreateRenderer(window, index, flags)};
     
     if (renderer == nullptr)
     {
@@ -38,18 +38,18 @@ SDL::GPU_Painting::GPU_Paintbrush* SDL::GPU_Painting::Create(SDL::Canvassing::Ca
     }
     else
     {
-        SDL::GPU_Painting::SetDrawColor(renderer, r, g, b, a);
+        SDL::GPU::Painting::SetDrawColor(renderer, r, g, b, a);
     }
 
     return renderer;
 }
 
-void SDL::GPU_Painting::Destroy(SDL::GPU_Painting::GPU_Paintbrush* renderer)
+void SDL::GPU::Painting::Destroy(SDL::GPU::Painting::Paintbrush* renderer)
 {
     SDL_DestroyRenderer(renderer);
 }
 
-bool SDL::GPU_Painting::SetDrawColor(SDL::GPU_Painting::GPU_Paintbrush* renderer,
+bool SDL::GPU::Painting::SetDrawColor(SDL::GPU::Painting::Paintbrush* renderer,
                                   Uint8 r,
                                   Uint8 g,
                                   Uint8 b,
@@ -58,7 +58,7 @@ bool SDL::GPU_Painting::SetDrawColor(SDL::GPU_Painting::GPU_Paintbrush* renderer
     return SDL_SetRenderDrawColor(renderer, r, g, b, a) >= 0;
 }
 
-void SDL::GPU_Painting::Clear(SDL::GPU_Painting::GPU_Paintbrush* renderer)
+void SDL::GPU::Painting::Clear(SDL::GPU::Painting::Paintbrush* renderer)
 {
     if (SDL_RenderClear(renderer) < 0)
     {
@@ -66,8 +66,8 @@ void SDL::GPU_Painting::Clear(SDL::GPU_Painting::GPU_Paintbrush* renderer)
     }
 }
 
-void SDL::GPU_Painting::Copy(SDL::GPU_Painting::GPU_Paintbrush* renderer,
-                          SDL::GPU_Images::GPU_Image* texture,
+void SDL::GPU::Painting::Copy(SDL::GPU::Painting::Paintbrush* renderer,
+                          SDL::GPU::Images::Image* texture,
                           const SDL::Rect* srcrect,
                           const SDL::Rect* dstrect)
 {
@@ -77,13 +77,13 @@ void SDL::GPU_Painting::Copy(SDL::GPU_Painting::GPU_Paintbrush* renderer,
     }
 }
 
-void SDL::GPU_Painting::Present(SDL::GPU_Painting::GPU_Paintbrush* renderer)
+void SDL::GPU::Painting::Present(SDL::GPU::Painting::Paintbrush* renderer)
 {
     SDL_RenderPresent(renderer);
 }
 
-Uint32 operator|(SDL::GPU_Painting::Flags first_flag,
-                 SDL::GPU_Painting::Flags second_flag)
+Uint32 operator|(SDL::GPU::Painting::Flags first_flag,
+                 SDL::GPU::Painting::Flags second_flag)
 {
     return std::to_underlying(first_flag) | std::to_underlying(second_flag);
 }
