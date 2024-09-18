@@ -8,12 +8,7 @@
 #include <fmt/format.h> // Needed for formatting Exception messages
 
 
-SDL::CPU::Pictures::Picture* SDL::CPU::Pictures::LoadFromFile(fs::path&& image_path)
-{
-	return SDL::CPU::Pictures::LoadFromFile(image_path);
-}
-
-SDL::CPU::Pictures::Picture* SDL::CPU::Pictures::LoadFromFile(fs::path& image_path)
+SDL_Surface* SDL::Picture::LoadSurfaceFromFile(fs::path& image_path)
 {
 	if(!fs::exists(image_path))
 	{
@@ -25,7 +20,7 @@ SDL::CPU::Pictures::Picture* SDL::CPU::Pictures::LoadFromFile(fs::path& image_pa
 		throw fmt::format("The '{:s}' Image file does not seem to be a regular file", image_path.string().c_str());
 	}
 
-	SDL::CPU::Pictures::Picture* tmpSurface;
+	SDL_Surface* tmpSurface;
 
 	if(image_path.extension() == ".bmp")
 	{
@@ -50,10 +45,11 @@ SDL::CPU::Pictures::Picture* SDL::CPU::Pictures::LoadFromFile(fs::path& image_pa
 	return tmpSurface;
 }
 
-void SDL::CPU::Pictures::FreeSurface(SDL::CPU::Pictures::Picture* surface)
-{
-	SDL_FreeSurface(surface);
-}
+SDL::Picture::Picture(fs::path&& image_path): picture_surface{LoadSurfaceFromFile(image_path)} {}
+
+SDL::Picture::Picture(fs::path& image_path): picture_surface{LoadSurfaceFromFile(image_path)} {}
+
+SDL::Picture::~Picture() { SDL_FreeSurface(this->picture_surface); }
 
 
 #else

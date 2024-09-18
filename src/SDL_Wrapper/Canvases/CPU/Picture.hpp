@@ -9,22 +9,27 @@
 #include <filesystem>  // Needed for specifying paths to Bitmaps and Image files
 namespace fs = std::filesystem;
 
-// Type Aliases and Custom wrapper code for SDL2 API
-namespace SDL{ namespace CPU { namespace Pictures { using Picture = SDL_Surface; } } }
 
 namespace SDL
 {
-    namespace CPU
+    class Picture
     {
-        namespace Pictures
-        {
-            Picture* LoadFromFile(fs::path&& image_path);
+    private:
 
-            Picture* LoadFromFile(fs::path& image_path);
+        SDL_Surface* picture_surface;
 
-            void FreeSurface(Picture* surface);
-        }
-    }
+    protected:
+
+        SDL_Surface* LoadSurfaceFromFile(fs::path& image_path);
+
+    public: 
+
+        Picture(fs::path&& image_path);
+
+        Picture(fs::path& image_path);
+
+        ~Picture();
+    };
 }
 
 
