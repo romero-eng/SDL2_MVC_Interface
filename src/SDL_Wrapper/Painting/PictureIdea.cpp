@@ -1,14 +1,9 @@
 
 #if defined(__linux__) || defined(_WIN32) || defined(__APPLE__)
-
-// Custom wrapper code for SDL2 API
-#include "RegularPicture.hpp"
-
-// Third-Party Libaries
-#include <fmt/format.h> // Needed for formatting Exception messages
+#include "PictureIdea.hpp"
 
 
-SDL_Surface* SDL::RegularPicture::LoadSurfaceFromFile(fs::path& image_path)
+SDL_Surface* SDL::Painting::PictureIdea::LoadSurfaceFromFile(fs::path& image_path)
 {
 	if(!fs::exists(image_path))
 	{
@@ -44,12 +39,6 @@ SDL_Surface* SDL::RegularPicture::LoadSurfaceFromFile(fs::path& image_path)
 
 	return tmpSurface;
 }
-
-SDL::RegularPicture::RegularPicture(fs::path&& image_path): picture_surface{LoadSurfaceFromFile(image_path)} {}
-
-SDL::RegularPicture::RegularPicture(fs::path& image_path): picture_surface{LoadSurfaceFromFile(image_path)} {}
-
-SDL::RegularPicture::~RegularPicture() { SDL_FreeSurface(this->picture_surface); }
 
 
 #else

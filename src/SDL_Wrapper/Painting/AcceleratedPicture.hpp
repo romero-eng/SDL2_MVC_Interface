@@ -1,0 +1,38 @@
+#ifndef ACCELERATED_PICTURE_H
+#define ACCELERATED_PICTURE_H
+
+// Custom wrapper code for SDL2 API
+#include "PictureIdea.hpp" // Abstract Base Class for AcceleratedPicture()
+#include "AcceleratedPaintbrush.hpp"
+#include "../Rectangle.hpp"
+
+
+namespace SDL
+{
+    namespace Painting
+    {
+        class AcceleratedPicture: public PictureIdea
+        {
+        private:
+
+            SDL_Texture* picture_texture;
+
+            AcceleratedPaintbrush& paintbrush;
+
+        public:
+
+            AcceleratedPicture(AcceleratedPaintbrush& paintbrush,
+                               SDL_Surface* surfaceToConvert);
+
+            AcceleratedPicture(AcceleratedPaintbrush& paintbrush,
+                               fs::path& image_file);
+
+            void Copy(const SDL::Rect* srcrect,
+                      const SDL::Rect* dstrect);
+
+            ~AcceleratedPicture();
+        };
+    }
+}
+
+#endif
