@@ -6,7 +6,7 @@
 
 // Type Aliases and Custom wrapper code for SDL2 API
 namespace SDL { namespace Canvassing { using Canvas = SDL_Window; } }
-#include "CPU/Image.hpp"
+#include "CPU/Picture.hpp"
 
 namespace SDL
 {
@@ -18,7 +18,7 @@ namespace SDL
 
         const char* GetTitle(Canvas* window);
 
-        CPU::Images::Image* GetSurface(Canvas* window);
+        CPU::Pictures::Picture* GetSurface(Canvas* window);
 
         int UpdateSurface(Canvas* window);
     }

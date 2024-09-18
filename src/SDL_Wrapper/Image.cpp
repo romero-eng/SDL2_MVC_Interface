@@ -11,7 +11,7 @@ Uint32 SDL::MapRGB(const PixelFormat* format, Uint8 r, Uint8 g, Uint8 b)
 	return SDL_MapRGB(format, r, g, b);
 }
 
-void SDL::BlitSurfaceOntoWindow(SDL::Canvassing::Canvas* window, SDL::CPU::Images::Image* src, const SDL::Rect* srcrect, SDL::Rect* dstrect)
+void SDL::BlitSurfaceOntoWindow(SDL::Canvassing::Canvas* window, SDL::CPU::Pictures::Picture* src, const SDL::Rect* srcrect, SDL::Rect* dstrect)
 {
 	SDL::BlitSurface(src,
 					 srcrect,
@@ -19,7 +19,7 @@ void SDL::BlitSurfaceOntoWindow(SDL::Canvassing::Canvas* window, SDL::CPU::Image
 					 dstrect);
 }
 
-void SDL::BlitSurface(SDL::CPU::Images::Image* src, const SDL::Rect* srcrect, SDL::CPU::Images::Image* dst, SDL::Rect* dstrect)
+void SDL::BlitSurface(SDL::CPU::Pictures::Picture* src, const SDL::Rect* srcrect, SDL::CPU::Pictures::Picture* dst, SDL::Rect* dstrect)
 {
 	if(SDL_BlitSurface(src, srcrect, dst, dstrect) != 0)
 	{
@@ -36,7 +36,7 @@ void IMG::Init(Uint32 flags)
 {
 	if(!( static_cast<Uint32>(IMG_Init(static_cast<int>(flags))) & flags ))
 	{
-		throw fmt::format("SDL Images could not be initialized: {:s}\n", IMG_GetError());
+		throw fmt::format("SDL Pictures could not be initialized: {:s}\n", IMG_GetError());
 	}
 }
 

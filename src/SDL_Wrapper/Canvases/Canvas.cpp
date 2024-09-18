@@ -30,9 +30,9 @@ const char* SDL::Canvassing::GetTitle(SDL::Canvassing::Canvas* window)
 	return SDL_GetWindowTitle(window);
 }
 
-SDL::CPU::Images::Image* SDL::Canvassing::GetSurface(SDL::Canvassing::Canvas* window)
+SDL::CPU::Pictures::Picture* SDL::Canvassing::GetSurface(SDL::Canvassing::Canvas* window)
 {
-	SDL::CPU::Images::Image* surface = SDL_GetWindowSurface(window);
+	SDL::CPU::Pictures::Picture* surface = SDL_GetWindowSurface(window);
 
 	if (surface == nullptr)
 	{

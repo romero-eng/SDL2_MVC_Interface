@@ -2,8 +2,8 @@
 #define IMAGE_WRAPPER_h
 
 #include <filesystem>
-#include "Canvases/CPU/Image.hpp"
-#include "Canvases/GPU/Image.hpp"
+#include "Canvases/CPU/Picture.hpp"
+#include "Canvases/GPU/Picture.hpp"
 #include "Canvases/GPU/Paintbrush.hpp"
 
 #include "Rectangle.hpp"
@@ -19,9 +19,9 @@ using PixelFormat = SDL_PixelFormat;
 
 Uint32 MapRGB(const PixelFormat* format, Uint8 r, Uint8 g, Uint8 b);
 
-void BlitSurfaceOntoWindow(Canvassing::Canvas* window, CPU::Images::Image* src, const Rect* srcrect, Rect* dstrect);
+void BlitSurfaceOntoWindow(Canvassing::Canvas* window, CPU::Pictures::Picture* src, const Rect* srcrect, Rect* dstrect);
 
-void BlitSurface(CPU::Images::Image* src, const Rect* srcrect, CPU::Images::Image* dst, Rect* dstrect);
+void BlitSurface(CPU::Pictures::Picture* src, const Rect* srcrect, CPU::Pictures::Picture* dst, Rect* dstrect);
 
 }
 

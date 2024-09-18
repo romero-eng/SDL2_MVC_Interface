@@ -67,7 +67,7 @@ void SDL::GPU::Painting::Clear(SDL::GPU::Painting::Paintbrush* renderer)
 }
 
 void SDL::GPU::Painting::Copy(SDL::GPU::Painting::Paintbrush* renderer,
-                          SDL::GPU::Images::Image* texture,
+                          SDL::GPU::Pictures::Picture* texture,
                           const SDL::Rect* srcrect,
                           const SDL::Rect* dstrect)
 {

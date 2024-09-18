@@ -121,7 +121,7 @@ enum class EventTypes : std::uint32_t
 
     /* Render events */
     RENDER_TARGETS_RESET = SDL_RENDER_TARGETS_RESET,  /**< The render targets have been reset and their contents need to be updated */
-    RENDER_DEVICE_RESET  = SDL_RENDER_DEVICE_RESET,   /**< The device has been reset and all GPU::Images need to be recreated */
+    RENDER_DEVICE_RESET  = SDL_RENDER_DEVICE_RESET,   /**< The device has been reset and all GPU::Pictures need to be recreated */
 
     /* Internal events */
     POLLSENTINEL = SDL_POLLSENTINEL,  /**< Signals the end of an event poll cycle */
