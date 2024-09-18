@@ -6,7 +6,7 @@
 
 // Custom wrapper code for SDL2 API
 #include "Paintbrush.hpp"
-#include "../CPU/Picture.hpp"
+#include "../CPU/RegularPicture.hpp"
 
 
 namespace SDL

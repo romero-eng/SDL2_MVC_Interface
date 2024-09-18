@@ -12,7 +12,7 @@ namespace fs = std::filesystem;
 
 namespace SDL
 {
-    class Picture
+    class RegularPicture
     {
     private:
 
@@ -24,11 +24,11 @@ namespace SDL
 
     public: 
 
-        Picture(fs::path&& image_path);
+        RegularPicture(fs::path&& image_path);
 
-        Picture(fs::path& image_path);
+        RegularPicture(fs::path& image_path);
 
-        ~Picture();
+        ~RegularPicture();
     };
 }
 

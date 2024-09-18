@@ -2,13 +2,13 @@
 #if defined(__linux__) || defined(_WIN32) || defined(__APPLE__)
 
 // Custom wrapper code for SDL2 API
-#include "Picture.hpp"
+#include "RegularPicture.hpp"
 
 // Third-Party Libaries
 #include <fmt/format.h> // Needed for formatting Exception messages
 
 
-SDL_Surface* SDL::Picture::LoadSurfaceFromFile(fs::path& image_path)
+SDL_Surface* SDL::RegularPicture::LoadSurfaceFromFile(fs::path& image_path)
 {
 	if(!fs::exists(image_path))
 	{
@@ -45,11 +45,11 @@ SDL_Surface* SDL::Picture::LoadSurfaceFromFile(fs::path& image_path)
 	return tmpSurface;
 }
 
-SDL::Picture::Picture(fs::path&& image_path): picture_surface{LoadSurfaceFromFile(image_path)} {}
+SDL::RegularPicture::RegularPicture(fs::path&& image_path): picture_surface{LoadSurfaceFromFile(image_path)} {}
 
-SDL::Picture::Picture(fs::path& image_path): picture_surface{LoadSurfaceFromFile(image_path)} {}
+SDL::RegularPicture::RegularPicture(fs::path& image_path): picture_surface{LoadSurfaceFromFile(image_path)} {}
 
-SDL::Picture::~Picture() { SDL_FreeSurface(this->picture_surface); }
+SDL::RegularPicture::~RegularPicture() { SDL_FreeSurface(this->picture_surface); }
 
 
 #else
