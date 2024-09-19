@@ -16,8 +16,8 @@ SDL::Painting::AcceleratedPicture::AcceleratedPicture(AcceleratedPaintbrush& pai
 
 
 SDL::Painting::AcceleratedPicture::AcceleratedPicture(AcceleratedPaintbrush& paintbrush,
-                                				      fs::path& image_file): paintbrush{paintbrush},
-                                                                             picture_texture{createTextureFromFile(image_file)}
+                                				      const fs::path& image_file): paintbrush{paintbrush},
+                                                                                   picture_texture{createTextureFromFile(image_file)}
 {
 	if (this->picture_texture == nullptr)
 	{
@@ -26,7 +26,7 @@ SDL::Painting::AcceleratedPicture::AcceleratedPicture(AcceleratedPaintbrush& pai
 }
 
 
-SDL_Texture* SDL::Painting::AcceleratedPicture::createTextureFromFile(fs::path& image_file)
+SDL_Texture* SDL::Painting::AcceleratedPicture::createTextureFromFile(const fs::path& image_file)
 {
     SDL_Surface* tmpSurface { this->LoadSurfaceFromFile(image_file) };
 	SDL_Texture* texture { SDL_CreateTextureFromSurface(this->paintbrush.Access_SDL_Implementation(), tmpSurface) };

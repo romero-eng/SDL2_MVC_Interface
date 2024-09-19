@@ -21,7 +21,7 @@ namespace SDL
         {
         protected:
 
-            SDL_Surface* LoadSurfaceFromFile(fs::path& image_path);
+            SDL_Surface* LoadSurfaceFromFile(const fs::path& image_path);
 
         public:
 

@@ -18,7 +18,7 @@ namespace SDL
 
         public:
 
-            RegularPicture(fs::path& image_path);
+            RegularPicture(const fs::path& image_path);
 
             RegularPicture(SDL_Surface* surface);
 

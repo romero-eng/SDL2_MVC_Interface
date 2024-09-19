@@ -3,7 +3,7 @@
 #include "PictureIdea.hpp"
 
 
-SDL_Surface* SDL::Painting::PictureIdea::LoadSurfaceFromFile(fs::path& image_path)
+SDL_Surface* SDL::Painting::PictureIdea::LoadSurfaceFromFile(const fs::path& image_path)
 {
 	if(!fs::exists(image_path))
 	{

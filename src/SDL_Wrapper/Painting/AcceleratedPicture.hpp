@@ -19,7 +19,7 @@ namespace SDL
 
             SDL_Texture* picture_texture;
 
-            SDL_Texture* createTextureFromFile(fs::path& image_file);
+            SDL_Texture* createTextureFromFile(const fs::path& image_file);
 
         public:
 
@@ -27,7 +27,7 @@ namespace SDL
                                SDL_Surface* surfaceToConvert);
 
             AcceleratedPicture(AcceleratedPaintbrush& paintbrush,
-                               fs::path& image_file);
+                               const fs::path& image_file);
 
             AcceleratedPicture(const AcceleratedPicture& picture) = delete; // Copy Constructor
 

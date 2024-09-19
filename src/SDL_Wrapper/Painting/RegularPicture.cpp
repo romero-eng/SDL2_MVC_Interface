@@ -3,7 +3,7 @@
 #include "RegularPicture.hpp"
 
 
-SDL::Painting::RegularPicture::RegularPicture(fs::path& image_path): picture_surface{this->LoadSurfaceFromFile(image_path)} {}
+SDL::Painting::RegularPicture::RegularPicture(const fs::path& image_path): picture_surface{this->LoadSurfaceFromFile(image_path)} {}
 
 
 SDL::Painting::RegularPicture::RegularPicture(SDL_Surface* surface): picture_surface{surface} {}
