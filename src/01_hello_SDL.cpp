@@ -19,7 +19,6 @@ const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
 fs::path RESOURCE_DIRECTORY { fs::current_path().parent_path().parent_path()/"res" };
-fs::path HELLOWORLD_BITMAP {RESOURCE_DIRECTORY/"hello_world.bmp"};
 fs::path TEXTURE_PNG {RESOURCE_DIRECTORY/"texture.png"};
 
 int main( int argc, char* args[] )
@@ -48,7 +47,7 @@ int main( int argc, char* args[] )
 								   SDL::GPU::Painting::Flags::ACCELERATED,
 								   0xFF, 0xFF, 0xFF, 0xFF);
 		*/
-		SDL::Painting::RegularPicture helloWorldPicture {HELLOWORLD_BITMAP};
+		SDL::Painting::RegularPicture helloWorldPicture {RESOURCE_DIRECTORY/"hello_world.bmp"};
 
         SDL::Event current_event;
 		bool quit = false;
