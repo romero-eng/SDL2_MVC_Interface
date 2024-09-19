@@ -51,6 +51,10 @@ namespace SDL
                                  Uint8 b,
                                  Uint8 a);
 
+            AcceleratedPaintbrush(const AcceleratedPaintbrush& paintbrush) = delete;  // Copy Constructor
+
+            AcceleratedPaintbrush& operator=(const AcceleratedPaintbrush& paintbrush) = delete;  // Copy Assignment
+
             void SetDrawColor(Uint8 r,
                           Uint8 g,
                           Uint8 b,

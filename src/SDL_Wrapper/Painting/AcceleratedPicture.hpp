@@ -15,9 +15,11 @@ namespace SDL
         {
         private:
 
+            AcceleratedPaintbrush& paintbrush;
+
             SDL_Texture* picture_texture;
 
-            AcceleratedPaintbrush& paintbrush;
+            SDL_Texture* createTextureFromFile(fs::path& image_file);
 
         public:
 
@@ -26,6 +28,12 @@ namespace SDL
 
             AcceleratedPicture(AcceleratedPaintbrush& paintbrush,
                                fs::path& image_file);
+
+            AcceleratedPicture(const AcceleratedPicture& picture) = delete; // Copy Constructor
+
+            AcceleratedPicture& operator=(const AcceleratedPicture& picture) = delete; // Copy Assignment
+
+            void Copy();
 
             void Copy(const SDL::Rect* srcrect,
                       const SDL::Rect* dstrect);

@@ -25,11 +25,17 @@ namespace SDL
 
             Canvas(const char* title, int x, int y, int w, int h, Uint32 flags);
 
+            Canvas(const Canvas& canvas) = delete; // Copy Constructor
+
+            Canvas& operator=(const Canvas& canvas) = delete; // Copy Assignment
+
             const char* GetTitle();
 
-            RegularPicture GetRegularPicture();
+            void PostPicture(RegularPicture& src);
 
-            int UpdateRegularPicture();
+            void PostPicture(RegularPicture& src,
+                             const Rect* srcrect,
+                             Rect* dstrect);
 
             SDL_Window* Access_SDL_Implementation();
 

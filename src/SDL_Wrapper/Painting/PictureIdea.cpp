@@ -41,6 +41,9 @@ SDL_Surface* SDL::Painting::PictureIdea::LoadSurfaceFromFile(fs::path& image_pat
 }
 
 
+SDL::Painting::PictureIdea::~PictureIdea() {}
+
+
 #else
 #error "This file is only meant to be compiled on a Windows, Macintosh, or Linux OS"
 #endif

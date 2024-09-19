@@ -2,14 +2,13 @@
 #if defined(__linux__) || defined(_WIN32) || defined(__APPLE__)
 
 #include "SDL_Wrapper/Main.hpp"
-#include "SDL_Wrapper/Canvases/Canvas.hpp"
-#include "SDL_Wrapper/Canvases/CPU/Picture.hpp"
-#include "SDL_Wrapper/Canvases/GPU/Paintbrush.hpp"
+#include "SDL_Wrapper/Painting/Canvas.hpp"
+#include "SDL_Wrapper/Painting/RegularPicture.hpp"
+#include "SDL_Wrapper/Painting/AcceleratedPaintbrush.hpp"
 #include "SDL_Wrapper/Event.hpp"
 #include "SDL_Wrapper/Image.hpp"
 #include "SDL_Wrapper/Rectangle.hpp"
 
-#include "Media.hpp"
 
 #include <string>
 #include <iostream>
@@ -19,12 +18,12 @@
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
+fs::path RESOURCE_DIRECTORY { fs::current_path().parent_path().parent_path()/"res" };
+fs::path HELLOWORLD_BITMAP {RESOURCE_DIRECTORY/"hello_world.bmp"};
+fs::path TEXTURE_PNG {RESOURCE_DIRECTORY/"texture.png"};
 
 int main( int argc, char* args[] )
 {
-	SDL::Canvassing::Canvas* window {nullptr};
-	SDL::GPU::Painting::Paintbrush* renderer {nullptr};
-	Media::Resources loaded_resources {NULL};
 
 	try
 	{
@@ -35,21 +34,21 @@ int main( int argc, char* args[] )
 		SDL::SetHint(SDL::HINT_RENDER_SCALE_QUALITY, "1",
 					 "Warning: Linear texture filtering not enabled!");
 
-		window = \
-			SDL::Canvassing::Create("SDL Tutorial",
-	  							   SDL::WINDOWPOS_UNDEFINED,
-								   SDL::WINDOWPOS_UNDEFINED,
-								   SCREEN_WIDTH,
-								   SCREEN_HEIGHT,
-								   SDL::WINDOW_SHOWN);
-
+		SDL::Painting::Canvas canvas {"SDL Tutorial",
+	  							      SDL::WINDOWPOS_UNDEFINED,
+								      SDL::WINDOWPOS_UNDEFINED,
+								      SCREEN_WIDTH,
+								      SCREEN_HEIGHT,
+								      SDL::WINDOW_SHOWN};
+		
+		/*
 		renderer  = \
 			SDL::GPU::Painting::Create(window,
 								   -1,
 								   SDL::GPU::Painting::Flags::ACCELERATED,
 								   0xFF, 0xFF, 0xFF, 0xFF);
-		
-		loaded_resources = Media::LoadResources(renderer);
+		*/
+		SDL::Painting::RegularPicture helloWorldPicture {HELLOWORLD_BITMAP};
 
         SDL::Event current_event;
 		bool quit = false;
@@ -60,19 +59,14 @@ int main( int argc, char* args[] )
 				quit |= current_event.type == SDL::EventTypes::QUIT;
 			}
 
-			/*
-			SDL::BlitSurfaceOntoWindow(window,
-						 			   loaded_resources.helloWorld,
-									   nullptr,
-									   nullptr);
-
-			SDL::Canvassing::UpdateSurface(window);
-			*/
 			///*
+			canvas.PostPicture(helloWorldPicture);
+			//*/
+			/*
 			SDL::GPU::Painting::Clear(renderer);
 			SDL::GPU::Painting::Copy(renderer, loaded_resources.renderingPNG, NULL, NULL);
 			SDL::GPU::Painting::Present(renderer);
-			//*/
+			*/
 
 		}
 
@@ -82,9 +76,6 @@ int main( int argc, char* args[] )
 		std::cerr << error_message;
 	}
 
-	Media::FreeResources(loaded_resources);
-	SDL::GPU::Painting::Destroy(renderer);
-	SDL::Canvassing::Destroy(window);
 	IMG::Quit();
 	SDL::Quit();
 
