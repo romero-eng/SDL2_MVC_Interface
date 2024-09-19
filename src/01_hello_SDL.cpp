@@ -1,12 +1,14 @@
 
 #if defined(__linux__) || defined(_WIN32) || defined(__APPLE__)
 
-#include "SDL_Wrapper/Main.hpp"
+#include "SDL_Wrapper/Subsystems.hpp"
+#include "SDL_Wrapper/Hints.hpp"
+#include "SDL_Wrapper/Event.hpp"
+
 #include "SDL_Wrapper/Painting/Canvas.hpp"
 #include "SDL_Wrapper/Painting/RegularPicture.hpp"
 #include "SDL_Wrapper/Painting/AcceleratedPicture.hpp"
 #include "SDL_Wrapper/Painting/AcceleratedPaintbrush.hpp"
-#include "SDL_Wrapper/Event.hpp"
 #include "SDL_Wrapper/Painting/ImageLoading.hpp"
 
 
