@@ -6,27 +6,42 @@
 #include <iostream>
 
 
+void SDL::Init(SDL::SubsystemInitFlags flag)
+{
+	SDL::Init(std::to_underlying(flag));
+}
+
+
 void SDL::Init(Uint32 flags)
 {
-	int initialization_status{ SDL_Init(flags) };
-
-	if (initialization_status < 0)
+	if (SDL_Init(flags) < 0)
 	{
 		throw fmt::format("\nSDL could not initialize! SDL_Error:\n\n{:s}\n\n", SDL_GetError() );
 	}
 }
+
 
 void SDL::Quit(void)
 {
 	SDL_Quit();
 }
 
-void SDL::SetHint(const char name, const char* value, const char* failure_msg)
+
+void SDL::SetHint(const Hints& hint_name, const char* value, const char* failure_msg)
 {
+	const char name {static_cast<char>(std::to_underlying(hint_name))}; 
+
 	if(!(SDL_SetHint(&name, value)))
 	{
 		std::cerr << failure_msg << "\n";
 	}
+}
+
+
+Uint32 operator|(SDL::SubsystemInitFlags first_flag,
+                 SDL::SubsystemInitFlags second_flag)
+{
+	return std::to_underlying(first_flag) | std::to_underlying(second_flag);
 }
 
 

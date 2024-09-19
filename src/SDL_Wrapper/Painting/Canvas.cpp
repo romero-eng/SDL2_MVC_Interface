@@ -4,11 +4,44 @@
 
 
 SDL::Painting::Canvas::Canvas(const char* title,
+							  CanvasPositionFlags position_flag,
+							  int w,
+							  int h,
+							  SDL::Painting::CanvasInitFlags init_flag): SDL::Painting::Canvas::Canvas(title,
+							  																  	  	   static_cast<int>(std::to_underlying(position_flag)), 
+																									   static_cast<int>(std::to_underlying(position_flag)),
+																							  	  	   w, h,
+																							  	  	   std::to_underlying(init_flag)) {}
+
+
+SDL::Painting::Canvas::Canvas(const char* title,
+							  CanvasPositionFlags position_flag,
+							  int w,
+							  int h,
+							  Uint32 init_flags): SDL::Painting::Canvas::Canvas(title,
+							  													static_cast<int>(std::to_underlying(position_flag)),
+																				static_cast<int>(std::to_underlying(position_flag)),
+																				w, h,
+																				init_flags) {}
+
+
+SDL::Painting::Canvas::Canvas(const char* title,
 							  int x,
 							  int y,
 							  int w,
 							  int h,
-							  Uint32 flags): window{SDL_CreateWindow(title, x, y, w, h, flags)}
+							  SDL::Painting::CanvasInitFlags init_flag): SDL::Painting::Canvas::Canvas(title,
+							  																  	  	   x, y,
+																							  	  	   w, h,
+																							  	  	   std::to_underlying(init_flag)) {}
+
+
+SDL::Painting::Canvas::Canvas(const char* title,
+							  int x,
+							  int y,
+							  int w,
+							  int h,
+							  Uint32 init_flags): window{SDL_CreateWindow(title, x, y, w, h, init_flags)}
 {
 	if (this->window == nullptr)
 	{

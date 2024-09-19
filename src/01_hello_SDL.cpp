@@ -4,6 +4,7 @@
 #include "SDL_Wrapper/Main.hpp"
 #include "SDL_Wrapper/Painting/Canvas.hpp"
 #include "SDL_Wrapper/Painting/RegularPicture.hpp"
+#include "SDL_Wrapper/Painting/AcceleratedPicture.hpp"
 #include "SDL_Wrapper/Painting/AcceleratedPaintbrush.hpp"
 #include "SDL_Wrapper/Event.hpp"
 #include "SDL_Wrapper/Image.hpp"
@@ -24,29 +25,25 @@ int main( int argc, char* args[] )
 
 	try
 	{
-
-		SDL::Init(SDL::INIT_VIDEO);
+		SDL::Init(SDL::SubsystemInitFlags::VIDEO);
 		IMG::Init(IMG::InitFlags::PNG);
 
-		SDL::SetHint(SDL::HINT_RENDER_SCALE_QUALITY, "1",
-					 "Warning: Linear texture filtering not enabled!");
+		SDL::SetHint(SDL::Hints::RENDER_SCALE_QUALITY, "linear", "Warning: Linear texture filtering not enabled!");
 
 		SDL::Painting::Canvas canvas {"SDL Tutorial",
-	  							      SDL::WINDOWPOS_UNDEFINED,
-								      SDL::WINDOWPOS_UNDEFINED,
+	  							      SDL::Painting::CanvasPositionFlags::UNDEFINED,
 								      SCREEN_WIDTH,
 								      SCREEN_HEIGHT,
-								      SDL::WINDOW_SHOWN};
+								      SDL::Painting::CanvasInitFlags::SHOWN};
 		
-		/*
+		//SDL::Painting::RegularPicture helloWorldPicture {RESOURCE_DIRECTORY/"hello_world.bmp"}; /*
 		SDL::Painting::AcceleratedPaintbrush paintbrush {canvas,
                                 						 -1,
                                  						 SDL::Painting::AcceleratedPaintbrushFlags::ACCELERATED,
                                  						 0xFF, 0xFF, 0xFF, 0xFF};
 		SDL::Painting::AcceleratedPicture renderingPNG {paintbrush,
                                							RESOURCE_DIRECTORY/"texture.png"};
-		*/
-		SDL::Painting::RegularPicture helloWorldPicture {RESOURCE_DIRECTORY/"hello_world.bmp"};
+		//*/
 
         SDL::Event current_event;
 		bool quit = false;
@@ -57,12 +54,8 @@ int main( int argc, char* args[] )
 				quit |= current_event.type == SDL::EventTypes::QUIT;
 			}
 
-			canvas.PostPicture(helloWorldPicture);
-			/*
-			paintbrush.Clear();
-			renderingPNG.Copy();
-			paintbrush.Present();
-			*/
+			//canvas.PostPicture(helloWorldPicture);
+			paintbrush.Clear(); renderingPNG.Copy(); paintbrush.Present();
 
 		}
 

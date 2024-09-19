@@ -6,12 +6,6 @@
 #include <utility>
 
 
-Uint32 SDL::MapRGB(const PixelFormat* format, Uint8 r, Uint8 g, Uint8 b)
-{
-	return SDL_MapRGB(format, r, g, b);
-}
-
-
 void IMG::Init(InitFlags flag)
 {
 	IMG::Init(std::to_underlying(flag));

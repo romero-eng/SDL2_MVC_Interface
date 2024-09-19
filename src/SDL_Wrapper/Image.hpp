@@ -5,33 +5,25 @@
 #include <SDL2/SDL_image.h>
 #include <cstdint>
 
-namespace SDL
-{
-
-using PixelFormat = SDL_PixelFormat;
-
-Uint32 MapRGB(const PixelFormat* format, Uint8 r, Uint8 g, Uint8 b);
-
-}
 
 namespace IMG
 {
 
-enum class InitFlags : std::uint32_t
-{
-    JPG  = IMG_INIT_JPG,
-    PNG  = IMG_INIT_PNG,
-    TIF  = IMG_INIT_TIF,
-    WEBP = IMG_INIT_WEBP,
-    JXL  = IMG_INIT_JXL,
-    AVIF = IMG_INIT_AVIF
-};
+    enum class InitFlags : std::uint32_t
+    {
+        JPG  = IMG_INIT_JPG,
+        PNG  = IMG_INIT_PNG,
+        TIF  = IMG_INIT_TIF,
+        WEBP = IMG_INIT_WEBP,
+        JXL  = IMG_INIT_JXL,
+        AVIF = IMG_INIT_AVIF
+    };
 
-void Init(InitFlags flag);
+    void Init(InitFlags flag);
 
-void Init(Uint32 flags);
+    void Init(Uint32 flags);
 
-void Quit(void);
+    void Quit(void);
 
 }
 
