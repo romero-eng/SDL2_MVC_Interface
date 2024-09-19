@@ -15,27 +15,7 @@ SDL_Surface* SDL::Painting::PictureIdea::LoadSurfaceFromFile(const fs::path& ima
 		throw fmt::format("The '{:s}' Image file does not seem to be a regular file", image_path.string().c_str());
 	}
 
-	SDL_Surface* tmpSurface;
-
-	if(image_path.extension() == ".bmp")
-	{
-		SDL_RWops* ops {SDL_RWFromFile(image_path.string().c_str(), "rb")};
-		if(ops == nullptr)
-		{
-			throw fmt::format("Unexpected error in reading '{:s}': {:s}", image_path.string().c_str(), SDL_GetError());
-		}
-
-		tmpSurface = SDL_LoadBMP_RW(ops, 1);
-	}
-	else
-	{
-		tmpSurface = IMG_Load(image_path.string().c_str());
-	}
-
-	if (tmpSurface == nullptr)
-	{
-		throw fmt::format("Could not load the '{:s}' Image File: {:s}", image_path.string().c_str(), SDL_GetError());
-	}
+	SDL_Surface* tmpSurface {IMG_Load(image_path.string().c_str())};
 
 	return tmpSurface;
 }
