@@ -7,7 +7,7 @@
 #include "SDL_Wrapper/Painting/AcceleratedPicture.hpp"
 #include "SDL_Wrapper/Painting/AcceleratedPaintbrush.hpp"
 #include "SDL_Wrapper/Event.hpp"
-#include "SDL_Wrapper/Image.hpp"
+#include "SDL_Wrapper/Painting/ImageLoading.hpp"
 
 
 #include <string>
@@ -26,7 +26,7 @@ int main( int argc, char* args[] )
 	try
 	{
 		SDL::Init(SDL::SubsystemInitFlags::VIDEO);
-		IMG::Init(IMG::InitFlags::PNG);
+		SDL::Painting::InitImageLoading(SDL::Painting::ImageFileTypes::PNG);
 
 		SDL::SetHint(SDL::Hints::RENDER_SCALE_QUALITY, "linear", "Warning: Linear texture filtering not enabled!");
 
@@ -65,7 +65,7 @@ int main( int argc, char* args[] )
 		std::cerr << error_message;
 	}
 
-	IMG::Quit();
+	SDL::Painting::QuitImageLoading();
 	SDL::Quit();
 
 	return 0;

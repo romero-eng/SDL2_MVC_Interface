@@ -1,18 +1,15 @@
 
 #if defined(__linux__) || defined(_WIN32) || defined(__APPLE__)
-
-#include "Image.hpp"
-#include <fmt/format.h>
-#include <utility>
+#include "ImageLoading.hpp"
 
 
-void IMG::Init(InitFlags flag)
+void SDL::Painting::InitImageLoading(ImageFileTypes flag)
 {
-	IMG::Init(std::to_underlying(flag));
+	SDL::Painting::InitImageLoading(std::to_underlying(flag));
 }
 
 
-void IMG::Init(Uint32 flags)
+void SDL::Painting::InitImageLoading(Uint32 flags)
 {
 	if(!( static_cast<Uint32>(IMG_Init(static_cast<int>(flags))) & flags ))
 	{
@@ -21,25 +18,25 @@ void IMG::Init(Uint32 flags)
 }
 
 
-void IMG::Quit(void)
+void SDL::Painting::QuitImageLoading(void)
 {
 	IMG_Quit();
 }
 
 
-Uint32 operator|(IMG::InitFlags first_flag, IMG::InitFlags second_flag)
+Uint32 operator|(SDL::Painting::ImageFileTypes first_flag, SDL::Painting::ImageFileTypes second_flag)
 {
 	return std::to_underlying(first_flag) | std::to_underlying(second_flag);
 }
 
 
-Uint32 operator|(Uint32 first_flag, IMG::InitFlags second_flag)
+Uint32 operator|(Uint32 first_flag, SDL::Painting::ImageFileTypes second_flag)
 {
 	return first_flag | std::to_underlying(second_flag);
 }
 
 
-Uint32 operator|(IMG::InitFlags first_flag, Uint32 second_flag)
+Uint32 operator|(SDL::Painting::ImageFileTypes first_flag, Uint32 second_flag)
 {
 	return std::to_underlying(first_flag) | second_flag;
 }
