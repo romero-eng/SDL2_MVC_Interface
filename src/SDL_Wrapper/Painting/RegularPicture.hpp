@@ -3,7 +3,7 @@
 
 // Custom wrapper code for SDL2 API
 #include "PictureIdea.hpp" // Abstract Base Class for RegularPicture()
-#include "../Rectangle.hpp"
+#include "Rectangle.hpp"
 
 
 namespace SDL
