@@ -36,7 +36,7 @@ void SDL::Painting::AcceleratedPaintbrush::SetDrawColor(Uint8 r,
                                    Uint8 b,
                                    Uint8 a)
 {
-    if(SDL_SetRenderDrawColor(this->picture_renderer, r, g, b, a) >= 0)
+    if(SDL_SetRenderDrawColor(this->picture_renderer, r, g, b, a) < 0)
     {
         throw fmt::format("Could not set colors for Paintbrush: {:s}", SDL_GetError());
     }
