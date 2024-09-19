@@ -19,7 +19,6 @@ const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
 fs::path RESOURCE_DIRECTORY { fs::current_path().parent_path().parent_path()/"res" };
-fs::path TEXTURE_PNG {RESOURCE_DIRECTORY/"texture.png"};
 
 int main( int argc, char* args[] )
 {
@@ -40,14 +39,15 @@ int main( int argc, char* args[] )
 								      SCREEN_HEIGHT,
 								      SDL::WINDOW_SHOWN};
 		
-		/*
-		renderer  = \
-			SDL::GPU::Painting::Create(window,
-								   -1,
-								   SDL::GPU::Painting::Flags::ACCELERATED,
-								   0xFF, 0xFF, 0xFF, 0xFF);
-		*/
-		SDL::Painting::RegularPicture helloWorldPicture {RESOURCE_DIRECTORY/"hello_world.bmp"};
+		///*
+		SDL::Painting::AcceleratedPaintbrush paintbrush {canvas,
+                                						 -1,
+                                 						 SDL::Painting::AcceleratedPaintbrushFlags::ACCELERATED,
+                                 						 0xFF, 0xFF, 0xFF, 0xFF};
+		SDL::Painting::AcceleratedPicture renderingPNG {paintbrush,
+                               							RESOURCE_DIRECTORY/"texture.png"};
+		//*/
+		//SDL::Painting::RegularPicture helloWorldPicture {RESOURCE_DIRECTORY/"hello_world.bmp"};
 
         SDL::Event current_event;
 		bool quit = false;
@@ -58,14 +58,14 @@ int main( int argc, char* args[] )
 				quit |= current_event.type == SDL::EventTypes::QUIT;
 			}
 
-			///*
-			canvas.PostPicture(helloWorldPicture);
-			//*/
 			/*
-			SDL::GPU::Painting::Clear(renderer);
-			SDL::GPU::Painting::Copy(renderer, loaded_resources.renderingPNG, NULL, NULL);
-			SDL::GPU::Painting::Present(renderer);
+			canvas.PostPicture(helloWorldPicture);
 			*/
+			///*
+			paintbrush.Clear();
+			renderingPNG.Copy();
+			paintbrush.Present();
+			//*/
 
 		}
 
