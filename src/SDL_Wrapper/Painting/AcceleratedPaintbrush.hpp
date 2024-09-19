@@ -6,7 +6,6 @@
 
 // Custom wrapper code for SDL2 API
 #include "Canvas.hpp"
-#include "../Rectangle.hpp"
 
 // Third-Party Libaries
 #include <fmt/format.h> // Needed for formatting Exception messages

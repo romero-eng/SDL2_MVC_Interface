@@ -1,16 +1,9 @@
 #ifndef IMAGE_WRAPPER_h
 #define IMAGE_WRAPPER_h
 
-#include <filesystem>
-#include "Painting/RegularPicture.hpp"
-#include "Painting/AcceleratedPicture.hpp"
-#include "Painting/AcceleratedPaintbrush.hpp"
-
-#include "Rectangle.hpp"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <cstdint>
-namespace fs = std::filesystem;
 
 namespace SDL
 {

@@ -35,8 +35,8 @@ namespace SDL
 
             void Copy();
 
-            void Copy(const SDL::Rect* srcrect,
-                      const SDL::Rect* dstrect);
+            void Copy(const Rect* srcrect,
+                      const Rect* dstrect);
 
             ~AcceleratedPicture();
         };

@@ -7,7 +7,6 @@
 #include "SDL_Wrapper/Painting/AcceleratedPaintbrush.hpp"
 #include "SDL_Wrapper/Event.hpp"
 #include "SDL_Wrapper/Image.hpp"
-#include "SDL_Wrapper/Rectangle.hpp"
 
 
 #include <string>
