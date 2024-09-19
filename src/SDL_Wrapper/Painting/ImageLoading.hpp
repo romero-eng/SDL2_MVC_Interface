@@ -26,9 +26,11 @@ namespace SDL
             AVIF = IMG_INIT_AVIF
         };
 
-        void InitImageLoading(ImageFileTypes flag);
+        void InitImageLoading(ImageFileTypes file_type);
 
-        void InitImageLoading(Uint32 flags);
+        void InitImageLoading(Uint32 file_types);
+
+        bool QueryImageLoadingInitialization();
 
         void QuitImageLoading(void);
     }

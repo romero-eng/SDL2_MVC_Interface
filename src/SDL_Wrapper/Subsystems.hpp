@@ -4,6 +4,9 @@
 // Original SDL2 API
 #include <SDL2/SDL.h>
 
+// Custom wrapper code for SDL2 API
+#include "Painting/ImageLoading.hpp"
+
 // Third-Party Libaries
 #include <fmt/format.h> // Needed for formatting Exception messages
 
@@ -27,9 +30,21 @@ namespace SDL
         NOPARACHUTE    = SDL_INIT_NOPARACHUTE
     };
 
-    void Init(SubsystemInitFlags flag);
+    void Init(SubsystemInitFlags subsystem_flag);
 
-    void Init(Uint32 flags);
+    void Init(SubsystemInitFlags subsystem_flag,
+              Painting::ImageFileTypes file_type);
+
+    void Init(SubsystemInitFlags subsystem_flag,
+              Uint32 file_types);
+
+    void Init(Uint32 subsystem_flags);
+
+    void Init(Uint32 subsystem_flags,
+              Painting::ImageFileTypes file_type);
+
+    void Init(Uint32 subsystem_flags,
+              Uint32 file_types);
 
     void Quit(void);
 }

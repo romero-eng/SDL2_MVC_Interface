@@ -2,19 +2,26 @@
 #if defined(__linux__) || defined(_WIN32) || defined(__APPLE__)
 #include "ImageLoading.hpp"
 
+#include <iostream>
 
-void SDL::Painting::InitImageLoading(ImageFileTypes flag)
+void SDL::Painting::InitImageLoading(ImageFileTypes file_type)
 {
-	SDL::Painting::InitImageLoading(std::to_underlying(flag));
+	SDL::Painting::InitImageLoading(std::to_underlying(file_type));
 }
 
 
-void SDL::Painting::InitImageLoading(Uint32 flags)
+void SDL::Painting::InitImageLoading(Uint32 file_types)
 {
-	if(!( static_cast<Uint32>(IMG_Init(static_cast<int>(flags))) & flags ))
+	if(!( static_cast<Uint32>(IMG_Init(static_cast<int>(file_types))) & file_types ))
 	{
 		throw fmt::format("SDL Pictures could not be initialized: {:s}\n", IMG_GetError());
 	}
+}
+
+
+bool SDL::Painting::QueryImageLoadingInitialization()
+{
+	return IMG_Init(0) > 0;
 }
 
 
