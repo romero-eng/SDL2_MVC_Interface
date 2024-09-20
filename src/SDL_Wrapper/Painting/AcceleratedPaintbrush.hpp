@@ -36,9 +36,9 @@ namespace SDL
 
             SDL_Renderer* picture_renderer;
 
-            void Copy(AcceleratedPicture& picture,
-                      const Rect* srcrect,
-                      const Rect* dstrect);
+            void CopyPicture(AcceleratedPicture& picture,
+                             const Rect* srcrect,
+                             const Rect* dstrect);
 
         public:
 
@@ -69,23 +69,23 @@ namespace SDL
 
             void Clear();
 
-            void Copy(AcceleratedPicture& picture);
+            void CopyPicture(AcceleratedPicture& picture);
 
-            void Copy(AcceleratedPicture& picture,
-                      const Rect& srcrect,
-                      const Rect& dstrect);
+            void CopyPicture(AcceleratedPicture& picture,
+                             const Rect& srcrect,
+                             const Rect& dstrect);
 
             void Fill();
 
-            void DrawRect(const Rect& area);
+            void DrawRectangle(const Rect& area);
 
-            void DrawRectBoundary(const Rect& area);
+            void DrawEmptyRectangle(const Rect& area);
 
             void DrawLine(int x1, int y1, int x2, int y2);
 
             void DrawPoint(int x1, int y1);
 
-            void SetViewPort(const Rect& area);
+            void ReserveDrawingArea(const Rect& area);
 
             void Present();
 

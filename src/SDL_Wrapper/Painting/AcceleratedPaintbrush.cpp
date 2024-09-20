@@ -55,9 +55,9 @@ void SDL::Painting::AcceleratedPaintbrush::Clear()
 }
 
 
-void SDL::Painting::AcceleratedPaintbrush::Copy(AcceleratedPicture& picture,
-                                                const Rect* srcrect,
-                          				        const Rect* dstrect)
+void SDL::Painting::AcceleratedPaintbrush::CopyPicture(AcceleratedPicture& picture,
+                                                       const Rect* srcrect,
+                          		    		           const Rect* dstrect)
 {
     if (SDL_RenderCopy(this->picture_renderer, picture.Access_SDL_Implementation(), srcrect, dstrect) < 0)
     {
@@ -66,10 +66,10 @@ void SDL::Painting::AcceleratedPaintbrush::Copy(AcceleratedPicture& picture,
 }
 
 
-void SDL::Painting::AcceleratedPaintbrush::Copy(AcceleratedPicture& picture) { this->Copy(picture, nullptr, nullptr); }
+void SDL::Painting::AcceleratedPaintbrush::CopyPicture(AcceleratedPicture& picture) { this->CopyPicture(picture, nullptr, nullptr); }
 
 
-void SDL::Painting::AcceleratedPaintbrush::Copy(AcceleratedPicture& picture, const Rect& srcrect, const Rect& dstrect) { this->Copy(picture, &srcrect, &dstrect); }
+void SDL::Painting::AcceleratedPaintbrush::CopyPicture(AcceleratedPicture& picture, const Rect& srcrect, const Rect& dstrect) { this->CopyPicture(picture, &srcrect, &dstrect); }
 
 
 void SDL::Painting::AcceleratedPaintbrush::Fill()
@@ -81,7 +81,7 @@ void SDL::Painting::AcceleratedPaintbrush::Fill()
 }
 
 
-void SDL::Painting::AcceleratedPaintbrush::DrawRect(const Rect& area)
+void SDL::Painting::AcceleratedPaintbrush::DrawRectangle(const Rect& area)
 {
     if(SDL_RenderFillRect(this->picture_renderer, &area) < 0)
     {
@@ -90,7 +90,7 @@ void SDL::Painting::AcceleratedPaintbrush::DrawRect(const Rect& area)
 }
 
 
-void SDL::Painting::AcceleratedPaintbrush::DrawRectBoundary(const Rect& area)
+void SDL::Painting::AcceleratedPaintbrush::DrawEmptyRectangle(const Rect& area)
 {
     if(SDL_RenderDrawRect(this->picture_renderer, &area) < 0)
     {
@@ -117,7 +117,7 @@ void SDL::Painting::AcceleratedPaintbrush::DrawPoint(int x1, int y1)
 }
 
 
-void SDL::Painting::AcceleratedPaintbrush::SetViewPort(const Rect& area)
+void SDL::Painting::AcceleratedPaintbrush::ReserveDrawingArea(const Rect& area)
 {
     if(SDL_RenderSetViewport(this->picture_renderer, &area) < 0)
     {

@@ -44,12 +44,12 @@ int main( int argc, char* args[] )
 		SDL::Painting::AcceleratedPicture viewPortTest {paintbrush,
 														fs::current_path().parent_path().parent_path()/"res"/"viewport.png"};
 
-		paintbrush.SetViewPort(SDL::Painting::Rect {.x{0}, .y{0}, .w{SCREEN_WIDTH/2}, .h{SCREEN_HEIGHT/2}});
-		paintbrush.Copy(viewPortTest);
-		paintbrush.SetViewPort(SDL::Painting::Rect {.x{SCREEN_WIDTH/2}, .y{0}, .w{SCREEN_WIDTH/2}, .h{SCREEN_HEIGHT/2}});
-		paintbrush.Copy(viewPortTest);
-		paintbrush.SetViewPort(SDL::Painting::Rect {.x{0}, .y{SCREEN_HEIGHT/2}, .w{SCREEN_WIDTH}, .h{SCREEN_HEIGHT/2}});
-		paintbrush.Copy(viewPortTest);
+		paintbrush.ReserveDrawingArea(SDL::Painting::Rect {.x{0}, .y{0}, .w{SCREEN_WIDTH/2}, .h{SCREEN_HEIGHT/2}});
+		paintbrush.CopyPicture(viewPortTest);
+		paintbrush.ReserveDrawingArea(SDL::Painting::Rect {.x{SCREEN_WIDTH/2}, .y{0}, .w{SCREEN_WIDTH/2}, .h{SCREEN_HEIGHT/2}});
+		paintbrush.CopyPicture(viewPortTest);
+		paintbrush.ReserveDrawingArea(SDL::Painting::Rect {.x{0}, .y{SCREEN_HEIGHT/2}, .w{SCREEN_WIDTH}, .h{SCREEN_HEIGHT/2}});
+		paintbrush.CopyPicture(viewPortTest);
 		paintbrush.Present();
 
         SDL::Event current_event;
