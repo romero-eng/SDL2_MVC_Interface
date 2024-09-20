@@ -25,8 +25,7 @@ int main( int argc, char* args[] )
 
 	try
 	{
-		SDL::Init(SDL::SubsystemInitFlags::VIDEO,
-				  SDL::Painting::ImageFileTypes::PNG);
+		SDL::Init(SDL::SubsystemInitFlags::VIDEO);
 
 		SDL::SetHint(SDL::Hints::RENDER_SCALE_QUALITY, "linear", "Warning: Linear texture filtering not enabled!");
 
