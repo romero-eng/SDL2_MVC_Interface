@@ -27,7 +27,7 @@ namespace SDL
             TARGETTEXTURE = SDL_RENDERER_TARGETTEXTURE                
         };
 
-        class AcceleratedPicture;
+        class AcceleratedPicture; // Forward Declaration of AcceleratedPicture Class to resolve circular include
 
         class AcceleratedPaintbrush
         {
