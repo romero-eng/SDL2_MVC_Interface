@@ -26,9 +26,9 @@ namespace SDL
 
             SDL_Surface* picture_surface;
 
-            void PostPicture(RegularPicture& src,
-                             const Rect* srcrect,
-                             Rect* dstrect);
+            void PostOntoPicture(RegularPicture& src,
+                                 const Rect* srcrect,
+                                 Rect* dstrect);
 
         public:
 
@@ -40,15 +40,15 @@ namespace SDL
 
             RegularPicture& operator=(const RegularPicture& picture) = delete; // Copy Assignment
 
-            void PostPicture(RegularPicture& src);
+            void PostOntoPicture(RegularPicture& src);
 
-            void PostPicture(RegularPicture& src,
-                             const Rect& srcrect,
-                             Rect& dstrect);
+            void PostOntoPicture(RegularPicture& src,
+                                 const Rect& srcrect,
+                                 Rect& dstrect);
 
-            void PostPicture(RegularPicture& src,
-                             const Rect& srcrect,
-                             Rect&& dstrect);
+            void PostOntoPicture(RegularPicture& src,
+                                 const Rect& srcrect,
+                                 Rect&& dstrect);
 
             SDL_Surface* Access_SDL_Implementation();
 

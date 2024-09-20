@@ -9,9 +9,9 @@ SDL::Painting::RegularPicture::RegularPicture(const fs::path& image_path): pictu
 SDL::Painting::RegularPicture::RegularPicture(SDL_Surface* surface): picture_surface{surface} {}
 
 
-void SDL::Painting::RegularPicture::PostPicture(RegularPicture& src,
-                                                const Rect* srcrect,
-                                                Rect* dstrect)
+void SDL::Painting::RegularPicture::PostOntoPicture(RegularPicture& src,
+                                                    const Rect* srcrect,
+                                                    Rect* dstrect)
 {
     if(SDL_BlitSurface(src.Access_SDL_Implementation(), srcrect, this->picture_surface, dstrect) != 0)
 	{
@@ -20,13 +20,13 @@ void SDL::Painting::RegularPicture::PostPicture(RegularPicture& src,
 }
 
 
-void SDL::Painting::RegularPicture::PostPicture(RegularPicture& src) { this->PostPicture(src, nullptr, nullptr); }
+void SDL::Painting::RegularPicture::PostOntoPicture(RegularPicture& src) { this->PostOntoPicture(src, nullptr, nullptr); }
 
 
-void SDL::Painting::RegularPicture::PostPicture(RegularPicture& src, const Rect& srcrect, Rect& dstrect) { this->PostPicture(src, &srcrect, &dstrect); }
+void SDL::Painting::RegularPicture::PostOntoPicture(RegularPicture& src, const Rect& srcrect, Rect& dstrect) { this->PostOntoPicture(src, &srcrect, &dstrect); }
 
 
-void SDL::Painting::RegularPicture::PostPicture(RegularPicture& src, const Rect& srcrect, Rect&& dstrect) { this->PostPicture(src, &srcrect, &dstrect); }
+void SDL::Painting::RegularPicture::PostOntoPicture(RegularPicture& src, const Rect& srcrect, Rect&& dstrect) { this->PostOntoPicture(src, &srcrect, &dstrect); }
 
 
 SDL_Surface* SDL::Painting::RegularPicture::Access_SDL_Implementation()
