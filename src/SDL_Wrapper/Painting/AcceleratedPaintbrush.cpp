@@ -62,8 +62,8 @@ void SDL::Painting::AcceleratedPaintbrush::Copy(AcceleratedPicture& picture)
 
 
 void SDL::Painting::AcceleratedPaintbrush::Copy(AcceleratedPicture& picture,
-                                                const SDL::Rect* srcrect,
-                          				        const SDL::Rect* dstrect)
+                                                const Rect* srcrect,
+                          				        const Rect* dstrect)
 {
     if (SDL_RenderCopy(this->picture_renderer, picture.Access_SDL_Implementation(), srcrect, dstrect) < 0)
     {

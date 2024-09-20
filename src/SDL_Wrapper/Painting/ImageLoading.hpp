@@ -12,6 +12,7 @@
 #include <cstdint> // Needed for setting underlying type for scoped enumerations
 #include <utility> // Needed for retrieving underlying type of scoped enumerations
 
+
 namespace SDL
 {
     namespace Painting

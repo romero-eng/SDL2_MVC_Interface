@@ -15,6 +15,7 @@
 #include <cstdint> // Needed for setting underlying type for scoped enumerations
 #include <utility> // Needed for retrieving underlying type of scoped enumerations
 
+
 namespace SDL
 {
     namespace Painting
@@ -67,8 +68,8 @@ namespace SDL
             void Copy(AcceleratedPicture& picture);
 
             void Copy(AcceleratedPicture& picture,
-                      const SDL::Rect* srcrect,
-                      const SDL::Rect* dstrect);
+                      const Rect* srcrect,
+                      const Rect* dstrect);
 
             void Present();
 
