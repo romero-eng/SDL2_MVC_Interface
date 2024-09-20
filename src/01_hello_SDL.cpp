@@ -25,7 +25,8 @@ int main( int argc, char* args[] )
 
 	try
 	{
-		SDL::Init(SDL::SubsystemInitFlags::VIDEO);
+		SDL::Init(SDL::SubsystemInitFlags::VIDEO,
+				  SDL::Painting::ImageFileTypes::PNG);
 
 		SDL::SetHint(SDL::Hints::RENDER_SCALE_QUALITY, "linear", "Warning: Linear texture filtering not enabled!");
 
@@ -40,18 +41,15 @@ int main( int argc, char* args[] )
                                  						 SDL::Painting::AcceleratedPaintbrushFlags::ACCELERATED,
                                  						 0xFF, 0xFF, 0xFF, 0xFF};
 
-		paintbrush.Fill();
-		paintbrush.SetDrawColor(0xFF, 0x0, 0x0, 0xFF);
-		paintbrush.DrawRect(SDL::Painting::Rect { .x{SCREEN_WIDTH/4}, .y{SCREEN_HEIGHT/4}, .w{SCREEN_WIDTH/2}, .h{SCREEN_HEIGHT/2} });
-		paintbrush.SetDrawColor(0x0, 0xFF, 0x0, 0xFF);
-		paintbrush.DrawRectBoundary(SDL::Painting::Rect { .x{SCREEN_WIDTH/6}, .y{SCREEN_HEIGHT/6}, .w{SCREEN_WIDTH*2/3}, .h{SCREEN_HEIGHT*2/3} });
-		paintbrush.SetDrawColor(0x0, 0x0, 0xFF, 0xFF);
-		paintbrush.DrawLine(0, SCREEN_HEIGHT/2, SCREEN_WIDTH, SCREEN_HEIGHT/2);
-		paintbrush.SetDrawColor(0xFF, 0xFF, 0x0, 0xFF);
-		for (int i = 0; i < SCREEN_HEIGHT; i += 4)
-		{
-			paintbrush.DrawPoint(SCREEN_WIDTH/2, i);
-		}
+		SDL::Painting::AcceleratedPicture viewPortTest {paintbrush,
+														fs::current_path().parent_path().parent_path()/"res"/"viewport.png"};
+
+		paintbrush.SetViewPort(SDL::Painting::Rect {.x{0}, .y{0}, .w{SCREEN_WIDTH/2}, .h{SCREEN_HEIGHT/2}});
+		paintbrush.Copy(viewPortTest);
+		paintbrush.SetViewPort(SDL::Painting::Rect {.x{SCREEN_WIDTH/2}, .y{0}, .w{SCREEN_WIDTH/2}, .h{SCREEN_HEIGHT/2}});
+		paintbrush.Copy(viewPortTest);
+		paintbrush.SetViewPort(SDL::Painting::Rect {.x{0}, .y{SCREEN_HEIGHT/2}, .w{SCREEN_WIDTH}, .h{SCREEN_HEIGHT/2}});
+		paintbrush.Copy(viewPortTest);
 		paintbrush.Present();
 
         SDL::Event current_event;

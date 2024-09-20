@@ -117,6 +117,15 @@ void SDL::Painting::AcceleratedPaintbrush::DrawPoint(int x1, int y1)
 }
 
 
+void SDL::Painting::AcceleratedPaintbrush::SetViewPort(const Rect& area)
+{
+    if(SDL_RenderSetViewport(this->picture_renderer, &area) < 0)
+    {
+        throw fmt::format("Could not set view port with accelerated paintbrush: {:s}", SDL_GetError());
+    }
+}
+
+
 void SDL::Painting::AcceleratedPaintbrush::Present()
 {
     SDL_RenderPresent(this->picture_renderer);

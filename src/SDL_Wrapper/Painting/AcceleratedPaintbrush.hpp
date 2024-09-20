@@ -85,6 +85,8 @@ namespace SDL
 
             void DrawPoint(int x1, int y1);
 
+            void SetViewPort(const Rect& area);
+
             void Present();
 
             SDL_Renderer* Access_SDL_Implementation();
