@@ -102,7 +102,11 @@ SDL_Window* SDL::Painting::Canvas::Access_SDL_Implementation()
 }
 
 
-SDL::Painting::Canvas::~Canvas() { SDL_DestroyWindow(this->window); }
+SDL::Painting::Canvas::~Canvas()
+{
+	SDL_DestroyWindow(this->window);
+	this->window = nullptr;
+}
 
 
 #else

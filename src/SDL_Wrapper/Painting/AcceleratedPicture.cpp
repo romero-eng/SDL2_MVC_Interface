@@ -31,7 +31,11 @@ SDL_Texture* SDL::Painting::AcceleratedPicture::Access_SDL_Implementation()
 }
 
 
-SDL::Painting::AcceleratedPicture::~AcceleratedPicture() { SDL_DestroyTexture(this->picture_texture); }
+SDL::Painting::AcceleratedPicture::~AcceleratedPicture()
+{
+    SDL_DestroyTexture(this->picture_texture);
+    this->picture_texture = nullptr;
+}
 
 
 #else

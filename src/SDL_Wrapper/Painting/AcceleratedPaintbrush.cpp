@@ -132,13 +132,14 @@ void SDL::Painting::AcceleratedPaintbrush::Present()
 }
 
 
-SDL_Renderer* SDL::Painting::AcceleratedPaintbrush::Access_SDL_Implementation()
+SDL_Renderer* SDL::Painting::AcceleratedPaintbrush::Access_SDL_Implementation() { return this->paintbrush_renderer; }
+
+
+SDL::Painting::AcceleratedPaintbrush::~AcceleratedPaintbrush()
 {
-    return this->paintbrush_renderer;
+    SDL_DestroyRenderer(this->paintbrush_renderer);
+    this->paintbrush_renderer = nullptr;
 }
-
-
-SDL::Painting::AcceleratedPaintbrush::~AcceleratedPaintbrush() { SDL_DestroyRenderer(this->paintbrush_renderer); }
 
 
 Uint32 operator|(SDL::Painting::AcceleratedPaintbrushFlags first_flag,

@@ -2,7 +2,6 @@
 #if defined(__linux__) || defined(_WIN32) || defined(__APPLE__)
 #include "ImageLoading.hpp"
 
-#include <iostream>
 
 void SDL::Painting::InitImageLoading(ImageFileTypes file_type)
 {

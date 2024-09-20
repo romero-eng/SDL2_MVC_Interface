@@ -35,7 +35,11 @@ SDL_Surface* SDL::Painting::RegularPicture::Access_SDL_Implementation()
 }
 
 
-SDL::Painting::RegularPicture::~RegularPicture(){ SDL_FreeSurface(this->picture_surface); }
+SDL::Painting::RegularPicture::~RegularPicture()
+{
+    SDL_FreeSurface(this->picture_surface);
+    this->picture_surface = nullptr;
+}
 
 
 #else
