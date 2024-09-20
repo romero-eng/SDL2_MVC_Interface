@@ -37,7 +37,9 @@ int main( int argc, char* args[] )
 								      SCREEN_HEIGHT,
 								      SDL::Painting::CanvasInitFlags::SHOWN};
 		
-		//SDL::Painting::RegularPicture helloWorldPicture {RESOURCE_DIRECTORY/"hello_world.bmp"}; /*
+		//canvas.Fill(0x3, 0xFA, 0x56);
+		//SDL::Painting::RegularPicture helloWorldPicture {RESOURCE_DIRECTORY/"hello_world.bmp"};
+		///*
 		SDL::Painting::AcceleratedPaintbrush paintbrush {canvas,
                                 						 -1,
                                  						 SDL::Painting::AcceleratedPaintbrushFlags::ACCELERATED,

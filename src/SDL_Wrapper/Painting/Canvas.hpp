@@ -83,6 +83,8 @@ namespace SDL
                              const Rect* srcrect,
                              Rect* dstrect);
 
+            void Fill(Uint8 r, Uint8 g, Uint8 b);
+
             SDL_Window* Access_SDL_Implementation();
 
             ~Canvas();

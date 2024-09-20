@@ -6,11 +6,7 @@
 
 namespace SDL
 {
-
-using Rect = SDL_Rect;
-
-//int FillRect(CPU::Pictures::Picture* dst, const Rect* rect, Uint32 color);
-
+    using Rect = SDL_Rect;
 }
 
 #endif
