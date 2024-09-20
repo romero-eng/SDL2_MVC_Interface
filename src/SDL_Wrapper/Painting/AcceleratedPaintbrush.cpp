@@ -21,9 +21,9 @@ SDL::Painting::AcceleratedPaintbrush::AcceleratedPaintbrush(Canvas& canvas,
                                                             Uint8 r,
                                                             Uint8 g,
                                                             Uint8 b,
-                                                            Uint8 a): picture_renderer{SDL_CreateRenderer(canvas.Access_SDL_Implementation(), index, flags)}
+                                                            Uint8 a): paintbrush_renderer{SDL_CreateRenderer(canvas.Access_SDL_Implementation(), index, flags)}
 {   
-    if (this->picture_renderer == nullptr)
+    if (this->paintbrush_renderer == nullptr)
     {
         throw fmt::format("Renderer could not be created for the '{:s}' Window:\n\n{:s}\n", canvas.GetTitle(), SDL_GetError());
     }
@@ -39,7 +39,7 @@ void SDL::Painting::AcceleratedPaintbrush::SetDrawColor(Uint8 r,
                                                         Uint8 b,
                                                         Uint8 a)
 {
-    if(SDL_SetRenderDrawColor(this->picture_renderer, r, g, b, a) < 0)
+    if(SDL_SetRenderDrawColor(this->paintbrush_renderer, r, g, b, a) < 0)
     {
         throw fmt::format("Could not set colors for Paintbrush: {:s}", SDL_GetError());
     }
@@ -48,7 +48,7 @@ void SDL::Painting::AcceleratedPaintbrush::SetDrawColor(Uint8 r,
 
 void SDL::Painting::AcceleratedPaintbrush::Clear()
 {
-    if (SDL_RenderClear(this->picture_renderer) < 0)
+    if (SDL_RenderClear(this->paintbrush_renderer) < 0)
     {
         throw fmt::format("Could not clear the Renderer: {:s}", SDL_GetError());
     }
@@ -59,7 +59,7 @@ void SDL::Painting::AcceleratedPaintbrush::CopyPicture(AcceleratedPicture& pictu
                                                        const Rect* srcrect,
                           		    		           const Rect* dstrect)
 {
-    if (SDL_RenderCopy(this->picture_renderer, picture.Access_SDL_Implementation(), srcrect, dstrect) < 0)
+    if (SDL_RenderCopy(this->paintbrush_renderer, picture.Access_SDL_Implementation(), srcrect, dstrect) < 0)
     {
         throw fmt::format("Could not copy the Accelerated Picture with the Paintbrush: {:s}", SDL_GetError());
     }
@@ -74,7 +74,7 @@ void SDL::Painting::AcceleratedPaintbrush::CopyPicture(AcceleratedPicture& pictu
 
 void SDL::Painting::AcceleratedPaintbrush::Fill()
 {
-    if(SDL_RenderFillRect(this->picture_renderer, nullptr) < 0)
+    if(SDL_RenderFillRect(this->paintbrush_renderer, nullptr) < 0)
     {
         throw fmt::format("Could not fill in entire canvas with accelerated paintbrush: {:s}", SDL_GetError());
     }
@@ -83,7 +83,7 @@ void SDL::Painting::AcceleratedPaintbrush::Fill()
 
 void SDL::Painting::AcceleratedPaintbrush::DrawRectangle(const Rect& area)
 {
-    if(SDL_RenderFillRect(this->picture_renderer, &area) < 0)
+    if(SDL_RenderFillRect(this->paintbrush_renderer, &area) < 0)
     {
         throw fmt::format("Could not fill in rectangular area with accelerated paintbrush: {:s}", SDL_GetError());
     }
@@ -92,7 +92,7 @@ void SDL::Painting::AcceleratedPaintbrush::DrawRectangle(const Rect& area)
 
 void SDL::Painting::AcceleratedPaintbrush::DrawEmptyRectangle(const Rect& area)
 {
-    if(SDL_RenderDrawRect(this->picture_renderer, &area) < 0)
+    if(SDL_RenderDrawRect(this->paintbrush_renderer, &area) < 0)
     {
         throw fmt::format("Could not fill in rectangular area with accelerated paintbrush: {:s}", SDL_GetError());
     }
@@ -101,7 +101,7 @@ void SDL::Painting::AcceleratedPaintbrush::DrawEmptyRectangle(const Rect& area)
 
 void SDL::Painting::AcceleratedPaintbrush::DrawLine(int x1, int y1, int x2, int y2)
 {
-    if(SDL_RenderDrawLine(this->picture_renderer, x1, y1, x2, y2) < 0)
+    if(SDL_RenderDrawLine(this->paintbrush_renderer, x1, y1, x2, y2) < 0)
     {
         throw fmt::format("Could not draw line with accelerated paintbrush: {:s}", SDL_GetError());
     }
@@ -110,7 +110,7 @@ void SDL::Painting::AcceleratedPaintbrush::DrawLine(int x1, int y1, int x2, int 
 
 void SDL::Painting::AcceleratedPaintbrush::DrawPoint(int x1, int y1)
 {
-    if(SDL_RenderDrawPoint(this->picture_renderer, x1, y1) < 0)
+    if(SDL_RenderDrawPoint(this->paintbrush_renderer, x1, y1) < 0)
     {
         throw fmt::format("Could not draw point with accelerated paintbrush: {:s}", SDL_GetError());
     }
@@ -119,7 +119,7 @@ void SDL::Painting::AcceleratedPaintbrush::DrawPoint(int x1, int y1)
 
 void SDL::Painting::AcceleratedPaintbrush::ReserveDrawingArea(const Rect& area)
 {
-    if(SDL_RenderSetViewport(this->picture_renderer, &area) < 0)
+    if(SDL_RenderSetViewport(this->paintbrush_renderer, &area) < 0)
     {
         throw fmt::format("Could not set view port with accelerated paintbrush: {:s}", SDL_GetError());
     }
@@ -128,17 +128,17 @@ void SDL::Painting::AcceleratedPaintbrush::ReserveDrawingArea(const Rect& area)
 
 void SDL::Painting::AcceleratedPaintbrush::Present()
 {
-    SDL_RenderPresent(this->picture_renderer);
+    SDL_RenderPresent(this->paintbrush_renderer);
 }
 
 
 SDL_Renderer* SDL::Painting::AcceleratedPaintbrush::Access_SDL_Implementation()
 {
-    return this->picture_renderer;
+    return this->paintbrush_renderer;
 }
 
 
-SDL::Painting::AcceleratedPaintbrush::~AcceleratedPaintbrush() { SDL_DestroyRenderer(this->picture_renderer); }
+SDL::Painting::AcceleratedPaintbrush::~AcceleratedPaintbrush() { SDL_DestroyRenderer(this->paintbrush_renderer); }
 
 
 Uint32 operator|(SDL::Painting::AcceleratedPaintbrushFlags first_flag,

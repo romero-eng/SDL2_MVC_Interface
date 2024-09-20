@@ -34,7 +34,7 @@ namespace SDL
         {
         private:
 
-            SDL_Renderer* picture_renderer;
+            SDL_Renderer* paintbrush_renderer;
 
             void CopyPicture(AcceleratedPicture& picture,
                              const Rect* srcrect,
