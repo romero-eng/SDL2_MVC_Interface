@@ -107,6 +107,7 @@ void SDL::Painting::AcceleratedPaintbrush::DrawLine(int x1, int y1, int x2, int 
     }
 }
 
+
 void SDL::Painting::AcceleratedPaintbrush::DrawPoint(int x1, int y1)
 {
     if(SDL_RenderDrawPoint(this->picture_renderer, x1, y1) < 0)
