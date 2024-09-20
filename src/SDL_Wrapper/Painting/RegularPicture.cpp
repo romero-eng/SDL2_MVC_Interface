@@ -3,7 +3,13 @@
 #include "RegularPicture.hpp"
 
 
-SDL::Painting::RegularPicture::RegularPicture(const fs::path& image_path): picture_surface{IMG_Load(image_path.string().c_str())} {}
+SDL::Painting::RegularPicture::RegularPicture(const fs::path& image_path): picture_surface{IMG_Load(image_path.string().c_str())}
+{
+    if(this->picture_surface == nullptr)
+    {
+        throw fmt::format("Could not load image file ('{:s}') as a picture: {:s}", image_path.string().c_str(), SDL_GetError());
+    }
+}
 
 
 SDL::Painting::RegularPicture::RegularPicture(SDL_Surface* surface): picture_surface{surface} {}
@@ -20,7 +26,7 @@ void SDL::Painting::RegularPicture::PostOntoPicture(RegularPicture& src,
 }
 
 
-void SDL::Painting::RegularPicture::PostOntoPicture(RegularPicture& src) { this->PostOntoPicture(src, nullptr, nullptr); }
+void SDL::Painting::RegularPicture::CopyOntoPicture(RegularPicture& src) { this->PostOntoPicture(src, nullptr, nullptr); }
 
 
 void SDL::Painting::RegularPicture::PostOntoPicture(RegularPicture& src, const Rect& srcrect, Rect& dstrect) { this->PostOntoPicture(src, &srcrect, &dstrect); }

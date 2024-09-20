@@ -40,7 +40,7 @@ namespace SDL
 
             RegularPicture& operator=(const RegularPicture& picture) = delete; // Copy Assignment
 
-            void PostOntoPicture(RegularPicture& src);
+            void CopyOntoPicture(RegularPicture& src);
 
             void PostOntoPicture(RegularPicture& src,
                                  const Rect& srcrect,
