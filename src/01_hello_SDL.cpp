@@ -9,6 +9,7 @@
 #include "SDL_Wrapper/Painting/RegularPicture.hpp"
 #include "SDL_Wrapper/Painting/AcceleratedPicture.hpp"
 #include "SDL_Wrapper/Painting/AcceleratedPaintbrush.hpp"
+#include "SDL_Wrapper/Painting/Rectangle.hpp"
 
 
 #include <string>
@@ -18,8 +19,6 @@
 //Screen dimension constants
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
-
-const fs::path RESOURCE_DIRECTORY { fs::current_path().parent_path().parent_path()/"res" };
 
 int main( int argc, char* args[] )
 {
@@ -36,16 +35,25 @@ int main( int argc, char* args[] )
 								      SCREEN_WIDTH,
 								      SCREEN_HEIGHT,
 								      SDL::Painting::CanvasInitFlags::SHOWN};
-		
-		//canvas.Fill(0x3, 0xFA, 0x56);
-		//SDL::Painting::RegularPicture helloWorldPicture {RESOURCE_DIRECTORY/"hello_world.bmp"};
-		///*
+
 		SDL::Painting::AcceleratedPaintbrush paintbrush {canvas,
                                 						 -1,
                                  						 SDL::Painting::AcceleratedPaintbrushFlags::ACCELERATED,
                                  						 0xFF, 0xFF, 0xFF, 0xFF};
-		SDL::Painting::AcceleratedPicture renderingPNG {paintbrush, RESOURCE_DIRECTORY/"texture.png"};
-		//*/
+
+		paintbrush.Fill();
+		paintbrush.SetDrawColor(0xFF, 0x0, 0x0, 0xFF);
+		paintbrush.DrawRect(SDL::Painting::Rect { .x{SCREEN_WIDTH/4}, .y{SCREEN_HEIGHT/4}, .w{SCREEN_WIDTH/2}, .h{SCREEN_HEIGHT/2} });
+		paintbrush.SetDrawColor(0x0, 0xFF, 0x0, 0xFF);
+		paintbrush.DrawRectBoundary(SDL::Painting::Rect { .x{SCREEN_WIDTH/6}, .y{SCREEN_HEIGHT/6}, .w{SCREEN_WIDTH*2/3}, .h{SCREEN_HEIGHT*2/3} });
+		paintbrush.SetDrawColor(0x0, 0x0, 0xFF, 0xFF);
+		paintbrush.DrawLine(0, SCREEN_HEIGHT/2, SCREEN_WIDTH, SCREEN_HEIGHT/2);
+		paintbrush.SetDrawColor(0xFF, 0xFF, 0x0, 0xFF);
+		for (int i = 0; i < SCREEN_HEIGHT; i += 4)
+		{
+			paintbrush.DrawPoint(SCREEN_WIDTH/2, i);
+		}
+		paintbrush.Present();
 
         SDL::Event current_event;
 		bool quit = false;
@@ -55,9 +63,6 @@ int main( int argc, char* args[] )
 			{
 				quit |= current_event.type == SDL::EventTypes::QUIT;
 			}
-
-			//canvas.PostPicture(helloWorldPicture);
-			paintbrush.Clear(); paintbrush.Copy(renderingPNG); paintbrush.Present();
 
 		}
 

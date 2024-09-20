@@ -72,6 +72,50 @@ void SDL::Painting::AcceleratedPaintbrush::Copy(AcceleratedPicture& picture) { t
 void SDL::Painting::AcceleratedPaintbrush::Copy(AcceleratedPicture& picture, const Rect& srcrect, const Rect& dstrect) { this->Copy(picture, &srcrect, &dstrect); }
 
 
+void SDL::Painting::AcceleratedPaintbrush::Fill()
+{
+    if(SDL_RenderFillRect(this->picture_renderer, nullptr) < 0)
+    {
+        throw fmt::format("Could not fill in entire canvas with accelerated paintbrush: {:s}", SDL_GetError());
+    }
+}
+
+
+void SDL::Painting::AcceleratedPaintbrush::DrawRect(const Rect& area)
+{
+    if(SDL_RenderFillRect(this->picture_renderer, &area) < 0)
+    {
+        throw fmt::format("Could not fill in rectangular area with accelerated paintbrush: {:s}", SDL_GetError());
+    }
+}
+
+
+void SDL::Painting::AcceleratedPaintbrush::DrawRectBoundary(const Rect& area)
+{
+    if(SDL_RenderDrawRect(this->picture_renderer, &area) < 0)
+    {
+        throw fmt::format("Could not fill in rectangular area with accelerated paintbrush: {:s}", SDL_GetError());
+    }
+}
+
+
+void SDL::Painting::AcceleratedPaintbrush::DrawLine(int x1, int y1, int x2, int y2)
+{
+    if(SDL_RenderDrawLine(this->picture_renderer, x1, y1, x2, y2) < 0)
+    {
+        throw fmt::format("Could not draw line with accelerated paintbrush: {:s}", SDL_GetError());
+    }
+}
+
+void SDL::Painting::AcceleratedPaintbrush::DrawPoint(int x1, int y1)
+{
+    if(SDL_RenderDrawPoint(this->picture_renderer, x1, y1) < 0)
+    {
+        throw fmt::format("Could not draw point with accelerated paintbrush: {:s}", SDL_GetError());
+    }
+}
+
+
 void SDL::Painting::AcceleratedPaintbrush::Present()
 {
     SDL_RenderPresent(this->picture_renderer);

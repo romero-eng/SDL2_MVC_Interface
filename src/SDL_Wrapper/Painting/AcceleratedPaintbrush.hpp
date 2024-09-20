@@ -75,6 +75,16 @@ namespace SDL
                       const Rect& srcrect,
                       const Rect& dstrect);
 
+            void Fill();
+
+            void DrawRect(const Rect& area);
+
+            void DrawRectBoundary(const Rect& area);
+
+            void DrawLine(int x1, int y1, int x2, int y2);
+
+            void DrawPoint(int x1, int y1);
+
             void Present();
 
             SDL_Renderer* Access_SDL_Implementation();
