@@ -1,16 +1,26 @@
 #ifndef REGULAR_PICTURE_H
 #define REGULAR_PICTURE_H
 
+// Original SDL2 API
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+
 // Custom wrapper code for SDL2 API
-#include "PictureIdea.hpp" // Abstract Base Class for RegularPicture()
 #include "Rectangle.hpp"
+
+// Third-Party Libaries
+#include <fmt/format.h> // Needed for formatting Exception messages
+
+// C++ Standard Libaries
+#include <filesystem>  // Needed for specifying paths to Bitmaps and Image files
+namespace fs = std::filesystem;
 
 
 namespace SDL
 {
     namespace Painting
     {
-        class RegularPicture: public PictureIdea
+        class RegularPicture
         {
         private:
 

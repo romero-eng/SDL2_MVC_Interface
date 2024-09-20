@@ -55,7 +55,7 @@ int main( int argc, char* args[] )
 			}
 
 			//canvas.PostPicture(helloWorldPicture);
-			paintbrush.Clear(); renderingPNG.Copy(); paintbrush.Present();
+			paintbrush.Clear(); paintbrush.Copy(renderingPNG); paintbrush.Present();
 
 		}
 

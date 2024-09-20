@@ -6,6 +6,7 @@
 
 // Custom wrapper code for SDL2 API
 #include "Canvas.hpp"
+#include "AcceleratedPicture.hpp"
 
 // Third-Party Libaries
 #include <fmt/format.h> // Needed for formatting Exception messages
@@ -26,6 +27,8 @@ namespace SDL
             TARGETTEXTURE = SDL_RENDERER_TARGETTEXTURE                
         };
 
+        class AcceleratedPicture;
+
         class AcceleratedPaintbrush
         {
         private:
@@ -35,31 +38,37 @@ namespace SDL
         public:
 
             AcceleratedPaintbrush(Canvas& canvas,
-                                 int index,
-                                 AcceleratedPaintbrushFlags flag,
-                                 Uint8 r,
-                                 Uint8 g,
-                                 Uint8 b,
-                                 Uint8 a);
+                                  int index,
+                                  AcceleratedPaintbrushFlags flag,
+                                  Uint8 r,
+                                  Uint8 g,
+                                  Uint8 b,
+                                  Uint8 a);
 
             AcceleratedPaintbrush(Canvas& canvas,
-                                 int index,
-                                 Uint32 flags,
-                                 Uint8 r,
-                                 Uint8 g,
-                                 Uint8 b,
-                                 Uint8 a);
+                                  int index,
+                                  Uint32 flags,
+                                  Uint8 r,
+                                  Uint8 g,
+                                  Uint8 b,
+                                  Uint8 a);
 
             AcceleratedPaintbrush(const AcceleratedPaintbrush& paintbrush) = delete;  // Copy Constructor
 
             AcceleratedPaintbrush& operator=(const AcceleratedPaintbrush& paintbrush) = delete;  // Copy Assignment
 
             void SetDrawColor(Uint8 r,
-                          Uint8 g,
-                          Uint8 b,
-                          Uint8 a);
+                              Uint8 g,
+                              Uint8 b,
+                              Uint8 a);
 
             void Clear();
+
+            void Copy(AcceleratedPicture& picture);
+
+            void Copy(AcceleratedPicture& picture,
+                      const SDL::Rect* srcrect,
+                      const SDL::Rect* dstrect);
 
             void Present();
 

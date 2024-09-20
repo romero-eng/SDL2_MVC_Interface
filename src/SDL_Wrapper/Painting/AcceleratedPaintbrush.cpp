@@ -3,22 +3,25 @@
 #include "AcceleratedPaintbrush.hpp"
 
 
-SDL::Painting::AcceleratedPaintbrush::AcceleratedPaintbrush(SDL::Painting::Canvas& canvas,
-                                                 int index,
-                                                 SDL::Painting::AcceleratedPaintbrushFlags flag,
-                                                 Uint8 r,
-                                                 Uint8 g,
-                                                 Uint8 b,
-                                                 Uint8 a): SDL::Painting::AcceleratedPaintbrush::AcceleratedPaintbrush(canvas, index, std::to_underlying(flag), r, g, b, a) {}
+SDL::Painting::AcceleratedPaintbrush::AcceleratedPaintbrush(Canvas& canvas,
+                                                            int index,
+                                                            AcceleratedPaintbrushFlags flag,
+                                                            Uint8 r,
+                                                            Uint8 g,
+                                                            Uint8 b,
+                                                            Uint8 a): AcceleratedPaintbrush::AcceleratedPaintbrush(canvas,
+                                                                                                                   index,
+                                                                                                                   std::to_underlying(flag),
+                                                                                                                   r, g, b, a) {}
 
 
-SDL::Painting::AcceleratedPaintbrush::AcceleratedPaintbrush(SDL::Painting::Canvas& canvas,
-                            int index,
-                            Uint32 flags,
-                            Uint8 r,
-                            Uint8 g,
-                            Uint8 b,
-                            Uint8 a): picture_renderer{SDL_CreateRenderer(canvas.Access_SDL_Implementation(), index, flags)}
+SDL::Painting::AcceleratedPaintbrush::AcceleratedPaintbrush(Canvas& canvas,
+                                                            int index,
+                                                            Uint32 flags,
+                                                            Uint8 r,
+                                                            Uint8 g,
+                                                            Uint8 b,
+                                                            Uint8 a): picture_renderer{SDL_CreateRenderer(canvas.Access_SDL_Implementation(), index, flags)}
 {   
     if (this->picture_renderer == nullptr)
     {
@@ -32,9 +35,9 @@ SDL::Painting::AcceleratedPaintbrush::AcceleratedPaintbrush(SDL::Painting::Canva
 
 
 void SDL::Painting::AcceleratedPaintbrush::SetDrawColor(Uint8 r,
-                                   Uint8 g,
-                                   Uint8 b,
-                                   Uint8 a)
+                                                        Uint8 g,
+                                                        Uint8 b,
+                                                        Uint8 a)
 {
     if(SDL_SetRenderDrawColor(this->picture_renderer, r, g, b, a) < 0)
     {
@@ -48,6 +51,23 @@ void SDL::Painting::AcceleratedPaintbrush::Clear()
     if (SDL_RenderClear(this->picture_renderer) < 0)
     {
         throw fmt::format("Could not clear the Renderer: {:s}", SDL_GetError());
+    }
+}
+
+
+void SDL::Painting::AcceleratedPaintbrush::Copy(AcceleratedPicture& picture)
+{
+    this->Copy(picture, nullptr, nullptr);
+}
+
+
+void SDL::Painting::AcceleratedPaintbrush::Copy(AcceleratedPicture& picture,
+                                                const SDL::Rect* srcrect,
+                          				        const SDL::Rect* dstrect)
+{
+    if (SDL_RenderCopy(this->picture_renderer, picture.Access_SDL_Implementation(), srcrect, dstrect) < 0)
+    {
+        throw fmt::format("Could not copy the Accelerated Picture with the Paintbrush: {:s}", SDL_GetError());
     }
 }
 

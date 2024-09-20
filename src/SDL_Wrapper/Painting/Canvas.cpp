@@ -7,22 +7,22 @@ SDL::Painting::Canvas::Canvas(const char* title,
 							  CanvasPositionFlags position_flag,
 							  int w,
 							  int h,
-							  SDL::Painting::CanvasInitFlags init_flag): SDL::Painting::Canvas::Canvas(title,
-							  																  	  	   static_cast<int>(std::to_underlying(position_flag)), 
-																									   static_cast<int>(std::to_underlying(position_flag)),
-																							  	  	   w, h,
-																							  	  	   std::to_underlying(init_flag)) {}
+							  CanvasInitFlags init_flag): Canvas::Canvas(title,
+							  											 static_cast<int>(std::to_underlying(position_flag)), 
+																		 static_cast<int>(std::to_underlying(position_flag)),
+																		 w, h,
+																		 std::to_underlying(init_flag)) {}
 
 
 SDL::Painting::Canvas::Canvas(const char* title,
 							  CanvasPositionFlags position_flag,
 							  int w,
 							  int h,
-							  Uint32 init_flags): SDL::Painting::Canvas::Canvas(title,
-							  													static_cast<int>(std::to_underlying(position_flag)),
-																				static_cast<int>(std::to_underlying(position_flag)),
-																				w, h,
-																				init_flags) {}
+							  Uint32 init_flags): Canvas::Canvas(title,
+							  									 static_cast<int>(std::to_underlying(position_flag)),
+																 static_cast<int>(std::to_underlying(position_flag)),
+																 w, h,
+																 init_flags) {}
 
 
 SDL::Painting::Canvas::Canvas(const char* title,
@@ -30,10 +30,10 @@ SDL::Painting::Canvas::Canvas(const char* title,
 							  int y,
 							  int w,
 							  int h,
-							  SDL::Painting::CanvasInitFlags init_flag): SDL::Painting::Canvas::Canvas(title,
-							  																  	  	   x, y,
-																							  	  	   w, h,
-																							  	  	   std::to_underlying(init_flag)) {}
+							  CanvasInitFlags init_flag): Canvas::Canvas(title,
+							  											 x, y,
+																		 w, h,
+																		 std::to_underlying(init_flag)) {}
 
 
 SDL::Painting::Canvas::Canvas(const char* title,

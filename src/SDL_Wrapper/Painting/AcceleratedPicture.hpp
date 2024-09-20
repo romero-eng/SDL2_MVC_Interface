@@ -2,7 +2,6 @@
 #define ACCELERATED_PICTURE_H
 
 // Custom wrapper code for SDL2 API
-#include "PictureIdea.hpp" // Abstract Base Class for AcceleratedPicture()
 #include "AcceleratedPaintbrush.hpp"
 #include "Rectangle.hpp"
 
@@ -11,15 +10,13 @@ namespace SDL
 {
     namespace Painting
     {
-        class AcceleratedPicture: public PictureIdea
+        class AcceleratedPaintbrush; // Forward Declaration of AcceleratedPaintbrush Class to resolve circular include
+
+        class AcceleratedPicture
         {
         private:
 
-            AcceleratedPaintbrush& paintbrush;
-
             SDL_Texture* picture_texture;
-
-            SDL_Texture* createTextureFromFile(const fs::path& image_file);
 
         public:
 
@@ -33,10 +30,7 @@ namespace SDL
 
             AcceleratedPicture& operator=(const AcceleratedPicture& picture) = delete; // Copy Assignment
 
-            void Copy();
-
-            void Copy(const Rect* srcrect,
-                      const Rect* dstrect);
+            SDL_Texture* Access_SDL_Implementation();
 
             ~AcceleratedPicture();
         };

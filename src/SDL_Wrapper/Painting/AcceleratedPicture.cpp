@@ -4,8 +4,7 @@
 
 
 SDL::Painting::AcceleratedPicture::AcceleratedPicture(AcceleratedPaintbrush& paintbrush,
-                                                      SDL_Surface* surfaceToConvert): paintbrush{paintbrush},
-                                                                                      picture_texture{SDL_CreateTextureFromSurface(this->paintbrush.Access_SDL_Implementation(),
+                                                      SDL_Surface* surfaceToConvert): picture_texture{SDL_CreateTextureFromSurface(paintbrush.Access_SDL_Implementation(),
                                                                                                                                    surfaceToConvert)}
 {
     if (this->picture_texture == nullptr)
@@ -16,8 +15,8 @@ SDL::Painting::AcceleratedPicture::AcceleratedPicture(AcceleratedPaintbrush& pai
 
 
 SDL::Painting::AcceleratedPicture::AcceleratedPicture(AcceleratedPaintbrush& paintbrush,
-                                				      const fs::path& image_file): paintbrush{paintbrush},
-                                                                                   picture_texture{createTextureFromFile(image_file)}
+                                				      const fs::path& image_file): picture_texture{IMG_LoadTexture(paintbrush.Access_SDL_Implementation(),
+                                                                                                                   image_file.string().c_str())}
 {
 	if (this->picture_texture == nullptr)
 	{
@@ -26,28 +25,9 @@ SDL::Painting::AcceleratedPicture::AcceleratedPicture(AcceleratedPaintbrush& pai
 }
 
 
-SDL_Texture* SDL::Painting::AcceleratedPicture::createTextureFromFile(const fs::path& image_file)
+SDL_Texture* SDL::Painting::AcceleratedPicture::Access_SDL_Implementation()
 {
-    SDL_Surface* tmpSurface { this->LoadSurfaceFromFile(image_file) };
-	SDL_Texture* texture { SDL_CreateTextureFromSurface(this->paintbrush.Access_SDL_Implementation(), tmpSurface) };
-	SDL_FreeSurface(tmpSurface);
-
-    return texture;
-}
-
-void SDL::Painting::AcceleratedPicture::Copy()
-{
-    SDL::Painting::AcceleratedPicture::Copy(nullptr, nullptr);
-}
-
-
-void SDL::Painting::AcceleratedPicture::Copy(const SDL::Rect* srcrect,
-                          				     const SDL::Rect* dstrect)
-{
-    if (SDL_RenderCopy(this->paintbrush.Access_SDL_Implementation(), this->picture_texture, srcrect, dstrect) < 0)
-    {
-        throw fmt::format("Could not copy the Accelerated Picture with the Paintbrush: {:s}", SDL_GetError());
-    }
+    return this->picture_texture;
 }
 
 
