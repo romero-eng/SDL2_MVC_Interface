@@ -36,6 +36,10 @@ namespace SDL
 
             SDL_Renderer* picture_renderer;
 
+            void Copy(AcceleratedPicture& picture,
+                      const Rect* srcrect,
+                      const Rect* dstrect);
+
         public:
 
             AcceleratedPaintbrush(Canvas& canvas,
@@ -68,8 +72,8 @@ namespace SDL
             void Copy(AcceleratedPicture& picture);
 
             void Copy(AcceleratedPicture& picture,
-                      const Rect* srcrect,
-                      const Rect* dstrect);
+                      const Rect& srcrect,
+                      const Rect& dstrect);
 
             void Present();
 

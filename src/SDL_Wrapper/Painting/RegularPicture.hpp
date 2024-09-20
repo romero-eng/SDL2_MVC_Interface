@@ -26,6 +26,10 @@ namespace SDL
 
             SDL_Surface* picture_surface;
 
+            void PostPicture(RegularPicture& src,
+                             const Rect* srcrect,
+                             Rect* dstrect);
+
         public:
 
             RegularPicture(const fs::path& image_path);
@@ -39,8 +43,12 @@ namespace SDL
             void PostPicture(RegularPicture& src);
 
             void PostPicture(RegularPicture& src,
-                             const Rect* srcrect,
-                             Rect* dstrect);
+                             const Rect& srcrect,
+                             Rect& dstrect);
+
+            void PostPicture(RegularPicture& src,
+                             const Rect& srcrect,
+                             Rect&& dstrect);
 
             SDL_Surface* Access_SDL_Implementation();
 

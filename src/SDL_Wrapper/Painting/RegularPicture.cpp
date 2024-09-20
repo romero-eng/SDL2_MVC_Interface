@@ -9,12 +9,6 @@ SDL::Painting::RegularPicture::RegularPicture(const fs::path& image_path): pictu
 SDL::Painting::RegularPicture::RegularPicture(SDL_Surface* surface): picture_surface{surface} {}
 
 
-void SDL::Painting::RegularPicture::PostPicture(RegularPicture& src)
-{
-    this->PostPicture(src, nullptr, nullptr);
-}
-
-
 void SDL::Painting::RegularPicture::PostPicture(RegularPicture& src,
                                                 const Rect* srcrect,
                                                 Rect* dstrect)
@@ -24,6 +18,15 @@ void SDL::Painting::RegularPicture::PostPicture(RegularPicture& src,
 		throw fmt::format("Could not blit 'src' Surface onto 'dst' Surface: {:s}", SDL_GetError());
 	}
 }
+
+
+void SDL::Painting::RegularPicture::PostPicture(RegularPicture& src) { this->PostPicture(src, nullptr, nullptr); }
+
+
+void SDL::Painting::RegularPicture::PostPicture(RegularPicture& src, const Rect& srcrect, Rect& dstrect) { this->PostPicture(src, &srcrect, &dstrect); }
+
+
+void SDL::Painting::RegularPicture::PostPicture(RegularPicture& src, const Rect& srcrect, Rect&& dstrect) { this->PostPicture(src, &srcrect, &dstrect); }
 
 
 SDL_Surface* SDL::Painting::RegularPicture::Access_SDL_Implementation()

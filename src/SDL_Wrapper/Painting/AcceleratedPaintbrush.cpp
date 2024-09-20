@@ -55,12 +55,6 @@ void SDL::Painting::AcceleratedPaintbrush::Clear()
 }
 
 
-void SDL::Painting::AcceleratedPaintbrush::Copy(AcceleratedPicture& picture)
-{
-    this->Copy(picture, nullptr, nullptr);
-}
-
-
 void SDL::Painting::AcceleratedPaintbrush::Copy(AcceleratedPicture& picture,
                                                 const Rect* srcrect,
                           				        const Rect* dstrect)
@@ -70,6 +64,12 @@ void SDL::Painting::AcceleratedPaintbrush::Copy(AcceleratedPicture& picture,
         throw fmt::format("Could not copy the Accelerated Picture with the Paintbrush: {:s}", SDL_GetError());
     }
 }
+
+
+void SDL::Painting::AcceleratedPaintbrush::Copy(AcceleratedPicture& picture) { this->Copy(picture, nullptr, nullptr); }
+
+
+void SDL::Painting::AcceleratedPaintbrush::Copy(AcceleratedPicture& picture, const Rect& srcrect, const Rect& dstrect) { this->Copy(picture, &srcrect, &dstrect); }
 
 
 void SDL::Painting::AcceleratedPaintbrush::Present()
