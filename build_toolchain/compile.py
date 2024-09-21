@@ -232,14 +232,20 @@ def main() -> None:
              'Avoid potentially value-changing implicit conversions',
              'Avoid potentially sign-changing implicit conversions for integers']
 
-        for root, _, files in source_directory.walk():
+        obj_root: Path
+
+        for src_root, dirs, files in source_directory.walk():
+
+            obj_root = object_directory/src_root.relative_to(source_directory)
+
+            for dir in dirs:
+                if not (obj_root/dir).exists():
+                    (obj_root/dir).mkdir()
+
             for file in files:
 
-                current_source_path = root/file
-                current_object_path = object_directory/root.relative_to(source_directory)/f'{current_source_path.stem:s}.o'  # noqa: E501
-
-                if not current_object_path.parent.exists():
-                    current_object_path.parent.mkdir()
+                current_source_path = src_root/file
+                current_object_path = obj_root/f'{current_source_path.stem:s}.o'  # noqa: E501
 
                 if current_source_path.suffix in source_file_extensions:
 
