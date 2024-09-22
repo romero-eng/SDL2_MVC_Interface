@@ -1,2 +1,1 @@
  - Create RegularPaintbrush.cpp
- - Create Tests to make sure SDL::Painting API works as expected
