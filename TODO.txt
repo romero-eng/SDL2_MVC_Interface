@@ -1,4 +1,2 @@
- - Rename RegularPicture.cpp and AcceleratedPicture.hpp to RegularImage.cpp and AcceleratedImage.cpp, respectively
- - Separate Files into Equipment and Image namespaces/subfolders
  - Create RegularPaintbrush.cpp
- - Create Unit Tests to make sure SDL::Painting API works
+ - Create Tests to make sure SDL::Painting API works as expected

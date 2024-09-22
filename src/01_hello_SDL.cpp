@@ -5,11 +5,11 @@
 #include "SDL_Wrapper/Hints.hpp"
 #include "SDL_Wrapper/Event.hpp"
 
-#include "SDL_Wrapper/Painting/Canvas.hpp"
-#include "SDL_Wrapper/Painting/RegularPicture.hpp"
-#include "SDL_Wrapper/Painting/AcceleratedPicture.hpp"
-#include "SDL_Wrapper/Painting/AcceleratedPaintbrush.hpp"
-#include "SDL_Wrapper/Painting/Rectangle.hpp"
+#include "SDL_Wrapper/Painting/Equipment/Canvas.hpp"
+#include "SDL_Wrapper/Painting/Image/RegularImage.hpp"
+#include "SDL_Wrapper/Painting/Image/AcceleratedImage.hpp"
+#include "SDL_Wrapper/Painting/Equipment/AcceleratedPaintbrush.hpp"
+#include "SDL_Wrapper/Painting/Equipment/Rectangle.hpp"
 
 
 #include <string>
@@ -26,29 +26,29 @@ int main( int argc, char* args[] )
 	try
 	{
 		SDL::Init(SDL::SubsystemInitFlags::VIDEO,
-				  SDL::Painting::ImageFileTypes::PNG);
+				  SDL::Painting::Image::FileTypes::PNG);
 
 		SDL::SetHint(SDL::Hints::RENDER_SCALE_QUALITY, "linear", "Warning: Linear texture filtering not enabled!");
 
-		SDL::Painting::Canvas canvas {"SDL Tutorial",
-	  							      SDL::Painting::CanvasPositionFlags::UNDEFINED,
-								      SCREEN_WIDTH,
-								      SCREEN_HEIGHT,
-								      SDL::Painting::CanvasInitFlags::SHOWN};
+		SDL::Painting::Equipment::Canvas canvas {"SDL Tutorial",
+		  								         SDL::Painting::Equipment::CanvasPositionFlags::UNDEFINED,
+										         SCREEN_WIDTH,
+										         SCREEN_HEIGHT,
+										         SDL::Painting::Equipment::CanvasInitFlags::SHOWN};
 
-		SDL::Painting::AcceleratedPaintbrush paintbrush {canvas,
-                                						 -1,
-                                 						 SDL::Painting::AcceleratedPaintbrushFlags::ACCELERATED,
-                                 						 0xFF, 0xFF, 0xFF, 0xFF};
+		SDL::Painting::Equipment::AcceleratedPaintbrush paintbrush {canvas,
+                                								    -1,
+                                 								    SDL::Painting::Equipment::AcceleratedPaintbrushFlags::ACCELERATED,
+                                 								    0xFF, 0xFF, 0xFF, 0xFF};
 
-		SDL::Painting::AcceleratedPicture viewPortTest {paintbrush,
-														fs::current_path().parent_path().parent_path()/"res"/"viewport.png"};
+		SDL::Painting::Image::AcceleratedImage viewPortTest {paintbrush,
+															   fs::current_path().parent_path().parent_path()/"res"/"viewport.png"};
 
-		paintbrush.ReserveDrawingArea(SDL::Painting::Rect {.x{0}, .y{0}, .w{SCREEN_WIDTH/2}, .h{SCREEN_HEIGHT/2}});
+		paintbrush.ReserveDrawingArea(SDL::Painting::Equipment::Rect {.x{0}, .y{0}, .w{SCREEN_WIDTH/2}, .h{SCREEN_HEIGHT/2}});
 		paintbrush.CopyPicture(viewPortTest);
-		paintbrush.ReserveDrawingArea(SDL::Painting::Rect {.x{SCREEN_WIDTH/2}, .y{0}, .w{SCREEN_WIDTH/2}, .h{SCREEN_HEIGHT/2}});
+		paintbrush.ReserveDrawingArea(SDL::Painting::Equipment::Rect {.x{SCREEN_WIDTH/2}, .y{0}, .w{SCREEN_WIDTH/2}, .h{SCREEN_HEIGHT/2}});
 		paintbrush.CopyPicture(viewPortTest);
-		paintbrush.ReserveDrawingArea(SDL::Painting::Rect {.x{0}, .y{SCREEN_HEIGHT/2}, .w{SCREEN_WIDTH}, .h{SCREEN_HEIGHT/2}});
+		paintbrush.ReserveDrawingArea(SDL::Painting::Equipment::Rect {.x{0}, .y{SCREEN_HEIGHT/2}, .w{SCREEN_WIDTH}, .h{SCREEN_HEIGHT/2}});
 		paintbrush.CopyPicture(viewPortTest);
 		paintbrush.Present();
 

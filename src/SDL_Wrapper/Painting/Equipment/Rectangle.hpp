@@ -8,7 +8,10 @@ namespace SDL
 {
     namespace Painting
     {
-        using Rect = SDL_Rect;
+        namespace Equipment
+        {
+            using Rect = SDL_Rect;
+        }
     }
 }
 

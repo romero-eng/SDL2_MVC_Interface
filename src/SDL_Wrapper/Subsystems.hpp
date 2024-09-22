@@ -5,7 +5,7 @@
 #include <SDL2/SDL.h>
 
 // Custom wrapper code for SDL2 API
-#include "Painting/ImageLoading.hpp"
+#include "Painting/Image/FileLoading.hpp"
 
 // Third-Party Libaries
 #include <fmt/format.h> // Needed for formatting Exception messages
@@ -33,7 +33,7 @@ namespace SDL
     void Init(SubsystemInitFlags subsystem_flag);
 
     void Init(SubsystemInitFlags subsystem_flag,
-              Painting::ImageFileTypes file_type);
+              Painting::Image::FileTypes file_type);
 
     void Init(SubsystemInitFlags subsystem_flag,
               Uint32 file_types);
@@ -41,7 +41,7 @@ namespace SDL
     void Init(Uint32 subsystem_flags);
 
     void Init(Uint32 subsystem_flags,
-              Painting::ImageFileTypes file_type);
+              Painting::Image::FileTypes file_type);
 
     void Init(Uint32 subsystem_flags,
               Uint32 file_types);

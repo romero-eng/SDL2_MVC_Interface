@@ -10,10 +10,10 @@ void SDL::Init(SDL::SubsystemInitFlags subsystem_flag)
 
 
 void SDL::Init(SubsystemInitFlags subsystem_flag,
-               Painting::ImageFileTypes file_type)
+               Painting::Image::FileTypes file_type)
 {
 	SDL::Init(subsystem_flag);
-	Painting::InitImageLoading(file_type);
+	Painting::Image::InitLoading(file_type);
 }
 
 
@@ -21,7 +21,7 @@ void SDL::Init(SubsystemInitFlags subsystem_flag,
                Uint32 file_types)
 {
 	SDL::Init(subsystem_flag);
-	Painting::InitImageLoading(file_types);
+	Painting::Image::InitLoading(file_types);
 }
 
 
@@ -35,10 +35,10 @@ void SDL::Init(Uint32 subsystem_flags)
 
 
 void SDL::Init(Uint32 subsystem_flags,
-               Painting::ImageFileTypes file_type)
+               Painting::Image::FileTypes file_type)
 {
 	SDL::Init(subsystem_flags);
-	Painting::InitImageLoading(file_type);
+	Painting::Image::InitLoading(file_type);
 }
 
 
@@ -46,15 +46,15 @@ void SDL::Init(Uint32 subsystem_flags,
                Uint32 file_types)
 {
 	SDL::Init(subsystem_flags);
-	Painting::InitImageLoading(file_types);
+	Painting::Image::InitLoading(file_types);
 }
 
 
 void SDL::Quit(void)
 {
-	if(Painting::QueryImageLoadingInitialization())
+	if(Painting::Image::QueryLoadingInit())
 	{
-		Painting::QuitImageLoading();
+		Painting::Image::QuitLoading();
 	}
 	SDL_Quit();
 }
