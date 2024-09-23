@@ -29,7 +29,7 @@ namespace SDL
         {
             enum class AcceleratedPaintbrushFlags : std::uint32_t
             {
-               SOFTWARE      = SDL_RENDERER_SOFTWARE,
+                SOFTWARE      = SDL_RENDERER_SOFTWARE,
                 ACCELERATED   = SDL_RENDERER_ACCELERATED,
                 PRESENTVSYNC  = SDL_RENDERER_PRESENTVSYNC,
                 TARGETTEXTURE = SDL_RENDERER_TARGETTEXTURE                
