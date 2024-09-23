@@ -67,11 +67,6 @@ namespace SDL
 
                 AcceleratedPaintbrush& operator=(const AcceleratedPaintbrush& paintbrush) = delete;  // Copy Assignment
 
-                void SetDrawColor(Uint8 r,
-                                  Uint8 g,
-                                  Uint8 b,
-                                  Uint8 a);
-
                 void Clear();
 
                 void PostPicture(Image::AcceleratedImage& picture);
@@ -79,6 +74,11 @@ namespace SDL
                 void PostPicture(Image::AcceleratedImage& picture,
                                  const Rect& srcrect,
                                  const Rect& dstrect);
+
+                void SetDrawColor(Uint8 r,
+                                  Uint8 g,
+                                  Uint8 b,
+                                  Uint8 a);
 
                 void Fill();
 

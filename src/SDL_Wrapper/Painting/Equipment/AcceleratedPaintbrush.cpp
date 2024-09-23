@@ -34,18 +34,6 @@ SDL::Painting::Equipment::AcceleratedPaintbrush::AcceleratedPaintbrush(Canvas& c
 }
 
 
-void SDL::Painting::Equipment::AcceleratedPaintbrush::SetDrawColor(Uint8 r,
-                                                                   Uint8 g,
-                                                                   Uint8 b,
-                                                                   Uint8 a)
-{
-    if(SDL_SetRenderDrawColor(this->paintbrush_renderer, r, g, b, a) < 0)
-    {
-        throw fmt::format("Could not set colors for Paintbrush: {:s}", SDL_GetError());
-    }
-}
-
-
 void SDL::Painting::Equipment::AcceleratedPaintbrush::Clear()
 {
     if (SDL_RenderClear(this->paintbrush_renderer) < 0)
@@ -70,6 +58,18 @@ void SDL::Painting::Equipment::AcceleratedPaintbrush::PostPicture(Image::Acceler
 
 
 void SDL::Painting::Equipment::AcceleratedPaintbrush::PostPicture(Image::AcceleratedImage& picture, const Rect& srcrect, const Rect& dstrect) { this->PostPicture(picture, &srcrect, &dstrect); }
+
+
+void SDL::Painting::Equipment::AcceleratedPaintbrush::SetDrawColor(Uint8 r,
+                                                                   Uint8 g,
+                                                                   Uint8 b,
+                                                                   Uint8 a)
+{
+    if(SDL_SetRenderDrawColor(this->paintbrush_renderer, r, g, b, a) < 0)
+    {
+        throw fmt::format("Could not set colors for Paintbrush: {:s}", SDL_GetError());
+    }
+}
 
 
 void SDL::Painting::Equipment::AcceleratedPaintbrush::Fill()
