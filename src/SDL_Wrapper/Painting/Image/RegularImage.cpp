@@ -16,8 +16,8 @@ SDL::Painting::Image::RegularImage::RegularImage(SDL_Surface* surface): picture_
 
 
 void SDL::Painting::Image::RegularImage::PostOntoPicture(RegularImage& src,
-                                                           const Equipment::Rect* srcrect,
-                                                           Equipment::Rect* dstrect)
+                                                         const Equipment::Rect* srcrect,
+                                                         Equipment::Rect* dstrect)
 {
     if(SDL_BlitSurface(src.Access_SDL_Implementation(), srcrect, this->picture_surface, dstrect) != 0)
 	{
