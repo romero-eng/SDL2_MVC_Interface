@@ -211,13 +211,15 @@ int main( int argc, char* args[] )
 
 		SDL::SetHint(SDL::Hints::RENDER_SCALE_QUALITY, "linear", "Warning: Linear texture filtering not enabled!");
 
+		///*
 		runWindowCreationTest();
 		runSurfaceLoadingTest();
-		/*
+		//*/
+		///*
 		runTextureRenderingTest();
 		runGeometryRenderingTest();
 		runViewPortTest();
-		*/
+		//*/
 
 	}
 	catch(std::string error_message)

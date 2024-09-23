@@ -4,8 +4,8 @@
 
 
 SDL::Painting::Image::AcceleratedImage::AcceleratedImage(Equipment::AcceleratedPaintbrush& paintbrush,
-                                                             SDL_Surface* surfaceToConvert): picture_texture{SDL_CreateTextureFromSurface(paintbrush.Access_SDL_Implementation(),
-                                                                                                                                          surfaceToConvert)}
+                                                         RegularImage& picture): picture_texture{SDL_CreateTextureFromSurface(paintbrush.Access_SDL_Implementation(),
+                                                                                                                              picture.Access_SDL_Implementation())}
 {
     if (this->picture_texture == nullptr)
     {

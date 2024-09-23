@@ -36,8 +36,6 @@ namespace SDL
 
                 RegularImage(const fs::path& image_path);
 
-                RegularImage(SDL_Surface* surface);
-
                 RegularImage(const RegularImage& picture) = delete; // Copy Constructor
 
                 RegularImage& operator=(const RegularImage& picture) = delete; // Copy Assignment

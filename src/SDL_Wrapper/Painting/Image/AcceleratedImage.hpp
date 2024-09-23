@@ -6,6 +6,7 @@
 #include <SDL2/SDL_image.h>
 
 // Custom wrapper code for SDL2 API
+#include "RegularImage.hpp"
 #include "../Equipment/AcceleratedPaintbrush.hpp"
 #include "../Equipment/Rectangle.hpp"
 
@@ -37,7 +38,7 @@ namespace SDL
             public:
 
                 AcceleratedImage(Equipment::AcceleratedPaintbrush& paintbrush,
-                                   SDL_Surface* surfaceToConvert);
+                                 RegularImage& picture);
 
                 AcceleratedImage(Equipment::AcceleratedPaintbrush& paintbrush,
                                    const fs::path& image_file);

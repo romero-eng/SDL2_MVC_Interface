@@ -12,9 +12,6 @@ SDL::Painting::Image::RegularImage::RegularImage(const fs::path& image_path): pi
 }
 
 
-SDL::Painting::Image::RegularImage::RegularImage(SDL_Surface* surface): picture_surface{surface} {}
-
-
 void SDL::Painting::Image::RegularImage::PostOntoPicture(RegularImage& src,
                                                          const Equipment::Rect* srcrect,
                                                          Equipment::Rect* dstrect)
