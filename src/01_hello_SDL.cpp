@@ -62,7 +62,7 @@ void runTextureRenderingTest()
 														 fs::current_path().parent_path().parent_path()/"res"/"texture.png"};
 
 	paintbrush.Clear();
-	paintbrush.CopyPicture(renderingPNG);
+	paintbrush.PostPicture(renderingPNG);
 	paintbrush.Present();
 
     SDL::Event current_event;
@@ -147,17 +147,17 @@ void runViewPortTest()
 																  .y{0},
 																  .w{SCREEN_WIDTH/2},
 																  .h{SCREEN_HEIGHT/2}});
-	paintbrush.CopyPicture(viewPortTest);
+	paintbrush.PostPicture(viewPortTest);
 	paintbrush.ReserveDrawingArea(SDL::Painting::Equipment::Rect {.x{SCREEN_WIDTH/2},
 																  .y{0},
 																  .w{SCREEN_WIDTH/2},
 																  .h{SCREEN_HEIGHT/2}});
-	paintbrush.CopyPicture(viewPortTest);
+	paintbrush.PostPicture(viewPortTest);
 	paintbrush.ReserveDrawingArea(SDL::Painting::Equipment::Rect {.x{0},
 																  .y{SCREEN_HEIGHT/2},
 																  .w{SCREEN_WIDTH},
 																  .h{SCREEN_HEIGHT/2}});
-	paintbrush.CopyPicture(viewPortTest);
+	paintbrush.PostPicture(viewPortTest);
 	paintbrush.Present();
 
     SDL::Event current_event;
@@ -182,10 +182,10 @@ int main( int argc, char* args[] )
 
 		SDL::SetHint(SDL::Hints::RENDER_SCALE_QUALITY, "linear", "Warning: Linear texture filtering not enabled!");
 
-		runSurfaceLoadingTest();
-		//runTextureRenderingTest();
-		//runGeometryRenderingTest();
-		//runViewPortTest();
+		//runSurfaceLoadingTest();
+		runTextureRenderingTest();
+		runGeometryRenderingTest();
+		runViewPortTest();
 
 	}
 	catch(std::string error_message)

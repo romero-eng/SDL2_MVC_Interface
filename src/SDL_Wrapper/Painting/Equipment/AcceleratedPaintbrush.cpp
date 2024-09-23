@@ -55,7 +55,7 @@ void SDL::Painting::Equipment::AcceleratedPaintbrush::Clear()
 }
 
 
-void SDL::Painting::Equipment::AcceleratedPaintbrush::CopyPicture(Image::AcceleratedImage& picture,
+void SDL::Painting::Equipment::AcceleratedPaintbrush::PostPicture(Image::AcceleratedImage& picture,
                                                                   const Rect* srcrect,
                           		        	    	              const Rect* dstrect)
 {
@@ -66,10 +66,10 @@ void SDL::Painting::Equipment::AcceleratedPaintbrush::CopyPicture(Image::Acceler
 }
 
 
-void SDL::Painting::Equipment::AcceleratedPaintbrush::CopyPicture(Image::AcceleratedImage& picture) { this->CopyPicture(picture, nullptr, nullptr); }
+void SDL::Painting::Equipment::AcceleratedPaintbrush::PostPicture(Image::AcceleratedImage& picture) { this->PostPicture(picture, nullptr, nullptr); }
 
 
-void SDL::Painting::Equipment::AcceleratedPaintbrush::CopyPicture(Image::AcceleratedImage& picture, const Rect& srcrect, const Rect& dstrect) { this->CopyPicture(picture, &srcrect, &dstrect); }
+void SDL::Painting::Equipment::AcceleratedPaintbrush::PostPicture(Image::AcceleratedImage& picture, const Rect& srcrect, const Rect& dstrect) { this->PostPicture(picture, &srcrect, &dstrect); }
 
 
 void SDL::Painting::Equipment::AcceleratedPaintbrush::Fill()

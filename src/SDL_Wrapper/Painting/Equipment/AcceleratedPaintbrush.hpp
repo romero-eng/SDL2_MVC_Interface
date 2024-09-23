@@ -41,7 +41,7 @@ namespace SDL
 
                 SDL_Renderer* paintbrush_renderer;
 
-                void CopyPicture(Image::AcceleratedImage& picture,
+                void PostPicture(Image::AcceleratedImage& picture,
                                  const Rect* srcrect,
                                  const Rect* dstrect);
 
@@ -74,9 +74,9 @@ namespace SDL
 
                 void Clear();
 
-                void CopyPicture(Image::AcceleratedImage& picture);
+                void PostPicture(Image::AcceleratedImage& picture);
 
-                void CopyPicture(Image::AcceleratedImage& picture,
+                void PostPicture(Image::AcceleratedImage& picture,
                                  const Rect& srcrect,
                                  const Rect& dstrect);
 
