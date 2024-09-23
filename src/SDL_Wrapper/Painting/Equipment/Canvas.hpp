@@ -79,14 +79,6 @@ namespace SDL
 
                 const char* GetTitle();
 
-                void PostPicture(Image::RegularImage& src);
-
-                void PostPicture(Image::RegularImage& src,
-                                 const Rect* srcrect,
-                                 Rect* dstrect);
-
-                void Fill(Uint8 r, Uint8 g, Uint8 b);
-
                 SDL_Window* Access_SDL_Implementation();
 
                 ~Canvas();

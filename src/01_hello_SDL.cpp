@@ -8,6 +8,7 @@
 #include "SDL_Wrapper/Painting/Equipment/Canvas.hpp"
 #include "SDL_Wrapper/Painting/Image/RegularImage.hpp"
 #include "SDL_Wrapper/Painting/Image/AcceleratedImage.hpp"
+#include "SDL_Wrapper/Painting/Equipment/RegularPaintbrush.hpp"
 #include "SDL_Wrapper/Painting/Equipment/AcceleratedPaintbrush.hpp"
 #include "SDL_Wrapper/Painting/Equipment/Rectangle.hpp"
 
@@ -21,17 +22,45 @@ const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
 
-void runSurfaceLoadingTest()
+void runWindowCreationTest()
 {
-	SDL::Painting::Equipment::Canvas canvas {"ViewPort Test",
+	SDL::Painting::Equipment::Canvas canvas {"Window Creation Test",
 		  								     SDL::Painting::Equipment::CanvasPositionFlags::UNDEFINED,
 										     SCREEN_WIDTH,
 									         SCREEN_HEIGHT,
 									         SDL::Painting::Equipment::CanvasInitFlags::SHOWN};
 
+	SDL::Painting::Equipment::RegularPaintbrush paintbrush {canvas};
+
+	paintbrush.Fill(0xFF, 0xFF, 0x0);
+	paintbrush.Present();
+
+    SDL::Event current_event;
+	bool quit = false;
+	while(!quit)
+	{
+		if(SDL::PollEvent(current_event))
+		{
+			quit |= current_event.type == SDL::EventTypes::QUIT;
+		}
+	}
+}
+
+
+void runSurfaceLoadingTest()
+{
+	SDL::Painting::Equipment::Canvas canvas {"Bitmap Loading Test",
+		  								     SDL::Painting::Equipment::CanvasPositionFlags::UNDEFINED,
+										     SCREEN_WIDTH,
+									         SCREEN_HEIGHT,
+									         SDL::Painting::Equipment::CanvasInitFlags::SHOWN};
+
+	SDL::Painting::Equipment::RegularPaintbrush paintbrush {canvas};
+
 	SDL::Painting::Image::RegularImage helloWorldBMP {fs::current_path().parent_path().parent_path()/"res"/"hello_world.bmp"};
 
-	canvas.PostPicture(helloWorldBMP);
+	paintbrush.PostPicture(helloWorldBMP);
+	paintbrush.Present();
 
     SDL::Event current_event;
 	bool quit = false;
@@ -182,10 +211,13 @@ int main( int argc, char* args[] )
 
 		SDL::SetHint(SDL::Hints::RENDER_SCALE_QUALITY, "linear", "Warning: Linear texture filtering not enabled!");
 
-		//runSurfaceLoadingTest();
+		runWindowCreationTest();
+		runSurfaceLoadingTest();
+		/*
 		runTextureRenderingTest();
 		runGeometryRenderingTest();
 		runViewPortTest();
+		*/
 
 	}
 	catch(std::string error_message)

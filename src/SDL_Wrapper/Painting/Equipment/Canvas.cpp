@@ -53,42 +53,6 @@ SDL::Painting::Equipment::Canvas::Canvas(const char* title,
 const char* SDL::Painting::Equipment::Canvas::GetTitle() { return SDL_GetWindowTitle(this->window); }
 
 
-void SDL::Painting::Equipment::Canvas::PostPicture(Image::RegularImage& src) { this->PostPicture(src, nullptr, nullptr); }
-
-
-void SDL::Painting::Equipment::Canvas::PostPicture(Image::RegularImage& src,
-                            				 	   const Rect* srcrect,
-                             					   Rect* dstrect)
-{
-    if(SDL_BlitSurface(src.Access_SDL_Implementation(), srcrect, SDL_GetWindowSurface(this->window), dstrect) != 0)
-	{
-		throw fmt::format("Could not blit 'src' Surface onto 'dst' Surface: {:s}", SDL_GetError());
-	}
-
-	if(SDL_UpdateWindowSurface(this->window) < 0)
-	{
-		throw fmt::format("Could not update '{:s}' Canvas: {:s}", this->GetTitle(), SDL_GetError());
-	}
-}
-
-
-void SDL::Painting::Equipment::Canvas::Fill(Uint8 r, Uint8 g, Uint8 b)
-{
-	if(SDL_FillRect(SDL_GetWindowSurface(this->window),
-					NULL,
-					SDL_MapRGB(SDL_GetWindowSurface(this->window)->format,
-							   r, g, b)) < 0)
-	{
-		throw fmt::format("Could not fill in the '{:s}' Canvas: {:s}", this->GetTitle(), SDL_GetError());
-	}
-
-	if(SDL_UpdateWindowSurface(this->window) < 0)
-	{
-		throw fmt::format("Could not update '{:s}' Canvas: {:s}", this->GetTitle(), SDL_GetError());
-	}
-}
-
-
 SDL_Window* SDL::Painting::Equipment::Canvas::Access_SDL_Implementation() { return this->window; }
 
 
