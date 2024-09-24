@@ -6,18 +6,6 @@
 SDL::Painting::Equipment::RegularPaintbrush::RegularPaintbrush(Canvas& canvas): canvas{canvas} {}
 
 
-void SDL::Painting::Equipment::RegularPaintbrush::Fill(Uint8 r, Uint8 g, Uint8 b)
-{
-	if(SDL_FillRect(SDL_GetWindowSurface(this->canvas.Access_SDL_Implementation()),
-					NULL,
-					SDL_MapRGB(SDL_GetWindowSurface(this->canvas.Access_SDL_Implementation())->format,
-							   r, g, b)) < 0)
-	{
-		throw fmt::format("Could not fill in the '{:s}' Canvas: {:s}", SDL_GetWindowTitle(this->canvas.Access_SDL_Implementation()), SDL_GetError());
-	}
-}
-
-
 void SDL::Painting::Equipment::RegularPaintbrush::PaintImageOverArea(Image::RegularImage& image,
                             			    	     	      		 const Rect* imageArea,
                              				    	          		 Rect* canvasArea)
@@ -33,6 +21,18 @@ void SDL::Painting::Equipment::RegularPaintbrush::PaintImage(Image::RegularImage
 
 
 void SDL::Painting::Equipment::RegularPaintbrush::PaintImageOverArea(Image::RegularImage& image, const Rect& imageArea, Rect& canvasArea) { this->PaintImageOverArea(image, &imageArea, &canvasArea); }
+
+
+void SDL::Painting::Equipment::RegularPaintbrush::Fill(Uint8 r, Uint8 g, Uint8 b)
+{
+	if(SDL_FillRect(SDL_GetWindowSurface(this->canvas.Access_SDL_Implementation()),
+					NULL,
+					SDL_MapRGB(SDL_GetWindowSurface(this->canvas.Access_SDL_Implementation())->format,
+							   r, g, b)) < 0)
+	{
+		throw fmt::format("Could not fill in the '{:s}' Canvas: {:s}", SDL_GetWindowTitle(this->canvas.Access_SDL_Implementation()), SDL_GetError());
+	}
+}
 
 
 void SDL::Painting::Equipment::RegularPaintbrush::Present()

@@ -28,13 +28,13 @@ namespace SDL
 
                 RegularPaintbrush(Canvas& canvas);
 
-                void Fill(Uint8 r, Uint8 g, Uint8 b);
-
                 void PaintImage(Image::RegularImage& image);
 
                 void PaintImageOverArea(Image::RegularImage& image,
                                         const Rect& imageArea,
                                         Rect& canvasArea);
+
+                void Fill(Uint8 r, Uint8 g, Uint8 b);
 
                 void Present();
 
