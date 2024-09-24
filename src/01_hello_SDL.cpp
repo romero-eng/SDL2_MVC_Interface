@@ -59,7 +59,7 @@ void runSurfaceLoadingTest()
 
 	SDL::Painting::Image::RegularImage helloWorldBMP {fs::current_path().parent_path().parent_path()/"res"/"hello_world.bmp"};
 
-	paintbrush.PostPicture(helloWorldBMP);
+	paintbrush.PaintImage(helloWorldBMP);
 	paintbrush.Present();
 
     SDL::Event current_event;

@@ -20,17 +20,21 @@ namespace SDL
 
                 Canvas& canvas;
 
+                void PaintImageOverArea(Image::RegularImage& image,
+                                        const Rect* imageArea,
+                                        Rect* canvasArea);
+
             public:
 
                 RegularPaintbrush(Canvas& canvas);
 
                 void Fill(Uint8 r, Uint8 g, Uint8 b);
 
-                void PostPicture(Image::RegularImage& src);
+                void PaintImage(Image::RegularImage& image);
 
-                void PostPicture(Image::RegularImage& src,
-                                 const Rect* srcrect,
-                                 Rect* dstrect);
+                void PaintImageOverArea(Image::RegularImage& image,
+                                        const Rect& imageArea,
+                                        Rect& canvasArea);
 
                 void Present();
 
