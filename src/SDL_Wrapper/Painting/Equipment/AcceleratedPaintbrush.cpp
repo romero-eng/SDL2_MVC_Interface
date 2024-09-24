@@ -27,11 +27,11 @@ SDL::Painting::Equipment::AcceleratedPaintbrush::AcceleratedPaintbrush(Canvas& c
     {
         throw fmt::format("Renderer could not be created for the '{:s}' Window:\n\n{:s}\n", canvas.GetTitle(), SDL_GetError());
     }
-    else
-    {
-        this->SetPaintingColor(r, g, b, a);
-        canvas.setAcceleratedPaintbrush(*this);
-    }
+
+    this->SetPaintingColor(r, g, b, a);
+    this->Clear();
+
+    canvas.setAcceleratedPaintbrush(*this);
 }
 
 

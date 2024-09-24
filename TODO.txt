@@ -1,0 +1,1 @@
+- Automatically clear the backbuffer for the Accelerated Paintbrush upon initialization and for each time an image is presented on the canvas

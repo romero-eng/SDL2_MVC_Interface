@@ -73,6 +73,7 @@ void SDL::Painting::Equipment::Canvas::Present()
 	if(this->acceleratedPaintbrush != nullptr)
 	{
 		SDL_RenderPresent(this->acceleratedPaintbrush->Access_SDL_Implementation());
+		this->acceleratedPaintbrush->Clear();
 	}
 }
 

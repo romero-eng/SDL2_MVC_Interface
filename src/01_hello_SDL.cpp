@@ -92,7 +92,6 @@ void runTextureRenderingTest()
 	SDL::Painting::Image::AcceleratedImage renderingPNG {paintbrush,
 														 fs::current_path().parent_path().parent_path()/"res"/"texture.png"};
 
-	paintbrush.Clear();
 	paintbrush.PaintImage(renderingPNG);
 
 	canvas.Present();
@@ -122,6 +121,7 @@ void runGeometryRenderingTest()
                                 							    -1,
                                  							    SDL::Painting::Equipment::AcceleratedPaintbrushFlags::ACCELERATED,
                                  							    0xFF, 0xFF, 0xFF, 0xFF};
+
 	paintbrush.Fill();
 
 	paintbrush.SetPaintingColor(0xFF, 0x0, 0x0, 0xFF);
