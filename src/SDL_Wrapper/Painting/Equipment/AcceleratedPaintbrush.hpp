@@ -35,6 +35,8 @@ namespace SDL
                 TARGETTEXTURE = SDL_RENDERER_TARGETTEXTURE                
             };
 
+            class Canvas; // Forward Declaration of Canvas Class to resolve circular include
+
             class AcceleratedPaintbrush
             {
             private:
@@ -88,8 +90,6 @@ namespace SDL
                 void ReservePaintingArea(const Rect& area);
 
                 void Fill();
-
-                void Present();
 
                 SDL_Renderer* Access_SDL_Implementation();
 

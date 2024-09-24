@@ -5,7 +5,8 @@
 #include <SDL2/SDL.h>
 
 // Custom wrapper code for SDL2 API
-#include "../Image/RegularImage.hpp"  // Every Canvas has an inherent Regular Picture (i.e., every Window has an inherent Surface in the SDL2 API)
+#include "AcceleratedPaintbrush.hpp"
+#include "../Image/RegularImage.hpp"
 
 // Third-Party Libaries
 #include <fmt/format.h> // Needed for formatting Exception messages
@@ -57,11 +58,14 @@ namespace SDL
                 CENTERED  = SDL_WINDOWPOS_CENTERED
             };
 
+            class AcceleratedPaintbrush; // Forward Declaration of AcceleratedPaintbrush Class to resolve circular include
+
             class Canvas
             {
             private:
 
                 SDL_Window* window;
+                AcceleratedPaintbrush* acceleratedPaintbrush {nullptr};
 
             public:
 
@@ -80,6 +84,10 @@ namespace SDL
                 const char* GetTitle();
 
                 SDL_Window* Access_SDL_Implementation();
+
+                void setAcceleratedPaintbrush(AcceleratedPaintbrush& acceleratedPaintbrush);
+
+                void Present();
 
                 ~Canvas();
             };

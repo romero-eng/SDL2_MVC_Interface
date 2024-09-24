@@ -41,8 +41,6 @@ namespace SDL
 
                 void Fill(Uint8 r, Uint8 g, Uint8 b);
 
-                void Present();
-
             };
         }
     }

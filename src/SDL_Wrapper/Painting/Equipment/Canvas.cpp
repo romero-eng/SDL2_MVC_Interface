@@ -56,6 +56,27 @@ const char* SDL::Painting::Equipment::Canvas::GetTitle() { return SDL_GetWindowT
 SDL_Window* SDL::Painting::Equipment::Canvas::Access_SDL_Implementation() { return this->window; }
 
 
+void SDL::Painting::Equipment::Canvas::setAcceleratedPaintbrush(AcceleratedPaintbrush& acceleratedPaintbrush) { this->acceleratedPaintbrush = &acceleratedPaintbrush; }
+
+
+void SDL::Painting::Equipment::Canvas::Present()
+{
+
+	if(SDL_HasWindowSurface(this->window))
+	{
+		if(SDL_UpdateWindowSurface(this->window) < 0)
+		{
+			throw fmt::format("Could not update '{:s}' Canvas: {:s}", SDL_GetWindowTitle(this->window), SDL_GetError());
+		}
+	}
+
+	if(this->acceleratedPaintbrush != nullptr)
+	{
+		SDL_RenderPresent(this->acceleratedPaintbrush->Access_SDL_Implementation());
+	}
+}
+
+
 SDL::Painting::Equipment::Canvas::~Canvas()
 {
 	SDL_DestroyWindow(this->window);

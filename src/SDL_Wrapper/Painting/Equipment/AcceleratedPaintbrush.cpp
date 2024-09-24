@@ -30,6 +30,7 @@ SDL::Painting::Equipment::AcceleratedPaintbrush::AcceleratedPaintbrush(Canvas& c
     else
     {
         this->SetPaintingColor(r, g, b, a);
+        canvas.setAcceleratedPaintbrush(*this);
     }
 }
 
@@ -121,9 +122,6 @@ void SDL::Painting::Equipment::AcceleratedPaintbrush::Fill()
         throw fmt::format("Could not fill in entire canvas with accelerated paintbrush: {:s}", SDL_GetError());
     }
 }
-
-
-void SDL::Painting::Equipment::AcceleratedPaintbrush::Present() { SDL_RenderPresent(this->paintbrush_renderer); }
 
 
 SDL_Renderer* SDL::Painting::Equipment::AcceleratedPaintbrush::Access_SDL_Implementation() { return this->paintbrush_renderer; }

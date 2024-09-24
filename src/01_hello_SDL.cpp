@@ -33,7 +33,8 @@ void runWindowCreationTest()
 	SDL::Painting::Equipment::RegularPaintbrush paintbrush {canvas};
 
 	paintbrush.Fill(0xFF, 0xFF, 0x0);
-	paintbrush.Present();
+
+	canvas.Present();
 
     SDL::Event current_event;
 	bool quit = false;
@@ -60,7 +61,8 @@ void runSurfaceLoadingTest()
 	SDL::Painting::Image::RegularImage helloWorldBMP {fs::current_path().parent_path().parent_path()/"res"/"hello_world.bmp"};
 
 	paintbrush.PaintImage(helloWorldBMP);
-	paintbrush.Present();
+
+	canvas.Present();
 
     SDL::Event current_event;
 	bool quit = false;
@@ -92,7 +94,8 @@ void runTextureRenderingTest()
 
 	paintbrush.Clear();
 	paintbrush.PaintImage(renderingPNG);
-	paintbrush.Present();
+
+	canvas.Present();
 
     SDL::Event current_event;
 	bool quit = false;
@@ -142,7 +145,7 @@ void runGeometryRenderingTest()
 		paintbrush.PaintPoint(SCREEN_WIDTH/2, i);
 	}
 
-	paintbrush.Present();
+	canvas.Present();
 
     SDL::Event current_event;
 	bool quit = false;
@@ -177,17 +180,20 @@ void runViewPortTest()
 																   .w{SCREEN_WIDTH/2},
 																   .h{SCREEN_HEIGHT/2}});
 	paintbrush.PaintImage(viewPortTest);
+
 	paintbrush.ReservePaintingArea(SDL::Painting::Equipment::Rect {.x{SCREEN_WIDTH/2},
 																   .y{0},
 																   .w{SCREEN_WIDTH/2},
 																   .h{SCREEN_HEIGHT/2}});
 	paintbrush.PaintImage(viewPortTest);
+
 	paintbrush.ReservePaintingArea(SDL::Painting::Equipment::Rect {.x{0},
 																   .y{SCREEN_HEIGHT/2},
 																   .w{SCREEN_WIDTH},
 																   .h{SCREEN_HEIGHT/2}});
 	paintbrush.PaintImage(viewPortTest);
-	paintbrush.Present();
+
+	canvas.Present();
 
     SDL::Event current_event;
 	bool quit = false;

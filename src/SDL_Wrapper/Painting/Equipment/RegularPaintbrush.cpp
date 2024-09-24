@@ -47,13 +47,4 @@ void SDL::Painting::Equipment::RegularPaintbrush::Fill(Uint8 r, Uint8 g, Uint8 b
 }
 
 
-void SDL::Painting::Equipment::RegularPaintbrush::Present()
-{
-	if(SDL_UpdateWindowSurface(this->canvas.Access_SDL_Implementation()) < 0)
-	{
-		throw fmt::format("Could not update '{:s}' Canvas: {:s}", SDL_GetWindowTitle(this->canvas.Access_SDL_Implementation()), SDL_GetError());
-	}
-}
-
-
 #endif
