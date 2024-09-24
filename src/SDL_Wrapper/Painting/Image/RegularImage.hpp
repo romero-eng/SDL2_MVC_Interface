@@ -28,10 +28,6 @@ namespace SDL
 
                 SDL_Surface* picture_surface;
 
-                void PostOntoPicture(RegularImage& src,
-                                     const Equipment::Rect* srcrect,
-                                     Equipment::Rect* dstrect);
-
             public:
 
                 RegularImage(const fs::path& image_path);
@@ -39,17 +35,6 @@ namespace SDL
                 RegularImage(const RegularImage& picture) = delete; // Copy Constructor
 
                 RegularImage& operator=(const RegularImage& picture) = delete; // Copy Assignment
-
-                void CopyOntoPicture(RegularImage& src);
-
-                void PostOntoPicture(RegularImage& src,
-                                     const Equipment::Rect& srcrect,
-                                     Equipment::Rect& dstrect);
-
-                void PostOntoPicture(RegularImage& src,
-                                     const Equipment::Rect& srcrect,
-                                     Equipment::Rect&& dstrect);
-
                 SDL_Surface* Access_SDL_Implementation();
 
                 ~RegularImage();

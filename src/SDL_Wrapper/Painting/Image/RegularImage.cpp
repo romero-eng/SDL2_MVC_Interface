@@ -12,26 +12,6 @@ SDL::Painting::Image::RegularImage::RegularImage(const fs::path& image_path): pi
 }
 
 
-void SDL::Painting::Image::RegularImage::PostOntoPicture(RegularImage& src,
-                                                         const Equipment::Rect* srcrect,
-                                                         Equipment::Rect* dstrect)
-{
-    if(SDL_BlitSurface(src.Access_SDL_Implementation(), srcrect, this->picture_surface, dstrect) != 0)
-	{
-		throw fmt::format("Could not blit 'src' Surface onto 'dst' Surface: {:s}", SDL_GetError());
-	}
-}
-
-
-void SDL::Painting::Image::RegularImage::CopyOntoPicture(RegularImage& src) { this->PostOntoPicture(src, nullptr, nullptr); }
-
-
-void SDL::Painting::Image::RegularImage::PostOntoPicture(RegularImage& src, const Equipment::Rect& srcrect, Equipment::Rect& dstrect) { this->PostOntoPicture(src, &srcrect, &dstrect); }
-
-
-void SDL::Painting::Image::RegularImage::PostOntoPicture(RegularImage& src, const Equipment::Rect& srcrect, Equipment::Rect&& dstrect) { this->PostOntoPicture(src, &srcrect, &dstrect); }
-
-
 SDL_Surface* SDL::Painting::Image::RegularImage::Access_SDL_Implementation()
 {
     return this->picture_surface;
