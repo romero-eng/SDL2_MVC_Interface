@@ -75,22 +75,22 @@ namespace SDL
                                  const Rect& srcrect,
                                  const Rect& dstrect);
 
-                void SetDrawColor(Uint8 r,
-                                  Uint8 g,
-                                  Uint8 b,
-                                  Uint8 a);
+                void SetPaintingColor(Uint8 r,
+                                      Uint8 g,
+                                      Uint8 b,
+                                      Uint8 a);
 
                 void Fill();
 
-                void DrawRectangle(const Rect& area);
+                void PaintRectangle(const Rect& area);
 
-                void DrawEmptyRectangle(const Rect& area);
+                void PaintEmptyRectangle(const Rect& area);
 
-                void DrawLine(int x1, int y1, int x2, int y2);
+                void PaintLine(int x1, int y1, int x2, int y2);
 
-                void DrawPoint(int x1, int y1);
+                void PaintPoint(int x1, int y1);
 
-                void ReserveDrawingArea(const Rect& area);
+                void ReservePaintingArea(const Rect& area);
 
                 void Present();
 

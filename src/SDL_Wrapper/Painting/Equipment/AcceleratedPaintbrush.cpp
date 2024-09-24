@@ -29,7 +29,7 @@ SDL::Painting::Equipment::AcceleratedPaintbrush::AcceleratedPaintbrush(Canvas& c
     }
     else
     {
-        this->SetDrawColor(r, g, b, a);
+        this->SetPaintingColor(r, g, b, a);
     }
 }
 
@@ -60,10 +60,10 @@ void SDL::Painting::Equipment::AcceleratedPaintbrush::PostPicture(Image::Acceler
 void SDL::Painting::Equipment::AcceleratedPaintbrush::PostPicture(Image::AcceleratedImage& picture, const Rect& srcrect, const Rect& dstrect) { this->PostPicture(picture, &srcrect, &dstrect); }
 
 
-void SDL::Painting::Equipment::AcceleratedPaintbrush::SetDrawColor(Uint8 r,
-                                                                   Uint8 g,
-                                                                   Uint8 b,
-                                                                   Uint8 a)
+void SDL::Painting::Equipment::AcceleratedPaintbrush::SetPaintingColor(Uint8 r,
+                                                                       Uint8 g,
+                                                                       Uint8 b,
+                                                                       Uint8 a)
 {
     if(SDL_SetRenderDrawColor(this->paintbrush_renderer, r, g, b, a) < 0)
     {
@@ -81,7 +81,7 @@ void SDL::Painting::Equipment::AcceleratedPaintbrush::Fill()
 }
 
 
-void SDL::Painting::Equipment::AcceleratedPaintbrush::DrawRectangle(const Rect& area)
+void SDL::Painting::Equipment::AcceleratedPaintbrush::PaintRectangle(const Rect& area)
 {
     if(SDL_RenderFillRect(this->paintbrush_renderer, &area) < 0)
     {
@@ -90,7 +90,7 @@ void SDL::Painting::Equipment::AcceleratedPaintbrush::DrawRectangle(const Rect& 
 }
 
 
-void SDL::Painting::Equipment::AcceleratedPaintbrush::DrawEmptyRectangle(const Rect& area)
+void SDL::Painting::Equipment::AcceleratedPaintbrush::PaintEmptyRectangle(const Rect& area)
 {
     if(SDL_RenderDrawRect(this->paintbrush_renderer, &area) < 0)
     {
@@ -99,7 +99,7 @@ void SDL::Painting::Equipment::AcceleratedPaintbrush::DrawEmptyRectangle(const R
 }
 
 
-void SDL::Painting::Equipment::AcceleratedPaintbrush::DrawLine(int x1, int y1, int x2, int y2)
+void SDL::Painting::Equipment::AcceleratedPaintbrush::PaintLine(int x1, int y1, int x2, int y2)
 {
     if(SDL_RenderDrawLine(this->paintbrush_renderer, x1, y1, x2, y2) < 0)
     {
@@ -108,7 +108,7 @@ void SDL::Painting::Equipment::AcceleratedPaintbrush::DrawLine(int x1, int y1, i
 }
 
 
-void SDL::Painting::Equipment::AcceleratedPaintbrush::DrawPoint(int x1, int y1)
+void SDL::Painting::Equipment::AcceleratedPaintbrush::PaintPoint(int x1, int y1)
 {
     if(SDL_RenderDrawPoint(this->paintbrush_renderer, x1, y1) < 0)
     {
@@ -117,7 +117,7 @@ void SDL::Painting::Equipment::AcceleratedPaintbrush::DrawPoint(int x1, int y1)
 }
 
 
-void SDL::Painting::Equipment::AcceleratedPaintbrush::ReserveDrawingArea(const Rect& area)
+void SDL::Painting::Equipment::AcceleratedPaintbrush::ReservePaintingArea(const Rect& area)
 {
     if(SDL_RenderSetViewport(this->paintbrush_renderer, &area) < 0)
     {
