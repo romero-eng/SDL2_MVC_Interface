@@ -41,9 +41,9 @@ namespace SDL
 
                 SDL_Renderer* paintbrush_renderer;
 
-                void PostPicture(Image::AcceleratedImage& picture,
-                                 const Rect* srcrect,
-                                 const Rect* dstrect);
+                void PaintImageOverArea(Image::AcceleratedImage& image,
+                                        const Rect* imageArea,
+                                        const Rect* canvasArea);
 
             public:
 
@@ -69,11 +69,11 @@ namespace SDL
 
                 void Clear();
 
-                void PostPicture(Image::AcceleratedImage& picture);
+                void PaintImage(Image::AcceleratedImage& image);
 
-                void PostPicture(Image::AcceleratedImage& picture,
-                                 const Rect& srcrect,
-                                 const Rect& dstrect);
+                void PaintImageOverArea(Image::AcceleratedImage& image,
+                                        const Rect& imageArea,
+                                        const Rect& canvasArea);
 
                 void SetPaintingColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 

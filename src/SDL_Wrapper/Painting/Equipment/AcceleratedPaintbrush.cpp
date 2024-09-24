@@ -43,21 +43,21 @@ void SDL::Painting::Equipment::AcceleratedPaintbrush::Clear()
 }
 
 
-void SDL::Painting::Equipment::AcceleratedPaintbrush::PostPicture(Image::AcceleratedImage& picture,
-                                                                  const Rect* srcrect,
-                          		        	    	              const Rect* dstrect)
+void SDL::Painting::Equipment::AcceleratedPaintbrush::PaintImageOverArea(Image::AcceleratedImage& image,
+                                                                         const Rect* imageArea,
+                          		        	    	                     const Rect* canvasArea)
 {
-    if (SDL_RenderCopy(this->paintbrush_renderer, picture.Access_SDL_Implementation(), srcrect, dstrect) < 0)
+    if (SDL_RenderCopy(this->paintbrush_renderer, image.Access_SDL_Implementation(), imageArea, canvasArea) < 0)
     {
         throw fmt::format("Could not copy the Accelerated Picture with the Paintbrush: {:s}", SDL_GetError());
     }
 }
 
 
-void SDL::Painting::Equipment::AcceleratedPaintbrush::PostPicture(Image::AcceleratedImage& picture) { this->PostPicture(picture, nullptr, nullptr); }
+void SDL::Painting::Equipment::AcceleratedPaintbrush::PaintImage(Image::AcceleratedImage& image) { this->PaintImageOverArea(image, nullptr, nullptr); }
 
 
-void SDL::Painting::Equipment::AcceleratedPaintbrush::PostPicture(Image::AcceleratedImage& picture, const Rect& srcrect, const Rect& dstrect) { this->PostPicture(picture, &srcrect, &dstrect); }
+void SDL::Painting::Equipment::AcceleratedPaintbrush::PaintImageOverArea(Image::AcceleratedImage& image, const Rect& imageArea, const Rect& canvasArea) { this->PaintImageOverArea(image, &imageArea, &canvasArea); }
 
 
 void SDL::Painting::Equipment::AcceleratedPaintbrush::SetPaintingColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a)

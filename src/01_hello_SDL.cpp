@@ -91,7 +91,7 @@ void runTextureRenderingTest()
 														 fs::current_path().parent_path().parent_path()/"res"/"texture.png"};
 
 	paintbrush.Clear();
-	paintbrush.PostPicture(renderingPNG);
+	paintbrush.PaintImage(renderingPNG);
 	paintbrush.Present();
 
     SDL::Event current_event;
@@ -176,17 +176,17 @@ void runViewPortTest()
 																   .y{0},
 																   .w{SCREEN_WIDTH/2},
 																   .h{SCREEN_HEIGHT/2}});
-	paintbrush.PostPicture(viewPortTest);
+	paintbrush.PaintImage(viewPortTest);
 	paintbrush.ReservePaintingArea(SDL::Painting::Equipment::Rect {.x{SCREEN_WIDTH/2},
 																   .y{0},
 																   .w{SCREEN_WIDTH/2},
 																   .h{SCREEN_HEIGHT/2}});
-	paintbrush.PostPicture(viewPortTest);
+	paintbrush.PaintImage(viewPortTest);
 	paintbrush.ReservePaintingArea(SDL::Painting::Equipment::Rect {.x{0},
 																   .y{SCREEN_HEIGHT/2},
 																   .w{SCREEN_WIDTH},
 																   .h{SCREEN_HEIGHT/2}});
-	paintbrush.PostPicture(viewPortTest);
+	paintbrush.PaintImage(viewPortTest);
 	paintbrush.Present();
 
     SDL::Event current_event;
