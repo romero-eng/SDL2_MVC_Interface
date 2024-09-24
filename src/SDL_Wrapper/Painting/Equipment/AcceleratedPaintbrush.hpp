@@ -75,10 +75,7 @@ namespace SDL
                                  const Rect& srcrect,
                                  const Rect& dstrect);
 
-                void SetPaintingColor(Uint8 r,
-                                      Uint8 g,
-                                      Uint8 b,
-                                      Uint8 a);
+                void SetPaintingColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 
                 void Fill();
 

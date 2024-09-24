@@ -60,10 +60,7 @@ void SDL::Painting::Equipment::AcceleratedPaintbrush::PostPicture(Image::Acceler
 void SDL::Painting::Equipment::AcceleratedPaintbrush::PostPicture(Image::AcceleratedImage& picture, const Rect& srcrect, const Rect& dstrect) { this->PostPicture(picture, &srcrect, &dstrect); }
 
 
-void SDL::Painting::Equipment::AcceleratedPaintbrush::SetPaintingColor(Uint8 r,
-                                                                       Uint8 g,
-                                                                       Uint8 b,
-                                                                       Uint8 a)
+void SDL::Painting::Equipment::AcceleratedPaintbrush::SetPaintingColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 {
     if(SDL_SetRenderDrawColor(this->paintbrush_renderer, r, g, b, a) < 0)
     {
