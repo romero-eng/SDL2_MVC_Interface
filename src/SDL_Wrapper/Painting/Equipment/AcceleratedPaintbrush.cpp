@@ -69,29 +69,11 @@ void SDL::Painting::Equipment::AcceleratedPaintbrush::SetPaintingColor(Uint8 r, 
 }
 
 
-void SDL::Painting::Equipment::AcceleratedPaintbrush::Fill()
+void SDL::Painting::Equipment::AcceleratedPaintbrush::PaintPoint(int x1, int y1)
 {
-    if(SDL_RenderFillRect(this->paintbrush_renderer, nullptr) < 0)
+    if(SDL_RenderDrawPoint(this->paintbrush_renderer, x1, y1) < 0)
     {
-        throw fmt::format("Could not fill in entire canvas with accelerated paintbrush: {:s}", SDL_GetError());
-    }
-}
-
-
-void SDL::Painting::Equipment::AcceleratedPaintbrush::PaintRectangle(const Rect& area)
-{
-    if(SDL_RenderFillRect(this->paintbrush_renderer, &area) < 0)
-    {
-        throw fmt::format("Could not fill in rectangular area with accelerated paintbrush: {:s}", SDL_GetError());
-    }
-}
-
-
-void SDL::Painting::Equipment::AcceleratedPaintbrush::PaintEmptyRectangle(const Rect& area)
-{
-    if(SDL_RenderDrawRect(this->paintbrush_renderer, &area) < 0)
-    {
-        throw fmt::format("Could not fill in rectangular area with accelerated paintbrush: {:s}", SDL_GetError());
+        throw fmt::format("Could not draw point with accelerated paintbrush: {:s}", SDL_GetError());
     }
 }
 
@@ -105,11 +87,20 @@ void SDL::Painting::Equipment::AcceleratedPaintbrush::PaintLine(int x1, int y1, 
 }
 
 
-void SDL::Painting::Equipment::AcceleratedPaintbrush::PaintPoint(int x1, int y1)
+void SDL::Painting::Equipment::AcceleratedPaintbrush::PaintEmptyRectangle(const Rect& area)
 {
-    if(SDL_RenderDrawPoint(this->paintbrush_renderer, x1, y1) < 0)
+    if(SDL_RenderDrawRect(this->paintbrush_renderer, &area) < 0)
     {
-        throw fmt::format("Could not draw point with accelerated paintbrush: {:s}", SDL_GetError());
+        throw fmt::format("Could not fill in rectangular area with accelerated paintbrush: {:s}", SDL_GetError());
+    }
+}
+
+
+void SDL::Painting::Equipment::AcceleratedPaintbrush::PaintRectangle(const Rect& area)
+{
+    if(SDL_RenderFillRect(this->paintbrush_renderer, &area) < 0)
+    {
+        throw fmt::format("Could not fill in rectangular area with accelerated paintbrush: {:s}", SDL_GetError());
     }
 }
 
@@ -119,6 +110,15 @@ void SDL::Painting::Equipment::AcceleratedPaintbrush::ReservePaintingArea(const 
     if(SDL_RenderSetViewport(this->paintbrush_renderer, &area) < 0)
     {
         throw fmt::format("Could not set view port with accelerated paintbrush: {:s}", SDL_GetError());
+    }
+}
+
+
+void SDL::Painting::Equipment::AcceleratedPaintbrush::Fill()
+{
+    if(SDL_RenderFillRect(this->paintbrush_renderer, nullptr) < 0)
+    {
+        throw fmt::format("Could not fill in entire canvas with accelerated paintbrush: {:s}", SDL_GetError());
     }
 }
 

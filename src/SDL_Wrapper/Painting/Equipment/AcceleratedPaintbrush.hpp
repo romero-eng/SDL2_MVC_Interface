@@ -77,17 +77,17 @@ namespace SDL
 
                 void SetPaintingColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 
-                void Fill();
-
-                void PaintRectangle(const Rect& area);
-
-                void PaintEmptyRectangle(const Rect& area);
+                void PaintPoint(int x1, int y1);
 
                 void PaintLine(int x1, int y1, int x2, int y2);
 
-                void PaintPoint(int x1, int y1);
+                void PaintEmptyRectangle(const Rect& area);
+
+                void PaintRectangle(const Rect& area);
 
                 void ReservePaintingArea(const Rect& area);
+
+                void Fill();
 
                 void Present();
 
