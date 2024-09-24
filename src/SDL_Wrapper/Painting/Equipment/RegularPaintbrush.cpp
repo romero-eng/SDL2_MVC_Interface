@@ -6,6 +6,14 @@
 SDL::Painting::Equipment::RegularPaintbrush::RegularPaintbrush(Canvas& canvas): canvas{canvas} {}
 
 
+void SDL::Painting::Equipment::RegularPaintbrush::OptimizeImageForPainting(Image::RegularImage& image)
+{
+	if(SDL_ConvertSurface(image.Access_SDL_Implementation(), SDL_GetWindowSurface(this->canvas.Access_SDL_Implementation())->format, 0) == nullptr)
+	{
+		throw fmt::format("Could not optimize regular image for painting to Canvas: {:s}", SDL_GetError());
+	}
+}
+
 void SDL::Painting::Equipment::RegularPaintbrush::PaintImageOverArea(Image::RegularImage& image,
                             			    	     	      		 const Rect* imageArea,
                              				    	          		 Rect* canvasArea)

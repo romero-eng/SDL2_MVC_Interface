@@ -60,6 +60,7 @@ void runSurfaceLoadingTest()
 
 	SDL::Painting::Image::RegularImage helloWorldBMP {fs::current_path().parent_path().parent_path()/"res"/"hello_world.bmp"};
 
+	paintbrush.OptimizeImageForPainting(helloWorldBMP);
 	paintbrush.PaintImage(helloWorldBMP);
 
 	canvas.Present();

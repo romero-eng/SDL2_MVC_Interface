@@ -28,6 +28,8 @@ namespace SDL
 
                 RegularPaintbrush(Canvas& canvas);
 
+                void OptimizeImageForPainting(Image::RegularImage& image);
+
                 void PaintImage(Image::RegularImage& image);
 
                 void PaintImageOverArea(Image::RegularImage& image,

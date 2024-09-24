@@ -12,10 +12,7 @@ SDL::Painting::Image::RegularImage::RegularImage(const fs::path& image_path): pi
 }
 
 
-SDL_Surface* SDL::Painting::Image::RegularImage::Access_SDL_Implementation()
-{
-    return this->picture_surface;
-}
+SDL_Surface* SDL::Painting::Image::RegularImage::Access_SDL_Implementation() { return this->picture_surface; }
 
 
 SDL::Painting::Image::RegularImage::~RegularImage()
