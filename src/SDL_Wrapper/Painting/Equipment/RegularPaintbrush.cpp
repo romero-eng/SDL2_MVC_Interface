@@ -23,6 +23,18 @@ void SDL::Painting::Equipment::RegularPaintbrush::PaintImage(Image::RegularImage
 void SDL::Painting::Equipment::RegularPaintbrush::PaintImageOverArea(Image::RegularImage& image, const Rect& imageArea, Rect& canvasArea) { this->PaintImageOverArea(image, &imageArea, &canvasArea); }
 
 
+void SDL::Painting::Equipment::RegularPaintbrush::CopyPasteImageIntoLargerImage(Image::RegularImage& largerImage,
+    							                                                Image::RegularImage& smallerImage,
+                                    								            const Rect& imageArea,
+                                                								Rect& canvasArea)
+{
+    if(SDL_BlitSurface(largerImage.Access_SDL_Implementation(), &imageArea, smallerImage.Access_SDL_Implementation(), &canvasArea) != 0)
+	{
+		throw fmt::format("Could not blit 'src' Surface onto 'dst' Surface: {:s}", SDL_GetError());
+	}
+}
+
+
 void SDL::Painting::Equipment::RegularPaintbrush::Fill(Uint8 r, Uint8 g, Uint8 b)
 {
 	if(SDL_FillRect(SDL_GetWindowSurface(this->canvas.Access_SDL_Implementation()),

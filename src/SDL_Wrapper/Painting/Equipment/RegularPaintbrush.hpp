@@ -34,6 +34,11 @@ namespace SDL
                                         const Rect& imageArea,
                                         Rect& canvasArea);
 
+                void CopyPasteImageIntoLargerImage(Image::RegularImage& largerImage,
+                                                   Image::RegularImage& smallerImage,
+                                                   const Rect& imageArea,
+                                                   Rect& canvasArea);
+
                 void Fill(Uint8 r, Uint8 g, Uint8 b);
 
                 void Present();
