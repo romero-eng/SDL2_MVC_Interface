@@ -1,60 +1,54 @@
-
 #if defined(__linux__) || defined(_WIN32) || defined(__APPLE__)
 #include "Subsystem.hpp"
 
-
-std::map<const std::string, const std::size_t> SDML::Subsystems::subsystem_bit_per_name {{"Video", 5},
-        					    	    											     {"Events", 14},
-	        					    	    										     {"Timer", 0},
-		        					    	    								         {"Audio", 4},
-			        					    	    								     {"Joystick", 9},
-				        					    	    							     {"Haptic", 12},
-					        					    	    						     {"Game Controller", 13},
-						        					    	    					     {"Everything", 15}};
-
-void SDML::Subsystems::Initialize(bool init_video,
-								  bool init_events,
-								  bool init_timer,
-								  bool init_audio,
-								  bool init_joystick,
-								  bool init_haptic,
-								  bool init_gamecontroller)
+void SDML::Subsystem::Initialize(Uint32 subsystems)
 {
-	std::bitset<32> subsystem_flags {0x0};
-
-	if(init_video		  ) { subsystem_flags.set(subsystem_bit_per_name["Video"]); }
-	if(init_events		  ) { subsystem_flags.set(subsystem_bit_per_name["Events"]); }
-	if(init_timer		  ) { subsystem_flags.set(subsystem_bit_per_name["Timer"]); }
-	if(init_audio		  ) { subsystem_flags.set(subsystem_bit_per_name["Audio"]); }
-	if(init_joystick	  ) { subsystem_flags.set(subsystem_bit_per_name["Joystick"]); }
-	if(init_haptic		  ) { subsystem_flags.set(subsystem_bit_per_name["Haptic"]); }
-	if(init_gamecontroller) { subsystem_flags.set(subsystem_bit_per_name["Game Controller"]); }
-
-	if(init_video && init_events && init_timer && init_audio && init_joystick && init_haptic && init_gamecontroller)
+	if(SDL_Init(subsystems) < 0)
 	{
-		subsystem_flags.set(subsystem_bit_per_name["Everything"]);
-	}
+		constexpr std::array<std::pair<std::string_view, InitFlag>, 7> subsystems {{{"Timer", 			InitFlag::TIMER},
+																				    {"Audio", 			InitFlag::AUDIO},
+																				    {"Video", 			InitFlag::VIDEO},
+																				    {"Joystick", 		InitFlag::JOYSTICK},
+																				    {"Haptic", 			InitFlag::HAPTIC},
+																				    {"Game Controller", InitFlag::GAMECONTROLLER},
+																				    {"Events", 			InitFlag::EVENTS}}};
 
-	SDL_Init(static_cast<uint32_t>(subsystem_flags.to_ulong()));
+		std::string err_msg {"Could not initialize SDL Subsystems: {:s}\n", SDL_GetError()};
+		for(std::pair<std::string_view, InitFlag> subsystem : subsystems)
+		{
+			err_msg += fmt::format("{:s}: {:s}\n", subsystem.first, IsInitialized(subsystem.second) ? "On" : "Off");
+		}
+
+		throw err_msg;
+	}
 }
 
 
-std::string SDML::Subsystems::QueryInitializations()
-{
-	std::bitset<32> subsystem_flags {SDL_WasInit(0)};
-
-	std::string subsystem_statuses {};
-	for (const auto& [subsystem_name, subsystem_bit]: subsystem_bit_per_name)
-	{
-		subsystem_statuses += subsystem_name + ": " + (subsystem_flags.test(subsystem_bit) ? "On" : "Off") + "\n";
-	}
-
-	return subsystem_statuses;
-}
+void SDML::Subsystem::Initialize(InitFlag subsystem){ Initialize(std::to_underlying(subsystem)); }
 
 
-void SDML::Subsystems::Quit() { SDL_Quit(); }
+bool SDML::Subsystem::IsInitialized(Uint32 subsystems) { return subsystems == SDL_WasInit(subsystems); }
 
+
+bool SDML::Subsystem::IsInitialized(InitFlag subsystem) { return IsInitialized(std::to_underlying(subsystem)); }
+
+
+void SDML::Subsystem::Quit() { SDL_Quit(); }
+
+
+Uint32 operator|(const SDML::Subsystem::InitFlag& first_flag,
+				 const SDML::Subsystem::InitFlag& second_flag)
+{ return std::to_underlying(first_flag) | std::to_underlying(second_flag); }
+
+
+Uint32 operator|(Uint32 first_flag,
+				 const SDML::Subsystem::InitFlag& second_flag)
+{ return first_flag | std::to_underlying(second_flag); }
+
+
+Uint32 operator|(const SDML::Subsystem::InitFlag& first_flag,
+				 Uint32 second_flag)
+{ return std::to_underlying(first_flag) | second_flag; }
 
 #else
 #error "This file is only meant to be compiled on a Windows, Macintosh, or Linux OS"

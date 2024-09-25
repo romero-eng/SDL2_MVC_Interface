@@ -1,35 +1,50 @@
 #ifndef SUBSYSTEM_H
 #define SUBSYSTEM_H
 
-// SDL2 Library
+// Third-party Libraries
 #include <SDL2/SDL.h>
+#include <fmt/format.h>
 
 // C++ Standard Libraries
-#include <map>
-#include <string>
-#include <bitset>
+#include <utility>
+#include <array>
+#include <string_view>
 
 namespace SDML
 {
-	namespace Subsystems
+	namespace Subsystem
 	{
-        /* NOTE: It would be convenient in the future to implement subsystem_bit_per_name
-                  with a LinkedHashMap<Key, Value> type instead of just a Map<Key, Value>.*/
-        extern std::map<const std::string, const std::size_t> subsystem_bit_per_name;
+		enum class InitFlag: uint32_t
+		{
+			TIMER 		   = SDL_INIT_TIMER,
+			AUDIO 	 	   = SDL_INIT_AUDIO,
+			VIDEO 		   = SDL_INIT_VIDEO,
+			JOYSTICK 	   = SDL_INIT_JOYSTICK,
+			HAPTIC 		   = SDL_INIT_HAPTIC,
+			GAMECONTROLLER = SDL_INIT_GAMECONTROLLER,
+			EVENTS 		   = SDL_INIT_EVENTS,
+			EVERYTHING     = SDL_INIT_EVERYTHING
+		};
 
-		void Initialize(bool init_video=false,
-						bool init_events=false,
-						bool init_timer=false,
-						bool init_audio=false,
-						bool init_joystick=false,
-						bool init_haptic=false,
-						bool init_gamecontroller=false);
+		void Initialize(Uint32 subsystems);
 
-		std::string QueryInitializations();
+		void Initialize(InitFlag subsystem);
+
+		bool IsInitialized(Uint32 subsystems);
+
+		bool IsInitialized(InitFlag subsystem);
 
 		void Quit();
 	}
 }
 
+Uint32 operator|(const SDML::Subsystem::InitFlag& first_flag,
+				 const SDML::Subsystem::InitFlag& second_flag);
+
+Uint32 operator|(Uint32 first_flag,
+				 const SDML::Subsystem::InitFlag& second_flag);
+
+Uint32 operator|(const SDML::Subsystem::InitFlag& first_flag,
+				 Uint32 second_flag);
 
 #endif

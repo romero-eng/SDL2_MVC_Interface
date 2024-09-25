@@ -1,41 +1,28 @@
-
 #if defined(__linux__) || defined(_WIN32) || defined(__APPLE__)
 
 #include "SDML/Subsystem.hpp"
 
-// Third-Party Library
-#include <fmt/format.h>
-
-//C++ Standard Libraries
+// C++ Standard Libraries
 #include <iostream>
-
-namespace SDML
-{
-	void SetHint(const char* name, const char* value)
-	{
-		if(SDL_SetHint(name, value))
-		{
-			
-		}
-	}
-}
 
 
 int main( int argc, char* args[] )
 {
 
-	SDML::Subsystems::Initialize(true);
+	SDML::Subsystem::Initialize(SDML::Subsystem::InitFlag::VIDEO);
 
 	try
 	{
-		std::cout << SDML::Subsystems::QueryInitializations() << std::endl;
+		std::cout << SDML::Subsystem::IsInitialized(SDML::Subsystem::InitFlag::VIDEO) << std::endl;
+		std::cout << SDML::Subsystem::IsInitialized(SDML::Subsystem::InitFlag::VIDEO | SDML::Subsystem::InitFlag::AUDIO) << std::endl;
+		std::cout << SDML::Subsystem::IsInitialized(SDML::Subsystem::InitFlag::AUDIO) << std::endl;
 	}
 	catch(std::string error_message)
 	{
 		std::cerr << error_message;
 	}
 
-	SDML::Subsystems::Quit();
+	SDML::Subsystem::Quit();
 
 	return 0;
 }
