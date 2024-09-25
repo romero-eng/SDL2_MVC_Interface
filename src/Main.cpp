@@ -2,8 +2,147 @@
 
 #include "SDML/Subsystem.hpp"
 
+// Third-party Libraries
+#include <SDL2/SDL.h>
+
 // C++ Standard Libraries
 #include <iostream>
+#include <utility>
+
+namespace SDML
+{
+	namespace Video
+	{
+		enum class WindowFlag: uint32_t
+		{
+			FULLSCREEN    	   = SDL_WINDOW_FULLSCREEN,
+			OPENGL 	      	   = SDL_WINDOW_OPENGL,
+			SHOWN 	      	   = SDL_WINDOW_SHOWN,
+			HIDDEN 	      	   = SDL_WINDOW_HIDDEN,
+			BORDERLESS    	   = SDL_WINDOW_BORDERLESS,
+			RESIZABLE     	   = SDL_WINDOW_RESIZABLE,
+			MINIMIZED     	   = SDL_WINDOW_MINIMIZED,
+			MAXIMIZED  	  	   = SDL_WINDOW_MAXIMIZED,
+			MOUSE_GRABBED 	   = SDL_WINDOW_MOUSE_GRABBED,
+			INPUT_FOCUS   	   = SDL_WINDOW_INPUT_FOCUS,
+			MOUSE_FOCUS   	   = SDL_WINDOW_MOUSE_FOCUS,
+			FULLSCREEN_DESKTOP = SDL_WINDOW_FULLSCREEN_DESKTOP,
+			FOREIGN 		   = SDL_WINDOW_FOREIGN,
+			ALLOW_HIGHDPI 	   = SDL_WINDOW_ALLOW_HIGHDPI,
+			MOUSE_CAPTURE	   = SDL_WINDOW_MOUSE_CAPTURE,
+			ALWAYS_ON_TOP 	   = SDL_WINDOW_ALWAYS_ON_TOP,
+			SKIP_TASKBAR 	   = SDL_WINDOW_SKIP_TASKBAR,
+			UTILITY 		   = SDL_WINDOW_UTILITY,
+			TOOLTIP 		   = SDL_WINDOW_TOOLTIP,
+			POPUP_MENU 		   = SDL_WINDOW_POPUP_MENU,
+			KEYBOARD_GRABBED   = SDL_WINDOW_KEYBOARD_GRABBED,
+			VULKAN 			   = SDL_WINDOW_VULKAN,
+			METAL 			   = SDL_WINDOW_METAL,
+			INPUT_GRABBED 	   = SDL_WINDOW_INPUT_GRABBED
+		};
+
+		class Window
+		{
+		private:
+
+			SDL_Window* internal_SDL_window;
+
+		public:
+
+			Window(const char *title,
+				   int width,
+                   int height): Window(title,
+				   					   SDL_WINDOWPOS_UNDEFINED,
+									   SDL_WINDOWPOS_UNDEFINED,
+									   width,
+									   height,
+									   0) {}
+
+			Window(const char *title,
+				   int x, int y,
+				   int width,
+                   int height): Window(title,
+				   					   x, y,
+									   width,
+									   height,
+									   0) {}
+
+			Window(const char *title,
+				   int width,
+                   int height,
+				   WindowFlag flag): Window(title,
+				   							SDL_WINDOWPOS_UNDEFINED,
+											SDL_WINDOWPOS_UNDEFINED,
+										 	width,
+										 	height,
+										 	std::to_underlying(flag)) {}
+
+			Window(const char *title,
+                   int x, int y,
+				   int width,
+                   int height,
+				   WindowFlag flag): Window(title,
+				   							x, y,
+										 	width,
+										 	height,
+										 	std::to_underlying(flag)) {}
+
+			Window(const char *title,
+				   int width,
+                   int height,
+				   Uint32 flags): Window(title,
+				   						 SDL_WINDOWPOS_UNDEFINED,
+										 SDL_WINDOWPOS_UNDEFINED,
+										 width,
+										 height,
+										 flags) {}
+
+			Window(const char *title,
+                   int x, int y,
+				   int width,
+                   int height,
+				   Uint32 flags): internal_SDL_window{SDL_CreateWindow(title,
+				   													   x, y,
+																	   width,
+																	   height,
+																	   flags)} {}
+
+			Window(Window&) = delete;
+			
+			Window& operator=(Window&) = delete;
+
+			~Window()
+			{
+				if(SDL_HasWindowSurface(this->internal_SDL_window))
+				{
+					if(SDL_DestroyWindowSurface(this->internal_SDL_window) < 0)
+					{
+						std::cerr << fmt::format("Could not Destroy Surface for '{:s}' Window: {:s}",
+												  SDL_GetWindowTitle(this->internal_SDL_window),
+												  SDL_GetError());
+					}
+				}
+				SDL_DestroyWindow(this->internal_SDL_window);
+			}
+
+		};
+	}
+}
+
+
+Uint32 operator|(const SDML::Video::WindowFlag& first_flag,
+				 const SDML::Video::WindowFlag& second_flag)
+{ return std::to_underlying(first_flag) | std::to_underlying(second_flag) ; }
+
+
+Uint32 operator|(const SDML::Video::WindowFlag& first_flag,
+				 Uint32 second_flag)
+{ return std::to_underlying(first_flag) | second_flag ; }
+
+
+Uint32 operator|(Uint32 first_flag,
+				 const SDML::Video::WindowFlag& second_flag)
+{ return first_flag | std::to_underlying(second_flag) ; }
 
 
 int main( int argc, char* args[] )
@@ -13,9 +152,10 @@ int main( int argc, char* args[] )
 
 	try
 	{
-		std::cout << SDML::Subsystem::IsInitialized(SDML::Subsystem::InitFlag::VIDEO) << std::endl;
-		std::cout << SDML::Subsystem::IsInitialized(SDML::Subsystem::InitFlag::VIDEO | SDML::Subsystem::InitFlag::AUDIO) << std::endl;
-		std::cout << SDML::Subsystem::IsInitialized(SDML::Subsystem::InitFlag::AUDIO) << std::endl;
+		SDML::Video::Window windowTest {"Test", 640, 480, SDML::Video::WindowFlag::SHOWN};
+
+		SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }
+
 	}
 	catch(std::string error_message)
 	{
