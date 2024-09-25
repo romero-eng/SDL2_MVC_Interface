@@ -8,7 +8,6 @@
 #include <map>
 #include <string>
 #include <bitset>
-#include <iostream>
 
 namespace SDML
 {

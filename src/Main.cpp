@@ -3,6 +3,23 @@
 
 #include "SDML/Subsystem.hpp"
 
+// Third-Party Library
+#include <fmt/format.h>
+
+//C++ Standard Libraries
+#include <iostream>
+
+namespace SDML
+{
+	void SetHint(const char* name, const char* value)
+	{
+		if(SDL_SetHint(name, value))
+		{
+			
+		}
+	}
+}
+
 
 int main( int argc, char* args[] )
 {
