@@ -248,7 +248,7 @@ def main() -> None:
                                             current_source_path,
                                             current_object_path,
                                             language_standard,
-                                            warnings=reduced_warnings if current_source_path.stem == '01_hello_SDL' else warnings,  # noqa: E501
+                                            warnings=reduced_warnings if current_source_path.stem == 'Main' else warnings,  # noqa: E501
                                             treat_warnings_as_errors=True,
                                             disable_compiler_extensions=True)
 
