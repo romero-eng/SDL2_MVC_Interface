@@ -21,6 +21,7 @@ int main( int argc, char* args[] )
 		windowTest.Flash(SDML::Video::FlashOperation::UNTIL_FOCUSED);
 
 		std::cout << windowTest.GetTitle() << std::endl;
+		std::cout << windowTest.GetID() << std::endl;
 		std::cout << windowTest.GetX() << std::endl;
 		std::cout << windowTest.GetY() << std::endl;
 		std::cout << windowTest.GetWidth() << std::endl;

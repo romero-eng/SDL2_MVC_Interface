@@ -94,6 +94,8 @@ namespace SDML
 
 			std::string_view GetTitle();
 
+			Uint32 GetID();
+
 			int GetX();
 
 			int GetY();

@@ -68,6 +68,21 @@ SDML::Video::Window::Window(const char *title,
 std::string_view SDML::Video::Window::GetTitle() { return std::string_view{SDL_GetWindowTitle(this->internal_SDL_window)}; }
 
 
+Uint32 SDML::Video::Window::GetID()
+{
+	Uint32 ID {SDL_GetWindowID(this->internal_SDL_window)};
+
+	if(ID == 0)
+	{
+		throw fmt::format("Could not retrieve the ID for the '{:s}' Window: {:s}",
+						  SDL_GetWindowTitle(this->internal_SDL_window),
+						  SDL_GetError());
+	}
+
+	return ID;
+}
+
+
 int SDML::Video::Window::GetX()
 {
 	int x {};
