@@ -65,6 +65,26 @@ SDML::Video::Window::Window(const char *title,
 																	   			flags)} {}
 
 
+int SDML::Video::Window::GetX()
+{
+	int x {};
+
+	SDL_GetWindowPosition(this->internal_SDL_window, &x, nullptr);
+
+	return x;
+}
+
+
+int SDML::Video::Window::GetY()
+{
+	int y {};
+
+	SDL_GetWindowPosition(this->internal_SDL_window, nullptr, &y);
+
+	return y;
+}
+
+
 int SDML::Video::Window::GetWidth()
 {
 	int width {};

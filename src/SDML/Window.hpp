@@ -91,6 +91,10 @@ namespace SDML
 			
 			Window& operator=(Window&) = delete;
 
+			int GetX();
+
+			int GetY();
+
 			int GetWidth();
 
 			int GetHeight();

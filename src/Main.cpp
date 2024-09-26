@@ -20,6 +20,8 @@ int main( int argc, char* args[] )
 		SDML::Video::Window windowTest {"Test", 640, 480};
 		windowTest.Flash(SDML::Video::FlashOperation::UNTIL_FOCUSED);
 
+		std::cout << windowTest.GetX() << std::endl;
+		std::cout << windowTest.GetY() << std::endl;
 		std::cout << windowTest.GetWidth() << std::endl;
 		std::cout << windowTest.GetHeight() << std::endl;
 
