@@ -41,6 +41,13 @@ namespace SDML
 			INPUT_GRABBED 	   = SDL_WINDOW_INPUT_GRABBED
 		};
 
+		enum class FlashOperation
+		{
+    		CANCEL,
+    		BRIEFLY,
+    		UNTIL_FOCUSED
+		};
+
 		class Window
 		{
 		private:
@@ -111,6 +118,29 @@ namespace SDML
 			
 			Window& operator=(Window&) = delete;
 
+			/*Not sure this function actually does anything, but I'll
+			leave it for the sake of completeness.*/
+			void Flash(FlashOperation operation)
+			{
+				SDL_FlashOperation internal_SDL_operation;
+				switch(operation)
+				{
+					case FlashOperation::CANCEL:
+						internal_SDL_operation = SDL_FLASH_CANCEL;
+					case FlashOperation::BRIEFLY:
+						internal_SDL_operation = SDL_FLASH_BRIEFLY;
+					case FlashOperation::UNTIL_FOCUSED:
+						internal_SDL_operation = SDL_FLASH_UNTIL_FOCUSED;
+				}
+
+				if(SDL_FlashWindow(this->internal_SDL_window, internal_SDL_operation) < 0)
+				{
+					throw fmt::format("Could not Flash the '{:s}' Window: {:s}",
+									  SDL_GetWindowTitle(this->internal_SDL_window),
+									  SDL_GetError());
+				}
+			}
+
 			~Window()
 			{
 				if(SDL_HasWindowSurface(this->internal_SDL_window))
@@ -152,7 +182,8 @@ int main( int argc, char* args[] )
 
 	try
 	{
-		SDML::Video::Window windowTest {"Test", 640, 480, SDML::Video::WindowFlag::SHOWN};
+		SDML::Video::Window windowTest {"Test", 640, 480};
+		windowTest.Flash(SDML::Video::FlashOperation::UNTIL_FOCUSED);
 
 		SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }
 
