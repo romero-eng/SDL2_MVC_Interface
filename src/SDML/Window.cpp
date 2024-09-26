@@ -123,6 +123,26 @@ int SDML::Video::Window::GetWidth()
 }
 
 
+int SDML::Video::Window::GetMinimumWidth()
+{
+	int min_width {};
+
+	SDL_GetWindowMinimumSize(this->internal_SDL_window, &min_width, nullptr);
+
+	return min_width;
+}
+
+
+int SDML::Video::Window::GetMaximumWidth()
+{
+	int max_width {};
+
+	SDL_GetWindowMaximumSize(this->internal_SDL_window, &max_width, nullptr);
+
+	return max_width;
+}
+
+
 int SDML::Video::Window::GetHeight()
 {
 	int height {};
@@ -143,10 +163,36 @@ int SDML::Video::Window::GetHeight()
 }
 
 
+int SDML::Video::Window::GetMinimumHeight()
+{
+	int min_height {};
+
+	SDL_GetWindowMinimumSize(this->internal_SDL_window, nullptr, &min_height);
+
+	return min_height;
+}
+
+
+int SDML::Video::Window::GetMaximumHeight()
+{
+	int max_height {};
+
+	SDL_GetWindowMaximumSize(this->internal_SDL_window, nullptr, &max_height);
+
+	return max_height;
+}
+
+
 bool SDML::Video::Window::CheckWindowFlags(Uint32 flags) { return flags == SDL_GetWindowFlags(this->internal_SDL_window); }
 
 
 bool SDML::Video::Window::CheckWindowFlags(WindowFlag flag) { return std::to_underlying(flag) == SDL_GetWindowFlags(this->internal_SDL_window); }
+
+
+void SDML::Video::Window::SetMinimumArea(int min_width, int min_height) { SDL_SetWindowMinimumSize(this->internal_SDL_window, min_width, min_height); }
+
+
+void SDML::Video::Window::SetMaximumArea(int max_width, int max_height) { SDL_SetWindowMaximumSize(this->internal_SDL_window, max_width, max_height); }
 
 
 void SDML::Video::Window::Flash(FlashOperation operation)

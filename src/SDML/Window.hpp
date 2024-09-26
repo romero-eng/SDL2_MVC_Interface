@@ -102,11 +102,23 @@ namespace SDML
 
 			int GetWidth();
 
+			int GetMinimumWidth();
+
+			int GetMaximumWidth();
+
+			int GetMinimumHeight();
+
+			int GetMaximumHeight();
+
 			int GetHeight();
 
 			bool CheckWindowFlags(Uint32 flags);
 
 			bool CheckWindowFlags(WindowFlag flag);
+
+			void SetMinimumArea(int min_width, int min_height);
+
+			void SetMaximumArea(int max_width, int max_height);
 
 			/*Not sure this function actually does anything, but I'll
 			leave it for the sake of completeness.*/

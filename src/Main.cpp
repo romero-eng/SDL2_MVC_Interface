@@ -18,6 +18,8 @@ int main( int argc, char* args[] )
 	try
 	{
 		SDML::Video::Window windowTest {"Test", 640, 480, SDML::Video::WindowFlag::RESIZABLE};
+		windowTest.SetMinimumArea(  10,   10);
+		windowTest.SetMaximumArea(1000, 1000);
 		windowTest.Flash(SDML::Video::FlashOperation::UNTIL_FOCUSED);
 
 		std::cout << windowTest.GetTitle() << std::endl;
@@ -25,7 +27,11 @@ int main( int argc, char* args[] )
 		std::cout << windowTest.GetX() << std::endl;
 		std::cout << windowTest.GetY() << std::endl;
 		std::cout << windowTest.GetWidth() << std::endl;
+		std::cout << windowTest.GetMinimumWidth() << std::endl;
+		std::cout << windowTest.GetMaximumWidth() << std::endl;
 		std::cout << windowTest.GetHeight() << std::endl;
+		std::cout << windowTest.GetMinimumHeight() << std::endl;
+		std::cout << windowTest.GetMaximumHeight() << std::endl;
 		std::cout << windowTest.CheckWindowFlags(SDML::Video::WindowFlag::SHOWN) << std::endl;
 		std::cout << windowTest.CheckWindowFlags(SDML::Video::WindowFlag::SHOWN | SDML::Video::WindowFlag::RESIZABLE) << std::endl;
 		std::cout << windowTest.CheckWindowFlags(SDML::Video::WindowFlag::RESIZABLE) << std::endl;
