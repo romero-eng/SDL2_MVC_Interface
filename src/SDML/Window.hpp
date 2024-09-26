@@ -6,6 +6,7 @@
 #include <fmt/format.h>
 
 // C++ Standard Libraries
+#include <string_view>
 #include <iostream>
 #include <utility>
 
@@ -90,6 +91,8 @@ namespace SDML
 			Window(Window&) = delete;
 			
 			Window& operator=(Window&) = delete;
+
+			std::string_view GetTitle();
 
 			int GetX();
 

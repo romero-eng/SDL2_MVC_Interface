@@ -65,6 +65,9 @@ SDML::Video::Window::Window(const char *title,
 																	   			flags)} {}
 
 
+std::string_view SDML::Video::Window::GetTitle() { return std::string_view{SDL_GetWindowTitle(this->internal_SDL_window)}; }
+
+
 int SDML::Video::Window::GetX()
 {
 	int x {};
