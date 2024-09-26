@@ -125,6 +125,12 @@ int SDML::Video::Window::GetHeight()
 }
 
 
+bool SDML::Video::Window::CheckWindowFlags(Uint32 flags) { return flags == SDL_GetWindowFlags(this->internal_SDL_window); }
+
+
+bool SDML::Video::Window::CheckWindowFlags(WindowFlag flag) { return std::to_underlying(flag) == SDL_GetWindowFlags(this->internal_SDL_window); }
+
+
 void SDML::Video::Window::Flash(FlashOperation operation)
 {
 	SDL_FlashOperation internal_SDL_operation;

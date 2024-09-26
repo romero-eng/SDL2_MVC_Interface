@@ -99,6 +99,10 @@ namespace SDML
 
 			int GetHeight();
 
+			bool CheckWindowFlags(Uint32 flags);
+
+			bool CheckWindowFlags(WindowFlag flag);
+
 			/*Not sure this function actually does anything, but I'll
 			leave it for the sake of completeness.*/
 			void Flash(FlashOperation operation);
