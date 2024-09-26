@@ -147,7 +147,7 @@ void SDML::Video::Window::Flash(FlashOperation operation)
             break;
 	}
 
-	if(SDL_FlashWindow(this->internal_SDL_window, internal_SDL_operation) < 0)
+	if(SDL_FlashWindow(this->internal_SDL_window, internal_SDL_operation) < 0)  // SDL_FlashWindow() seems to have no effect
 	{
 		throw fmt::format("Could not Flash the '{:s}' Window: {:s}",
 						  SDL_GetWindowTitle(this->internal_SDL_window),
