@@ -88,8 +88,18 @@ int SDML::Video::Window::GetY()
 int SDML::Video::Window::GetWidth()
 {
 	int width {};
+	int width_in_pixels {};
 
 	SDL_GetWindowSize(this->internal_SDL_window, &width, nullptr);
+	SDL_GetWindowSizeInPixels(this->internal_SDL_window, &width_in_pixels, nullptr);
+
+	if(width != width_in_pixels)
+	{
+		std::cerr << fmt::format("Warning: For the '{:s}' Window, The width of the client area is different from the width in pixels:\nWidth: {:d}\nPixel Width: {:d}\n",
+								 SDL_GetWindowTitle(this->AccessInternalWindow()),
+								 width,
+								 width_in_pixels) << std::endl;
+	}
 
 	return width;
 }
@@ -98,8 +108,18 @@ int SDML::Video::Window::GetWidth()
 int SDML::Video::Window::GetHeight()
 {
 	int height {};
+	int height_in_pixels {};
 
 	SDL_GetWindowSize(this->internal_SDL_window, nullptr, &height);
+	SDL_GetWindowSizeInPixels(this->internal_SDL_window, nullptr, &height_in_pixels);
+
+	if(height != height_in_pixels)
+	{
+		std::cerr << fmt::format("Warning: For the '{:s}' Window, The height of the client area is different from the height in pixels:\nHeight: {:d}\nPixel Height: {:d}\n",
+								 SDL_GetWindowTitle(this->AccessInternalWindow()),
+								 height,
+								 height_in_pixels) << std::endl;
+	}
 
 	return height;
 }
