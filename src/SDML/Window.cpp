@@ -65,6 +65,26 @@ SDML::Video::Window::Window(const char *title,
 																	   			flags)} {}
 
 
+int SDML::Video::Window::GetWidth()
+{
+	int width {};
+
+	SDL_GetWindowSize(this->internal_SDL_window, &width, nullptr);
+
+	return width;
+}
+
+
+int SDML::Video::Window::GetHeight()
+{
+	int height {};
+
+	SDL_GetWindowSize(this->internal_SDL_window, nullptr, &height);
+
+	return height;
+}
+
+
 void SDML::Video::Window::Flash(FlashOperation operation)
 {
 	SDL_FlashOperation internal_SDL_operation;
@@ -103,6 +123,9 @@ SDML::Video::Window::~Window()
 	}
 	SDL_DestroyWindow(this->internal_SDL_window);
 }
+
+
+SDL_Window* SDML::Video::Window::AccessInternalWindow() { return this->internal_SDL_window; }
 
 
 Uint32 operator|(const SDML::Video::WindowFlag& first_flag,

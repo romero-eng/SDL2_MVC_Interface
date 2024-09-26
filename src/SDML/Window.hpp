@@ -91,11 +91,17 @@ namespace SDML
 			
 			Window& operator=(Window&) = delete;
 
+			int GetWidth();
+
+			int GetHeight();
+
 			/*Not sure this function actually does anything, but I'll
 			leave it for the sake of completeness.*/
 			void Flash(FlashOperation operation);
 
 			~Window();
+
+			SDL_Window* AccessInternalWindow();
 		};
 	}
 }
