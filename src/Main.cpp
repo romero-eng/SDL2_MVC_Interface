@@ -131,9 +131,9 @@ int main( int argc, char* args[] )
 		SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }
 		*/
 
-		std::cout << SDML::Video::GetNumVideoDrivers() << std::endl;
-		std::cout << SDML::Video::GetCurrentVideoDriver() << std::endl;
-		std::cout << SDML::Video::GetVideoDrivers() << std::endl;
+		std::cout << SDML::Video::Drivers::GetNumDrivers() << std::endl;
+		std::cout << SDML::Video::Drivers::GetCurrentDriverName() << std::endl;
+		std::cout << SDML::Video::Drivers::GetDriverNames() << std::endl;
 		std::cout << "\n" << std::endl;
 
 		std::cout << SDML::Video::GetNumDisplays() << std::endl;

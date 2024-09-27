@@ -14,11 +14,14 @@ namespace SDML
 {
 	namespace Video
 	{
-		std::size_t GetNumVideoDrivers();
+		namespace Drivers
+		{
+			std::size_t GetNumDrivers();
 
-		std::string GetCurrentVideoDriver();
+			std::string GetCurrentDriverName();
 
-		std::vector<std::string> GetVideoDrivers();
+			std::vector<std::string> GetDriverNames();
+		}
 	}
 }
 

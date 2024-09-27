@@ -1,7 +1,7 @@
 #if defined(__linux__) || defined(_WIN32) || defined(__APPLE__)
 #include "Driver.hpp"
 
-std::size_t SDML::Video::GetNumVideoDrivers()
+std::size_t SDML::Video::Drivers::GetNumDrivers()
 {
 	std::size_t num_video_drivers {static_cast<std::size_t>(SDL_GetNumVideoDrivers())};
 
@@ -11,13 +11,13 @@ std::size_t SDML::Video::GetNumVideoDrivers()
 }
 
 
-std::string SDML::Video::GetCurrentVideoDriver() { return std::string {SDL_GetCurrentVideoDriver()}; }
+std::string SDML::Video::Drivers::GetCurrentDriverName() { return std::string {SDL_GetCurrentVideoDriver()}; }
 
 
-std::vector<std::string> SDML::Video::GetVideoDrivers()
+std::vector<std::string> SDML::Video::Drivers::GetDriverNames()
 {
 	{
-		std::size_t num_video_drivers {GetNumVideoDrivers()};
+		std::size_t num_video_drivers {GetNumDrivers()};
 
 		std::vector<std::string> video_drivers(num_video_drivers);
 
