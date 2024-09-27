@@ -65,7 +65,38 @@ SDML::Video::Window::Window(const char *title,
 																	   			flags)} {}
 
 
+int SDML::Video::Window::GetDisplayIndex()
+{
+	int display_index {SDL_GetWindowDisplayIndex(this->internal_SDL_window)};
+
+	if(display_index < 0)
+	{
+		throw fmt::format("Could not find a Display for the '{:s}' Window: {:s}",
+						  SDL_GetWindowTitle(this->internal_SDL_window),
+						  SDL_GetError());
+	}
+
+	return display_index;
+}
+
+
 std::string_view SDML::Video::Window::GetTitle() { return std::string_view{SDL_GetWindowTitle(this->internal_SDL_window)}; }
+
+
+std::string_view SDML::Video::Window::GetDisplayName()
+{
+	int display_index {GetDisplayIndex()};
+	const char* display_name {SDL_GetDisplayName(display_index)};
+
+	if(display_name == nullptr)
+	{
+		throw fmt::format("Could not get name for Display #{:d}: {:s}",
+						  display_index,
+						  SDL_GetError());
+	}
+
+	return std::string_view {display_name};
+}
 
 
 Uint32 SDML::Video::Window::GetID()
@@ -193,6 +224,97 @@ void SDML::Video::Window::SetMinimumArea(int min_width, int min_height) { SDL_Se
 
 
 void SDML::Video::Window::SetMaximumArea(int max_width, int max_height) { SDL_SetWindowMaximumSize(this->internal_SDL_window, max_width, max_height); }
+
+
+int SDML::Video::Window::GetDisplayWidth()
+{
+	int display_index {GetDisplayIndex()};
+	std::string_view display_name {GetDisplayName()};
+	SDL_Rect fullscreen_bounds {};
+	SDL_Rect usable_bounds {};
+
+	if(SDL_GetDisplayBounds(display_index, &fullscreen_bounds) < 0)
+	{
+		throw fmt::format("Could not retrive fullscreen boundaries for '{:s}' Display: {:s}",
+						  display_name,
+						  SDL_GetError());
+	}
+
+	if(SDL_GetDisplayUsableBounds(display_index, &usable_bounds) < 0)
+	{
+		throw fmt::format("Could not retrive usable boundaries for '{:s}' Display: {:s}",
+						  display_name,
+						  SDL_GetError());
+	}
+
+	if(fullscreen_bounds.w != usable_bounds.w)
+	{
+				std::cerr << fmt::format("Warning: difference detected between Fullscreen width and Usable Width:\nFullscreen Width: {:d}\nUsable Width: {:d}",
+										 fullscreen_bounds.w,
+										 usable_bounds.w);
+	}
+
+	return fullscreen_bounds.w;
+}
+
+
+int SDML::Video::Window::GetDisplayHeight()
+{
+	int display_index {GetDisplayIndex()};
+	std::string_view display_name {GetDisplayName()};
+	SDL_Rect fullscreen_bounds {};
+	SDL_Rect usable_bounds {};
+
+	if(SDL_GetDisplayBounds(display_index, &fullscreen_bounds) < 0)
+	{
+		throw fmt::format("Could not retrive fullscreen boundaries for '{:s}' Display: {:s}",
+						  display_name,
+						  SDL_GetError());
+	}
+
+	if(SDL_GetDisplayUsableBounds(display_index, &usable_bounds) < 0)
+	{
+		throw fmt::format("Could not retrive usable boundaries for '{:s}' Display: {:s}",
+						  display_name,
+						  SDL_GetError());
+	}
+
+	if(fullscreen_bounds.h != usable_bounds.h)
+	{
+		std::cerr << fmt::format("Warning: difference detected between Fullscreen Height and Usable Height:\nFullscreen Height: {:d}\nUsable Height: {:d}",
+								 fullscreen_bounds.h,
+								 usable_bounds.h);
+	}
+
+	return fullscreen_bounds.h;
+}
+
+
+SDML::Video::DisplayOrientation SDML::Video::Window::GetDisplayOrientation()
+{
+	DisplayOrientation display_orientation;
+
+    switch(SDL_GetDisplayOrientation(GetDisplayIndex()))
+    {
+        case SDL_ORIENTATION_UNKNOWN:
+            display_orientation = DisplayOrientation::UNKNOWN;
+            break;
+        case SDL_ORIENTATION_LANDSCAPE:
+            display_orientation = DisplayOrientation::LANDSCAPE;
+            break;
+        case SDL_ORIENTATION_LANDSCAPE_FLIPPED:
+            display_orientation = DisplayOrientation::LANDSCAPE_FLIPPED;
+            break;
+        case SDL_ORIENTATION_PORTRAIT:
+            display_orientation = DisplayOrientation::PORTRAIT;
+            break;
+        case SDL_ORIENTATION_PORTRAIT_FLIPPED:
+            display_orientation = DisplayOrientation::PORTRAIT_FLIPPED;
+            break;
+    }
+
+    return display_orientation;
+}
 
 
 void SDML::Video::Window::Flash(FlashOperation operation)

@@ -49,11 +49,22 @@ namespace SDML
     		UNTIL_FOCUSED
 		};
 
+		enum class DisplayOrientation
+		{
+			UNKNOWN,
+            LANDSCAPE,
+            LANDSCAPE_FLIPPED,
+            PORTRAIT,
+            PORTRAIT_FLIPPED
+		};
+
 		class Window
 		{
 		private:
 
 			SDL_Window* internal_SDL_window;
+
+			int GetDisplayIndex();
 
 		public:
 
@@ -94,6 +105,8 @@ namespace SDML
 
 			std::string_view GetTitle();
 
+			std::string_view GetDisplayName();
+
 			Uint32 GetID();
 
 			int GetX();
@@ -106,11 +119,11 @@ namespace SDML
 
 			int GetMaximumWidth();
 
+			int GetHeight();
+
 			int GetMinimumHeight();
 
 			int GetMaximumHeight();
-
-			int GetHeight();
 
 			bool CheckWindowFlags(Uint32 flags);
 
@@ -119,6 +132,12 @@ namespace SDML
 			void SetMinimumArea(int min_width, int min_height);
 
 			void SetMaximumArea(int max_width, int max_height);
+
+			int GetDisplayWidth();
+
+			int GetDisplayHeight();
+
+			DisplayOrientation GetDisplayOrientation();
 
 			/*Not sure this function actually does anything, but I'll
 			leave it for the sake of completeness.*/
