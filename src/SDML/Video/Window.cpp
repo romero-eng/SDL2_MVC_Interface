@@ -72,11 +72,56 @@ int SDML::Video::Window::GetDisplayIndex()
 	if(display_index < 0)
 	{
 		throw fmt::format("Could not find a Display for the '{:s}' Window: {:s}",
-						  SDL_GetWindowTitle(this->internal_SDL_window),
+						  this->GetTitle(),
 						  SDL_GetError());
 	}
 
 	return display_index;
+}
+
+
+SDL_Rect SDML::Video::Window::GetFullscreenDisplayBounds()
+{
+	SDL_Rect bounds {};
+
+	if(SDL_GetDisplayBounds(this->GetDisplayIndex(), &bounds) < 0)
+	{
+		throw fmt::format("Could not retrive fullscreen boundaries for '{:s}' Display: {:s}",
+						  this->GetDisplayName(),
+						  SDL_GetError());
+	}
+
+	return bounds;
+}
+
+
+SDL_Rect SDML::Video::Window::GetUsableDisplayBounds()
+{
+	SDL_Rect bounds {};
+
+	if(SDL_GetDisplayUsableBounds(this->GetDisplayIndex(), &bounds) < 0)
+	{
+		throw fmt::format("Could not retrive usable boundaries for '{:s}' Display: {:s}",
+						  this->GetDisplayName(),
+						  SDL_GetError());
+	}
+
+	return bounds;
+}
+
+
+SDL_DisplayMode SDML::Video::Window::GetDisplayMode()
+{
+	SDL_DisplayMode display_mode {};
+
+	if(SDL_GetWindowDisplayMode(this->internal_SDL_window, &display_mode) < 0)
+	{
+		throw fmt::format("Could not retrieve the Display Mode for the '{:s}' Window: {:s}",
+						  this->GetTitle(),
+						  SDL_GetError());
+	}
+
+	return display_mode;
 }
 
 
@@ -106,7 +151,7 @@ Uint32 SDML::Video::Window::GetID()
 	if(ID == 0)
 	{
 		throw fmt::format("Could not retrieve the ID for the '{:s}' Window: {:s}",
-						  SDL_GetWindowTitle(this->internal_SDL_window),
+						  this->GetTitle(),
 						  SDL_GetError());
 	}
 
@@ -145,7 +190,7 @@ int SDML::Video::Window::GetWidth()
 	if(width != width_in_pixels)
 	{
 		std::cerr << fmt::format("Warning: For the '{:s}' Window, The width of the client area is different from the width in pixels:\nWidth: {:d}\nPixel Width: {:d}\n",
-								 SDL_GetWindowTitle(this->AccessInternalWindow()),
+								 this->GetTitle(),
 								 width,
 								 width_in_pixels) << std::endl;
 	}
@@ -185,7 +230,7 @@ int SDML::Video::Window::GetHeight()
 	if(height != height_in_pixels)
 	{
 		std::cerr << fmt::format("Warning: For the '{:s}' Window, The height of the client area is different from the height in pixels:\nHeight: {:d}\nPixel Height: {:d}\n",
-								 SDL_GetWindowTitle(this->AccessInternalWindow()),
+								 this->GetTitle(),
 								 height,
 								 height_in_pixels) << std::endl;
 	}
@@ -228,24 +273,9 @@ void SDML::Video::Window::SetMaximumArea(int max_width, int max_height) { SDL_Se
 
 int SDML::Video::Window::GetDisplayWidth()
 {
-	int display_index {GetDisplayIndex()};
-	std::string_view display_name {GetDisplayName()};
-	SDL_Rect fullscreen_bounds {};
-	SDL_Rect usable_bounds {};
-
-	if(SDL_GetDisplayBounds(display_index, &fullscreen_bounds) < 0)
-	{
-		throw fmt::format("Could not retrive fullscreen boundaries for '{:s}' Display: {:s}",
-						  display_name,
-						  SDL_GetError());
-	}
-
-	if(SDL_GetDisplayUsableBounds(display_index, &usable_bounds) < 0)
-	{
-		throw fmt::format("Could not retrive usable boundaries for '{:s}' Display: {:s}",
-						  display_name,
-						  SDL_GetError());
-	}
+	std::string_view display_name {this->GetDisplayName()};
+	SDL_Rect fullscreen_bounds {this->GetFullscreenDisplayBounds()};
+	SDL_Rect usable_bounds {this->GetUsableDisplayBounds()};
 
 	if(fullscreen_bounds.w != usable_bounds.w)
 	{
@@ -260,24 +290,9 @@ int SDML::Video::Window::GetDisplayWidth()
 
 int SDML::Video::Window::GetDisplayHeight()
 {
-	int display_index {GetDisplayIndex()};
-	std::string_view display_name {GetDisplayName()};
-	SDL_Rect fullscreen_bounds {};
-	SDL_Rect usable_bounds {};
-
-	if(SDL_GetDisplayBounds(display_index, &fullscreen_bounds) < 0)
-	{
-		throw fmt::format("Could not retrive fullscreen boundaries for '{:s}' Display: {:s}",
-						  display_name,
-						  SDL_GetError());
-	}
-
-	if(SDL_GetDisplayUsableBounds(display_index, &usable_bounds) < 0)
-	{
-		throw fmt::format("Could not retrive usable boundaries for '{:s}' Display: {:s}",
-						  display_name,
-						  SDL_GetError());
-	}
+	std::string_view display_name {this->GetDisplayName()};
+	SDL_Rect fullscreen_bounds {this->GetFullscreenDisplayBounds()};
+	SDL_Rect usable_bounds {this->GetUsableDisplayBounds()};
 
 	if(fullscreen_bounds.h != usable_bounds.h)
 	{
@@ -317,6 +332,34 @@ SDML::Video::DisplayOrientation SDML::Video::Window::GetDisplayOrientation()
 }
 
 
+Uint32 SDML::Video::Window::GetDisplayModePixelFormat()
+{
+	SDL_DisplayMode tmp {this->GetDisplayMode()};
+	return tmp.format;
+}
+
+
+int SDML::Video::Window::GetDisplayModeWidth()
+{
+	SDL_DisplayMode tmp {this->GetDisplayMode()};
+	return tmp.w;
+}
+
+
+int SDML::Video::Window::GetDisplayModeHeight()
+{
+	SDL_DisplayMode tmp {this->GetDisplayMode()};
+	return tmp.h;
+}
+
+
+int SDML::Video::Window::GetDisplayModeRefreshRate()
+{
+	SDL_DisplayMode tmp {this->GetDisplayMode()};
+	return tmp.refresh_rate;
+}
+
+
 void SDML::Video::Window::Flash(FlashOperation operation)
 {
 	SDL_FlashOperation internal_SDL_operation;
@@ -336,7 +379,7 @@ void SDML::Video::Window::Flash(FlashOperation operation)
 	if(SDL_FlashWindow(this->internal_SDL_window, internal_SDL_operation) < 0)  // SDL_FlashWindow() seems to have no effect
 	{
 		throw fmt::format("Could not Flash the '{:s}' Window: {:s}",
-						  SDL_GetWindowTitle(this->internal_SDL_window),
+						  this->GetTitle(),
 						  SDL_GetError());
 	}
 }
@@ -349,7 +392,7 @@ SDML::Video::Window::~Window()
 		if(SDL_DestroyWindowSurface(this->internal_SDL_window) < 0)
 		{
 			std::cerr << fmt::format("Could not Destroy Surface for '{:s}' Window: {:s}",
-									 SDL_GetWindowTitle(this->internal_SDL_window),
+									 this->GetTitle(),
 									 SDL_GetError());
 		}
 	}

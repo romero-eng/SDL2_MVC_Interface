@@ -61,6 +61,10 @@ int main( int argc, char* args[] )
 		std::cout << fmt::format("{:>{}s}: {:d}", "Display Width", max_key_len, windowTest.GetDisplayWidth()) << std::endl;
 		std::cout << fmt::format("{:>{}s}: {:d}", "Display Height", max_key_len, windowTest.GetDisplayHeight()) << std::endl;
 		std::cout << fmt::format("{:>{}s}: {:s}", "Display Orientation", max_key_len, display_orientation_string) << std::endl;
+		std::cout << fmt::format("{:>{}s}: {:d}", "Display Mode Pixel Format", max_key_len, windowTest.GetDisplayModePixelFormat()) << std::endl;
+		std::cout << fmt::format("{:>{}s}: {:d}", "Display Mode Width", max_key_len, windowTest.GetDisplayModeWidth()) << std::endl;
+		std::cout << fmt::format("{:>{}s}: {:d}", "Display Mode Height", max_key_len, windowTest.GetDisplayModeHeight()) << std::endl;
+		std::cout << fmt::format("{:>{}s}: {:d}", "Display Mode Refresh Rate", max_key_len, windowTest.GetDisplayModeRefreshRate()) << std::endl;
 
 		SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }
 

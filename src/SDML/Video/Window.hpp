@@ -66,6 +66,12 @@ namespace SDML
 
 			int GetDisplayIndex();
 
+			SDL_Rect GetFullscreenDisplayBounds();
+
+			SDL_Rect GetUsableDisplayBounds();
+
+			SDL_DisplayMode GetDisplayMode();
+
 		public:
 
 			Window(const char *title,
@@ -138,6 +144,14 @@ namespace SDML
 			int GetDisplayHeight();
 
 			DisplayOrientation GetDisplayOrientation();
+
+			Uint32 GetDisplayModePixelFormat();
+
+			int GetDisplayModeWidth();
+
+			int GetDisplayModeHeight();
+
+			int GetDisplayModeRefreshRate();
 
 			/*Not sure this function actually does anything, but I'll
 			leave it for the sake of completeness.*/
