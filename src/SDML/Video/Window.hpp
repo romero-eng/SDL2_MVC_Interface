@@ -131,6 +131,8 @@ namespace SDML
 
 			int GetMaximumHeight();
 
+			std::string_view GetPixelFormatName();
+
 			bool CheckWindowFlags(Uint32 flags);
 
 			bool CheckWindowFlags(WindowFlag flag);
@@ -145,7 +147,7 @@ namespace SDML
 
 			DisplayOrientation GetDisplayOrientation();
 
-			Uint32 GetDisplayModePixelFormat();
+			std::string_view GetDisplayModePixelFormatName();
 
 			int GetDisplayModeWidth();
 

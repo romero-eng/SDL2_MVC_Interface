@@ -259,6 +259,21 @@ int SDML::Video::Window::GetMaximumHeight()
 }
 
 
+std::string_view SDML::Video::Window::GetPixelFormatName()
+{
+	std::string_view pixel_format {SDL_GetPixelFormatName(SDL_GetWindowPixelFormat(this->internal_SDL_window))};
+
+	if(pixel_format == "SDL_PIXELFORMAT_UNKNOWN")
+	{
+		throw fmt::format("Could not get the pixel format for the '{:s}' WIndow: {:s}",
+						  this->GetTitle(),
+						  SDL_GetError());
+	}
+
+	return pixel_format;
+}
+
+
 bool SDML::Video::Window::CheckWindowFlags(Uint32 flags) { return flags == SDL_GetWindowFlags(this->internal_SDL_window); }
 
 
@@ -332,10 +347,10 @@ SDML::Video::DisplayOrientation SDML::Video::Window::GetDisplayOrientation()
 }
 
 
-Uint32 SDML::Video::Window::GetDisplayModePixelFormat()
+std::string_view SDML::Video::Window::GetDisplayModePixelFormatName()
 {
 	SDL_DisplayMode tmp {this->GetDisplayMode()};
-	return tmp.format;
+	return SDL_GetPixelFormatName(tmp.format);
 }
 
 

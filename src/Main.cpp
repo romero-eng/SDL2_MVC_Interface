@@ -54,6 +54,7 @@ int main( int argc, char* args[] )
 		std::cout << fmt::format("{:>{}s}: {:d}", "Window Height", max_key_len, windowTest.GetHeight()) << std::endl;
 		std::cout << fmt::format("{:>{}s}: {:d}", "Window Minimum Height", max_key_len, windowTest.GetMinimumHeight()) << std::endl;
 		std::cout << fmt::format("{:>{}s}: {:d}", "Window Maximum Height", max_key_len, windowTest.GetMaximumHeight()) << std::endl;
+		std::cout << fmt::format("{:>{}s}: {:s}", "Window Pixel Format", max_key_len, windowTest.GetPixelFormatName()) << std::endl;
 		std::cout << fmt::format("{:>{}s}: {:s}", "Window is only shown", max_key_len, windowTest.CheckWindowFlags(SDML::Video::WindowFlag::SHOWN) ? "True" : "False") << std::endl;
 		std::cout << fmt::format("{:>{}s}: {:s}", "Window is both shown and resizable", max_key_len, windowTest.CheckWindowFlags(SDML::Video::WindowFlag::SHOWN | SDML::Video::WindowFlag::RESIZABLE) ? "True" : "False") << std::endl;
 		std::cout << fmt::format("{:>{}s}: {:s}", "Window is only resizable", max_key_len, windowTest.CheckWindowFlags(SDML::Video::WindowFlag::RESIZABLE) ? "True" : "False") << std::endl;
@@ -61,7 +62,7 @@ int main( int argc, char* args[] )
 		std::cout << fmt::format("{:>{}s}: {:d}", "Display Width", max_key_len, windowTest.GetDisplayWidth()) << std::endl;
 		std::cout << fmt::format("{:>{}s}: {:d}", "Display Height", max_key_len, windowTest.GetDisplayHeight()) << std::endl;
 		std::cout << fmt::format("{:>{}s}: {:s}", "Display Orientation", max_key_len, display_orientation_string) << std::endl;
-		std::cout << fmt::format("{:>{}s}: {:d}", "Display Mode Pixel Format", max_key_len, windowTest.GetDisplayModePixelFormat()) << std::endl;
+		std::cout << fmt::format("{:>{}s}: {:s}", "Display Mode Pixel Format", max_key_len, windowTest.GetDisplayModePixelFormatName()) << std::endl;
 		std::cout << fmt::format("{:>{}s}: {:d}", "Display Mode Width", max_key_len, windowTest.GetDisplayModeWidth()) << std::endl;
 		std::cout << fmt::format("{:>{}s}: {:d}", "Display Mode Height", max_key_len, windowTest.GetDisplayModeHeight()) << std::endl;
 		std::cout << fmt::format("{:>{}s}: {:d}", "Display Mode Refresh Rate", max_key_len, windowTest.GetDisplayModeRefreshRate()) << std::endl;
