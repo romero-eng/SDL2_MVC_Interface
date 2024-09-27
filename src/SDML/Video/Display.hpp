@@ -17,15 +17,31 @@ namespace SDML
 	{
 		namespace Displays
 		{
+            enum class Orientation
+            {
+                UNKNOWN,
+                LANDSCAPE,
+                LANDSCAPE_FLIPPED,
+                PORTRAIT,
+                PORTRAIT_FLIPPED
+            };
+
 			int GetNumDisplays();
 
-			std::string_view GetDisplayName(int displayIndex);
+			std::string_view GetName(int displayIndex);
 
-			int GetDisplayWidth(int DisplayIndex);
+			int GetWidth(int DisplayIndex);
 
-			int GetDisplayHeight(int DisplayIndex);
+			int GetHeight(int DisplayIndex);
+
+            Orientation GetOrientation(int DisplayIndex);
 		}
 	}
 }
+
+
+std::ostream& operator<<(std::ostream& output,
+                         SDML::Video::Displays::Orientation orientation);
+
 
 #endif

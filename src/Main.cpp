@@ -42,15 +42,18 @@ int main( int argc, char* args[] )
 		SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }
 		*/
 
+		/*
 		std::cout << SDML::Video::Drivers::GetNumDrivers() << std::endl;
 		std::cout << SDML::Video::Drivers::GetCurrentDriverName() << std::endl;
 		std::cout << SDML::Video::Drivers::GetDriverNames() << std::endl;
 		std::cout << "\n" << std::endl;
+		*/
 
 		std::cout << SDML::Video::Displays::GetNumDisplays() << std::endl;
-		std::cout << SDML::Video::Displays::GetDisplayName(0) << std::endl;
-		std::cout << SDML::Video::Displays::GetDisplayWidth(0) << std::endl;
-		std::cout << SDML::Video::Displays::GetDisplayHeight(0) << std::endl;
+		std::cout << SDML::Video::Displays::GetName(0) << std::endl;
+		std::cout << SDML::Video::Displays::GetWidth(0) << std::endl;
+		std::cout << SDML::Video::Displays::GetHeight(0) << std::endl;
+		std::cout << SDML::Video::Displays::GetOrientation(0) << std::endl;
 
 	}
 	catch(std::string error_message)
