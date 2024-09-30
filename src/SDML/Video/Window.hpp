@@ -182,4 +182,8 @@ Uint32 operator|(const SDML::Video::WindowFlag& first_flag,
 Uint32 operator|(Uint32 first_flag,
 				 const SDML::Video::WindowFlag& second_flag);
 
+
+std::ostream& operator<<(std::ostream& output_stream,
+						 SDML::Video::Window& window);
+
 #endif

@@ -292,10 +292,10 @@ std::string_view SDML::Video::Window::GetPixelFormatName()
 }
 
 
-bool SDML::Video::Window::CheckWindowFlags(Uint32 flags) { return flags == SDL_GetWindowFlags(this->internal_SDL_window); }
+bool SDML::Video::Window::CheckWindowFlags(Uint32 flags) { return flags == (flags & SDL_GetWindowFlags(this->internal_SDL_window)); }
 
 
-bool SDML::Video::Window::CheckWindowFlags(WindowFlag flag) { return std::to_underlying(flag) == SDL_GetWindowFlags(this->internal_SDL_window); }
+bool SDML::Video::Window::CheckWindowFlags(WindowFlag flag) { return std::to_underlying(flag) == (std::to_underlying(flag) & SDL_GetWindowFlags(this->internal_SDL_window)); }
 
 
 void SDML::Video::Window::SetMinimumArea(int min_width, int min_height) { SDL_SetWindowMinimumSize(this->internal_SDL_window, min_width, min_height); }
@@ -449,6 +449,58 @@ Uint32 operator|(const SDML::Video::WindowFlag& first_flag,
 Uint32 operator|(Uint32 first_flag,
 				 const SDML::Video::WindowFlag& second_flag)
 { return first_flag | std::to_underlying(second_flag) ; }
+
+
+std::ostream& operator<<(std::ostream& output_stream,
+						 SDML::Video::Window& window)
+{
+	std::string_view display_orientation_string;
+	switch(window.GetDisplayOrientation())
+	{
+		case SDML::Video::DisplayOrientation::UNKNOWN:
+			display_orientation_string = "Unknown";
+			break;
+		case SDML::Video::DisplayOrientation::LANDSCAPE:
+			display_orientation_string = "Landscape";
+			break;
+		case SDML::Video::DisplayOrientation::LANDSCAPE_FLIPPED:
+			display_orientation_string = "Flipped Landscape";
+			break;
+		case SDML::Video::DisplayOrientation::PORTRAIT:
+			display_orientation_string = "Portrait";
+			break;
+		case SDML::Video::DisplayOrientation::PORTRAIT_FLIPPED:
+			display_orientation_string = "Flipped Portrait";
+			break;
+	}
+		
+	int max_key_len {34};
+	output_stream << fmt::format("{:>{}s}: {:s}", "Window Name", max_key_len, window.GetTitle()) << std::endl;
+	output_stream << fmt::format("{:>{}s}: {:d}", "Window ID", max_key_len, window.GetID()) << std::endl;
+	output_stream << fmt::format("{:>{}s}: {:d}", "Window X-Coordinate", max_key_len, window.GetX()) << std::endl;
+	output_stream << fmt::format("{:>{}s}: {:d}", "Window Y-Coordinate", max_key_len, window.GetY()) << std::endl;
+	output_stream << fmt::format("{:>{}s}: {:d}", "Window Width", max_key_len, window.GetWidth()) << std::endl;
+	output_stream << fmt::format("{:>{}s}: {:d}", "Window Minimum Width", max_key_len, window.GetMinimumWidth()) << std::endl;
+	output_stream << fmt::format("{:>{}s}: {:d}", "Window Maximum Width", max_key_len, window.GetMaximumWidth()) << std::endl;
+	output_stream << fmt::format("{:>{}s}: {:d}", "Window Height", max_key_len, window.GetHeight()) << std::endl;
+	output_stream << fmt::format("{:>{}s}: {:d}", "Window Minimum Height", max_key_len, window.GetMinimumHeight()) << std::endl;
+	output_stream << fmt::format("{:>{}s}: {:d}", "Window Maximum Height", max_key_len, window.GetMaximumHeight()) << std::endl;
+	output_stream << fmt::format("{:>{}s}: {:f}", "Window Brightness", max_key_len, window.GetBrightness()) << std::endl;
+	output_stream << fmt::format("{:>{}s}: {:f}", "Window Opacity", max_key_len, window.GetOpacity()) << std::endl;
+	output_stream << fmt::format("{:>{}s}: {:s}", "Window Pixel Format", max_key_len, window.GetPixelFormatName()) << std::endl;
+	output_stream << fmt::format("{:>{}s}: {:s}", "Window is shown", max_key_len, window.CheckWindowFlags(SDML::Video::WindowFlag::SHOWN) ? "True" : "False") << std::endl;
+	output_stream << fmt::format("{:>{}s}: {:s}", "Window is resizable", max_key_len, window.CheckWindowFlags(SDML::Video::WindowFlag::RESIZABLE) ? "True" : "False") << std::endl;
+	output_stream << fmt::format("{:>{}s}: {:s}", "Display Name for Window", max_key_len, window.GetDisplayName()) << std::endl;
+	output_stream << fmt::format("{:>{}s}: {:d}", "Display Width", max_key_len, window.GetDisplayWidth()) << std::endl;
+	output_stream << fmt::format("{:>{}s}: {:d}", "Display Height", max_key_len, window.GetDisplayHeight()) << std::endl;
+	output_stream << fmt::format("{:>{}s}: {:s}", "Display Orientation", max_key_len, display_orientation_string) << std::endl;
+	output_stream << fmt::format("{:>{}s}: {:s}", "Display Mode Pixel Format", max_key_len, window.GetDisplayModePixelFormatName()) << std::endl;
+	output_stream << fmt::format("{:>{}s}: {:d}", "Display Mode Width", max_key_len, window.GetDisplayModeWidth()) << std::endl;
+	output_stream << fmt::format("{:>{}s}: {:d}", "Display Mode Height", max_key_len, window.GetDisplayModeHeight()) << std::endl;
+	output_stream << fmt::format("{:>{}s}: {:d}", "Display Mode Refresh Rate", max_key_len, window.GetDisplayModeRefreshRate()) << std::endl;
+
+	return output_stream;
+}
 
 
 #else
