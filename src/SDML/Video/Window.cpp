@@ -259,6 +259,24 @@ int SDML::Video::Window::GetMaximumHeight()
 }
 
 
+float SDML::Video::Window::GetBrightness() { return SDL_GetWindowBrightness(this->internal_SDL_window); }
+
+
+float SDML::Video::Window::GetOpacity()
+{
+	float opacity {};
+
+	if(SDL_GetWindowOpacity(this->internal_SDL_window, &opacity) < 0)
+	{
+		throw fmt::format("Could not get the opacity for the '{:s}' Window: {:s}",
+						  this->GetTitle(),
+						  SDL_GetError());
+	}
+
+	return opacity;
+}
+
+
 std::string_view SDML::Video::Window::GetPixelFormatName()
 {
 	std::string_view pixel_format {SDL_GetPixelFormatName(SDL_GetWindowPixelFormat(this->internal_SDL_window))};

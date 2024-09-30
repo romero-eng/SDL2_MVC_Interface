@@ -131,6 +131,10 @@ namespace SDML
 
 			int GetMaximumHeight();
 
+			float GetBrightness();
+
+			float GetOpacity();
+
 			std::string_view GetPixelFormatName();
 
 			bool CheckWindowFlags(Uint32 flags);
