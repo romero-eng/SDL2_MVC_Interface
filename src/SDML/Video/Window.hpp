@@ -4,7 +4,6 @@
 // Third-party Libraries
 #include <SDL2/SDL.h>
 #include <fmt/format.h>
-#include <fmt/ranges.h>
 
 // C++ Standard Libraries
 #include <tuple>
