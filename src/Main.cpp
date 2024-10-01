@@ -6,6 +6,7 @@
 
 // Third-party Libraries
 #include <SDL2/SDL.h>
+#include <fmt/ranges.h>
 
 // C++ Standard Libraries
 #include <iostream>
@@ -22,6 +23,11 @@ int main( int argc, char* args[] )
 		windowTest.SetMinimumArea(  10,   10);
 		windowTest.SetMaximumArea(1000, 1000);
 		windowTest.Flash(SDML::Video::FlashOperation::UNTIL_FOCUSED);
+
+		std::cout << "Number of Drivers: " << SDML::Video::Drivers::GetNumDrivers() << std::endl;
+		std::cout << "Current Driver: " << SDML::Video::Drivers::GetCurrentDriverName() << std::endl;
+		std::cout << "All Drivers: " << fmt::format("[{}]", fmt::join(SDML::Video::Drivers::GetDriverNames(), ", ")) << std::endl;
+		std::cout << std::endl;
 
 		std::cout << windowTest << std::endl;
 

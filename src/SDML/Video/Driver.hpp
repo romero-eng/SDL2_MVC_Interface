@@ -6,8 +6,7 @@
 
 // C++ Standard Libraries
 #include <vector>
-#include <string_view>
-#include <iostream>
+#include <string>
 
 
 namespace SDML
@@ -24,8 +23,6 @@ namespace SDML
 		}
 	}
 }
-
-std::ostream& operator<<(std::ostream& output_stream, std::vector<std::string> strings_to_concatenate);
 
 
 #endif
