@@ -6,6 +6,7 @@
 
 // Third-party Libraries
 #include <SDL2/SDL.h>
+#include <fmt/core.h>
 #include <fmt/ranges.h>
 
 // C++ Standard Libraries
@@ -43,7 +44,11 @@ int main( int argc, char* args[] )
 	}
 	catch(std::string error_message)
 	{
-		std::cerr << error_message;
+		std::cerr << error_message << std::endl;
+	}
+	catch(fmt::v9::format_error error)
+	{
+		std::cerr << "Formatting Error: " << error.what() << std::endl;
 	}
 
 	SDML::Subsystem::Quit();
