@@ -2,8 +2,8 @@
 #include "PrettyPrint.hpp"
 
 
-std::string Misc::FormatKeyValuePairsForPrinting(std::string title,
-	    									     std::vector<std::pair<std::string, allowed_value_types>>& key_value_pairs)
+std::string Misc::FormatKeyValuePairsForPrinting(const std::vector<std::pair<std::string, allowed_value_types>>& key_value_pairs,
+												 const std::string& title)
 {
     std::size_t max_key_length {0};
 	std::size_t current_key_length;

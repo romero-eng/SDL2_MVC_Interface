@@ -499,7 +499,7 @@ std::ostream& operator<<(std::ostream& output_stream,
 	settings.push_back(setting{		  "Display Mode Height", window.GetDisplayModeHeight()});
 	settings.push_back(setting{ "Display Mode Refresh Rate", window.GetDisplayModeRefreshRate()});
 
-	output_stream << "\n" << Misc::FormatKeyValuePairsForPrinting(fmt::format("'{:s}' Window", window.GetTitle()), settings) << std::endl;
+	output_stream << "\n" << Misc::FormatKeyValuePairsForPrinting(settings, fmt::format("'{:s}' Window", window.GetTitle())) << std::endl;
 
 	return output_stream;
 }
