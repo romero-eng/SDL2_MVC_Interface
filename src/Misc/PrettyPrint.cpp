@@ -1,6 +1,8 @@
 #if defined(__linux__) || defined(_WIN32) || defined(__APPLE__)
 #include "PrettyPrint.hpp"
+#include <iostream>
 
+std::string Misc::FormatKeyValuePairsForPrinting(const std::vector<std::pair<std::string, allowed_value_types>>& key_value_pairs) {return FormatKeyValuePairsForPrinting(key_value_pairs, ""); }
 
 std::string Misc::FormatKeyValuePairsForPrinting(const std::vector<std::pair<std::string, allowed_value_types>>& key_value_pairs,
 												 const std::string& title)
@@ -15,10 +17,18 @@ std::string Misc::FormatKeyValuePairsForPrinting(const std::vector<std::pair<std
 		}
     }
 
-    std::size_t offset {2};
-	std::vector<std::string> printable_keys_value_pairs {key_value_pairs.size() + offset};
-    printable_keys_value_pairs[0] = fmt::format("{:s}:", title);
-	printable_keys_value_pairs[1] = fmt::format("{:-^{}s}", "", title.length() + 1);
+	std::vector<std::string> printable_keys_value_pairs {};
+	std::size_t offset {0};
+
+	if(title != "")
+	{
+	    printable_keys_value_pairs.push_back(fmt::format("{:s}:", title));
+		printable_keys_value_pairs.push_back(fmt::format("{:-^{}s}", "", title.length() + 1));
+		offset += printable_keys_value_pairs.size();
+	}
+
+	printable_keys_value_pairs.reserve(key_value_pairs.size() + offset);
+	printable_keys_value_pairs.resize(key_value_pairs.size() + offset);
 
     for(std::size_t index = offset; index < printable_keys_value_pairs.size(); index++)
 	{
