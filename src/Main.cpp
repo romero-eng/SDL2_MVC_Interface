@@ -29,7 +29,7 @@ int main( int argc, char* args[] )
 		SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }
 
 	}
-	catch(std::exception& error_message)
+	catch(const std::exception& error_message)
 	{
 		std::cerr << error_message.what() << std::endl;
 	}

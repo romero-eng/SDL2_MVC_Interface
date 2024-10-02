@@ -1,14 +1,15 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
+// Custom Code from this project
+#include "../../Misc/PrettyPrint.hpp"
+
 // Third-party Libraries
 #include <SDL2/SDL.h>
 #include <fmt/format.h>
 
 // C++ Standard Libraries
-#include <ranges>
 #include <vector>
-#include <variant>
 #include <string_view>
 #include <iostream>
 #include <utility>

@@ -1,6 +1,9 @@
 #ifndef SUBSYSTEM_H
 #define SUBSYSTEM_H
 
+// Custom Code from this project
+#include "../Misc/PrettyPrint.hpp"
+
 // Third-party Libraries
 #include <SDL2/SDL.h>
 #include <fmt/format.h>

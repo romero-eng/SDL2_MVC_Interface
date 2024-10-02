@@ -36,12 +36,13 @@ void SDML::Subsystem::Initialize(Uint32 subsystems)
 			video_drivers[video_driver_index] = std::string {SDL_GetVideoDriver(static_cast<int>(video_driver_index))};
 		}
 
-		std::array<std::string, 4> video_init_msgs {"SDML Video Subsystem Initialized:",
-													"----------------------------",	
-													fmt::format("\tAvailable Video Drivers: [{}]", fmt::join(video_drivers, ", ")),
-													fmt::format("\t   Current Video Driver: {:s}", SDL_GetCurrentVideoDriver())};
+		using video_init_setting = std::pair<std::string, Misc::allowed_value_types>;
+		std::vector<video_init_setting> video_init_settings {};
+		video_init_settings.push_back(video_init_setting{"Available Video Drivers", video_drivers});
+		video_init_settings.push_back(video_init_setting{   "Current Video Driver", SDL_GetCurrentVideoDriver()});
 
-		std::cout << fmt::format("{}", fmt::join(video_init_msgs, "\n")) << std::endl;
+		//std::cout << fmt::format("{}", fmt::join(video_init_msgs, "\n")) << std::endl;
+		std::cout << Misc::FormatKeyValuePairsForPrinting("SDML Video Subsystem Initialized", video_init_settings) << std::endl;
 
 		if(SDL_GetNumRenderDrivers() < 1){
 			std::cerr << "Warning: Could not find any Render drivers!" << std::endl;
