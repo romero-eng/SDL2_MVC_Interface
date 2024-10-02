@@ -561,7 +561,7 @@ std::ostream& operator<<(std::ostream& output_stream,
 							  window.GetTitle());
 		}
 	}
-	output_stream << fmt::format("{}", fmt::join(printable_settings, "\n")) << std::endl;
+	output_stream << "\n" << fmt::format("{}", fmt::join(printable_settings, "\n")) << std::endl;
 
 	return output_stream;
 }

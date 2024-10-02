@@ -2,7 +2,6 @@
 
 #include "SDML/Subsystem.hpp"
 #include "SDML/Video/Window.hpp"
-#include "SDML/Video/Driver.hpp"
 
 // Third-party Libraries
 #include <SDL2/SDL.h>
@@ -25,21 +24,9 @@ int main( int argc, char* args[] )
 		windowTest.SetMaximumArea(1000, 1000);
 		windowTest.Flash(SDML::Video::FlashOperation::UNTIL_FOCUSED);
 
-		std::cout << "Number of Drivers: " << SDML::Video::Drivers::GetNumDrivers() << std::endl;
-		std::cout << "Current Driver: " << SDML::Video::Drivers::GetCurrentDriverName() << std::endl;
-		std::cout << "All Drivers: " << fmt::format("[{}]", fmt::join(SDML::Video::Drivers::GetDriverNames(), ", ")) << std::endl;
-		std::cout << std::endl;
-
 		std::cout << windowTest << std::endl;
 
 		SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }
-
-		/*
-		std::cout << SDML::Video::Drivers::GetNumDrivers() << std::endl;
-		std::cout << SDML::Video::Drivers::GetCurrentDriverName() << std::endl;
-		std::cout << SDML::Video::Drivers::GetDriverNames() << std::endl;
-		std::cout << "\n" << std::endl;
-		*/
 
 	}
 	catch(std::string error_message)
