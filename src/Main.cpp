@@ -29,13 +29,9 @@ int main( int argc, char* args[] )
 		SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }
 
 	}
-	catch(std::string error_message)
+	catch(std::exception& error_message)
 	{
-		std::cerr << error_message << std::endl;
-	}
-	catch(fmt::v9::format_error error)
-	{
-		std::cerr << "Formatting Error: " << error.what() << std::endl;
+		std::cerr << error_message.what() << std::endl;
 	}
 
 	SDML::Subsystem::Quit();

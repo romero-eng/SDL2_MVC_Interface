@@ -18,7 +18,7 @@ void SDML::Subsystem::Initialize(Uint32 subsystems)
 			err_msg += fmt::format("{:s}: {:s}\n", subsystem.first, IsInitialized(subsystem.second) ? "On" : "Off");
 		}
 
-		throw err_msg;
+		throw std::runtime_error(err_msg);
 	}
 
 	if(IsInitialized(InitFlag::VIDEO))
@@ -27,7 +27,7 @@ void SDML::Subsystem::Initialize(Uint32 subsystems)
 		std::size_t num_video_drivers {static_cast<std::size_t>(SDL_GetNumVideoDrivers())};
 
 		if(num_video_drivers < 1) {
-			throw std::string("Could not detect any Video Drivers: {:s}", SDL_GetError());
+			throw std::runtime_error(fmt::format("Could not detect any Video Drivers: {:s}", SDL_GetError()));
 		}
 
 		std::vector<std::string> video_drivers(num_video_drivers);

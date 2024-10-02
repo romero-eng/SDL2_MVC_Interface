@@ -12,6 +12,7 @@
 #include <string_view>
 #include <iostream>
 #include <utility>
+#include <stdexcept>
 
 namespace SDML
 {

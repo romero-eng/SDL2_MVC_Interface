@@ -71,9 +71,9 @@ int SDML::Video::Window::GetDisplayIndex()
 
 	if(display_index < 0)
 	{
-		throw fmt::format("Could not find a Display for the '{:s}' Window: {:s}",
-						  this->GetTitle(),
-						  SDL_GetError());
+		throw std::runtime_error(fmt::format("Could not find a Display for the '{:s}' Window: {:s}",
+										     this->GetTitle(),
+										     SDL_GetError()));
 	}
 
 	return display_index;
@@ -86,9 +86,9 @@ SDL_Rect SDML::Video::Window::GetFullscreenDisplayBounds()
 
 	if(SDL_GetDisplayBounds(this->GetDisplayIndex(), &bounds) < 0)
 	{
-		throw fmt::format("Could not retrive fullscreen boundaries for '{:s}' Display: {:s}",
-						  this->GetDisplayName(),
-						  SDL_GetError());
+		throw std::runtime_error(fmt::format("Could not retrive fullscreen boundaries for '{:s}' Display: {:s}",
+										     this->GetDisplayName(),
+										     SDL_GetError()));
 	}
 
 	return bounds;
@@ -101,9 +101,9 @@ SDL_Rect SDML::Video::Window::GetUsableDisplayBounds()
 
 	if(SDL_GetDisplayUsableBounds(this->GetDisplayIndex(), &bounds) < 0)
 	{
-		throw fmt::format("Could not retrive usable boundaries for '{:s}' Display: {:s}",
-						  this->GetDisplayName(),
-						  SDL_GetError());
+		throw std::runtime_error(fmt::format("Could not retrive usable boundaries for '{:s}' Display: {:s}",
+										     this->GetDisplayName(),
+										     SDL_GetError()));
 	}
 
 	return bounds;
@@ -116,9 +116,9 @@ SDL_DisplayMode SDML::Video::Window::GetDisplayMode()
 
 	if(SDL_GetWindowDisplayMode(this->internal_SDL_window, &display_mode) < 0)
 	{
-		throw fmt::format("Could not retrieve the Display Mode for the '{:s}' Window: {:s}",
-						  this->GetTitle(),
-						  SDL_GetError());
+		throw std::runtime_error(fmt::format("Could not retrieve the Display Mode for the '{:s}' Window: {:s}",
+										  	 this->GetTitle(),
+										  	 SDL_GetError()));
 	}
 
 	return display_mode;
@@ -135,9 +135,9 @@ std::string_view SDML::Video::Window::GetDisplayName()
 
 	if(display_name == nullptr)
 	{
-		throw fmt::format("Could not get name for Display #{:d}: {:s}",
-						  display_index,
-						  SDL_GetError());
+		throw std::runtime_error(fmt::format("Could not get name for Display #{:d}: {:s}",
+										  	 display_index,
+										  	 SDL_GetError()));
 	}
 
 	return std::string_view {display_name};
@@ -150,9 +150,9 @@ Uint32 SDML::Video::Window::GetID()
 
 	if(ID == 0)
 	{
-		throw fmt::format("Could not retrieve the ID for the '{:s}' Window: {:s}",
-						  this->GetTitle(),
-						  SDL_GetError());
+		throw std::runtime_error(fmt::format("Could not retrieve the ID for the '{:s}' Window: {:s}",
+										     this->GetTitle(),
+										     SDL_GetError()));
 	}
 
 	return ID;
@@ -268,9 +268,9 @@ float SDML::Video::Window::GetOpacity()
 
 	if(SDL_GetWindowOpacity(this->internal_SDL_window, &opacity) < 0)
 	{
-		throw fmt::format("Could not get the opacity for the '{:s}' Window: {:s}",
-						  this->GetTitle(),
-						  SDL_GetError());
+		throw std::runtime_error(fmt::format("Could not get the opacity for the '{:s}' Window: {:s}",
+										  	 this->GetTitle(),
+										  	 SDL_GetError()));
 	}
 
 	return opacity;
@@ -411,9 +411,9 @@ void SDML::Video::Window::Flash(FlashOperation operation)
 
 	if(SDL_FlashWindow(this->internal_SDL_window, internal_SDL_operation) < 0)  // SDL_FlashWindow() seems to have no effect
 	{
-		throw fmt::format("Could not Flash the '{:s}' Window: {:s}",
-						  this->GetTitle(),
-						  SDL_GetError());
+		throw std::runtime_error(fmt::format("Could not Flash the '{:s}' Window: {:s}",
+										  	 this->GetTitle(),
+										  	 SDL_GetError()));
 	}
 }
 
@@ -556,9 +556,9 @@ std::ostream& operator<<(std::ostream& output_stream,
 							fmt::arg("setting_name_length", max_key_len),
 							fmt::arg("setting", std::get<std::string_view>(settings[index].second)));
 		} else {
-			throw fmt::format("Unrecognized type for the '{setting_name:s}' Setting in the '{:s}' Window",
-							  fmt::arg("setting_name", settings[index].first),
-							  window.GetTitle());
+			throw std::runtime_error(fmt::format("Unrecognized type for the '{setting_name:s}' Setting in the '{:s}' Window",
+											  	 fmt::arg("setting_name", settings[index].first),
+											  	 window.GetTitle()));
 		}
 	}
 	output_stream << "\n" << fmt::format("{}", fmt::join(printable_settings, "\n")) << std::endl;
