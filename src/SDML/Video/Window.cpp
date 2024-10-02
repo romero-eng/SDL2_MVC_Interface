@@ -482,7 +482,7 @@ std::ostream& operator<<(std::ostream& output_stream,
 	settings.push_back(setting{					    "Width", window.GetWidth()});
 	settings.push_back(setting{	  "Minimally Allowed Width", window.GetMinimumWidth()});
 	settings.push_back(setting{	  "Maximally Allowed Width", window.GetMaximumWidth()});
-	settings.push_back(setting{			    "Window Height", window.GetHeight()});
+	settings.push_back(setting{			    	   "Height", window.GetHeight()});
 	settings.push_back(setting{	 "Minimally Allowed Height", window.GetMinimumHeight()});
 	settings.push_back(setting{	 "Maximally Allowed Height", window.GetMaximumHeight()});
 	settings.push_back(setting{		   		   "Brightness", window.GetBrightness()});
