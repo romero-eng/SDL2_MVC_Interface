@@ -474,38 +474,37 @@ std::ostream& operator<<(std::ostream& output_stream,
 			break;
 	}
 
-	using setting = std::tuple<std::string, std::string, std::variant<bool, Uint32, int, float, const char*, std::string, std::string_view>>;
+	using setting = std::pair<std::string, std::variant<bool, Uint32, int, float, const char*, std::string, std::string_view>>;
 	std::vector<setting> settings{};
-	settings.push_back(setting{"Window", 	   "Name", 				window.GetTitle()});
-	settings.push_back(setting{"Window",       "ID", 				window.GetID()});
-	settings.push_back(setting{"Window",       "X-Coordinate", 		window.GetX()});
-	settings.push_back(setting{"Window",       "Y-Coordinate", 		window.GetY()});
-	settings.push_back(setting{"Window",	   "Width", 			window.GetWidth()});
-	settings.push_back(setting{"Window",       "Minimum Width", 	window.GetMinimumWidth()});
-	settings.push_back(setting{"Window",       "Maximum Width", 	window.GetMaximumWidth()});
-	settings.push_back(setting{"Window",	   "Height", 			window.GetHeight()});
-	settings.push_back(setting{"Window",       "Minimum Height", 	window.GetMinimumHeight()});
-	settings.push_back(setting{"Window",       "Maximum Height", 	window.GetMaximumHeight()});
-	settings.push_back(setting{"Window",	   "Brightness", 		window.GetBrightness()});
-	settings.push_back(setting{"Window",	   "Opacity", 			window.GetOpacity()});
-	settings.push_back(setting{"Window",	   "Pixel Format", 		window.GetPixelFormatName()});
-	settings.push_back(setting{"Window",	   "is shown", 			window.CheckWindowFlags(SDML::Video::WindowFlag::SHOWN)});
-	settings.push_back(setting{"Window",	   "is resizable", 		window.CheckWindowFlags(SDML::Video::WindowFlag::RESIZABLE)});
-	settings.push_back(setting{"Display",  	   "Name for Window", 	window.GetDisplayName()});
-	settings.push_back(setting{"Display",	   "Width", 			window.GetDisplayWidth()});
-	settings.push_back(setting{"Display",	   "Height", 			window.GetDisplayHeight()});
-	settings.push_back(setting{"Display",	   "Orientation", 		display_orientation_string});
-	settings.push_back(setting{"Display", 	   "Pixel Format Name", window.GetDisplayModePixelFormatName()});
-	settings.push_back(setting{"Display Mode", "Width", 	   		window.GetDisplayModeWidth()});
-	settings.push_back(setting{"Display Mode", "Height", 	   		window.GetDisplayModeHeight()});
-	settings.push_back(setting{"Display Mode", "Refresh Rate", 		window.GetDisplayModeRefreshRate()});
+	settings.push_back(setting{				 "Window Name", window.GetTitle()});
+	settings.push_back(setting{				   "Window ID", window.GetID()});
+	settings.push_back(setting{		 "Window X-Coordinate", window.GetX()});
+	settings.push_back(setting{		 "Window Y-Coordinate", window.GetY()});
+	settings.push_back(setting{				"Window Width", window.GetWidth()});
+	settings.push_back(setting{		"Window Minimum Width", window.GetMinimumWidth()});
+	settings.push_back(setting{	    "Window Maximum Width", window.GetMaximumWidth()});
+	settings.push_back(setting{			   "Window Height", window.GetHeight()});
+	settings.push_back(setting{	   "Window Minimum Height", window.GetMinimumHeight()});
+	settings.push_back(setting{	   "Window Maximum Height", window.GetMaximumHeight()});
+	settings.push_back(setting{		   "Window Brightness", window.GetBrightness()});
+	settings.push_back(setting{			  "Window Opacity", window.GetOpacity()});
+	settings.push_back(setting{		 "Window Pixel Format", window.GetPixelFormatName()});
+	settings.push_back(setting{			 "Window is shown", window.CheckWindowFlags(SDML::Video::WindowFlag::SHOWN)});
+	settings.push_back(setting{		 "Window is resizable", window.CheckWindowFlags(SDML::Video::WindowFlag::RESIZABLE)});
+	settings.push_back(setting{	 "Display Name for Window", window.GetDisplayName()});
+	settings.push_back(setting{			   "Display Width", window.GetDisplayWidth()});
+	settings.push_back(setting{			  "Display Height", window.GetDisplayHeight()});
+	settings.push_back(setting{		 "Display Orientation", display_orientation_string});
+	settings.push_back(setting{"Display Pixel Format Name", window.GetDisplayModePixelFormatName()});
+	settings.push_back(setting{   	  "Display Mode Width", window.GetDisplayModeWidth()});
+	settings.push_back(setting{		 "Display Mode Height", window.GetDisplayModeHeight()});
+	settings.push_back(setting{"Display Mode Refresh Rate", window.GetDisplayModeRefreshRate()});
 
 	std::size_t max_key_len {0};
 	std::size_t current_len;
-	for(std::size_t index = 0; index < settings.size(); index++)
+	for(const std::string& setting_name: std::views::elements<0>(settings))
 	{
-		current_len = std::get<0>(settings[index]).length() + std::get<1>(settings[index]).length() + 1;
-
+		current_len = setting_name.length();
 		if(max_key_len < current_len){
 			max_key_len = current_len;
 		}
@@ -514,67 +513,51 @@ std::ostream& operator<<(std::ostream& output_stream,
 	std::vector<std::string> printable_settings {settings.size()};
 	for(std::size_t index = 0; index < settings.size(); index++)
 	{
-		if (std::holds_alternative<bool>(std::get<2>(settings[index])))
-		{
+		if (std::holds_alternative<bool>(settings[index].second)) {
 			printable_settings[index] = \
 				fmt::format("{setting_name:>{setting_name_length}s}: {setting:s}",
-							fmt::arg("setting_name", std::get<0>(settings[index]) + " " + std::get<1>(settings[index])),
+							fmt::arg("setting_name", settings[index].first),
 							fmt::arg("setting_name_length", max_key_len),
-							fmt::arg("setting", std::get<bool>(std::get<2>(settings[index])) ? "True" : "False"));
-		}
-		else if (std::holds_alternative<Uint32>(std::get<2>(settings[index])))
-		{
+							fmt::arg("setting", std::get<bool>(settings[index].second) ? "True" : "False"));
+		} else if (std::holds_alternative<Uint32>(settings[index].second)) {
 			printable_settings[index] = \
 				fmt::format("{setting_name:>{setting_name_length}s}: {setting:d}",
-							fmt::arg("setting_name", std::get<0>(settings[index]) + " " + std::get<1>(settings[index])),
+							fmt::arg("setting_name", settings[index].first),
 							fmt::arg("setting_name_length", max_key_len),
-							fmt::arg("setting", std::get<Uint32>(std::get<2>(settings[index]))));
-		}
-		else if (std::holds_alternative<int>(std::get<2>(settings[index])))
-		{
+							fmt::arg("setting", std::get<Uint32>(settings[index].second)));
+		} else if (std::holds_alternative<int>(settings[index].second)) {
 			printable_settings[index] = \
 				fmt::format("{setting_name:>{setting_name_length}s}: {setting:d}",
-							fmt::arg("setting_name", std::get<0>(settings[index]) + " " + std::get<1>(settings[index])),
+							fmt::arg("setting_name", settings[index].first),
 							fmt::arg("setting_name_length", max_key_len),
-							fmt::arg("setting", std::get<int>(std::get<2>(settings[index]))));
-		}
-		else if (std::holds_alternative<float>(std::get<2>(settings[index])))
-		{
+							fmt::arg("setting", std::get<int>(settings[index].second)));
+		} else if (std::holds_alternative<float>(settings[index].second)) {
 			printable_settings[index] = \
 				fmt::format("{setting_name:>{setting_name_length}s}: {setting:f}",
-							fmt::arg("setting_name", std::get<0>(settings[index]) + " " + std::get<1>(settings[index])),
+							fmt::arg("setting_name", settings[index].first),
 							fmt::arg("setting_name_length", max_key_len),
-							fmt::arg("setting", std::get<float>(std::get<2>(settings[index]))));
-		}
-		else if (std::holds_alternative<const char*>(std::get<2>(settings[index])))
-		{
+							fmt::arg("setting", std::get<float>(settings[index].second)));
+		} else if (std::holds_alternative<const char*>(settings[index].second)) {
 			printable_settings[index] = \
 				fmt::format("{setting_name:>{setting_name_length}s}: {setting:s}",
-							fmt::arg("setting_name", std::get<0>(settings[index]) + " " + std::get<1>(settings[index])),
+							fmt::arg("setting_name", settings[index].first),
 							fmt::arg("setting_name_length", max_key_len),
-							fmt::arg("setting", std::get<const char*>(std::get<2>(settings[index]))));
-		}
-		else if (std::holds_alternative<std::string>(std::get<2>(settings[index])))
-		{
+							fmt::arg("setting", std::get<const char*>(settings[index].second)));
+		} else if (std::holds_alternative<std::string>(settings[index].second)) {
 			printable_settings[index] = \
 				fmt::format("{setting_name:>{setting_name_length}s}: {setting:s}",
-							fmt::arg("setting_name", std::get<0>(settings[index]) + " " + std::get<1>(settings[index])),
+							fmt::arg("setting_name", settings[index].first),
 							fmt::arg("setting_name_length", max_key_len),
-							fmt::arg("setting", std::get<std::string>(std::get<2>(settings[index]))));
-		}
-		else if (std::holds_alternative<std::string_view>(std::get<2>(settings[index])))
-		{
+							fmt::arg("setting", std::get<std::string>(settings[index].second)));
+		} else if (std::holds_alternative<std::string_view>(settings[index].second)) {
 			printable_settings[index] = \
 				fmt::format("{setting_name:>{setting_name_length}s}: {setting:s}",
-							fmt::arg("setting_name", std::get<0>(settings[index]) + " " + std::get<1>(settings[index])),
+							fmt::arg("setting_name", settings[index].first),
 							fmt::arg("setting_name_length", max_key_len),
-							fmt::arg("setting", std::get<std::string_view>(std::get<2>(settings[index]))));
-		}
-		else
-		{
-			throw fmt::format("Unrecognized type for the '{setting_name_prefix:s} {setting_name:s}' Setting in the '{:s}' Window",
-							  fmt::arg("setting_name_prefix", std::get<0>(settings[index])),
-							  fmt::arg("setting_name", std::get<1>(settings[index])),
+							fmt::arg("setting", std::get<std::string_view>(settings[index].second)));
+		} else {
+			throw fmt::format("Unrecognized type for the '{setting_name:s}' Setting in the '{:s}' Window",
+							  fmt::arg("setting_name", settings[index].first),
 							  window.GetTitle());
 		}
 	}
