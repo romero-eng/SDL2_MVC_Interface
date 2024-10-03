@@ -15,24 +15,33 @@
 
 namespace Misc
 {
-    using allowed_value_types = \
-        std::variant<bool,
-                     uint32_t,
-                     int,
-                     float,
-                     const char*,
-                     std::string,
-                     std::string_view,
-                     std::vector<std::string>>;
+    class Printables
+    {
+        private:
+            std::string title;
+            std::vector<std::variant<Printables, std::pair<std::string, std::string>>> printables;
+        
+        public:
+            Printables(const std::string& title): title{title}, printables{std::vector<std::variant<Printables, std::pair<std::string, std::string>>> {}} {}
 
-    std::pair<std::string, std::size_t> FormatKeyValuePairsForPrinting(const std::vector<std::pair<std::string, allowed_value_types>>& key_value_pairs);
+            void add_printable(const char* key, bool value);
 
-    std::pair<std::string, std::size_t> FormatKeyValuePairsForPrinting(const std::vector<std::pair<std::string, allowed_value_types>>& key_value_pairs,
-                        											   const std::string& title);
+            void add_printable(const char* key, uint32_t value);
 
-    std::pair<std::string, std::size_t> FormatKeyValuePairsForPrinting(const std::vector<std::pair<std::string, allowed_value_types>>& key_value_pairs,
-                                                                       const std::string& title,
-						        			        	    	       const std::size_t num_prior_indentation_spaces);
+            void add_printable(const char* key, int value);
+
+            void add_printable(const char* key, float value);
+
+            void add_printable(const char* key, const char* value);
+
+            void add_printable(const char* key, const std::string& value);
+
+            void add_printable(const char* key, const std::vector<std::string>& value);
+
+            void add_printable(Printables& printables);
+
+            std::string print(std::size_t prior_level = 0);
+    };
 }
 
 

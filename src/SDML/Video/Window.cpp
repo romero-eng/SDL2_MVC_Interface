@@ -474,37 +474,36 @@ std::ostream& operator<<(std::ostream& output_stream,
 			break;
 	}
 
-	using setting = std::pair<std::string, Misc::allowed_value_types>;
-	std::vector<setting> settings{};
-	settings.push_back(setting{				   		   "ID", window.GetID()});
-	settings.push_back(setting{	    "Top-Left X-Coordinate", window.GetX()});
-	settings.push_back(setting{	    "Top-Left Y-Coordinate", window.GetY()});
-	settings.push_back(setting{					    "Width", window.GetWidth()});
-	settings.push_back(setting{	  "Minimally Allowed Width", window.GetMinimumWidth()});
-	settings.push_back(setting{	  "Maximally Allowed Width", window.GetMaximumWidth()});
-	settings.push_back(setting{			    	   "Height", window.GetHeight()});
-	settings.push_back(setting{	 "Minimally Allowed Height", window.GetMinimumHeight()});
-	settings.push_back(setting{	 "Maximally Allowed Height", window.GetMaximumHeight()});
-	settings.push_back(setting{		   		   "Brightness", window.GetBrightness()});
-	settings.push_back(setting{			  		  "Opacity", window.GetOpacity()});
-	settings.push_back(setting{		 		 "Pixel Format", window.GetPixelFormatName()});
-	settings.push_back(setting{			  "Window is shown", window.CheckWindowFlags(SDML::Video::WindowFlag::SHOWN)});
-	settings.push_back(setting{		  "Window is resizable", window.CheckWindowFlags(SDML::Video::WindowFlag::RESIZABLE)});
+	Misc::Printables display_settings {fmt::format("'{:s}' Display", window.GetDisplayName())};
+	display_settings.add_printable(			   "Width", window.GetDisplayWidth());
+	display_settings.add_printable(		      "Height", window.GetDisplayHeight());
+	display_settings.add_printable(	     "Orientation", display_orientation_string);
+	display_settings.add_printable("Pixel Format Name", window.GetDisplayModePixelFormatName());
 
-	std::vector<setting> display_settings{};
-	display_settings.push_back(setting{			   "Display Width", window.GetDisplayWidth()});
-	display_settings.push_back(setting{			  "Display Height", window.GetDisplayHeight()});
-	display_settings.push_back(setting{		 "Display Orientation", display_orientation_string});
-	display_settings.push_back(setting{"Display Pixel Format Name", window.GetDisplayModePixelFormatName()});
-	display_settings.push_back(setting{   	  "Display Mode Width", window.GetDisplayModeWidth()});
-	display_settings.push_back(setting{		 "Display Mode Height", window.GetDisplayModeHeight()});
-	display_settings.push_back(setting{"Display Mode Refresh Rate", window.GetDisplayModeRefreshRate()});
+	Misc::Printables display_mode_settings {"Corresponding Display Mode"};
+	display_mode_settings.add_printable(   	   "Width", window.GetDisplayModeWidth());
+	display_mode_settings.add_printable(	  "Height", window.GetDisplayModeHeight());
+	display_mode_settings.add_printable("Refresh Rate", window.GetDisplayModeRefreshRate());
 
-	std::pair<std::string, std::size_t> formatted_settings {Misc::FormatKeyValuePairsForPrinting(settings, fmt::format("'{:s}' Window", window.GetTitle()))};
-	std::pair<std::string, std::size_t> formatted_display_settings {Misc::FormatKeyValuePairsForPrinting(display_settings, fmt::format("'{:s}' Display", window.GetDisplayName()), formatted_settings.second)};
+	Misc::Printables window_settings {fmt::format("'{:s}' Window", window.GetTitle())};
+	window_settings.add_printable(				   	    "ID", window.GetID());
+	window_settings.add_printable(   "Top-Left X-Coordinate", window.GetX());
+	window_settings.add_printable(   "Top-Left Y-Coordinate", window.GetY());
+	window_settings.add_printable(				     "Width", window.GetWidth());
+	window_settings.add_printable( "Minimally Allowed Width", window.GetMinimumWidth());
+	window_settings.add_printable( "Maximally Allowed Width", window.GetMaximumWidth());
+	window_settings.add_printable(			        "Height", window.GetHeight());
+	window_settings.add_printable("Minimally Allowed Height", window.GetMinimumHeight());
+	window_settings.add_printable("Maximally Allowed Height", window.GetMaximumHeight());
+	window_settings.add_printable(		   	    "Brightness", window.GetBrightness());
+	window_settings.add_printable(			   	   "Opacity", window.GetOpacity());
+	window_settings.add_printable(		 	  "Pixel Format", window.GetPixelFormatName());
+	window_settings.add_printable(		   "Window is shown", window.CheckWindowFlags(SDML::Video::WindowFlag::SHOWN));
+	window_settings.add_printable(	   "Window is resizable", window.CheckWindowFlags(SDML::Video::WindowFlag::RESIZABLE));
+	window_settings.add_printable(display_settings);
+	window_settings.add_printable(display_mode_settings);
 
-	output_stream << "\n" << formatted_settings.first << std::endl;
-	output_stream << formatted_display_settings.first << std::endl;
+	std::cout << window_settings.print() << std::endl;
 
 	return output_stream;
 }
