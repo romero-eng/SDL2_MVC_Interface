@@ -33,11 +33,11 @@ namespace SDML
 			EVERYTHING     = SDL_INIT_EVERYTHING
 		};
 
-		void Initialize(Uint32 subsystems);
+		void Initialize(uint32_t subsystems);
 
 		void Initialize(InitFlag subsystem);
 
-		bool IsInitialized(Uint32 subsystems);
+		bool IsInitialized(uint32_t subsystems);
 
 		bool IsInitialized(InitFlag subsystem);
 
@@ -45,13 +45,13 @@ namespace SDML
 	}
 }
 
-Uint32 operator|(const SDML::Subsystem::InitFlag& first_flag,
+uint32_t operator|(const SDML::Subsystem::InitFlag& first_flag,
 				 const SDML::Subsystem::InitFlag& second_flag);
 
-Uint32 operator|(Uint32 first_flag,
+uint32_t operator|(uint32_t first_flag,
 				 const SDML::Subsystem::InitFlag& second_flag);
 
-Uint32 operator|(const SDML::Subsystem::InitFlag& first_flag,
-				 Uint32 second_flag);
+uint32_t operator|(const SDML::Subsystem::InitFlag& first_flag,
+				 uint32_t second_flag);
 
 #endif

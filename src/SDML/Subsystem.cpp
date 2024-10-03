@@ -1,7 +1,7 @@
 #if defined(__linux__) || defined(_WIN32) || defined(__APPLE__)
 #include "Subsystem.hpp"
 
-void SDML::Subsystem::Initialize(Uint32 subsystems)
+void SDML::Subsystem::Initialize(uint32_t subsystems)
 {
 	if(SDL_Init(subsystems) < 0)
 	{
@@ -53,7 +53,7 @@ void SDML::Subsystem::Initialize(Uint32 subsystems)
 void SDML::Subsystem::Initialize(InitFlag subsystem){ Initialize(std::to_underlying(subsystem)); }
 
 
-bool SDML::Subsystem::IsInitialized(Uint32 subsystems) { return subsystems == (subsystems & SDL_WasInit(subsystems)); }
+bool SDML::Subsystem::IsInitialized(uint32_t subsystems) { return subsystems == (subsystems & SDL_WasInit(subsystems)); }
 
 
 bool SDML::Subsystem::IsInitialized(InitFlag subsystem) { return IsInitialized(std::to_underlying(subsystem)); }
@@ -62,18 +62,18 @@ bool SDML::Subsystem::IsInitialized(InitFlag subsystem) { return IsInitialized(s
 void SDML::Subsystem::Quit() { SDL_Quit(); }
 
 
-Uint32 operator|(const SDML::Subsystem::InitFlag& first_flag,
+uint32_t operator|(const SDML::Subsystem::InitFlag& first_flag,
 				 const SDML::Subsystem::InitFlag& second_flag)
 { return std::to_underlying(first_flag) | std::to_underlying(second_flag); }
 
 
-Uint32 operator|(Uint32 first_flag,
+uint32_t operator|(uint32_t first_flag,
 				 const SDML::Subsystem::InitFlag& second_flag)
 { return first_flag | std::to_underlying(second_flag); }
 
 
-Uint32 operator|(const SDML::Subsystem::InitFlag& first_flag,
-				 Uint32 second_flag)
+uint32_t operator|(const SDML::Subsystem::InitFlag& first_flag,
+				 uint32_t second_flag)
 { return std::to_underlying(first_flag) | second_flag; }
 
 #else

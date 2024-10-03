@@ -102,13 +102,13 @@ namespace SDML
 			Window(const char *title,
 				   int width,
                    int height,
-				   Uint32 flags);
+				   uint32_t flags);
 
 			Window(const char *title,
                    int x, int y,
 				   int width,
                    int height,
-				   Uint32 flags);
+				   uint32_t flags);
 
 			Window(Window&) = delete;
 			
@@ -118,7 +118,7 @@ namespace SDML
 
 			std::string_view GetDisplayName();
 
-			Uint32 GetID();
+			uint32_t GetID();
 
 			int GetX();
 
@@ -142,7 +142,7 @@ namespace SDML
 
 			std::string_view GetPixelFormatName();
 
-			bool CheckWindowFlags(Uint32 flags);
+			bool CheckWindowFlags(uint32_t flags);
 
 			bool CheckWindowFlags(WindowFlag flag);
 
@@ -176,15 +176,15 @@ namespace SDML
 }
 
 
-Uint32 operator|(const SDML::Video::WindowFlag& first_flag,
+uint32_t operator|(const SDML::Video::WindowFlag& first_flag,
 				 const SDML::Video::WindowFlag& second_flag);
 
 
-Uint32 operator|(const SDML::Video::WindowFlag& first_flag,
-				 Uint32 second_flag);
+uint32_t operator|(const SDML::Video::WindowFlag& first_flag,
+				 uint32_t second_flag);
 
 
-Uint32 operator|(Uint32 first_flag,
+uint32_t operator|(uint32_t first_flag,
 				 const SDML::Video::WindowFlag& second_flag);
 
 

@@ -46,7 +46,7 @@ SDML::Video::Window::Window(const char *title,
 SDML::Video::Window::Window(const char *title,
 						   	int width,
         		           	int height,
-						   	Uint32 flags): Window(title,
+						   	uint32_t flags): Window(title,
 				   						 	 	  SDL_WINDOWPOS_UNDEFINED,
 										 		  SDL_WINDOWPOS_UNDEFINED,
 										 		  width,
@@ -58,7 +58,7 @@ SDML::Video::Window::Window(const char *title,
                    			int x, int y,
 						    int width,
                    			int height,
-				   			Uint32 flags): internal_SDL_window{SDL_CreateWindow(title,
+				   			uint32_t flags): internal_SDL_window{SDL_CreateWindow(title,
 				   															    x, y,
 																	   			width,
 																	   			height,
@@ -144,9 +144,9 @@ std::string_view SDML::Video::Window::GetDisplayName()
 }
 
 
-Uint32 SDML::Video::Window::GetID()
+uint32_t SDML::Video::Window::GetID()
 {
-	Uint32 ID {SDL_GetWindowID(this->internal_SDL_window)};
+	uint32_t ID {SDL_GetWindowID(this->internal_SDL_window)};
 
 	if(ID == 0)
 	{
@@ -292,7 +292,7 @@ std::string_view SDML::Video::Window::GetPixelFormatName()
 }
 
 
-bool SDML::Video::Window::CheckWindowFlags(Uint32 flags) { return flags == (flags & SDL_GetWindowFlags(this->internal_SDL_window)); }
+bool SDML::Video::Window::CheckWindowFlags(uint32_t flags) { return flags == (flags & SDL_GetWindowFlags(this->internal_SDL_window)); }
 
 
 bool SDML::Video::Window::CheckWindowFlags(WindowFlag flag) { return std::to_underlying(flag) == (std::to_underlying(flag) & SDL_GetWindowFlags(this->internal_SDL_window)); }
@@ -436,17 +436,17 @@ SDML::Video::Window::~Window()
 SDL_Window* SDML::Video::Window::AccessInternalWindow() { return this->internal_SDL_window; }
 
 
-Uint32 operator|(const SDML::Video::WindowFlag& first_flag,
+uint32_t operator|(const SDML::Video::WindowFlag& first_flag,
 				 const SDML::Video::WindowFlag& second_flag)
 { return std::to_underlying(first_flag) | std::to_underlying(second_flag) ; }
 
 
-Uint32 operator|(const SDML::Video::WindowFlag& first_flag,
-				 Uint32 second_flag)
+uint32_t operator|(const SDML::Video::WindowFlag& first_flag,
+				 uint32_t second_flag)
 { return std::to_underlying(first_flag) | second_flag ; }
 
 
-Uint32 operator|(Uint32 first_flag,
+uint32_t operator|(uint32_t first_flag,
 				 const SDML::Video::WindowFlag& second_flag)
 { return first_flag | std::to_underlying(second_flag) ; }
 

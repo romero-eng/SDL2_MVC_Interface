@@ -48,12 +48,12 @@ std::pair<std::string, std::size_t> Misc::FormatKeyValuePairsForPrinting(const s
 				    		fmt::arg("key", key_value_pairs[index - offset].first),
 				        	fmt::arg("indentation", num_indentation_spaces),
 						    fmt::arg("value", std::get<bool>(key_value_pairs[index - offset].second) ? "True" : "False"));
-    	} else if (std::holds_alternative<Uint32>(key_value_pairs[index - offset].second)) {
+    	} else if (std::holds_alternative<uint32_t>(key_value_pairs[index - offset].second)) {
 	    	printable_keys_value_pairs[index] = \
 		    	fmt::format("{key:>{indentation}s}: {value:d}",
 			    			fmt::arg("key", key_value_pairs[index - offset].first),
 				    		fmt::arg("indentation", num_indentation_spaces),
-					    	fmt::arg("value", std::get<Uint32>(key_value_pairs[index - offset].second)));
+					    	fmt::arg("value", std::get<uint32_t>(key_value_pairs[index - offset].second)));
     	} else if (std::holds_alternative<int>(key_value_pairs[index - offset].second)) {
 	    	printable_keys_value_pairs[index] = \
 		    	fmt::format("{key:>{indentation}s}: {value:d}",

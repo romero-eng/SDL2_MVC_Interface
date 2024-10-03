@@ -18,7 +18,7 @@ namespace Misc
 {
     using allowed_value_types = \
         std::variant<bool,
-                     Uint32,
+                     uint32_t,
                      int,
                      float,
                      const char*,
