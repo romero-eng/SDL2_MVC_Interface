@@ -28,10 +28,8 @@ std::string Misc::Printables::print(std::size_t prior_level)
 	{
 		if(std::holds_alternative<std::pair<std::string, std::string>>(printable)) {
 			current_key_length = std::get<std::pair<std::string, std::string>>(printable).first.length();
-		} else {
-			current_key_length = std::get<Printables>(printable).title.length();
+			max_key_length = max_key_length < current_key_length ? current_key_length : max_key_length;
 		}
-		max_key_length = max_key_length < current_key_length ? current_key_length : max_key_length;
 	}
 
 	std::vector<std::string> lines {this->printables.size() + 2};

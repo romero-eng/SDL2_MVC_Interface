@@ -474,16 +474,17 @@ std::ostream& operator<<(std::ostream& output_stream,
 			break;
 	}
 
+	Misc::Printables display_mode_settings {fmt::format("Display Mode", window.GetDisplayName())};
+	display_mode_settings.add_printable(   	   "Width", window.GetDisplayModeWidth());
+	display_mode_settings.add_printable(	  "Height", window.GetDisplayModeHeight());
+	display_mode_settings.add_printable("Refresh Rate", window.GetDisplayModeRefreshRate());
+
 	Misc::Printables display_settings {fmt::format("'{:s}' Display", window.GetDisplayName())};
 	display_settings.add_printable(			   "Width", window.GetDisplayWidth());
 	display_settings.add_printable(		      "Height", window.GetDisplayHeight());
 	display_settings.add_printable(	     "Orientation", display_orientation_string);
 	display_settings.add_printable("Pixel Format Name", window.GetDisplayModePixelFormatName());
-
-	Misc::Printables display_mode_settings {"Corresponding Display Mode"};
-	display_mode_settings.add_printable(   	   "Width", window.GetDisplayModeWidth());
-	display_mode_settings.add_printable(	  "Height", window.GetDisplayModeHeight());
-	display_mode_settings.add_printable("Refresh Rate", window.GetDisplayModeRefreshRate());
+	display_settings.add_printable(display_mode_settings);
 
 	Misc::Printables window_settings {fmt::format("'{:s}' Window", window.GetTitle())};
 	window_settings.add_printable(				   	    "ID", window.GetID());
@@ -501,7 +502,6 @@ std::ostream& operator<<(std::ostream& output_stream,
 	window_settings.add_printable(		   "Window is shown", window.CheckWindowFlags(SDML::Video::WindowFlag::SHOWN));
 	window_settings.add_printable(	   "Window is resizable", window.CheckWindowFlags(SDML::Video::WindowFlag::RESIZABLE));
 	window_settings.add_printable(display_settings);
-	window_settings.add_printable(display_mode_settings);
 
 	std::cout << window_settings.print() << std::endl;
 
