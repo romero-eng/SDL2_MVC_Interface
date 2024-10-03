@@ -114,9 +114,9 @@ namespace SDML
 			
 			Window& operator=(Window&) = delete;
 
-			std::string_view GetTitle();
+			std::string GetTitle();
 
-			std::string_view GetDisplayName();
+			std::string GetDisplayName();
 
 			uint32_t GetID();
 
@@ -140,7 +140,7 @@ namespace SDML
 
 			float GetOpacity();
 
-			std::string_view GetPixelFormatName();
+			std::string GetPixelFormatName();
 
 			bool CheckWindowFlags(uint32_t flags);
 
@@ -156,7 +156,7 @@ namespace SDML
 
 			DisplayOrientation GetDisplayOrientation();
 
-			std::string_view GetDisplayModePixelFormatName();
+			std::string GetDisplayModePixelFormatName();
 
 			int GetDisplayModeWidth();
 

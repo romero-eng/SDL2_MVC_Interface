@@ -125,10 +125,10 @@ SDL_DisplayMode SDML::Video::Window::GetDisplayMode()
 }
 
 
-std::string_view SDML::Video::Window::GetTitle() { return std::string_view{SDL_GetWindowTitle(this->internal_SDL_window)}; }
+std::string SDML::Video::Window::GetTitle() { return std::string{SDL_GetWindowTitle(this->internal_SDL_window)}; }
 
 
-std::string_view SDML::Video::Window::GetDisplayName()
+std::string SDML::Video::Window::GetDisplayName()
 {
 	int display_index {GetDisplayIndex()};
 	const char* display_name {SDL_GetDisplayName(display_index)};
@@ -140,7 +140,7 @@ std::string_view SDML::Video::Window::GetDisplayName()
 										  	 SDL_GetError()));
 	}
 
-	return std::string_view {display_name};
+	return std::string {display_name};
 }
 
 
@@ -277,9 +277,9 @@ float SDML::Video::Window::GetOpacity()
 }
 
 
-std::string_view SDML::Video::Window::GetPixelFormatName()
+std::string SDML::Video::Window::GetPixelFormatName()
 {
-	std::string_view pixel_format {SDL_GetPixelFormatName(SDL_GetWindowPixelFormat(this->internal_SDL_window))};
+	std::string pixel_format {SDL_GetPixelFormatName(SDL_GetWindowPixelFormat(this->internal_SDL_window))};
 
 	if(pixel_format == "SDL_PIXELFORMAT_UNKNOWN")
 	{
@@ -365,10 +365,10 @@ SDML::Video::DisplayOrientation SDML::Video::Window::GetDisplayOrientation()
 }
 
 
-std::string_view SDML::Video::Window::GetDisplayModePixelFormatName()
+std::string SDML::Video::Window::GetDisplayModePixelFormatName()
 {
 	SDL_DisplayMode tmp {this->GetDisplayMode()};
-	return std::string_view {SDL_GetPixelFormatName(tmp.format)};
+	return std::string {SDL_GetPixelFormatName(tmp.format)};
 }
 
 
