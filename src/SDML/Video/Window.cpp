@@ -490,16 +490,21 @@ std::ostream& operator<<(std::ostream& output_stream,
 	settings.push_back(setting{		 		 "Pixel Format", window.GetPixelFormatName()});
 	settings.push_back(setting{			  "Window is shown", window.CheckWindowFlags(SDML::Video::WindowFlag::SHOWN)});
 	settings.push_back(setting{		  "Window is resizable", window.CheckWindowFlags(SDML::Video::WindowFlag::RESIZABLE)});
-	settings.push_back(setting{"Corresponding Display Name", window.GetDisplayName()});
-	settings.push_back(setting{			    "Display Width", window.GetDisplayWidth()});
-	settings.push_back(setting{			   "Display Height", window.GetDisplayHeight()});
-	settings.push_back(setting{		  "Display Orientation", display_orientation_string});
-	settings.push_back(setting{ "Display Pixel Format Name", window.GetDisplayModePixelFormatName()});
-	settings.push_back(setting{   	   "Display Mode Width", window.GetDisplayModeWidth()});
-	settings.push_back(setting{		  "Display Mode Height", window.GetDisplayModeHeight()});
-	settings.push_back(setting{ "Display Mode Refresh Rate", window.GetDisplayModeRefreshRate()});
 
-	output_stream << "\n" << Misc::FormatKeyValuePairsForPrinting(settings, fmt::format("'{:s}' Window", window.GetTitle())) << std::endl;
+	std::vector<setting> display_settings{};
+	display_settings.push_back(setting{			   "Display Width", window.GetDisplayWidth()});
+	display_settings.push_back(setting{			  "Display Height", window.GetDisplayHeight()});
+	display_settings.push_back(setting{		 "Display Orientation", display_orientation_string});
+	display_settings.push_back(setting{"Display Pixel Format Name", window.GetDisplayModePixelFormatName()});
+	display_settings.push_back(setting{   	  "Display Mode Width", window.GetDisplayModeWidth()});
+	display_settings.push_back(setting{		 "Display Mode Height", window.GetDisplayModeHeight()});
+	display_settings.push_back(setting{"Display Mode Refresh Rate", window.GetDisplayModeRefreshRate()});
+
+	std::pair<std::string, std::size_t> formatted_settings {Misc::FormatKeyValuePairsForPrinting(settings, fmt::format("'{:s}' Window", window.GetTitle()))};
+	std::pair<std::string, std::size_t> formatted_display_settings {Misc::FormatKeyValuePairsForPrinting(display_settings, fmt::format("'{:s}' Display", window.GetDisplayName()), formatted_settings.second)};
+
+	output_stream << "\n" << formatted_settings.first << std::endl;
+	output_stream << formatted_display_settings.first << std::endl;
 
 	return output_stream;
 }

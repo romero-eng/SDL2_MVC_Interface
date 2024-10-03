@@ -41,7 +41,7 @@ void SDML::Subsystem::Initialize(Uint32 subsystems)
 		video_init_settings.push_back(video_init_setting{"Available Video Drivers", video_drivers});
 		video_init_settings.push_back(video_init_setting{   "Current Video Driver", SDL_GetCurrentVideoDriver()});
 
-		std::cout << Misc::FormatKeyValuePairsForPrinting(video_init_settings, "SDML Video Subsystem Initialized") << std::endl;
+		std::cout << Misc::FormatKeyValuePairsForPrinting(video_init_settings, "SDML Video Subsystem Initialized").first << std::endl;
 
 		if(SDL_GetNumRenderDrivers() < 1){
 			std::cerr << "Warning: Could not find any Render drivers!" << std::endl;

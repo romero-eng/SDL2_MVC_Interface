@@ -26,10 +26,14 @@ namespace Misc
                      std::string_view,
                      std::vector<std::string>>;
 
-    std::string FormatKeyValuePairsForPrinting(const std::vector<std::pair<std::string, allowed_value_types>>& key_value_pairs);
+    std::pair<std::string, std::size_t> FormatKeyValuePairsForPrinting(const std::vector<std::pair<std::string, allowed_value_types>>& key_value_pairs);
 
-    std::string FormatKeyValuePairsForPrinting(const std::vector<std::pair<std::string, allowed_value_types>>& key_value_pairs,
-                                               const std::string& title);
+    std::pair<std::string, std::size_t> FormatKeyValuePairsForPrinting(const std::vector<std::pair<std::string, allowed_value_types>>& key_value_pairs,
+                        											   const std::string& title);
+
+    std::pair<std::string, std::size_t> FormatKeyValuePairsForPrinting(const std::vector<std::pair<std::string, allowed_value_types>>& key_value_pairs,
+                                                                       const std::string& title,
+						        			        	    	       const std::size_t num_prior_indentation_spaces);
 }
 
 
