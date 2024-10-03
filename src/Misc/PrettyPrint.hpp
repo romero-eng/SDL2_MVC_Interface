@@ -44,5 +44,6 @@ namespace Misc
     };
 }
 
+std::ostream& operator<<(std::ostream& output, Misc::Printables& printables);
 
 #endif

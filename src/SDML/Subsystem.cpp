@@ -39,7 +39,7 @@ void SDML::Subsystem::Initialize(uint32_t subsystems)
 		Misc::Printables settings_test {"SDML Video Subsystem Initialized"};
 		settings_test.add_printable("Available Video Drivers", video_drivers);
 		settings_test.add_printable(   "Current Video Driver", SDL_GetCurrentVideoDriver());
-		std::cout << settings_test.print() << "\n" << std::endl;
+		std::cout << settings_test << "\n" << std::endl;
 
 		if(SDL_GetNumRenderDrivers() < 1){
 			std::cerr << "Warning: Could not find any Render drivers!" << std::endl;

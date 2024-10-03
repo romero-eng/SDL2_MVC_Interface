@@ -63,6 +63,7 @@ std::string Misc::Printables::print(std::size_t prior_level)
 	return fmt::format("{}", fmt::join(lines, "\n"));
 }
 
+std::ostream& operator<<(std::ostream& output, Misc::Printables& printables) { return output << printables.print(); }
 
 #else
 #error "This file is only meant to be compiled on a Windows, Macintosh, or Linux OS"
