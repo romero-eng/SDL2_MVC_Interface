@@ -3,7 +3,6 @@
 
 
 // Third-party Libraries
-#include <SDL2/SDL.h>
 #include <fmt/format.h>
 
 // C++ Standard Libraries
