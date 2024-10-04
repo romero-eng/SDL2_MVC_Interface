@@ -8,7 +8,7 @@ SDML::Video::Renderer::Renderer(Window& window,
 
 
 SDML::Video::Renderer::Renderer(Window& window,
-                                InitFlag flag): Renderer{window, std::to_underlying(flag)} {};
+                                RendererInitFlag flag): Renderer{window, std::to_underlying(flag)} {};
 
 
 SDML::Video::Renderer::Renderer(Window& window): Renderer{window, 0} {};
@@ -53,13 +53,16 @@ int SDML::Video::Renderer::GetMaxTextureHeight()
 }
 
 
-uint32_t operator|(const SDML::Video::Renderer::InitFlag& first_flag, const SDML::Video::Renderer::InitFlag& second_flag) { return std::to_underlying(first_flag) | std::to_underlying(second_flag); }
 
 
-uint32_t operator|(uint32_t first_flag, const SDML::Video::Renderer::InitFlag& second_flag) { return first_flag | std::to_underlying(second_flag); }
+
+uint32_t operator|(const SDML::Video::RendererInitFlag& first_flag, const SDML::Video::RendererInitFlag& second_flag) { return std::to_underlying(first_flag) | std::to_underlying(second_flag); }
 
 
-uint32_t operator|(const SDML::Video::Renderer::InitFlag& first_flag, uint32_t second_flag) { return std::to_underlying(first_flag) | second_flag; }
+uint32_t operator|(uint32_t first_flag, const SDML::Video::RendererInitFlag& second_flag) { return first_flag | std::to_underlying(second_flag); }
+
+
+uint32_t operator|(const SDML::Video::RendererInitFlag& first_flag, uint32_t second_flag) { return std::to_underlying(first_flag) | second_flag; }
 
 
 std::ostream& operator<<(std::ostream& output,
