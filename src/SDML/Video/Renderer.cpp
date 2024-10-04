@@ -55,7 +55,7 @@ int SDML::Video::Renderer::GetHeight()
 }
 
 
-std::array<uint8_t, 4> SDML::Video::Renderer::GetColor()
+std::array<uint8_t, 4> SDML::Video::Renderer::GetDrawingColor()
 {
     std::array<uint8_t, 4> color {};
 
@@ -150,7 +150,7 @@ std::ostream& operator<<(std::ostream& output,
     printables.add_printable( "Supports rendering to texture", renderer.CheckInitFlags(SDML::Video::RendererInitFlag::TARGETTEXTURE));
     printables.add_printable(                         "Width", renderer.GetWidth());
     printables.add_printable(                        "Height", renderer.GetHeight());
-    printables.add_printable(                 "Drawing Color", renderer.GetColor());
+    printables.add_printable(                 "Drawing Color", renderer.GetDrawingColor());
     printables.add_printable(         "Maximum Texture Width", renderer.GetMaxTextureWidth());
     printables.add_printable(        "Maximum Texture Height", renderer.GetMaxTextureHeight());
 

@@ -53,7 +53,7 @@ namespace SDML
 
             int GetHeight();
 
-            std::array<uint8_t, 4> GetColor();
+            std::array<uint8_t, 4> GetDrawingColor();
 
             int GetMaxTextureWidth();
 
