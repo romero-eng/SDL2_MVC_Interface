@@ -497,7 +497,7 @@ std::ostream& operator<<(std::ostream& output_stream,
 	window_settings.add_printable(	   "Window is resizable", window.CheckInitFlags(SDML::Video::InitFlag::RESIZABLE));
 	window_settings.add_printable(display_settings);
 
-	std::cout << window_settings << std::endl;
+	std::cout << window_settings;
 
 	return output_stream;
 }
