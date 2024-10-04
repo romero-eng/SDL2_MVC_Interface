@@ -34,17 +34,31 @@ namespace Misc
 
             void add_printable(const char* key, bool value);
 
+            void add_printable(const std::string& key, bool value);
+
             void add_printable(const char* key, uint32_t value);
+
+            void add_printable(const std::string&, uint32_t value);
 
             void add_printable(const char* key, int value);
 
+            void add_printable(const std::string&, int value);
+
             void add_printable(const char* key, float value);
+
+            void add_printable(const std::string& key, float value);
 
             void add_printable(const char* key, const char* value);
 
+            void add_printable(const std::string& key, const char* value);
+
             void add_printable(const char* key, const std::string& value);
+            
+            void add_printable(const std::string&, const std::string& value);
 
             void add_printable(const char* key, const std::vector<std::string>& value);
+
+            void add_printable(const std::string& key, const std::vector<std::string>& value);
 
             void add_printable(Printables& printables);
 

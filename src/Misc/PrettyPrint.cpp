@@ -9,17 +9,31 @@ void Misc::Printables::set_title(std::string new_title) { this->title = new_titl
 
 void Misc::Printables::add_printable(const char* key, bool value) { this->printables.push_back(std::pair<std::string, std::string> {std::string{key}, std::string{value ? "True" : "False"}}); }
 
+void Misc::Printables::add_printable(const std::string& key, bool value) { this->printables.push_back(std::pair<std::string, std::string> {key, std::string{value ? "True" : "False"}}); }
+
 void Misc::Printables::add_printable(const char* key, uint32_t value) { this->printables.push_back(std::pair<std::string, std::string> {std::string{key}, std::to_string(value)}); }
+
+void Misc::Printables::add_printable(const std::string& key, uint32_t value) { this->printables.push_back(std::pair<std::string, std::string> {key, std::to_string(value)}); }
 
 void Misc::Printables::add_printable(const char* key, int value) { this->printables.push_back(std::pair<std::string, std::string> {std::string{key}, std::to_string(value)}); }
 
+void Misc::Printables::add_printable(const std::string& key, int value) { this->printables.push_back(std::pair<std::string, std::string> {key, std::to_string(value)}); }
+
 void Misc::Printables::add_printable(const char* key, float value) { this->printables.push_back(std::pair<std::string, std::string> {std::string{key}, std::to_string(value)}); }
+
+void Misc::Printables::add_printable(const std::string& key, float value) { this->printables.push_back(std::pair<std::string, std::string> {key, std::to_string(value)}); }
 
 void Misc::Printables::add_printable(const char* key, const char* value) { this->printables.push_back(std::pair<std::string, std::string> {std::string{key}, std::string{value}}); }
 
+void Misc::Printables::add_printable(const std::string& key, const char* value) { this->printables.push_back(std::pair<std::string, std::string> {key, std::string{value}}); }
+
 void Misc::Printables::add_printable(const char* key, const std::string& value) { this->printables.push_back(std::pair<std::string, std::string> {std::string{key}, value}); }
 
+void Misc::Printables::add_printable(const std::string& key, const std::string& value) { this->printables.push_back(std::pair<std::string, std::string> {key, value}); }
+
 void Misc::Printables::add_printable(const char* key, const std::vector<std::string>& value) { this->printables.push_back(std::pair<std::string, std::string> {std::string{key}, fmt::format("[{}]", fmt::join(value, ", "))}); }
+
+void Misc::Printables::add_printable(const std::string& key, const std::vector<std::string>& value) { this->printables.push_back(std::pair<std::string, std::string> {key, fmt::format("[{}]", fmt::join(value, ", "))}); }
 
 void Misc::Printables::add_printable(Printables& printables) { this->printables.push_back(printables); }
 
