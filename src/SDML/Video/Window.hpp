@@ -18,7 +18,7 @@ namespace SDML
 {
 	namespace Video
 	{
-		enum class WindowFlag: uint32_t
+		enum class InitFlag: uint32_t
 		{
 			FULLSCREEN    	   = SDL_WINDOW_FULLSCREEN,
 			OPENGL 	      	   = SDL_WINDOW_OPENGL,
@@ -90,13 +90,13 @@ namespace SDML
 			Window(const char *title,
 				   int width,
                    int height,
-				   WindowFlag flag);
+				   InitFlag flag);
 
 			Window(const char *title,
                    int x, int y,
 				   int width,
                    int height,
-				   WindowFlag flag);
+				   InitFlag flag);
 
 			Window(const char *title,
 				   int width,
@@ -141,9 +141,9 @@ namespace SDML
 
 			std::string GetPixelFormatName();
 
-			bool CheckWindowFlags(uint32_t flags);
+			bool CheckInitFlags(uint32_t flags);
 
-			bool CheckWindowFlags(WindowFlag flag);
+			bool CheckInitFlags(InitFlag flag);
 
 			void SetMinimumArea(int min_width, int min_height);
 
@@ -175,16 +175,16 @@ namespace SDML
 }
 
 
-uint32_t operator|(const SDML::Video::WindowFlag& first_flag,
-				 const SDML::Video::WindowFlag& second_flag);
+uint32_t operator|(const SDML::Video::InitFlag& first_flag,
+				 const SDML::Video::InitFlag& second_flag);
 
 
-uint32_t operator|(const SDML::Video::WindowFlag& first_flag,
+uint32_t operator|(const SDML::Video::InitFlag& first_flag,
 				 uint32_t second_flag);
 
 
 uint32_t operator|(uint32_t first_flag,
-				 const SDML::Video::WindowFlag& second_flag);
+				 const SDML::Video::InitFlag& second_flag);
 
 
 std::ostream& operator<<(std::ostream& output_stream,
