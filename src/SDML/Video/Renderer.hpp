@@ -10,6 +10,7 @@
 #include <fmt/format.h>
 
 //C++ Standard Libraries
+#include <array>
 #include <vector>
 
 
@@ -47,6 +48,12 @@ namespace SDML
             ~Renderer();
 
             std::string GetName();
+
+            int GetWidth();
+
+            int GetHeight();
+
+            std::array<uint8_t, 4> GetColor();
 
             int GetMaxTextureWidth();
 

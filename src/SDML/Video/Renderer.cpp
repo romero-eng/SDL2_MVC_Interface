@@ -29,6 +29,46 @@ std::string SDML::Video::Renderer::GetName()
 }
 
 
+int SDML::Video::Renderer::GetWidth()
+{
+    int width {};
+    if(SDL_GetRendererOutputSize(this->internal_SDL_renderer, &width, nullptr) < 0) {
+        throw std::runtime_error(fmt::format("Could not retrieve the width for the '{:s}' Renderer: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+
+    return width;
+}
+
+
+int SDML::Video::Renderer::GetHeight()
+{
+    int height {};
+    if(SDL_GetRendererOutputSize(this->internal_SDL_renderer, nullptr, &height) < 0) {
+        throw std::runtime_error(fmt::format("Could not retrieve the width for the '{:s}' Renderer: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+
+    return height;
+}
+
+
+std::array<uint8_t, 4> SDML::Video::Renderer::GetColor()
+{
+    std::array<uint8_t, 4> color {};
+
+    if(SDL_GetRenderDrawColor(this->internal_SDL_renderer, &color[0], &color[1], &color[2], &color[3]) < 0) {
+        throw std::runtime_error(fmt::format("Could not retrieve the drawing color for the '{:s}' Renderer: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+
+    return color;
+}
+
+
 int SDML::Video::Renderer::GetMaxTextureWidth()
 {
     SDL_RendererInfo tmp {};
@@ -108,6 +148,9 @@ std::ostream& operator<<(std::ostream& output,
     printables.add_printable("Supports Hardware Acceleration", renderer.CheckInitFlags(SDML::Video::RendererInitFlag::ACCELERATED));
     printables.add_printable(                "Supports VSync", renderer.CheckInitFlags(SDML::Video::RendererInitFlag::PRESENTVSYNC));
     printables.add_printable( "Supports rendering to texture", renderer.CheckInitFlags(SDML::Video::RendererInitFlag::TARGETTEXTURE));
+    printables.add_printable(                         "Width", renderer.GetWidth());
+    printables.add_printable(                        "Height", renderer.GetHeight());
+    printables.add_printable(                 "Drawing Color", renderer.GetColor());
     printables.add_printable(         "Maximum Texture Width", renderer.GetMaxTextureWidth());
     printables.add_printable(        "Maximum Texture Height", renderer.GetMaxTextureHeight());
 
