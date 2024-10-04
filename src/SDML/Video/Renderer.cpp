@@ -1,11 +1,29 @@
 #if defined(__linux__) || defined(_WIN32) || defined(__APPLE__)
 #include "Renderer.hpp"
 
-SDML::Video::Renderer::Renderer(Window& window): internal_SDL_renderer{SDL_CreateRenderer(window.Access_SDL_Backend(),
+SDML::Video::Renderer::Renderer(Window& window,
+                                uint32_t flags): internal_SDL_renderer{SDL_CreateRenderer(window.Access_SDL_Backend(),
                                                                                           -1,
-                                                                                          0)} {};
+                                                                                          flags)} {};
+
+
+SDML::Video::Renderer::Renderer(Window& window,
+                                InitFlag flag): Renderer{window, std::to_underlying(flag)} {};
+
+
+SDML::Video::Renderer::Renderer(Window& window): Renderer{window, 0} {};
+
 
 SDML::Video::Renderer::~Renderer() { SDL_DestroyRenderer(this->internal_SDL_renderer); }
+
+
+uint32_t operator|(const SDML::Video::Renderer::InitFlag& first_flag, const SDML::Video::Renderer::InitFlag& second_flag) { return std::to_underlying(first_flag) | std::to_underlying(second_flag); }
+
+
+uint32_t operator|(uint32_t first_flag, const SDML::Video::Renderer::InitFlag& second_flag) { return first_flag | std::to_underlying(second_flag); }
+
+
+uint32_t operator|(const SDML::Video::Renderer::InitFlag& first_flag, uint32_t second_flag) { return std::to_underlying(first_flag) | second_flag; }
 
 #else
 #error "This file is only meant to be compiled on a Windows, Macintosh, or Linux OS"
