@@ -24,7 +24,7 @@ SDML::Video::Window::Window(const char *title,
 SDML::Video::Window::Window(const char *title,
 				   			int width,
                    			int height,
-				   			InitFlag flag): Window(title,
+				   			WindowInitFlag flag): Window(title,
 				   									 SDL_WINDOWPOS_UNDEFINED,
 													 SDL_WINDOWPOS_UNDEFINED,
 										 			 width,
@@ -36,7 +36,7 @@ SDML::Video::Window::Window(const char *title,
 		                   	int x, int y,
 						   	int width,
                 		   	int height,
-				   			InitFlag flag): Window(title,
+				   			WindowInitFlag flag): Window(title,
 				   									 x, y,
 										 			 width,
 										 			 height,
@@ -307,10 +307,10 @@ std::string SDML::Video::Window::GetPixelFormatName()
 }
 
 
-bool SDML::Video::Window::CheckInitFlags(uint32_t flags) { return flags == (flags & SDL_GetWindowFlags(this->internal_SDL_window)); }
+bool SDML::Video::Window::CheckWindowInitFlags(uint32_t flags) { return flags == (flags & SDL_GetWindowFlags(this->internal_SDL_window)); }
 
 
-bool SDML::Video::Window::CheckInitFlags(InitFlag flag) { return std::to_underlying(flag) == (std::to_underlying(flag) & SDL_GetWindowFlags(this->internal_SDL_window)); }
+bool SDML::Video::Window::CheckWindowInitFlags(WindowInitFlag flag) { return std::to_underlying(flag) == (std::to_underlying(flag) & SDL_GetWindowFlags(this->internal_SDL_window)); }
 
 
 void SDML::Video::Window::SetMinimumArea(int min_width, int min_height) { SDL_SetWindowMinimumSize(this->internal_SDL_window, min_width, min_height); }
@@ -436,13 +436,13 @@ void SDML::Video::Window::Flash(FlashOperation operation)
 SDL_Window* SDML::Video::Window::Access_SDL_Backend() { return this->internal_SDL_window; }
 
 
-uint32_t operator|(const SDML::Video::InitFlag& first_flag, const SDML::Video::InitFlag& second_flag) { return std::to_underlying(first_flag) | std::to_underlying(second_flag) ; }
+uint32_t operator|(const SDML::Video::WindowInitFlag& first_flag, const SDML::Video::WindowInitFlag& second_flag) { return std::to_underlying(first_flag) | std::to_underlying(second_flag) ; }
 
 
-uint32_t operator|(const SDML::Video::InitFlag& first_flag, uint32_t second_flag) { return std::to_underlying(first_flag) | second_flag ; }
+uint32_t operator|(const SDML::Video::WindowInitFlag& first_flag, uint32_t second_flag) { return std::to_underlying(first_flag) | second_flag ; }
 
 
-uint32_t operator|(uint32_t first_flag, const SDML::Video::InitFlag& second_flag) { return first_flag | std::to_underlying(second_flag) ; }
+uint32_t operator|(uint32_t first_flag, const SDML::Video::WindowInitFlag& second_flag) { return first_flag | std::to_underlying(second_flag) ; }
 
 
 std::ostream& operator<<(std::ostream& output_stream,
@@ -493,8 +493,8 @@ std::ostream& operator<<(std::ostream& output_stream,
 	window_settings.add_printable(		   	    "Brightness", window.GetBrightness());
 	window_settings.add_printable(			   	   "Opacity", window.GetOpacity());
 	window_settings.add_printable(		 	  "Pixel Format", window.GetPixelFormatName());
-	window_settings.add_printable(		   "Window is shown", window.CheckInitFlags(SDML::Video::InitFlag::SHOWN));
-	window_settings.add_printable(	   "Window is resizable", window.CheckInitFlags(SDML::Video::InitFlag::RESIZABLE));
+	window_settings.add_printable(		   "Window is shown", window.CheckWindowInitFlags(SDML::Video::WindowInitFlag::SHOWN));
+	window_settings.add_printable(	   "Window is resizable", window.CheckWindowInitFlags(SDML::Video::WindowInitFlag::RESIZABLE));
 	window_settings.add_printable(display_settings);
 
 	std::cout << window_settings;
