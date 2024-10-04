@@ -57,17 +57,17 @@ void SDML::Subsystem::Initialize(uint32_t subsystems)
 
 				printable_render_driver_info.clear();
 				printable_render_driver_info.set_title(fmt::format("'{:s}' Render Driver", current_render_driver_info.name));
+				printable_render_driver_info.add_printable(  		"Is Software Fallback", SDL_RENDERER_SOFTWARE == (SDL_RENDERER_SOFTWARE & current_render_driver_info.flags));
+				printable_render_driver_info.add_printable(  	   "Supports Acceleration", SDL_RENDERER_ACCELERATED == (SDL_RENDERER_ACCELERATED & current_render_driver_info.flags));
+				printable_render_driver_info.add_printable(  		  	  "Supports VSync", SDL_RENDERER_PRESENTVSYNC == (SDL_RENDERER_PRESENTVSYNC & current_render_driver_info.flags));
+				printable_render_driver_info.add_printable("Supports rendering to texture", SDL_RENDERER_TARGETTEXTURE == (SDL_RENDERER_TARGETTEXTURE & current_render_driver_info.flags));
+				printable_render_driver_info.add_printable( 	   "Maximum Texture Width", current_render_driver_info.max_texture_width);
+				printable_render_driver_info.add_printable(		  "Maximum Texture Height", current_render_driver_info.max_texture_height);
 				for(std::size_t render_format_index = 0; render_format_index < num_texture_formats; render_format_index++){
 					printable_render_driver_info.add_printable(fmt::format("Texture Format #{:d}",
 																		   render_format_index + 1),
 															   SDL_GetPixelFormatName(current_render_driver_info.texture_formats[0]));
 				}
-				printable_render_driver_info.add_printable( 	   "Maximum Texture Width", current_render_driver_info.max_texture_width);
-				printable_render_driver_info.add_printable(		  "Maximum Texture Height", current_render_driver_info.max_texture_height);
-				printable_render_driver_info.add_printable(  		"Is Software Fallback", SDL_RENDERER_SOFTWARE == (SDL_RENDERER_SOFTWARE & current_render_driver_info.flags));
-				printable_render_driver_info.add_printable(  	   "Supports Acceleration", SDL_RENDERER_ACCELERATED == (SDL_RENDERER_ACCELERATED & current_render_driver_info.flags));
-				printable_render_driver_info.add_printable(  		  	  "Supports VSync", SDL_RENDERER_PRESENTVSYNC == (SDL_RENDERER_PRESENTVSYNC & current_render_driver_info.flags));
-				printable_render_driver_info.add_printable("Supports rendering to texture", SDL_RENDERER_TARGETTEXTURE == (SDL_RENDERER_TARGETTEXTURE & current_render_driver_info.flags));
 				video_init_msgs.copy_into_printables(printable_render_driver_info);
 			}
 		}
