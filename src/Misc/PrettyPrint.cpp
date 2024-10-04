@@ -35,31 +35,35 @@ std::string Misc::Printables::print(std::size_t prior_level)
 		}
 	}
 
-	std::vector<std::string> lines(this->printables.size() + 2);
-	lines[0] = \
-		fmt::format("{:{prior_indentation}s}{Title:s}:",
-					"",
-					fmt::arg("prior_indentation", num_tab_spaces*prior_level),
-					fmt::arg("Title", this->title));
-	lines[1] = \
-		fmt::format("{:{prior_indentation}s}{:-^{Title_Length}s}",
-					"",
-					"",
-					fmt::arg("prior_indentation", num_tab_spaces*prior_level),
-					fmt::arg("Title_Length", this->title.length() + 1));
+	bool non_empty_title {this->title != ""};
+	std::size_t index_offset {static_cast<std::size_t>(non_empty_title ? 2 : 0)};
+	std::vector<std::string> lines (this->printables.size() + index_offset);
 
-	for(std::size_t i = 2; i < lines.size(); i++)
-	{
-		if(std::holds_alternative<std::pair<std::string, std::string>>(this->printables[i-2])) {
-			lines[i] = \
+	if(non_empty_title) {
+		lines[0] = \
+			fmt::format("{:{prior_indentation}s}{Title:s}:",
+						"",
+						fmt::arg("prior_indentation", num_tab_spaces*prior_level),
+						fmt::arg("Title", this->title));
+		lines[1] = \
+			fmt::format("{:{prior_indentation}s}{:-^{Title_Length}s}",
+						"",
+						"",
+						fmt::arg("prior_indentation", num_tab_spaces*prior_level),
+						fmt::arg("Title_Length", this->title.length() + 1));
+	}
+
+	for(std::size_t index = index_offset; index < lines.size(); index++) {
+		if(std::holds_alternative<std::pair<std::string, std::string>>(this->printables[index - index_offset])) {
+			lines[index] = \
 				fmt::format("{:{prior_indentation}s}{key:>{key_length}s}: {value:s}",
 							"",
 							fmt::arg("prior_indentation", num_tab_spaces*prior_level),
-							fmt::arg(		"key", std::get<std::pair<std::string, std::string>>(this->printables[i-2]).first),
+							fmt::arg(		"key", std::get<std::pair<std::string, std::string>>(this->printables[index - index_offset]).first),
 							fmt::arg("key_length", max_key_length),
-							fmt::arg(	  "value", std::get<std::pair<std::string, std::string>>(this->printables[i-2]).second));
+							fmt::arg(	  "value", std::get<std::pair<std::string, std::string>>(this->printables[index - index_offset]).second));
 		} else {
-			lines[i] = "\n" + std::get<Printables>(this->printables[i-2]).print(prior_level + 1) + "\n";
+			lines[index] = "\n" + std::get<Printables>(this->printables[index-index_offset]).print(prior_level + 1) + "\n";
 		}
 	}
 

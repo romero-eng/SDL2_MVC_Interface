@@ -24,6 +24,8 @@ namespace Misc
         public:
             Printables(const std::string& title): title{title}, printables{std::vector<std::variant<Printables, std::pair<std::string, std::string>>> {}} {}
 
+            Printables(): Printables{""} {}
+
             const char* get_title();
 
             void set_title(const char* new_title);
