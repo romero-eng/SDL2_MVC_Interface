@@ -26,7 +26,8 @@ int main( int argc, char* args[] )
 		windowTest.SetMaximumArea(1000, 1000);
 		std::cout << windowTest << std::endl;
 
-		SDML::Video::Renderer testRenderer {windowTest};
+		SDML::Video::Renderer testRenderer {windowTest,
+											SDML::Video::Renderer::InitFlag::ACCELERATED};
 
 		SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }
 
