@@ -23,7 +23,6 @@ void SDML::Subsystem::Initialize(uint32_t subsystems)
 
 	if(IsInitialized(InitFlag::VIDEO))
 	{
-
 		std::size_t num_video_drivers {static_cast<std::size_t>(SDL_GetNumVideoDrivers())};
 
 		if(num_video_drivers < 1) {

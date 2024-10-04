@@ -32,7 +32,7 @@ std::string Misc::Printables::print(std::size_t prior_level)
 		}
 	}
 
-	std::vector<std::string> lines {this->printables.size() + 2};
+	std::vector<std::string> lines(this->printables.size() + 2);
 	lines[0] = \
 		fmt::format("{:{prior_indentation}s}{Title:s}:",
 					"",
