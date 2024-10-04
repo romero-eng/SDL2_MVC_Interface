@@ -28,6 +28,7 @@ int main( int argc, char* args[] )
 
 		SDML::Video::Renderer testRenderer {windowTest,
 											SDML::Video::Renderer::InitFlag::ACCELERATED};
+		std::cout << testRenderer << std::endl;
 
 		SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }
 

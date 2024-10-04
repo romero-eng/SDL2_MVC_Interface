@@ -3,6 +3,7 @@
 
 // Custom Code from this project
 #include "Window.hpp"
+#include "../../Misc/PrettyPrint.hpp"
 
 // Third-Party Libraries
 #include <SDL2/SDL.h>
@@ -40,6 +41,12 @@ namespace SDML
             Renderer& operator=(Renderer&) = delete;
 
             ~Renderer();
+
+            std::string GetName();
+
+            int GetMaxTextureWidth();
+
+            int GetMaxTextureHeight();
         };
     }
 }
@@ -49,5 +56,8 @@ uint32_t operator|(const SDML::Video::Renderer::InitFlag& first_flag, const SDML
 uint32_t operator|(uint32_t first_flag, const SDML::Video::Renderer::InitFlag& second_flag);
 
 uint32_t operator|(const SDML::Video::Renderer::InitFlag& first_flag, uint32_t second_flag);
+
+std::ostream& operator<<(std::ostream& output,
+                         SDML::Video::Renderer& renderer);
 
 #endif
