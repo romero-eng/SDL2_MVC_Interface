@@ -169,7 +169,7 @@ namespace SDML
 
 			~Window();
 
-			SDL_Window* AccessInternalWindow();
+			SDL_Window* Access_SDL_Backend();
 		};
 	}
 }

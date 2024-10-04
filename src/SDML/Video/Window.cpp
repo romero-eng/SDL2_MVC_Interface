@@ -433,7 +433,7 @@ SDML::Video::Window::~Window()
 }
 
 
-SDL_Window* SDML::Video::Window::AccessInternalWindow() { return this->internal_SDL_window; }
+SDL_Window* SDML::Video::Window::Access_SDL_Backend() { return this->internal_SDL_window; }
 
 
 uint32_t operator|(const SDML::Video::WindowFlag& first_flag,
