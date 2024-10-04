@@ -30,6 +30,8 @@ namespace Misc
 
             void set_title(const char* new_title);
 
+            void set_title(std::string new_title);
+
             void add_printable(const char* key, bool value);
 
             void add_printable(const char* key, uint32_t value);
@@ -45,6 +47,8 @@ namespace Misc
             void add_printable(const char* key, const std::vector<std::string>& value);
 
             void add_printable(Printables& printables);
+
+            void copy_into_printables(Printables printables);
 
             std::string print(std::size_t prior_level = 0);
 

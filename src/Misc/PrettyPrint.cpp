@@ -5,6 +5,8 @@ const char* Misc::Printables::get_title() { return this->title.c_str(); }
 
 void Misc::Printables::set_title(const char* new_title) { this->title = std::string {new_title}; }
 
+void Misc::Printables::set_title(std::string new_title) { this->title = new_title; }
+
 void Misc::Printables::add_printable(const char* key, bool value) { this->printables.push_back(std::pair<std::string, std::string> {std::string{key}, std::string{value ? "True" : "False"}}); }
 
 void Misc::Printables::add_printable(const char* key, uint32_t value) { this->printables.push_back(std::pair<std::string, std::string> {std::string{key}, std::to_string(value)}); }
@@ -20,6 +22,8 @@ void Misc::Printables::add_printable(const char* key, const std::string& value) 
 void Misc::Printables::add_printable(const char* key, const std::vector<std::string>& value) { this->printables.push_back(std::pair<std::string, std::string> {std::string{key}, fmt::format("[{}]", fmt::join(value, ", "))}); }
 
 void Misc::Printables::add_printable(Printables& printables) { this->printables.push_back(printables); }
+
+void Misc::Printables::copy_into_printables(Printables printables) { this->printables.push_back(printables); }
 
 std::string Misc::Printables::print(std::size_t prior_level)
 {
