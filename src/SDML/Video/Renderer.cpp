@@ -69,6 +69,42 @@ std::array<uint8_t, 4> SDML::Video::Renderer::GetDrawingColor()
 }
 
 
+SDML::Video::BlendMode SDML::Video::Renderer::GetBlendMode()
+{
+    SDL_BlendMode internal_blend_mode;
+    BlendMode visible_blend_mode;
+    if(SDL_GetRenderDrawBlendMode(this->internal_SDL_renderer, &internal_blend_mode) < 0) {
+        throw std::runtime_error(fmt::format("Could not get the Blend Mode for the '{:s}' Renderer: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+
+    switch(internal_blend_mode)
+    {
+        case SDL_BlendMode::SDL_BLENDMODE_NONE:
+            visible_blend_mode = BlendMode::REPLACE;
+            break;
+        case SDL_BlendMode::SDL_BLENDMODE_BLEND:
+            visible_blend_mode = BlendMode::ALPHA;
+            break;
+        case SDL_BlendMode::SDL_BLENDMODE_ADD:
+            visible_blend_mode = BlendMode::ADDITIVE;
+            break;
+        case SDL_BlendMode::SDL_BLENDMODE_MOD:
+            visible_blend_mode = BlendMode::MODULATE;
+            break;
+        case SDL_BlendMode::SDL_BLENDMODE_MUL:
+            visible_blend_mode = BlendMode::MODULATE;
+            break;
+        case SDL_BlendMode::SDL_BLENDMODE_INVALID:
+            visible_blend_mode = BlendMode::INVALID;
+            break;
+    }
+
+    return visible_blend_mode;
+}
+
+
 int SDML::Video::Renderer::GetMaxTextureWidth()
 {
     SDL_RendererInfo tmp {};
@@ -143,6 +179,31 @@ uint32_t operator|(const SDML::Video::RendererInitFlag& first_flag, uint32_t sec
 std::ostream& operator<<(std::ostream& output,
                          SDML::Video::Renderer& renderer)
 {
+    SDML::Video::BlendMode blend_mode {renderer.GetBlendMode()};
+    std::string blend_mode_string {}; 
+
+    switch(blend_mode)
+    {
+        case SDML::Video::BlendMode::REPLACE:
+            blend_mode_string = "Replace";
+            break;
+        case SDML::Video::BlendMode::ALPHA:
+            blend_mode_string = "Alpha";
+            break;
+        case SDML::Video::BlendMode::ADDITIVE:
+            blend_mode_string = "Additive";
+            break;
+        case SDML::Video::BlendMode::MODULATE:
+            blend_mode_string = "Modulate";
+            break;
+        case SDML::Video::BlendMode::MULTIPLY:
+            blend_mode_string = "Multiply";
+            break;
+        case SDML::Video::BlendMode::INVALID:
+            blend_mode_string = "Invalid";
+            break;
+    }
+
     Misc::Printables printables {fmt::format("'{:s}' Renderer", renderer.GetName())};
     printables.add_printable(          "Is Software Fallback", renderer.CheckInitFlags(SDML::Video::RendererInitFlag::SOFTWARE));
     printables.add_printable("Supports Hardware Acceleration", renderer.CheckInitFlags(SDML::Video::RendererInitFlag::ACCELERATED));
@@ -151,6 +212,7 @@ std::ostream& operator<<(std::ostream& output,
     printables.add_printable(                         "Width", renderer.GetWidth());
     printables.add_printable(                        "Height", renderer.GetHeight());
     printables.add_printable(                 "Drawing Color", renderer.GetDrawingColor());
+    printables.add_printable(                    "Blend Mode", blend_mode_string);
     printables.add_printable(         "Maximum Texture Width", renderer.GetMaxTextureWidth());
     printables.add_printable(        "Maximum Texture Height", renderer.GetMaxTextureHeight());
 

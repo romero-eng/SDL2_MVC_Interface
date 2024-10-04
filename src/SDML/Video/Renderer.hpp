@@ -26,6 +26,16 @@ namespace SDML
             TARGETTEXTURE = SDL_RENDERER_TARGETTEXTURE
         };
 
+        enum class BlendMode
+        {
+            REPLACE,
+            ALPHA,
+            ADDITIVE,
+            MODULATE,
+            MULTIPLY,
+            INVALID
+        };
+
         class Renderer
         {
         private:
@@ -54,6 +64,8 @@ namespace SDML
             int GetHeight();
 
             std::array<uint8_t, 4> GetDrawingColor();
+
+            BlendMode GetBlendMode();
 
             int GetMaxTextureWidth();
 
