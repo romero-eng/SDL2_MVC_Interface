@@ -23,7 +23,7 @@ void SDML::Subsystem::Initialize(uint32_t subsystems)
 
 	if(IsInitialized(InitFlag::VIDEO))
 	{
-		std::size_t num_video_drivers {static_cast<std::size_t>(SDL_GetNumVideoDrivers())};
+		std::size_t num_video_drivers {SDL_GetNumVideoDrivers()};
 
 		if(num_video_drivers < 1) {
 			throw std::runtime_error(fmt::format("Could not detect any Video Drivers: {:s}", SDL_GetError()));
@@ -38,6 +38,7 @@ void SDML::Subsystem::Initialize(uint32_t subsystems)
 		Misc::Printables video_init_msgs {"SDML Video Subsystem Initialized"};
 		video_init_msgs.add_printable("Available Video Drivers", video_drivers);
 		video_init_msgs.add_printable(   "Current Video Driver", SDL_GetCurrentVideoDriver());
+
 		std::cout << video_init_msgs << "\n" << std::endl;
 	}
 }
