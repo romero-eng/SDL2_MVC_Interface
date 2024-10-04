@@ -1,6 +1,9 @@
 #if defined(__linux__) || defined(_WIN32) || defined(__APPLE__)
 #include "PrettyPrint.hpp"
 
+const char* Misc::Printables::get_title() { return this->title.c_str(); }
+
+void Misc::Printables::set_title(const char* new_title) { this->title = std::string {new_title}; }
 
 void Misc::Printables::add_printable(const char* key, bool value) { this->printables.push_back(std::pair<std::string, std::string> {std::string{key}, std::string{value ? "True" : "False"}}); }
 
@@ -62,6 +65,8 @@ std::string Misc::Printables::print(std::size_t prior_level)
 
 	return fmt::format("{}", fmt::join(lines, "\n"));
 }
+
+void Misc::Printables::clear() { this->printables.clear(); }
 
 std::ostream& operator<<(std::ostream& output, Misc::Printables& printables) { return output << printables.print(); }
 

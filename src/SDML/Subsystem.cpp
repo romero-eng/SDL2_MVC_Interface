@@ -23,10 +23,14 @@ void SDML::Subsystem::Initialize(uint32_t subsystems)
 
 	if(IsInitialized(InitFlag::VIDEO))
 	{
-		std::size_t num_video_drivers {SDL_GetNumVideoDrivers()};
-
+		std::size_t num_video_drivers {static_cast<std::size_t>(SDL_GetNumVideoDrivers())};
 		if(num_video_drivers < 1) {
 			throw std::runtime_error(fmt::format("Could not detect any Video Drivers: {:s}", SDL_GetError()));
+		}
+		
+		std::size_t num_render_drivers {static_cast<std::size_t>(SDL_GetNumRenderDrivers())};
+		if(num_render_drivers < 1) {
+			throw std::runtime_error(fmt::format("Could not detect any Render Drivers: {:s}", SDL_GetError()));
 		}
 
 		std::vector<std::string> video_drivers(num_video_drivers);
@@ -38,6 +42,15 @@ void SDML::Subsystem::Initialize(uint32_t subsystems)
 		Misc::Printables video_init_msgs {"SDML Video Subsystem Initialized"};
 		video_init_msgs.add_printable("Available Video Drivers", video_drivers);
 		video_init_msgs.add_printable(   "Current Video Driver", SDL_GetCurrentVideoDriver());
+
+		SDL_RendererInfo current_driver_info {};
+		for(std::size_t render_driver_index = 0; render_driver_index < num_render_drivers; render_driver_index++) {
+			if(SDL_GetRenderDriverInfo(static_cast<int>(render_driver_index), &current_driver_info) < 0) {
+				throw std::runtime_error(fmt::format("Could not retrieve information for Render Driver #{:d}: {:s}",
+													 render_driver_index,
+													 SDL_GetError()));
+			}
+		}
 
 		std::cout << video_init_msgs << "\n" << std::endl;
 	}
