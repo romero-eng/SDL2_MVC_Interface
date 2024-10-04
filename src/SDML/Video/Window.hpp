@@ -174,20 +174,13 @@ namespace SDML
 	}
 }
 
-
 uint32_t operator|(const SDML::Video::InitFlag& first_flag,
 				 const SDML::Video::InitFlag& second_flag);
 
+uint32_t operator|(const SDML::Video::InitFlag& first_flag, uint32_t second_flag);
 
-uint32_t operator|(const SDML::Video::InitFlag& first_flag,
-				 uint32_t second_flag);
+uint32_t operator|(uint32_t first_flag, const SDML::Video::InitFlag& second_flag);
 
-
-uint32_t operator|(uint32_t first_flag,
-				 const SDML::Video::InitFlag& second_flag);
-
-
-std::ostream& operator<<(std::ostream& output_stream,
-						 SDML::Video::Window& window);
+std::ostream& operator<<(std::ostream& output_stream, SDML::Video::Window& window);
 
 #endif

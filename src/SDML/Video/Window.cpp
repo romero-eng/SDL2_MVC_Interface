@@ -436,19 +436,13 @@ void SDML::Video::Window::Flash(FlashOperation operation)
 SDL_Window* SDML::Video::Window::Access_SDL_Backend() { return this->internal_SDL_window; }
 
 
-uint32_t operator|(const SDML::Video::InitFlag& first_flag,
-				 const SDML::Video::InitFlag& second_flag)
-{ return std::to_underlying(first_flag) | std::to_underlying(second_flag) ; }
+uint32_t operator|(const SDML::Video::InitFlag& first_flag, const SDML::Video::InitFlag& second_flag) { return std::to_underlying(first_flag) | std::to_underlying(second_flag) ; }
 
 
-uint32_t operator|(const SDML::Video::InitFlag& first_flag,
-				 uint32_t second_flag)
-{ return std::to_underlying(first_flag) | second_flag ; }
+uint32_t operator|(const SDML::Video::InitFlag& first_flag, uint32_t second_flag) { return std::to_underlying(first_flag) | second_flag ; }
 
 
-uint32_t operator|(uint32_t first_flag,
-				 const SDML::Video::InitFlag& second_flag)
-{ return first_flag | std::to_underlying(second_flag) ; }
+uint32_t operator|(uint32_t first_flag, const SDML::Video::InitFlag& second_flag) { return first_flag | std::to_underlying(second_flag) ; }
 
 
 std::ostream& operator<<(std::ostream& output_stream,
