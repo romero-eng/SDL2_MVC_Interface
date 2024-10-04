@@ -1,7 +1,9 @@
 #if defined(__linux__) || defined(_WIN32) || defined(__APPLE__)
 
+// Custom Code from this project
 #include "SDML/Subsystem.hpp"
 #include "SDML/Video/Window.hpp"
+#include "SDML/Video/Renderer.hpp"
 
 // Third-party Libraries
 #include <SDL2/SDL.h>
@@ -22,9 +24,9 @@ int main( int argc, char* args[] )
 		SDML::Video::Window windowTest {"Test", 640, 480, SDML::Video::WindowFlag::RESIZABLE};
 		windowTest.SetMinimumArea(  10,   10);
 		windowTest.SetMaximumArea(1000, 1000);
-		windowTest.Flash(SDML::Video::FlashOperation::UNTIL_FOCUSED);
-
 		std::cout << windowTest << std::endl;
+
+		SDML::Video::Renderer testRenderer {windowTest};
 
 		SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }
 
