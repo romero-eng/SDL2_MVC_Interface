@@ -33,7 +33,8 @@ int SDML::Video::Renderer::GetMaxTextureWidth()
 {
     SDL_RendererInfo tmp {};
     if(SDL_GetRendererInfo(this->internal_SDL_renderer, &tmp) < 0) {
-        throw std::runtime_error(fmt::format("Could not retrieve information for Renderer: {:s}",
+        throw std::runtime_error(fmt::format("Could not retrieve information for '{:s}' Renderer: {:s}",
+                                             this->GetName(),
                                              SDL_GetError()));
     }
 
@@ -45,7 +46,8 @@ int SDML::Video::Renderer::GetMaxTextureHeight()
 {
     SDL_RendererInfo tmp {};
     if(SDL_GetRendererInfo(this->internal_SDL_renderer, &tmp) < 0) {
-        throw std::runtime_error(fmt::format("Could not retrieve information for Renderer: {:s}",
+        throw std::runtime_error(fmt::format("Could not retrieve information for '{:s}' Renderer: {:s}",
+                                             this->GetName(),
                                              SDL_GetError()));
     }
 
@@ -53,7 +55,40 @@ int SDML::Video::Renderer::GetMaxTextureHeight()
 }
 
 
+std::vector<std::string> SDML::Video::Renderer::GetTextureFormats()
+{
+    SDL_RendererInfo tmp {};
+    if(SDL_GetRendererInfo(this->internal_SDL_renderer, &tmp) < 0) {
+        throw std::runtime_error(fmt::format("Could not retrieve information for '{:s}' Renderer: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+    
+    std::size_t num_texture_formats {static_cast<std::size_t>(tmp.num_texture_formats)};
+    std::vector<std::string> texture_formats (num_texture_formats);
 
+    for(std::size_t index = 0; index < num_texture_formats; index++) {
+        texture_formats[index] = std::string {SDL_GetPixelFormatName(tmp.texture_formats[index])};
+    }
+
+    return texture_formats;
+}
+
+
+bool SDML::Video::Renderer::CheckInitFlags(uint32_t flags)
+{
+    SDL_RendererInfo tmp {};
+    if(SDL_GetRendererInfo(this->internal_SDL_renderer, &tmp) < 0) {
+        throw std::runtime_error(fmt::format("Could not retrieve information for '{:s}' Renderer: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+
+    return flags == (flags & tmp.flags); 
+}
+
+
+bool SDML::Video::Renderer::CheckInitFlags(RendererInitFlag flag) { return this->CheckInitFlags(std::to_underlying(flag)); } 
 
 
 uint32_t operator|(const SDML::Video::RendererInitFlag& first_flag, const SDML::Video::RendererInitFlag& second_flag) { return std::to_underlying(first_flag) | std::to_underlying(second_flag); }
@@ -68,11 +103,20 @@ uint32_t operator|(const SDML::Video::RendererInitFlag& first_flag, uint32_t sec
 std::ostream& operator<<(std::ostream& output,
                          SDML::Video::Renderer& renderer)
 {
-    Misc::Printables printable {fmt::format("'{:s}' Renderer", renderer.GetName())};
-    printable.add_printable( "Maximum Texture Width", renderer.GetMaxTextureWidth());
-    printable.add_printable("Maximum Texture Height", renderer.GetMaxTextureHeight());
+    Misc::Printables printables {fmt::format("'{:s}' Renderer", renderer.GetName())};
+    printables.add_printable(          "Is Software Fallback", renderer.CheckInitFlags(SDML::Video::RendererInitFlag::SOFTWARE));
+    printables.add_printable("Supports Hardware Acceleration", renderer.CheckInitFlags(SDML::Video::RendererInitFlag::ACCELERATED));
+    printables.add_printable(                "Supports VSync", renderer.CheckInitFlags(SDML::Video::RendererInitFlag::PRESENTVSYNC));
+    printables.add_printable( "Supports rendering to texture", renderer.CheckInitFlags(SDML::Video::RendererInitFlag::TARGETTEXTURE));
+    printables.add_printable(         "Maximum Texture Width", renderer.GetMaxTextureWidth());
+    printables.add_printable(        "Maximum Texture Height", renderer.GetMaxTextureHeight());
 
-    output << printable;
+    std::vector<std::string> texture_formats {renderer.GetTextureFormats()};
+    for(std::size_t index = 0; index < texture_formats.size(); index++) {
+        printables.add_printable(fmt::format("Texture Format #{:d}", index), texture_formats[index]);
+    }
+
+    output << printables;
 
     return output;
 }

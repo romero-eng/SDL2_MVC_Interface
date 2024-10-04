@@ -7,6 +7,10 @@
 
 // Third-Party Libraries
 #include <SDL2/SDL.h>
+#include <fmt/format.h>
+
+//C++ Standard Libraries
+#include <vector>
 
 
 namespace SDML
@@ -48,9 +52,11 @@ namespace SDML
 
             int GetMaxTextureHeight();
 
+            std::vector<std::string> GetTextureFormats();
+
             bool CheckInitFlags(uint32_t flags);
 
-            bool CheckInitFlags(RendererInitFlag initFlag);
+            bool CheckInitFlags(RendererInitFlag flag);
         };
     }
 }
