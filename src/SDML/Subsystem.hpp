@@ -15,7 +15,6 @@
 #include <vector>
 #include <string>
 #include <string_view>
-#include <stdexcept>
 
 namespace SDML
 {
