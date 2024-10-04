@@ -65,6 +65,21 @@ SDML::Video::Window::Window(const char *title,
 																	   			flags)} {}
 
 
+SDML::Video::Window::~Window()
+{
+	if(SDL_HasWindowSurface(this->internal_SDL_window))
+	{
+		if(SDL_DestroyWindowSurface(this->internal_SDL_window) < 0)
+		{
+			std::cerr << fmt::format("Could not Destroy Surface for '{:s}' Window: {:s}",
+									 this->GetTitle(),
+									 SDL_GetError());
+		}
+	}
+	SDL_DestroyWindow(this->internal_SDL_window);
+}
+
+
 int SDML::Video::Window::GetDisplayIndex()
 {
 	int display_index {SDL_GetWindowDisplayIndex(this->internal_SDL_window)};
@@ -415,21 +430,6 @@ void SDML::Video::Window::Flash(FlashOperation operation)
 										  	 this->GetTitle(),
 										  	 SDL_GetError()));
 	}
-}
-
-
-SDML::Video::Window::~Window()
-{
-	if(SDL_HasWindowSurface(this->internal_SDL_window))
-	{
-		if(SDL_DestroyWindowSurface(this->internal_SDL_window) < 0)
-		{
-			std::cerr << fmt::format("Could not Destroy Surface for '{:s}' Window: {:s}",
-									 this->GetTitle(),
-									 SDL_GetError());
-		}
-	}
-	SDL_DestroyWindow(this->internal_SDL_window);
 }
 
 
