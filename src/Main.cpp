@@ -22,13 +22,18 @@ int main( int argc, char* args[] )
 	try
 	{
 		SDML::Video::Window windowTest {"Test", std::array<int, 2> {640, 480}, SDML::Video::WindowInitFlag::RESIZABLE};
-		windowTest.SetMinimumArea(std::array<int, 2> {10, 10});
-		windowTest.SetMaximumArea(std::array<int, 2> {1000, 1000});
-		std::cout << windowTest << std::endl;
+		// windowTest.SetMinimumArea(std::array<int, 2> {10, 10});
+		// windowTest.SetMaximumArea(std::array<int, 2> {1000, 1000});
+		// std::cout << windowTest << std::endl;
 
 		SDML::Video::Renderer testRenderer {windowTest,
 											SDML::Video::RendererInitFlag::ACCELERATED};
-		std::cout << testRenderer << std::endl;
+		// std::cout << testRenderer << std::endl;
+
+		testRenderer.SetDrawingColor(std::array<uint8_t, 4> {0xFF, 0xFF, 0xFF, 0xFF});
+		testRenderer.DrawEntireTarget();
+
+		testRenderer.Update();
 
 		SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }
 

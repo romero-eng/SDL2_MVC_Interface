@@ -71,7 +71,15 @@ namespace SDML
 
             bool CheckInitFlags(uint32_t flags);
 
-            bool CheckInitFlags(RendererInitFlag flag);
+            bool CheckInitFlags(const RendererInitFlag& flag);
+
+            void SetBlendMode(const BlendMode& mode);
+
+            void SetDrawingColor(const std::array<uint8_t, 4>& color);
+
+            void DrawEntireTarget();
+
+            void Update();
         };
     }
 }

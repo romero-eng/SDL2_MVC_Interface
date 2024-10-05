@@ -139,7 +139,72 @@ bool SDML::Video::Renderer::CheckInitFlags(uint32_t flags)
 }
 
 
-bool SDML::Video::Renderer::CheckInitFlags(RendererInitFlag flag) { return this->CheckInitFlags(std::to_underlying(flag)); } 
+bool SDML::Video::Renderer::CheckInitFlags(const RendererInitFlag& flag) { return this->CheckInitFlags(std::to_underlying(flag)); } 
+
+
+void SDML::Video::Renderer::SetBlendMode(const BlendMode& mode)
+{
+    SDL_BlendMode tmp;
+
+    switch(mode)
+    {
+        case BlendMode::REPLACE:
+            tmp = SDL_BLENDMODE_NONE;
+            break;
+        case BlendMode::ALPHA:
+            tmp = SDL_BLENDMODE_BLEND;
+            break;
+        case BlendMode::ADDITIVE:
+            tmp = SDL_BLENDMODE_ADD;
+            break;
+        case BlendMode::MODULATE:
+            tmp = SDL_BLENDMODE_MOD;
+            break;
+        case BlendMode::MULTIPLY:
+            tmp = SDL_BLENDMODE_MUL;
+            break;
+        case BlendMode::INVALID:
+            tmp = SDL_BLENDMODE_INVALID;
+            break;
+    }
+
+    if(SDL_SetRenderDrawBlendMode(this->internal_SDL_renderer, tmp) < 0) {
+        throw std::runtime_error(fmt::format("Could not set the Blend Mode for the '{:s}' Renderer: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+}
+
+
+void SDML::Video::Renderer::SetDrawingColor(const std::array<uint8_t, 4>& color)
+{
+    if(SDL_SetRenderDrawColor(this->internal_SDL_renderer, color[0], color[1], color[2], color[3]) < 0) {
+        throw std::runtime_error(fmt::format("Could not set the color for the '{:s}' Renderer: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+}
+
+
+void SDML::Video::Renderer::DrawEntireTarget()
+{
+    if(SDL_RenderFillRect(this->internal_SDL_renderer, nullptr) < 0) {
+        throw std::runtime_error(fmt::format("Could not fill the entire target for the '{:s}' Renderer: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+}
+
+
+void SDML::Video::Renderer::Update()
+{
+    SDL_RenderPresent(this->internal_SDL_renderer);
+    if(SDL_RenderClear(this->internal_SDL_renderer) < 0) {
+        throw std::runtime_error(fmt::format("Could not clear the current target for the '{:s}' Renderer: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+}
 
 
 uint32_t operator|(const SDML::Video::RendererInitFlag& first_flag, const SDML::Video::RendererInitFlag& second_flag) { return std::to_underlying(first_flag) | std::to_underlying(second_flag); }
