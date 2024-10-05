@@ -47,7 +47,7 @@ namespace SDML
                      uint32_t flags);
 
             Renderer(Window& window,
-                     RendererInitFlag flag);
+                     const RendererInitFlag& flag);
 
             Renderer(Window& window);
 
@@ -59,17 +59,13 @@ namespace SDML
 
             std::string GetName();
 
-            int GetWidth();
-
-            int GetHeight();
+            std::array<int, 2> GetArea();
 
             std::array<uint8_t, 4> GetDrawingColor();
 
             BlendMode GetBlendMode();
 
-            int GetMaxTextureWidth();
-
-            int GetMaxTextureHeight();
+            std::array<int, 2> GetMaxTextureArea();
 
             std::vector<std::string> GetTextureFormats();
 

@@ -2,67 +2,54 @@
 #include "Window.hpp"
 
 SDML::Video::Window::Window(const char *title,
-				   			int width,
-                   			int height): Window(title,
-				   					   			SDL_WINDOWPOS_UNDEFINED,
-									   			SDL_WINDOWPOS_UNDEFINED,
-									   			width,
-									   			height,
-									  	 		0) {}
+				   			const std::array<int, 2>& area): Window(title,
+														   			area,
+											  	 					0) {}
 
 
 SDML::Video::Window::Window(const char *title,
-				   			int x, int y,
-				   			int width,
-                   			int height): Window(title,
-				   					  			x, y,
-									   			width,
-									   			height,
-									   			0) {}
+				   			const std::array<int, 2>& top_left_coordinate,
+				   			const std::array<int, 2>& area): Window(title,
+							   					  					top_left_coordinate,
+												   					area,
+												   					0) {}
 
 
 SDML::Video::Window::Window(const char *title,
-				   			int width,
-                   			int height,
-				   			WindowInitFlag flag): Window(title,
-				   									 SDL_WINDOWPOS_UNDEFINED,
-													 SDL_WINDOWPOS_UNDEFINED,
-										 			 width,
-										 			 height,
-										 			 std::to_underlying(flag)) {}
+				   			const std::array<int, 2>& area,
+				   			const WindowInitFlag& flag): Window(title,
+										 						area,
+										 						std::to_underlying(flag)) {}
 
 
 SDML::Video::Window::Window(const char *title,
-		                   	int x, int y,
-						   	int width,
-                		   	int height,
-				   			WindowInitFlag flag): Window(title,
-				   									 x, y,
-										 			 width,
-										 			 height,
-										 			 std::to_underlying(flag)) {}
+		                   	const std::array<int, 2>& top_left_coordinate,
+						   	const std::array<int, 2>& area,
+				   			const WindowInitFlag& flag): Window(title,
+					   											top_left_coordinate,
+													 			area,
+													 			std::to_underlying(flag)) {}
 
 
 SDML::Video::Window::Window(const char *title,
-						   	int width,
-        		           	int height,
-						   	uint32_t flags): Window(title,
-				   						 	 	  SDL_WINDOWPOS_UNDEFINED,
-										 		  SDL_WINDOWPOS_UNDEFINED,
-										 		  width,
-										 		  height,
-										 		  flags) {}
+						   	const std::array<int, 2>& area,
+						   	uint32_t flags): internal_SDL_window{SDL_CreateWindow(title,
+					   						 								 	  SDL_WINDOWPOS_UNDEFINED,
+																		 		  SDL_WINDOWPOS_UNDEFINED,
+																		 		  area[0],
+																				  area[1],
+																		 		  flags)} {}
 
 
 SDML::Video::Window::Window(const char *title,
-                   			int x, int y,
-						    int width,
-                   			int height,
+                   			const std::array<int, 2>& top_left_coordinate,
+						    const std::array<int, 2>& area,
 				   			uint32_t flags): internal_SDL_window{SDL_CreateWindow(title,
-				   															    x, y,
-																	   			width,
-																	   			height,
-																	   			flags)} {}
+				   															      top_left_coordinate[0],
+																				  top_left_coordinate[1],
+																	   			  area[0],
+																	   			  area[1],
+																	   			  flags)} {}
 
 
 SDML::Video::Window::~Window()
@@ -174,103 +161,57 @@ uint32_t SDML::Video::Window::GetID()
 }
 
 
-int SDML::Video::Window::GetX()
+std::array<int, 2> SDML::Video::Window::GetTopLeftCoordinate()
 {
-	int x {};
+	std::array<int, 2> coordinate {};
 
-	SDL_GetWindowPosition(this->internal_SDL_window, &x, nullptr);
+	SDL_GetWindowPosition(this->internal_SDL_window, &coordinate[0], &coordinate[1]);
 
-	return x;
+	return coordinate;
 }
 
 
-int SDML::Video::Window::GetY()
+std::array<int, 2> SDML::Video::Window::GetArea()
 {
-	int y {};
+	std::array<std::string, 2> area_names {"width", "height"};
+	std::array<int, 2> area {};
+	std::array<int, 2> area_in_pixels {};
 
-	SDL_GetWindowPosition(this->internal_SDL_window, nullptr, &y);
+	SDL_GetWindowSize(this->internal_SDL_window, &area[0], &area[1]);
+	SDL_GetWindowSizeInPixels(this->internal_SDL_window, &area_in_pixels[0], &area_in_pixels[1]);
 
-	return y;
-}
-
-
-int SDML::Video::Window::GetWidth()
-{
-	int width {};
-	int width_in_pixels {};
-
-	SDL_GetWindowSize(this->internal_SDL_window, &width, nullptr);
-	SDL_GetWindowSizeInPixels(this->internal_SDL_window, &width_in_pixels, nullptr);
-
-	if(width != width_in_pixels)
-	{
-		std::cerr << fmt::format("Warning: For the '{:s}' Window, The width of the client area is different from the width in pixels:\nWidth: {:d}\nPixel Width: {:d}\n",
-								 this->GetTitle(),
-								 width,
-								 width_in_pixels) << std::endl;
+	for(std::size_t i = 0; i < area_names.size(); i++) {
+		if(area[i] != area_in_pixels[i]) {
+			std::cerr << fmt::format("Warning: For the '{window_name:s}' Window, The {value_name:s} of the client area is different from the {value_name:s} in pixels:\n{capitalized_value_name:s}: {value:d}\nPixel {capitalized_value_name:s}: {value_in_pixels:d}\n",
+									 fmt::arg(	  		 "window_name", this->GetTitle()),
+									 fmt::arg(	   		  "value_name", area_names[i]),
+									 fmt::arg("capitalized_value_name", std::string{static_cast<char>(toupper(area_names[i][0]))} + std::string{area_names[i].begin() + 1, area_names[i].end()}),
+									 fmt::arg(				   "value", area[i]),
+									 fmt::arg(		 "value_in_pixels", area_in_pixels[i])) << std::endl;
+		}
 	}
 
-	return width;
+	return area;
 }
 
 
-int SDML::Video::Window::GetMinimumWidth()
+std::array<int, 2> SDML::Video::Window::GetMinimumArea()
 {
-	int min_width {};
+	std::array<int, 2> min_area {};
 
-	SDL_GetWindowMinimumSize(this->internal_SDL_window, &min_width, nullptr);
+	SDL_GetWindowMinimumSize(this->internal_SDL_window, &min_area[0], &min_area[1]);
 
-	return min_width;
+	return min_area;
 }
 
 
-int SDML::Video::Window::GetMaximumWidth()
+std::array<int, 2> SDML::Video::Window::GetMaximumArea()
 {
-	int max_width {};
+	std::array<int, 2> max_area;
 
-	SDL_GetWindowMaximumSize(this->internal_SDL_window, &max_width, nullptr);
+	SDL_GetWindowMaximumSize(this->internal_SDL_window, &max_area[0], &max_area[1]);
 
-	return max_width;
-}
-
-
-int SDML::Video::Window::GetHeight()
-{
-	int height {};
-	int height_in_pixels {};
-
-	SDL_GetWindowSize(this->internal_SDL_window, nullptr, &height);
-	SDL_GetWindowSizeInPixels(this->internal_SDL_window, nullptr, &height_in_pixels);
-
-	if(height != height_in_pixels)
-	{
-		std::cerr << fmt::format("Warning: For the '{:s}' Window, The height of the client area is different from the height in pixels:\nHeight: {:d}\nPixel Height: {:d}\n",
-								 this->GetTitle(),
-								 height,
-								 height_in_pixels) << std::endl;
-	}
-
-	return height;
-}
-
-
-int SDML::Video::Window::GetMinimumHeight()
-{
-	int min_height {};
-
-	SDL_GetWindowMinimumSize(this->internal_SDL_window, nullptr, &min_height);
-
-	return min_height;
-}
-
-
-int SDML::Video::Window::GetMaximumHeight()
-{
-	int max_height {};
-
-	SDL_GetWindowMaximumSize(this->internal_SDL_window, nullptr, &max_height);
-
-	return max_height;
+	return max_area;
 }
 
 
@@ -310,46 +251,34 @@ std::string SDML::Video::Window::GetPixelFormatName()
 bool SDML::Video::Window::CheckWindowInitFlags(uint32_t flags) { return flags == (flags & SDL_GetWindowFlags(this->internal_SDL_window)); }
 
 
-bool SDML::Video::Window::CheckWindowInitFlags(WindowInitFlag flag) { return std::to_underlying(flag) == (std::to_underlying(flag) & SDL_GetWindowFlags(this->internal_SDL_window)); }
+bool SDML::Video::Window::CheckWindowInitFlags(const WindowInitFlag& flag) { return std::to_underlying(flag) == (std::to_underlying(flag) & SDL_GetWindowFlags(this->internal_SDL_window)); }
 
 
-void SDML::Video::Window::SetMinimumArea(int min_width, int min_height) { SDL_SetWindowMinimumSize(this->internal_SDL_window, min_width, min_height); }
+void SDML::Video::Window::SetMinimumArea(const std::array<int, 2>& minimum_area) { SDL_SetWindowMinimumSize(this->internal_SDL_window, minimum_area[0], minimum_area[1]); }
 
 
-void SDML::Video::Window::SetMaximumArea(int max_width, int max_height) { SDL_SetWindowMaximumSize(this->internal_SDL_window, max_width, max_height); }
+void SDML::Video::Window::SetMaximumArea(const std::array<int, 2>& maximum_area) { SDL_SetWindowMaximumSize(this->internal_SDL_window, maximum_area[0], maximum_area[1]); }
 
 
-int SDML::Video::Window::GetDisplayWidth()
+std::array<int, 2> SDML::Video::Window::GetDisplayArea()
 {
 	std::string_view display_name {this->GetDisplayName()};
 	SDL_Rect fullscreen_bounds {this->GetFullscreenDisplayBounds()};
 	SDL_Rect usable_bounds {this->GetUsableDisplayBounds()};
 
-	if(fullscreen_bounds.w != usable_bounds.w)
-	{
-				std::cerr << fmt::format("Warning: difference detected between Fullscreen width and Usable Width:\nFullscreen Width: {:d}\nUsable Width: {:d}",
-										 fullscreen_bounds.w,
-										 usable_bounds.w);
+	if(fullscreen_bounds.w != usable_bounds.w) {
+		std::cerr << fmt::format("Warning: difference detected between Fullscreen Width and Usable Width:\nFullscreen Width: {:d}\nUsable Width: {:d}",
+								 fullscreen_bounds.w,
+								 usable_bounds.w);
 	}
 
-	return fullscreen_bounds.w;
-}
-
-
-int SDML::Video::Window::GetDisplayHeight()
-{
-	std::string_view display_name {this->GetDisplayName()};
-	SDL_Rect fullscreen_bounds {this->GetFullscreenDisplayBounds()};
-	SDL_Rect usable_bounds {this->GetUsableDisplayBounds()};
-
-	if(fullscreen_bounds.h != usable_bounds.h)
-	{
+	if(fullscreen_bounds.h != usable_bounds.h) {
 		std::cerr << fmt::format("Warning: difference detected between Fullscreen Height and Usable Height:\nFullscreen Height: {:d}\nUsable Height: {:d}",
 								 fullscreen_bounds.h,
 								 usable_bounds.h);
 	}
 
-	return fullscreen_bounds.h;
+	return std::array<int, 2> {fullscreen_bounds.w, fullscreen_bounds.h};
 }
 
 
@@ -387,17 +316,10 @@ std::string SDML::Video::Window::GetDisplayModePixelFormatName()
 }
 
 
-int SDML::Video::Window::GetDisplayModeWidth()
+std::array<int, 2> SDML::Video::Window::GetDisplayModeArea()
 {
 	SDL_DisplayMode tmp {this->GetDisplayMode()};
-	return tmp.w;
-}
-
-
-int SDML::Video::Window::GetDisplayModeHeight()
-{
-	SDL_DisplayMode tmp {this->GetDisplayMode()};
-	return tmp.h;
+	return std::array<int, 2> {tmp.w, tmp.h};
 }
 
 
@@ -468,33 +390,46 @@ std::ostream& operator<<(std::ostream& output_stream,
 			break;
 	}
 
+	std::array<int, 2> coordinate {window.GetTopLeftCoordinate()};
+	std::array<int, 2> area {window.GetArea()};
+	std::array<int, 2> minimum_area {window.GetMinimumArea()};
+	std::array<int, 2> maximum_area {window.GetMaximumArea()};
+	std::array<int, 2> display_area {window.GetDisplayArea()};
+	std::array<int, 2> display_mode_area {window.GetDisplayModeArea()};
+
 	Misc::Printables display_mode_settings {fmt::format("Display Mode", window.GetDisplayName())};
-	display_mode_settings.add_printable(   	   "Width", window.GetDisplayModeWidth());
-	display_mode_settings.add_printable(	  "Height", window.GetDisplayModeHeight());
+	display_mode_settings.add_printable(		"Area", fmt::format("[Width: {width:d}, Height: {height:d}]",
+																	fmt::arg( "width", display_mode_area[0]),
+																	fmt::arg("height", display_mode_area[1])));
 	display_mode_settings.add_printable("Refresh Rate", window.GetDisplayModeRefreshRate());
 
 	Misc::Printables display_settings {fmt::format("'{:s}' Display", window.GetDisplayName())};
-	display_settings.add_printable(			   "Width", window.GetDisplayWidth());
-	display_settings.add_printable(		      "Height", window.GetDisplayHeight());
+	display_settings.add_printable(			    "Area", fmt::format("[Width: {width:d}, Height: {height:d}]",
+																	fmt::arg( "width", display_area[0]),
+																	fmt::arg("height", display_area[1])));
 	display_settings.add_printable(	     "Orientation", display_orientation_string);
 	display_settings.add_printable("Pixel Format Name", window.GetDisplayModePixelFormatName());
 	display_settings.add_printable(display_mode_settings);
 
 	Misc::Printables window_settings {fmt::format("'{:s}' Window", window.GetTitle())};
-	window_settings.add_printable(				   	    "ID", window.GetID());
-	window_settings.add_printable(   "Top-Left X-Coordinate", window.GetX());
-	window_settings.add_printable(   "Top-Left Y-Coordinate", window.GetY());
-	window_settings.add_printable(				     "Width", window.GetWidth());
-	window_settings.add_printable( "Minimally Allowed Width", window.GetMinimumWidth());
-	window_settings.add_printable( "Maximally Allowed Width", window.GetMaximumWidth());
-	window_settings.add_printable(			        "Height", window.GetHeight());
-	window_settings.add_printable("Minimally Allowed Height", window.GetMinimumHeight());
-	window_settings.add_printable("Maximally Allowed Height", window.GetMaximumHeight());
-	window_settings.add_printable(		   	    "Brightness", window.GetBrightness());
-	window_settings.add_printable(			   	   "Opacity", window.GetOpacity());
-	window_settings.add_printable(		 	  "Pixel Format", window.GetPixelFormatName());
-	window_settings.add_printable(		   "Window is shown", window.CheckWindowInitFlags(SDML::Video::WindowInitFlag::SHOWN));
-	window_settings.add_printable(	   "Window is resizable", window.CheckWindowInitFlags(SDML::Video::WindowInitFlag::RESIZABLE));
+	window_settings.add_printable(				   	  "ID", window.GetID());
+	window_settings.add_printable( "Top-Left X-Coordinate", fmt::format("[X: {x:d}, Y: {y:d}]",
+																		  fmt::arg("x", coordinate[0]),
+																		  fmt::arg("y", coordinate[1])));
+	window_settings.add_printable(				    "Area", fmt::format("[Width: {width:d}, Height: {height:d}]",
+																		  fmt::arg( "width", area[0]),
+																		  fmt::arg("height", area[1])));
+	window_settings.add_printable("Minimally Allowed Area", fmt::format("[Width: {width:d}, Height: {height:d}]",
+																		  fmt::arg( "width", minimum_area[0]),
+																		  fmt::arg("height", minimum_area[1])));
+	window_settings.add_printable("Maximally Allowed Area", fmt::format("[Width: {width:d}, Height: {height:d}]",
+																		  fmt::arg( "width", maximum_area[0]),
+																		  fmt::arg("height", maximum_area[1])));
+	window_settings.add_printable(		   	  "Brightness", window.GetBrightness());
+	window_settings.add_printable(			   	 "Opacity", window.GetOpacity());
+	window_settings.add_printable(		 	"Pixel Format", window.GetPixelFormatName());
+	window_settings.add_printable(		 "Window is shown", window.CheckWindowInitFlags(SDML::Video::WindowInitFlag::SHOWN));
+	window_settings.add_printable(	 "Window is resizable", window.CheckWindowInitFlags(SDML::Video::WindowInitFlag::RESIZABLE));
 	window_settings.add_printable(display_settings);
 
 	std::cout << window_settings;

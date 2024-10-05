@@ -21,9 +21,9 @@ int main( int argc, char* args[] )
 
 	try
 	{
-		SDML::Video::Window windowTest {"Test", 640, 480, SDML::Video::WindowInitFlag::RESIZABLE};
-		windowTest.SetMinimumArea(  10,   10);
-		windowTest.SetMaximumArea(1000, 1000);
+		SDML::Video::Window windowTest {"Test", std::array<int, 2> {640, 480}, SDML::Video::WindowInitFlag::RESIZABLE};
+		windowTest.SetMinimumArea(std::array<int, 2> {10, 10});
+		windowTest.SetMaximumArea(std::array<int, 2> {1000, 1000});
 		std::cout << windowTest << std::endl;
 
 		SDML::Video::Renderer testRenderer {windowTest,

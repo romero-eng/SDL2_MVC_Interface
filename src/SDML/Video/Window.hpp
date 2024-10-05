@@ -9,6 +9,7 @@
 #include <fmt/format.h>
 
 // C++ Standard Libraries
+#include <array>
 #include <vector>
 #include <string_view>
 #include <iostream>
@@ -79,34 +80,28 @@ namespace SDML
 		public:
 
 			Window(const char *title,
-				   int width,
-                   int height);
+				   const std::array<int, 2>& area);
 
 			Window(const char *title,
-				   int x, int y,
-				   int width,
-                   int height);
+				   const std::array<int, 2>& top_left_coordinate,
+				   const std::array<int, 2>& area);
 
 			Window(const char *title,
-				   int width,
-                   int height,
-				   WindowInitFlag flag);
+				   const std::array<int, 2>& area,
+				   const WindowInitFlag& flag);
 
 			Window(const char *title,
-                   int x, int y,
-				   int width,
-                   int height,
-				   WindowInitFlag flag);
+                   const std::array<int, 2>& top_left_coordinate,
+				   const std::array<int, 2>& area,
+				   const WindowInitFlag& flag);
 
 			Window(const char *title,
-				   int width,
-                   int height,
+				   const std::array<int, 2>& area,
 				   uint32_t flags);
 
 			Window(const char *title,
-                   int x, int y,
-				   int width,
-                   int height,
+                   const std::array<int, 2>& top_left_coordinate,
+				   const std::array<int, 2>& area,
 				   uint32_t flags);
 
 			Window(Window&) = delete;
@@ -121,21 +116,13 @@ namespace SDML
 
 			uint32_t GetID();
 
-			int GetX();
+			std::array<int, 2> GetTopLeftCoordinate();
 
-			int GetY();
+			std::array<int, 2> GetArea();
 
-			int GetWidth();
+			std::array<int, 2> GetMinimumArea();
 
-			int GetMinimumWidth();
-
-			int GetMaximumWidth();
-
-			int GetHeight();
-
-			int GetMinimumHeight();
-
-			int GetMaximumHeight();
+			std::array<int, 2> GetMaximumArea();
 
 			float GetBrightness();
 
@@ -145,23 +132,19 @@ namespace SDML
 
 			bool CheckWindowInitFlags(uint32_t flags);
 
-			bool CheckWindowInitFlags(WindowInitFlag flag);
+			bool CheckWindowInitFlags(const WindowInitFlag& flag);
 
-			void SetMinimumArea(int min_width, int min_height);
+			void SetMinimumArea(const std::array<int, 2>& minimum_area);
 
-			void SetMaximumArea(int max_width, int max_height);
+			void SetMaximumArea(const std::array<int, 2>& maximum_area);
 
-			int GetDisplayWidth();
-
-			int GetDisplayHeight();
+			std::array<int, 2> GetDisplayArea();
 
 			DisplayOrientation GetDisplayOrientation();
 
 			std::string GetDisplayModePixelFormatName();
 
-			int GetDisplayModeWidth();
-
-			int GetDisplayModeHeight();
+			std::array<int, 2> GetDisplayModeArea();
 
 			int GetDisplayModeRefreshRate();
 
@@ -175,7 +158,7 @@ namespace SDML
 }
 
 uint32_t operator|(const SDML::Video::WindowInitFlag& first_flag,
-				 const SDML::Video::WindowInitFlag& second_flag);
+				   const SDML::Video::WindowInitFlag& second_flag);
 
 uint32_t operator|(const SDML::Video::WindowInitFlag& first_flag, uint32_t second_flag);
 

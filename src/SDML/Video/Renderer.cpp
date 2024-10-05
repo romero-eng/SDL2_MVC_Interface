@@ -8,7 +8,7 @@ SDML::Video::Renderer::Renderer(Window& window,
 
 
 SDML::Video::Renderer::Renderer(Window& window,
-                                RendererInitFlag flag): Renderer{window, std::to_underlying(flag)} {};
+                                const RendererInitFlag& flag): Renderer{window, std::to_underlying(flag)} {};
 
 
 SDML::Video::Renderer::Renderer(Window& window): Renderer{window, 0} {};
@@ -29,29 +29,17 @@ std::string SDML::Video::Renderer::GetName()
 }
 
 
-int SDML::Video::Renderer::GetWidth()
+std::array<int, 2> SDML::Video::Renderer::GetArea()
 {
-    int width {};
-    if(SDL_GetRendererOutputSize(this->internal_SDL_renderer, &width, nullptr) < 0) {
-        throw std::runtime_error(fmt::format("Could not retrieve the width for the '{:s}' Renderer: {:s}",
+    std::array<int, 2> area;
+
+    if(SDL_GetRendererOutputSize(this->internal_SDL_renderer, &area[0], &area[1]) < 0) {
+        throw std::runtime_error(fmt::format("Could not retrieve the area for the '{:s}' Renderer: {:s}",
                                              this->GetName(),
                                              SDL_GetError()));
     }
 
-    return width;
-}
-
-
-int SDML::Video::Renderer::GetHeight()
-{
-    int height {};
-    if(SDL_GetRendererOutputSize(this->internal_SDL_renderer, nullptr, &height) < 0) {
-        throw std::runtime_error(fmt::format("Could not retrieve the width for the '{:s}' Renderer: {:s}",
-                                             this->GetName(),
-                                             SDL_GetError()));
-    }
-
-    return height;
+    return area;
 }
 
 
@@ -105,7 +93,7 @@ SDML::Video::BlendMode SDML::Video::Renderer::GetBlendMode()
 }
 
 
-int SDML::Video::Renderer::GetMaxTextureWidth()
+std::array<int, 2> SDML::Video::Renderer::GetMaxTextureArea()
 {
     SDL_RendererInfo tmp {};
     if(SDL_GetRendererInfo(this->internal_SDL_renderer, &tmp) < 0) {
@@ -114,20 +102,7 @@ int SDML::Video::Renderer::GetMaxTextureWidth()
                                              SDL_GetError()));
     }
 
-    return tmp.max_texture_width;
-}
-
-
-int SDML::Video::Renderer::GetMaxTextureHeight()
-{
-    SDL_RendererInfo tmp {};
-    if(SDL_GetRendererInfo(this->internal_SDL_renderer, &tmp) < 0) {
-        throw std::runtime_error(fmt::format("Could not retrieve information for '{:s}' Renderer: {:s}",
-                                             this->GetName(),
-                                             SDL_GetError()));
-    }
-
-    return tmp.max_texture_height;
+    return std::array<int, 2> {tmp.max_texture_width, tmp.max_texture_height};
 }
 
 
@@ -204,23 +179,27 @@ std::ostream& operator<<(std::ostream& output,
             break;
     }
 
+    std::array<int, 2> area {renderer.GetArea()};
     std::array<uint8_t, 4> drawing_color {renderer.GetDrawingColor()};
+    std::array<int, 2> max_texture_area {renderer.GetMaxTextureArea()};
 
     Misc::Printables printables {fmt::format("'{:s}' Renderer", renderer.GetName())};
     printables.add_printable(          "Is Software Fallback", renderer.CheckInitFlags(SDML::Video::RendererInitFlag::SOFTWARE));
     printables.add_printable("Supports Hardware Acceleration", renderer.CheckInitFlags(SDML::Video::RendererInitFlag::ACCELERATED));
     printables.add_printable(                "Supports VSync", renderer.CheckInitFlags(SDML::Video::RendererInitFlag::PRESENTVSYNC));
     printables.add_printable( "Supports rendering to texture", renderer.CheckInitFlags(SDML::Video::RendererInitFlag::TARGETTEXTURE));
-    printables.add_printable(                         "Width", renderer.GetWidth());
-    printables.add_printable(                        "Height", renderer.GetHeight());
+    printables.add_printable(                          "Area", fmt::format("[Width: {width:d}, Height: {height:d}]",
+                                                                           fmt::arg( "width", area[0]),
+                                                                           fmt::arg("height", area[1])));
     printables.add_printable(                 "Drawing Color", fmt::format("[Red: {red:d}, Green: {green:d}, Blue: {blue:d}, Alpha: {alpha:d}]",
                                                                            fmt::arg(  "red", drawing_color[0]),
                                                                            fmt::arg("green", drawing_color[1]),
                                                                            fmt::arg( "blue", drawing_color[2]),
                                                                            fmt::arg("alpha", drawing_color[3])));
     printables.add_printable(                    "Blend Mode", blend_mode_string);
-    printables.add_printable(         "Maximum Texture Width", renderer.GetMaxTextureWidth());
-    printables.add_printable(        "Maximum Texture Height", renderer.GetMaxTextureHeight());
+    printables.add_printable(        "Maximum Texture Height", fmt::format("[Width: {width:d}, Height: {height:d}]",
+                                                                           fmt::arg( "width", max_texture_area[0]),
+                                                                           fmt::arg("height", max_texture_area[1])));
 
     std::vector<std::string> texture_formats {renderer.GetTextureFormats()};
     for(std::size_t index = 0; index < texture_formats.size(); index++) {
