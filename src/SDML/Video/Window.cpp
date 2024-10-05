@@ -8,9 +8,9 @@ SDML::Video::Window::Window(const char *title,
 
 
 SDML::Video::Window::Window(const char *title,
-				   			const std::array<int, 2>& top_left_coordinate,
+				   			const std::array<int, 2>& top_left_point,
 				   			const std::array<int, 2>& area): Window(title,
-							   					  					top_left_coordinate,
+							   					  					top_left_point,
 												   					area,
 												   					0) {}
 
@@ -23,10 +23,10 @@ SDML::Video::Window::Window(const char *title,
 
 
 SDML::Video::Window::Window(const char *title,
-		                   	const std::array<int, 2>& top_left_coordinate,
+		                   	const std::array<int, 2>& top_left_point,
 						   	const std::array<int, 2>& area,
 				   			const WindowInitFlag& flag): Window(title,
-					   											top_left_coordinate,
+					   											top_left_point,
 													 			area,
 													 			std::to_underlying(flag)) {}
 
@@ -42,11 +42,11 @@ SDML::Video::Window::Window(const char *title,
 
 
 SDML::Video::Window::Window(const char *title,
-                   			const std::array<int, 2>& top_left_coordinate,
+                   			const std::array<int, 2>& top_left_point,
 						    const std::array<int, 2>& area,
 				   			uint32_t flags): internal_SDL_window{SDL_CreateWindow(title,
-				   															      top_left_coordinate[0],
-																				  top_left_coordinate[1],
+				   															      top_left_point[0],
+																				  top_left_point[1],
 																	   			  area[0],
 																	   			  area[1],
 																	   			  flags)} {}
@@ -161,13 +161,13 @@ uint32_t SDML::Video::Window::GetID()
 }
 
 
-std::array<int, 2> SDML::Video::Window::GetTopLeftCoordinate()
+std::array<int, 2> SDML::Video::Window::GetTopLeftpoint()
 {
-	std::array<int, 2> coordinate {};
+	std::array<int, 2> point {};
 
-	SDL_GetWindowPosition(this->internal_SDL_window, &coordinate[0], &coordinate[1]);
+	SDL_GetWindowPosition(this->internal_SDL_window, &point[0], &point[1]);
 
-	return coordinate;
+	return point;
 }
 
 
@@ -390,7 +390,7 @@ std::ostream& operator<<(std::ostream& output_stream,
 			break;
 	}
 
-	std::array<int, 2> coordinate {window.GetTopLeftCoordinate()};
+	std::array<int, 2> point {window.GetTopLeftpoint()};
 	std::array<int, 2> area {window.GetArea()};
 	std::array<int, 2> minimum_area {window.GetMinimumArea()};
 	std::array<int, 2> maximum_area {window.GetMaximumArea()};
@@ -413,9 +413,9 @@ std::ostream& operator<<(std::ostream& output_stream,
 
 	Misc::Printables window_settings {fmt::format("'{:s}' Window", window.GetTitle())};
 	window_settings.add_printable(				   	  "ID", window.GetID());
-	window_settings.add_printable( "Top-Left X-Coordinate", fmt::format("[X: {x:d}, Y: {y:d}]",
-																		  fmt::arg("x", coordinate[0]),
-																		  fmt::arg("y", coordinate[1])));
+	window_settings.add_printable( "Top-Left X-point", fmt::format("[X: {x:d}, Y: {y:d}]",
+																		  fmt::arg("x", point[0]),
+																		  fmt::arg("y", point[1])));
 	window_settings.add_printable(				    "Area", fmt::format("[Width: {width:d}, Height: {height:d}]",
 																		  fmt::arg( "width", area[0]),
 																		  fmt::arg("height", area[1])));

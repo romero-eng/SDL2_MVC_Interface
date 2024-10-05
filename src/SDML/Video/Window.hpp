@@ -83,7 +83,7 @@ namespace SDML
 				   const std::array<int, 2>& area);
 
 			Window(const char *title,
-				   const std::array<int, 2>& top_left_coordinate,
+				   const std::array<int, 2>& top_left_point,
 				   const std::array<int, 2>& area);
 
 			Window(const char *title,
@@ -91,7 +91,7 @@ namespace SDML
 				   const WindowInitFlag& flag);
 
 			Window(const char *title,
-                   const std::array<int, 2>& top_left_coordinate,
+                   const std::array<int, 2>& top_left_point,
 				   const std::array<int, 2>& area,
 				   const WindowInitFlag& flag);
 
@@ -100,7 +100,7 @@ namespace SDML
 				   uint32_t flags);
 
 			Window(const char *title,
-                   const std::array<int, 2>& top_left_coordinate,
+                   const std::array<int, 2>& top_left_point,
 				   const std::array<int, 2>& area,
 				   uint32_t flags);
 
@@ -116,7 +116,7 @@ namespace SDML
 
 			uint32_t GetID();
 
-			std::array<int, 2> GetTopLeftCoordinate();
+			std::array<int, 2> GetTopLeftpoint();
 
 			std::array<int, 2> GetArea();
 
