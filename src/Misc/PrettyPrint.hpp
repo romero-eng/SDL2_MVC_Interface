@@ -57,10 +57,6 @@ namespace Misc
             
             void add_printable(const std::string&, const std::string& value);
 
-            void add_printable(const char* key, const std::array<uint8_t, 4> value);
-
-            void add_printable(std::string key, const std::array<uint8_t, 4> value);
-
             void add_printable(const char* key, const std::vector<std::string>& value);
 
             void add_printable(const std::string& key, const std::vector<std::string>& value);

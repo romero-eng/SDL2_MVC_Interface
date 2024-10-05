@@ -204,6 +204,8 @@ std::ostream& operator<<(std::ostream& output,
             break;
     }
 
+    std::array<uint8_t, 4> drawing_color {renderer.GetDrawingColor()};
+
     Misc::Printables printables {fmt::format("'{:s}' Renderer", renderer.GetName())};
     printables.add_printable(          "Is Software Fallback", renderer.CheckInitFlags(SDML::Video::RendererInitFlag::SOFTWARE));
     printables.add_printable("Supports Hardware Acceleration", renderer.CheckInitFlags(SDML::Video::RendererInitFlag::ACCELERATED));
@@ -211,7 +213,11 @@ std::ostream& operator<<(std::ostream& output,
     printables.add_printable( "Supports rendering to texture", renderer.CheckInitFlags(SDML::Video::RendererInitFlag::TARGETTEXTURE));
     printables.add_printable(                         "Width", renderer.GetWidth());
     printables.add_printable(                        "Height", renderer.GetHeight());
-    printables.add_printable(                 "Drawing Color", renderer.GetDrawingColor());
+    printables.add_printable(                 "Drawing Color", fmt::format("[Red: {red:d}, Green: {green:d}, Blue: {blue:d}, Alpha: {alpha:d}]",
+                                                                           fmt::arg(  "red", drawing_color[0]),
+                                                                           fmt::arg("green", drawing_color[1]),
+                                                                           fmt::arg( "blue", drawing_color[2]),
+                                                                           fmt::arg("alpha", drawing_color[3])));
     printables.add_printable(                    "Blend Mode", blend_mode_string);
     printables.add_printable(         "Maximum Texture Width", renderer.GetMaxTextureWidth());
     printables.add_printable(        "Maximum Texture Height", renderer.GetMaxTextureHeight());

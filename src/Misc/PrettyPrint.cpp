@@ -31,17 +31,6 @@ void Misc::Printables::add_printable(const char* key, const std::string& value) 
 
 void Misc::Printables::add_printable(const std::string& key, const std::string& value) { this->printables.push_back(std::pair<std::string, std::string> {key, value}); }
 
-void Misc::Printables::add_printable(const char* key, const std::array<uint8_t, 4> color) { this->add_printable(std::string {key}, color); }
-
-void Misc::Printables::add_printable(std::string key, const std::array<uint8_t, 4> color) {
-	this->printables.push_back(std::pair<std::string, std::string> {key,
-																	fmt::format("[Red: {red:d}, Green: {green:d}, Blue: {blue:d}, Alpha: {alpha:d}]",
-																				fmt::arg(  "red", color[0]),
-																				fmt::arg("green", color[1]),
-																				fmt::arg( "blue", color[2]),
-																				fmt::arg("alpha", color[3]))});
-}
-
 void Misc::Printables::add_printable(const char* key, const std::vector<std::string>& value) { this->add_printable(std::string {key}, value); }
 
 void Misc::Printables::add_printable(const std::string& key, const std::vector<std::string>& value) { this->printables.push_back(std::pair<std::string, std::string> {key, fmt::format("[{}]", fmt::join(value, ", "))}); }
