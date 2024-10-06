@@ -77,6 +77,14 @@ namespace SDML
 
             void SetDrawingColor(const std::array<uint8_t, 4>& color);
 
+            void DrawPoint(const std::array<int, 2>& point);
+
+            void DrawPoint(const std::array<float, 2>& point);
+
+            void DrawPoints(const std::vector<std::array<int, 2>>& points);
+
+            void DrawPoints(const std::vector<std::array<float, 2>>& points);
+
             void DrawEntireTarget();
 
             void Update();

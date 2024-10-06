@@ -186,6 +186,94 @@ void SDML::Video::Renderer::SetDrawingColor(const std::array<uint8_t, 4>& color)
 }
 
 
+void SDML::Video::Renderer::DrawPoint(const std::array<int, 2>& point)
+{
+    if(SDL_RenderDrawPoint(this->internal_SDL_renderer, point[0], point[1]) < 0) {
+        throw std::runtime_error(fmt::format("Could not draw a point ([X: {:d}, Y: {:d}]) for the '{:s}' Renderer: {:s}",
+                                             point[0],
+                                             point[1],
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+}
+
+
+void SDML::Video::Renderer::DrawPoint(const std::array<float, 2>& point)
+{
+    if(SDL_RenderDrawPointF(this->internal_SDL_renderer, point[0], point[1]) < 0) {
+        throw std::runtime_error(fmt::format("Could not draw a point for the '{:s}' Renderer: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+}
+
+
+void SDML::Video::Renderer::DrawPoints(const std::vector<std::array<int, 2>>& points)
+{
+    std::size_t num_points {points.size()};
+
+    SDL_Point* tmp = new SDL_Point[num_points]; // The try-catch clause down below was put in to absolutely make sure there's no memory leak with this C-style array
+    bool success;
+
+    try {
+
+        for(std::size_t i = 0; i < num_points; i++){
+            tmp[i] = SDL_Point{ .x{points[i][0]}, .y{points[i][1]} };
+        }
+
+        success = SDL_RenderDrawPoints(this->internal_SDL_renderer, tmp, static_cast<int>(num_points)) < 0;
+
+        delete [] tmp;
+
+    } catch(...) {
+
+        delete [] tmp;
+        success = false;
+        throw;
+
+    }
+
+    if(success) {
+        throw std::runtime_error(fmt::format("Could not draw points for the '{:s}' Renderer: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+}
+
+
+void SDML::Video::Renderer::DrawPoints(const std::vector<std::array<float, 2>>& points)
+{
+    std::size_t num_points {points.size()};
+
+    SDL_FPoint* tmp = new SDL_FPoint[num_points]; // The try-catch clause down below was put in to absolutely make sure there's no memory leak with this C-style array
+    bool success;
+
+    try {
+
+        for(std::size_t i = 0; i < num_points; i++){
+            tmp[i] = SDL_FPoint{ .x{points[i][0]}, .y{points[i][1]} };
+        }
+
+        success = SDL_RenderDrawPointsF(this->internal_SDL_renderer, tmp, static_cast<int>(num_points)) < 0;
+
+        delete [] tmp;
+
+    } catch(...) {
+
+        delete [] tmp;
+        success = false;
+        throw;
+
+    }
+
+    if(success) {
+        throw std::runtime_error(fmt::format("Could not draw points for the '{:s}' Renderer: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+}
+
+
 void SDML::Video::Renderer::DrawEntireTarget()
 {
     if(SDL_RenderFillRect(this->internal_SDL_renderer, nullptr) < 0) {
