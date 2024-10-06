@@ -85,6 +85,14 @@ namespace SDML
 
             void DrawPoints(const std::vector<std::array<float, 2>>& points);
 
+            void DrawLine(const std::array<std::array<int, 2>, 2>& line);
+
+            void DrawLine(const std::array<std::array<float, 2>, 2>& line);
+
+            void DrawConnectedLines(const std::vector<std::array<int, 2>>& line_points);
+
+            void DrawConnectedLines(const std::vector<std::array<float, 2>>& line_points);
+
             void DrawEntireTarget();
 
             void Update();

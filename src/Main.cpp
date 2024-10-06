@@ -21,37 +21,36 @@ int main( int argc, char* args[] )
 
 	try
 	{
-		SDML::Video::Window windowTest {"Test", 
-										std::array<int, 2> {640, 480},
-										SDML::Video::WindowInitFlag::RESIZABLE};
-
-		SDML::Video::Renderer testRenderer {windowTest,
-											SDML::Video::RendererInitFlag::ACCELERATED};
 
 		std::array<uint8_t, 4> white {0xFF, 0xFF, 0xFF, 0xFF};
 		std::array<uint8_t, 4>   red {0xFF, 0x0,  0x0,  0xFF};
 		std::array<uint8_t, 4> green {0x0,  0xFF, 0x0,  0xFF};
 		std::array<uint8_t, 4>  blue {0x0,  0x0,  0xFF, 0xFF};
 
-		std::vector<std::array<int, 2>>  red_points {};
-		std::vector<std::array<float, 2>> blue_points {};
-		for(int x = 0; x < windowTest.GetArea()[0]; x+=20) {
-			 red_points.push_back(std::array<int, 2> {x, 240});
-			blue_points.push_back(std::array<float, 2> {static_cast<float>(x), 360.0});
-		}
+		std::array<std::array<float, 2>, 2> red_line {{{100.0, 100.0},
+													   {200.0, 200.0}}};
+		std::vector<std::array<float, 2>> blue_line_points {{300.0, 300.0},
+														    {300.0, 350.0},
+														    {350.0, 400.0},
+														    {400.0, 350.0}};
 
-		testRenderer.SetDrawingColor(white);
-		testRenderer.DrawEntireTarget();
+		SDML::Video::Window windowTest {"Test", 
+										std::array<int, 2> {640, 480},
+										SDML::Video::WindowInitFlag::RESIZABLE};
 
-		testRenderer.SetDrawingColor(red);
-		for(const std::array<int, 2>& point : red_points) {
-			testRenderer.DrawPoint(point);
-		}
-		
-		testRenderer.SetDrawingColor(blue);
-		testRenderer.DrawPoints(blue_points);
+		SDML::Video::Renderer rendererTest {windowTest,
+											SDML::Video::RendererInitFlag::ACCELERATED};
 
-		testRenderer.Update();
+		rendererTest.SetDrawingColor(white);
+		rendererTest.DrawEntireTarget();
+
+		rendererTest.SetDrawingColor(red);
+		rendererTest.DrawLine(red_line);
+
+		rendererTest.SetDrawingColor(blue);
+		rendererTest.DrawConnectedLines(blue_line_points);
+
+		rendererTest.Update();
 
 		SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }
 

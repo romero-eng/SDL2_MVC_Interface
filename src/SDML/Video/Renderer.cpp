@@ -213,7 +213,7 @@ void SDML::Video::Renderer::DrawPoints(const std::vector<std::array<int, 2>>& po
     std::size_t num_points {points.size()};
 
     SDL_Point* tmp = new SDL_Point[num_points]; // The try-catch clause down below was put in to absolutely make sure there's no memory leak with this C-style array
-    bool success;
+    bool error;
 
     try {
 
@@ -221,19 +221,19 @@ void SDML::Video::Renderer::DrawPoints(const std::vector<std::array<int, 2>>& po
             tmp[i] = SDL_Point{ .x{points[i][0]}, .y{points[i][1]} };
         }
 
-        success = SDL_RenderDrawPoints(this->internal_SDL_renderer, tmp, static_cast<int>(num_points)) < 0;
+        error = SDL_RenderDrawPoints(this->internal_SDL_renderer, tmp, static_cast<int>(num_points)) < 0;
 
         delete [] tmp;
 
     } catch(...) {
 
         delete [] tmp;
-        success = false;
+        error = true;
         throw;
 
     }
 
-    if(success) {
+    if(error) {
         throw std::runtime_error(fmt::format("Could not draw points for the '{:s}' Renderer: {:s}",
                                              this->GetName(),
                                              SDL_GetError()));
@@ -246,7 +246,7 @@ void SDML::Video::Renderer::DrawPoints(const std::vector<std::array<float, 2>>& 
     std::size_t num_points {points.size()};
 
     SDL_FPoint* tmp = new SDL_FPoint[num_points]; // The try-catch clause down below was put in to absolutely make sure there's no memory leak with this C-style array
-    bool success;
+    bool error;
 
     try {
 
@@ -254,20 +254,106 @@ void SDML::Video::Renderer::DrawPoints(const std::vector<std::array<float, 2>>& 
             tmp[i] = SDL_FPoint{ .x{points[i][0]}, .y{points[i][1]} };
         }
 
-        success = SDL_RenderDrawPointsF(this->internal_SDL_renderer, tmp, static_cast<int>(num_points)) < 0;
+        error = SDL_RenderDrawPointsF(this->internal_SDL_renderer, tmp, static_cast<int>(num_points)) < 0;
 
         delete [] tmp;
 
     } catch(...) {
 
         delete [] tmp;
-        success = false;
+        error = true;
         throw;
 
     }
 
-    if(success) {
+    if(error) {
         throw std::runtime_error(fmt::format("Could not draw points for the '{:s}' Renderer: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+}
+
+
+void SDML::Video::Renderer::DrawLine(const std::array<std::array<int, 2>, 2>& line)
+{
+    if(SDL_RenderDrawLine(this->internal_SDL_renderer, line[0][0], line[0][1], line[1][0], line[1][1]) < 0) {
+        throw std::runtime_error(fmt::format("Could not draw a line for the '{:s}' Renderer: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+}
+
+
+void SDML::Video::Renderer::DrawLine(const std::array<std::array<float, 2>, 2>& line)
+{
+    if(SDL_RenderDrawLineF(this->internal_SDL_renderer, line[0][0], line[0][1], line[1][0], line[1][1]) < 0) {
+        throw std::runtime_error(fmt::format("Could not draw a line for the '{:s}' Renderer: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+}
+
+
+void SDML::Video::Renderer::DrawConnectedLines(const std::vector<std::array<int, 2>>& line_points)
+{
+    std::size_t num_points {line_points.size()};
+
+    SDL_Point* tmp = new SDL_Point[num_points];
+    bool error;
+
+    try{
+
+        for(std::size_t i = 0; i < num_points; i++) {
+            tmp[i] = SDL_Point{ .x{line_points[i][0]}, .y{line_points[i][1]} };
+        }
+
+        error = SDL_RenderDrawLines(this->internal_SDL_renderer, tmp, static_cast<int>(num_points)) < 0;
+
+    } catch (...) {
+
+        delete [] tmp;
+        error = true;
+        throw;
+
+    }
+
+    delete [] tmp;
+
+    if(error) {
+        throw std::runtime_error(fmt::format("Could not draw lines for the '{:s}' Renderer: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+}
+
+
+void SDML::Video::Renderer::DrawConnectedLines(const std::vector<std::array<float, 2>>& line_points)
+{
+    std::size_t num_points {line_points.size()};
+
+    SDL_FPoint* tmp = new SDL_FPoint[num_points];
+    bool error;
+
+    try{
+
+        for(std::size_t i = 0; i < num_points; i++) {
+            tmp[i] = SDL_FPoint{ .x{line_points[i][0]}, .y{line_points[i][1]} };
+        }
+
+        error = SDL_RenderDrawLinesF(this->internal_SDL_renderer, tmp, static_cast<int>(num_points)) < 0;
+
+    } catch (...) {
+
+        delete [] tmp;
+        error = true;
+        throw;
+
+    }
+
+    delete [] tmp;
+
+    if(error) {
+        throw std::runtime_error(fmt::format("Could not draw lines for the '{:s}' Renderer: {:s}",
                                              this->GetName(),
                                              SDL_GetError()));
     }
