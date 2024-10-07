@@ -27,12 +27,8 @@ int main( int argc, char* args[] )
 		std::array<uint8_t, 4> green {0x0,  0xFF, 0x0,  0xFF};
 		std::array<uint8_t, 4>  blue {0x0,  0x0,  0xFF, 0xFF};
 
-		std::array<std::array<float, 2>, 2> red_line {{{100.0, 100.0},
-													   {200.0, 200.0}}};
-		std::vector<std::array<float, 2>> blue_line_points {{300.0, 300.0},
-														    {300.0, 350.0},
-														    {350.0, 400.0},
-														    {400.0, 350.0}};
+		std::vector<std::pair<std::array<float, 2>, std::array<float, 2>>> rects_info {{{ 50.0,  50.0}, {200.0, 100.0}},
+																					   {{250.0, 250.0}, {200.0, 100.0}}};
 
 		SDML::Video::Window windowTest {"Test", 
 										std::array<int, 2> {640, 480},
@@ -44,11 +40,11 @@ int main( int argc, char* args[] )
 		rendererTest.SetDrawingColor(white);
 		rendererTest.DrawEntireTarget();
 
-		rendererTest.SetDrawingColor(red);
-		rendererTest.DrawLine(red_line);
+		rendererTest.SetDrawingColor(green);
+		rendererTest.DrawRectangles(rects_info);
 
-		rendererTest.SetDrawingColor(blue);
-		rendererTest.DrawConnectedLines(blue_line_points);
+		rendererTest.SetDrawingColor(red);
+		rendererTest.DrawRectangleOutlines(rects_info);
 
 		rendererTest.Update();
 

@@ -93,7 +93,21 @@ namespace SDML
 
             void DrawConnectedLines(const std::vector<std::array<float, 2>>& line_points);
 
-            void DrawRectangleOutline(const std::pair<std::array<int, 2>, std::array<int, 2>> rect_info);
+            void DrawRectangleOutline(const std::pair<std::array<int, 2>, std::array<int, 2>>& rect_info);
+
+            void DrawRectangleOutline(const std::pair<std::array<float, 2>, std::array<float, 2>>& rect_info);
+
+            void DrawRectangleOutlines(const std::vector<std::pair<std::array<int, 2>, std::array<int, 2>>>& rects_info);
+
+            void DrawRectangleOutlines(const std::vector<std::pair<std::array<float, 2>, std::array<float, 2>>>& rects_info);
+
+            void DrawRectangle(const std::pair<std::array<int, 2>, std::array<int, 2>>& rect_info);
+
+            void DrawRectangle(const std::pair<std::array<float, 2>, std::array<float, 2>>& rect_info);
+
+            void DrawRectangles(const std::vector<std::pair<std::array<int, 2>, std::array<int, 2>>>& rects_info);
+
+            void DrawRectangles(const std::vector<std::pair<std::array<float, 2>, std::array<float, 2>>>& rects_info);
 
             void DrawEntireTarget();
 

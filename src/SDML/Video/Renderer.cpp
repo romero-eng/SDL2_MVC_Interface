@@ -376,6 +376,218 @@ void SDML::Video::Renderer::DrawConnectedLines(const std::vector<std::array<floa
 }
 
 
+void SDML::Video::Renderer::DrawRectangleOutline(const std::pair<std::array<int, 2>, std::array<int, 2>>& rect_info)
+{
+    const auto& [top_left_point, area] = rect_info;
+    const auto& [top_left_x, top_left_y] = top_left_point;
+    const auto& [width, height] = area;
+
+    SDL_Rect tmp {top_left_x, top_left_y, width, height};
+
+    if(SDL_RenderDrawRect(this->internal_SDL_renderer, &tmp) < 0) {
+        throw std::runtime_error(fmt::format("Could not draw a rectangle for the '{:s}' Renderer: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+}
+
+
+void SDML::Video::Renderer::DrawRectangleOutline(const std::pair<std::array<float, 2>, std::array<float, 2>>& rect_info)
+{
+    const auto& [top_left_point, area] = rect_info;
+    const auto& [top_left_x, top_left_y] = top_left_point;
+    const auto& [width, height] = area;
+
+    SDL_FRect tmp {top_left_x, top_left_y, width, height};
+
+    if(SDL_RenderDrawRectF(this->internal_SDL_renderer, &tmp) < 0) {
+        throw std::runtime_error(fmt::format("Could not draw a rectangle for the '{:s}' Renderer: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+}
+
+
+void SDML::Video::Renderer::DrawRectangleOutlines(const std::vector<std::pair<std::array<int, 2>, std::array<int, 2>>>& rects_info)
+{
+    std::size_t num_rects {rects_info.size()};
+
+    SDL_Rect* tmp = new SDL_Rect[num_rects];
+    bool error;
+
+    try{
+
+        for(std::size_t i = 0; i < num_rects; i++) {
+            const auto& [top_left_point, area] = rects_info[i];
+            const auto& [top_left_x, top_left_y] = top_left_point;
+            const auto& [width, height] = area;
+
+            tmp[i] = SDL_Rect{top_left_x, top_left_y, width, height};
+        }
+
+        error = SDL_RenderDrawRects(this->internal_SDL_renderer, tmp, static_cast<int>(num_rects)) < 0;
+
+    } catch (...) {
+
+        delete [] tmp;
+        error = true;
+        throw;
+
+    }
+
+    delete [] tmp;
+
+    if(error) {
+        throw std::runtime_error(fmt::format("Could not draw rectangles for the '{:s}' Renderer: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+}
+
+
+void SDML::Video::Renderer::DrawRectangleOutlines(const std::vector<std::pair<std::array<float, 2>, std::array<float, 2>>>& rects_info)
+{
+    std::size_t num_rects {rects_info.size()};
+
+    SDL_FRect* tmp = new SDL_FRect[num_rects];
+    bool error;
+
+    try{
+
+        for(std::size_t i = 0; i < num_rects; i++) {
+            const auto& [top_left_point, area] = rects_info[i];
+            const auto& [top_left_x, top_left_y] = top_left_point;
+            const auto& [width, height] = area;
+
+            tmp[i] = SDL_FRect{top_left_x, top_left_y, width, height};
+        }
+
+        error = SDL_RenderDrawRectsF(this->internal_SDL_renderer, tmp, static_cast<int>(num_rects)) < 0;
+
+    } catch (...) {
+
+        delete [] tmp;
+        error = true;
+        throw;
+
+    }
+
+    delete [] tmp;
+
+    if(error) {
+        throw std::runtime_error(fmt::format("Could not draw rectangles for the '{:s}' Renderer: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+}
+
+
+void SDML::Video::Renderer::DrawRectangle(const std::pair<std::array<int, 2>, std::array<int, 2>>& rect_info)
+{
+    const auto& [top_left_point, area] = rect_info;
+    const auto& [top_left_x, top_left_y] = top_left_point;
+    const auto& [width, height] = area;
+
+    SDL_Rect tmp {top_left_x, top_left_y, width, height};
+
+    if(SDL_RenderFillRect(this->internal_SDL_renderer, &tmp) < 0) {
+        throw std::runtime_error(fmt::format("Could not draw a rectangle for the '{:s}' Renderer: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+}
+
+
+void SDML::Video::Renderer::DrawRectangle(const std::pair<std::array<float, 2>, std::array<float, 2>>& rect_info)
+{
+    const auto& [top_left_point, area] = rect_info;
+    const auto& [top_left_x, top_left_y] = top_left_point;
+    const auto& [width, height] = area;
+
+    SDL_FRect tmp {top_left_x, top_left_y, width, height};
+
+    if(SDL_RenderFillRectF(this->internal_SDL_renderer, &tmp) < 0) {
+        throw std::runtime_error(fmt::format("Could not draw a rectangle for the '{:s}' Renderer: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+}
+
+
+void SDML::Video::Renderer::DrawRectangles(const std::vector<std::pair<std::array<int, 2>, std::array<int, 2>>>& rects_info)
+{
+    std::size_t num_rects {rects_info.size()};
+
+    SDL_Rect* tmp = new SDL_Rect[num_rects];
+    bool error;
+
+    try{
+
+        for(std::size_t i = 0; i < num_rects; i++) {
+            const auto& [top_left_point, area] = rects_info[i];
+            const auto& [top_left_x, top_left_y] = top_left_point;
+            const auto& [width, height] = area;
+
+            tmp[i] = SDL_Rect{top_left_x, top_left_y, width, height};
+        }
+
+        error = SDL_RenderFillRects(this->internal_SDL_renderer, tmp, static_cast<int>(num_rects)) < 0;
+
+    } catch (...) {
+
+        delete [] tmp;
+        error = true;
+        throw;
+
+    }
+
+    delete [] tmp;
+
+    if(error) {
+        throw std::runtime_error(fmt::format("Could not draw rectangles for the '{:s}' Renderer: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+}
+
+
+void SDML::Video::Renderer::DrawRectangles(const std::vector<std::pair<std::array<float, 2>, std::array<float, 2>>>& rects_info)
+{
+    std::size_t num_rects {rects_info.size()};
+
+    SDL_FRect* tmp = new SDL_FRect[num_rects];
+    bool error;
+
+    try{
+
+        for(std::size_t i = 0; i < num_rects; i++) {
+            const auto& [top_left_point, area] = rects_info[i];
+            const auto& [top_left_x, top_left_y] = top_left_point;
+            const auto& [width, height] = area;
+
+            tmp[i] = SDL_FRect{top_left_x, top_left_y, width, height};
+        }
+
+        error = SDL_RenderFillRectsF(this->internal_SDL_renderer, tmp, static_cast<int>(num_rects)) < 0;
+
+    } catch (...) {
+
+        delete [] tmp;
+        error = true;
+        throw;
+
+    }
+
+    delete [] tmp;
+
+    if(error) {
+        throw std::runtime_error(fmt::format("Could not draw rectangles for the '{:s}' Renderer: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+}
+
+
 void SDML::Video::Renderer::DrawEntireTarget()
 {
     if(SDL_RenderFillRect(this->internal_SDL_renderer, nullptr) < 0) {
