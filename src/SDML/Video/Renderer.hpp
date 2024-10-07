@@ -93,6 +93,8 @@ namespace SDML
 
             void DrawConnectedLines(const std::vector<std::array<float, 2>>& line_points);
 
+            void DrawRectangleOutline(const std::pair<std::array<int, 2>, std::array<int, 2>> rect_info);
+
             void DrawEntireTarget();
 
             void Update();

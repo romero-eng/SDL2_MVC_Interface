@@ -222,7 +222,8 @@ void SDML::Video::Renderer::DrawPoints(const std::vector<std::array<int, 2>>& po
     try {
 
         for(std::size_t i = 0; i < num_points; i++){
-            tmp[i] = SDL_Point{ .x{points[i][0]}, .y{points[i][1]} };
+            const auto [x, y] = points[i];
+            tmp[i] = SDL_Point{x, y};
         }
 
         error = SDL_RenderDrawPoints(this->internal_SDL_renderer, tmp, static_cast<int>(num_points)) < 0;
@@ -255,7 +256,8 @@ void SDML::Video::Renderer::DrawPoints(const std::vector<std::array<float, 2>>& 
     try {
 
         for(std::size_t i = 0; i < num_points; i++){
-            tmp[i] = SDL_FPoint{ .x{points[i][0]}, .y{points[i][1]} };
+            const auto& [x, y] = points[i];
+            tmp[i] = SDL_FPoint{x, y};
         }
 
         error = SDL_RenderDrawPointsF(this->internal_SDL_renderer, tmp, static_cast<int>(num_points)) < 0;
@@ -316,7 +318,8 @@ void SDML::Video::Renderer::DrawConnectedLines(const std::vector<std::array<int,
     try{
 
         for(std::size_t i = 0; i < num_points; i++) {
-            tmp[i] = SDL_Point{ .x{line_points[i][0]}, .y{line_points[i][1]} };
+            const auto& [x, y] = line_points[i];
+            tmp[i] = SDL_Point{x, y};
         }
 
         error = SDL_RenderDrawLines(this->internal_SDL_renderer, tmp, static_cast<int>(num_points)) < 0;
@@ -349,7 +352,8 @@ void SDML::Video::Renderer::DrawConnectedLines(const std::vector<std::array<floa
     try{
 
         for(std::size_t i = 0; i < num_points; i++) {
-            tmp[i] = SDL_FPoint{ .x{line_points[i][0]}, .y{line_points[i][1]} };
+            const auto& [x, y] = line_points[i];
+            tmp[i] = SDL_FPoint{x, y};
         }
 
         error = SDL_RenderDrawLinesF(this->internal_SDL_renderer, tmp, static_cast<int>(num_points)) < 0;
