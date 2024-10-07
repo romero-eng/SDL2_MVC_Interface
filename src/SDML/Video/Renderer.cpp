@@ -188,7 +188,9 @@ void SDML::Video::Renderer::SetDrawingColor(const std::array<uint8_t, 4>& color)
 
 void SDML::Video::Renderer::DrawPoint(const std::array<int, 2>& point)
 {
-    if(SDL_RenderDrawPoint(this->internal_SDL_renderer, point[0], point[1]) < 0) {
+    const auto& [x, y] = point;
+
+    if(SDL_RenderDrawPoint(this->internal_SDL_renderer, x, y) < 0) {
         throw std::runtime_error(fmt::format("Could not draw a point ([X: {:d}, Y: {:d}]) for the '{:s}' Renderer: {:s}",
                                              point[0],
                                              point[1],
@@ -200,7 +202,9 @@ void SDML::Video::Renderer::DrawPoint(const std::array<int, 2>& point)
 
 void SDML::Video::Renderer::DrawPoint(const std::array<float, 2>& point)
 {
-    if(SDL_RenderDrawPointF(this->internal_SDL_renderer, point[0], point[1]) < 0) {
+    const auto& [x, y] = point;
+
+    if(SDL_RenderDrawPointF(this->internal_SDL_renderer, x, y) < 0) {
         throw std::runtime_error(fmt::format("Could not draw a point for the '{:s}' Renderer: {:s}",
                                              this->GetName(),
                                              SDL_GetError()));
@@ -276,7 +280,11 @@ void SDML::Video::Renderer::DrawPoints(const std::vector<std::array<float, 2>>& 
 
 void SDML::Video::Renderer::DrawLine(const std::array<std::array<int, 2>, 2>& line)
 {
-    if(SDL_RenderDrawLine(this->internal_SDL_renderer, line[0][0], line[0][1], line[1][0], line[1][1]) < 0) {
+    const auto& [begin_point, end_point] = line;
+    const auto& [    begin_x,   begin_y] = begin_point;
+    const auto& [      end_x,     end_y] = end_point;
+
+    if(SDL_RenderDrawLine(this->internal_SDL_renderer, begin_x, begin_y, end_x, end_y) < 0) {
         throw std::runtime_error(fmt::format("Could not draw a line for the '{:s}' Renderer: {:s}",
                                              this->GetName(),
                                              SDL_GetError()));
@@ -286,7 +294,11 @@ void SDML::Video::Renderer::DrawLine(const std::array<std::array<int, 2>, 2>& li
 
 void SDML::Video::Renderer::DrawLine(const std::array<std::array<float, 2>, 2>& line)
 {
-    if(SDL_RenderDrawLineF(this->internal_SDL_renderer, line[0][0], line[0][1], line[1][0], line[1][1]) < 0) {
+    const auto& [begin_point, end_point] = line;
+    const auto& [    begin_x,   begin_y] = begin_point;
+    const auto& [      end_x,     end_y] = end_point;
+
+    if(SDL_RenderDrawLineF(this->internal_SDL_renderer, begin_x, begin_y, end_x, end_y) < 0) {
         throw std::runtime_error(fmt::format("Could not draw a line for the '{:s}' Renderer: {:s}",
                                              this->GetName(),
                                              SDL_GetError()));
