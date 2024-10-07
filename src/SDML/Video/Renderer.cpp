@@ -529,7 +529,6 @@ void SDML::Video::Renderer::DrawRectangles(const std::vector<std::pair<std::arra
     std::size_t num_rects {rects_info.size()};
 
     SDL_FRect* tmp = new SDL_FRect[num_rects];
-    bool error;
 
     try{
 
@@ -541,23 +540,20 @@ void SDML::Video::Renderer::DrawRectangles(const std::vector<std::pair<std::arra
             tmp[i] = SDL_FRect{top_left_x, top_left_y, width, height};
         }
 
-        error = SDL_RenderFillRectsF(this->internal_SDL_renderer, tmp, static_cast<int>(num_rects)) < 0;
+        if(SDL_RenderFillRectsF(this->internal_SDL_renderer, tmp, static_cast<int>(num_rects)) < 0) {
+            throw std::runtime_error(fmt::format("Could not draw rectangles for the '{:s}' Renderer: {:s}",
+                                                 this->GetName(),
+                                                 SDL_GetError()));
+        }
 
     } catch (...) {
 
         delete [] tmp;
-        error = true;
         throw;
 
     }
 
     delete [] tmp;
-
-    if(error) {
-        throw std::runtime_error(fmt::format("Could not draw rectangles for the '{:s}' Renderer: {:s}",
-                                             this->GetName(),
-                                             SDL_GetError()));
-    }
 }
 
 
