@@ -27,8 +27,6 @@ int main( int argc, char* args[] )
 		constexpr std::array<uint8_t, 4> green {0x0,  0xFF, 0x0,  0xFF};
 		constexpr std::array<uint8_t, 4>  blue {0x0,  0x0,  0xFF, 0xFF};
 
-		constexpr std::array<int, 2> logical_area {100, 100};
-
 		SDML::Video::Window windowTest {"Test", 
 										std::array<int, 2> {640, 480},
 										SDML::Video::WindowInitFlag::RESIZABLE};
@@ -38,7 +36,7 @@ int main( int argc, char* args[] )
 
 		std::cout << rendererTest << std::endl;
 
-		rendererTest.SetLogicalArea(logical_area);
+		rendererTest.ToggleIntegerScale(true);
 		std::cout << rendererTest << std::endl;
 
 		SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }

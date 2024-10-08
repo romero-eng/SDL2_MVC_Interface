@@ -93,6 +93,10 @@ namespace SDML
 
             bool CheckClippingEnabled();
 
+            bool CheckIntegerScale();
+
+            void ToggleIntegerScale(bool enable_or_disable);
+
             void DrawPoint(const std::array<int, 2>& point);
 
             void DrawPoint(const std::array<float, 2>& point);

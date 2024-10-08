@@ -282,6 +282,19 @@ bool SDML::Video::Renderer::CheckInitFlags(const RendererInitFlag& flag) { retur
 bool SDML::Video::Renderer::CheckClippingEnabled() { return SDL_RenderIsClipEnabled(this->internal_SDL_renderer); }
 
 
+bool SDML::Video::Renderer::CheckIntegerScale() { return SDL_RenderGetIntegerScale(this->internal_SDL_renderer); }
+
+
+void SDML::Video::Renderer::ToggleIntegerScale(bool enable_or_disable)
+{
+    if(SDL_RenderSetIntegerScale(this->internal_SDL_renderer, enable_or_disable ? SDL_TRUE : SDL_FALSE) < 0) {
+        throw std::runtime_error(fmt::format("Could not toggle the integer scale for the '{:s}' Renderer: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+}
+
+
 void SDML::Video::Renderer::DrawPoint(const std::array<int, 2>& point)
 {
     const auto& [x, y] = point;
@@ -717,6 +730,7 @@ std::ostream& operator<<(std::ostream& output,
     printables.add_printable(                "Supports VSync", renderer.CheckInitFlags(SDML::Video::RendererInitFlag::PRESENTVSYNC));
     printables.add_printable( "Supports rendering to texture", renderer.CheckInitFlags(SDML::Video::RendererInitFlag::TARGETTEXTURE));
     printables.add_printable(           "Clipping is Enabled", renderer.CheckClippingEnabled());
+    printables.add_printable(          "Integer Scale is set", renderer.CheckIntegerScale());
 
     std::array<int, 2> area {renderer.GetArea()};
     const auto& [width, height] = area;
