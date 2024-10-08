@@ -295,6 +295,16 @@ void SDML::Video::Renderer::ToggleIntegerScale(bool enable_or_disable)
 }
 
 
+void SDML::Video::Renderer::ToggleVSync(bool enable_or_disable)
+{
+    if(SDL_RenderSetVSync(this->internal_SDL_renderer, enable_or_disable) < 0) {
+        throw std::runtime_error(fmt::format("Could not toggle the VSync for the '{:s}' Renderer: {:s}",
+                                 this->GetName(),
+                                 SDL_GetError()));
+    }
+}
+
+
 void SDML::Video::Renderer::DrawPoint(const std::array<int, 2>& point)
 {
     const auto& [x, y] = point;

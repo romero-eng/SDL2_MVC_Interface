@@ -96,6 +96,8 @@ namespace SDML
             bool CheckIntegerScale();
 
             void ToggleIntegerScale(bool enable_or_disable);
+            
+            void ToggleVSync(bool enable_or_disable);
 
             void DrawPoint(const std::array<int, 2>& point);
 
