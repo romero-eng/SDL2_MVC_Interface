@@ -39,7 +39,7 @@ std::optional<std::string> SDML::Video::Texture::GetContextName() const { return
 std::ostream& operator<<(std::ostream& output,
                          const SDML::Video::Texture& texture)
 {
-    Misc::Printables printables {fmt::format("'{:s}' Renderer", texture.GetName())};
+    Misc::Printables printables {fmt::format("'{:s}' Texture", texture.GetName())};
 
     std::optional<std::string> context_name {texture.GetContextName()};
     if(context_name.has_value()) {
