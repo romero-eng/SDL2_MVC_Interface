@@ -31,15 +31,16 @@ std::string SDML::Video::Renderer::GetName()
 
 std::array<int, 2> SDML::Video::Renderer::GetArea()
 {
-    std::array<int, 2> area;
+    int width;
+    int height;
 
-    if(SDL_GetRendererOutputSize(this->internal_SDL_renderer, &area[0], &area[1]) < 0) {
+    if(SDL_GetRendererOutputSize(this->internal_SDL_renderer, &width, &height) < 0) {
         throw std::runtime_error(fmt::format("Could not retrieve the area for the '{:s}' Renderer: {:s}",
                                              this->GetName(),
                                              SDL_GetError()));
     }
 
-    return area;
+    return std::array<int, 2> {width, height};
 }
 
 
