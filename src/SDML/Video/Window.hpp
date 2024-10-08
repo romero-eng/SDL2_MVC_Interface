@@ -69,13 +69,13 @@ namespace SDML
 
 			SDL_Window* internal_SDL_window;
 
-			int GetDisplayIndex();
+			int GetDisplayIndex() const;
 
-			SDL_Rect GetFullscreenDisplayBounds();
+			SDL_Rect GetFullscreenDisplayBounds() const;
 
-			SDL_Rect GetUsableDisplayBounds();
+			SDL_Rect GetUsableDisplayBounds() const;
 
-			SDL_DisplayMode GetDisplayMode();
+			SDL_DisplayMode GetDisplayMode() const;
 
 		public:
 
@@ -110,43 +110,43 @@ namespace SDML
 
 			~Window();
 
-			std::string GetTitle();
+			std::string GetTitle() const;
 
-			std::string GetDisplayName();
+			std::string GetDisplayName() const;
 
-			uint32_t GetID();
+			uint32_t GetID() const;
 
-			std::array<int, 2> GetTopLeftpoint();
+			std::array<int, 2> GetTopLeftpoint() const;
 
-			std::array<int, 2> GetArea();
+			std::array<int, 2> GetArea() const;
 
-			std::array<int, 2> GetMinimumArea();
+			std::array<int, 2> GetMinimumArea() const;
 			
 			void SetMinimumArea(const std::array<int, 2>& minimum_area);
 
-			std::array<int, 2> GetMaximumArea();
+			std::array<int, 2> GetMaximumArea() const;
 
 			void SetMaximumArea(const std::array<int, 2>& maximum_area);
 
-			float GetBrightness();
+			float GetBrightness() const;
 
-			float GetOpacity();
+			float GetOpacity() const;
 
-			std::string GetPixelFormatName();
+			std::string GetPixelFormatName() const;
 
-			bool CheckWindowInitFlags(uint32_t flags);
+			bool CheckWindowInitFlags(uint32_t flags) const;
 
-			bool CheckWindowInitFlags(const WindowInitFlag& flag);
+			bool CheckWindowInitFlags(const WindowInitFlag& flag) const;
 
-			std::array<int, 2> GetDisplayArea();
+			std::array<int, 2> GetDisplayArea() const;
 
-			DisplayOrientation GetDisplayOrientation();
+			DisplayOrientation GetDisplayOrientation() const;
 
-			std::string GetDisplayModePixelFormatName();
+			std::string GetDisplayModePixelFormatName() const;
 
-			std::array<int, 2> GetDisplayModeArea();
+			std::array<int, 2> GetDisplayModeArea() const;
 
-			int GetDisplayModeRefreshRate();
+			int GetDisplayModeRefreshRate() const;
 
 			/*Not sure this function actually does anything, but I'll
 			leave it for the sake of completeness.*/
@@ -162,8 +162,10 @@ uint32_t operator|(const SDML::Video::WindowInitFlag& first_flag,
 
 uint32_t operator|(const SDML::Video::WindowInitFlag& first_flag, uint32_t second_flag);
 
-uint32_t operator|(uint32_t first_flag, const SDML::Video::WindowInitFlag& second_flag);
+uint32_t operator|(uint32_t first_flag,
+				   const SDML::Video::WindowInitFlag& second_flag);
 
-std::ostream& operator<<(std::ostream& output_stream, SDML::Video::Window& window);
+std::ostream& operator<<(std::ostream& output_stream,
+						 const SDML::Video::Window& window);
 
 #endif

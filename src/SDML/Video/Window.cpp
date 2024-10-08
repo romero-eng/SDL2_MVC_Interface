@@ -67,7 +67,7 @@ SDML::Video::Window::~Window()
 }
 
 
-int SDML::Video::Window::GetDisplayIndex()
+int SDML::Video::Window::GetDisplayIndex() const
 {
 	int display_index {SDL_GetWindowDisplayIndex(this->internal_SDL_window)};
 
@@ -82,7 +82,7 @@ int SDML::Video::Window::GetDisplayIndex()
 }
 
 
-SDL_Rect SDML::Video::Window::GetFullscreenDisplayBounds()
+SDL_Rect SDML::Video::Window::GetFullscreenDisplayBounds() const
 {
 	SDL_Rect bounds {};
 
@@ -97,7 +97,7 @@ SDL_Rect SDML::Video::Window::GetFullscreenDisplayBounds()
 }
 
 
-SDL_Rect SDML::Video::Window::GetUsableDisplayBounds()
+SDL_Rect SDML::Video::Window::GetUsableDisplayBounds() const
 {
 	SDL_Rect bounds {};
 
@@ -112,7 +112,7 @@ SDL_Rect SDML::Video::Window::GetUsableDisplayBounds()
 }
 
 
-SDL_DisplayMode SDML::Video::Window::GetDisplayMode()
+SDL_DisplayMode SDML::Video::Window::GetDisplayMode() const
 {
 	SDL_DisplayMode display_mode {};
 
@@ -127,10 +127,10 @@ SDL_DisplayMode SDML::Video::Window::GetDisplayMode()
 }
 
 
-std::string SDML::Video::Window::GetTitle() { return std::string{SDL_GetWindowTitle(this->internal_SDL_window)}; }
+std::string SDML::Video::Window::GetTitle() const { return std::string{SDL_GetWindowTitle(this->internal_SDL_window)}; }
 
 
-std::string SDML::Video::Window::GetDisplayName()
+std::string SDML::Video::Window::GetDisplayName() const
 {
 	int display_index {GetDisplayIndex()};
 	const char* display_name {SDL_GetDisplayName(display_index)};
@@ -146,7 +146,7 @@ std::string SDML::Video::Window::GetDisplayName()
 }
 
 
-uint32_t SDML::Video::Window::GetID()
+uint32_t SDML::Video::Window::GetID() const
 {
 	uint32_t ID {SDL_GetWindowID(this->internal_SDL_window)};
 
@@ -161,7 +161,7 @@ uint32_t SDML::Video::Window::GetID()
 }
 
 
-std::array<int, 2> SDML::Video::Window::GetTopLeftpoint()
+std::array<int, 2> SDML::Video::Window::GetTopLeftpoint() const
 {
 	std::array<int, 2> point {};
 
@@ -171,7 +171,7 @@ std::array<int, 2> SDML::Video::Window::GetTopLeftpoint()
 }
 
 
-std::array<int, 2> SDML::Video::Window::GetArea()
+std::array<int, 2> SDML::Video::Window::GetArea() const
 {
 	std::array<std::string, 2> area_names {"width", "height"};
 	std::array<int, 2> area {};
@@ -195,7 +195,7 @@ std::array<int, 2> SDML::Video::Window::GetArea()
 }
 
 
-std::array<int, 2> SDML::Video::Window::GetMinimumArea()
+std::array<int, 2> SDML::Video::Window::GetMinimumArea() const
 {
 	std::array<int, 2> min_area {};
 
@@ -208,7 +208,7 @@ std::array<int, 2> SDML::Video::Window::GetMinimumArea()
 void SDML::Video::Window::SetMinimumArea(const std::array<int, 2>& minimum_area) { SDL_SetWindowMinimumSize(this->internal_SDL_window, minimum_area[0], minimum_area[1]); }
 
 
-std::array<int, 2> SDML::Video::Window::GetMaximumArea()
+std::array<int, 2> SDML::Video::Window::GetMaximumArea() const
 {
 	std::array<int, 2> max_area;
 
@@ -221,10 +221,10 @@ std::array<int, 2> SDML::Video::Window::GetMaximumArea()
 void SDML::Video::Window::SetMaximumArea(const std::array<int, 2>& maximum_area) { SDL_SetWindowMaximumSize(this->internal_SDL_window, maximum_area[0], maximum_area[1]); }
 
 
-float SDML::Video::Window::GetBrightness() { return SDL_GetWindowBrightness(this->internal_SDL_window); }
+float SDML::Video::Window::GetBrightness() const { return SDL_GetWindowBrightness(this->internal_SDL_window); }
 
 
-float SDML::Video::Window::GetOpacity()
+float SDML::Video::Window::GetOpacity() const
 {
 	float opacity {};
 
@@ -239,7 +239,7 @@ float SDML::Video::Window::GetOpacity()
 }
 
 
-std::string SDML::Video::Window::GetPixelFormatName()
+std::string SDML::Video::Window::GetPixelFormatName() const
 {
 	std::string pixel_format {SDL_GetPixelFormatName(SDL_GetWindowPixelFormat(this->internal_SDL_window))};
 
@@ -254,13 +254,13 @@ std::string SDML::Video::Window::GetPixelFormatName()
 }
 
 
-bool SDML::Video::Window::CheckWindowInitFlags(uint32_t flags) { return flags == (flags & SDL_GetWindowFlags(this->internal_SDL_window)); }
+bool SDML::Video::Window::CheckWindowInitFlags(uint32_t flags) const { return flags == (flags & SDL_GetWindowFlags(this->internal_SDL_window)); }
 
 
-bool SDML::Video::Window::CheckWindowInitFlags(const WindowInitFlag& flag) { return std::to_underlying(flag) == (std::to_underlying(flag) & SDL_GetWindowFlags(this->internal_SDL_window)); }
+bool SDML::Video::Window::CheckWindowInitFlags(const WindowInitFlag& flag) const { return std::to_underlying(flag) == (std::to_underlying(flag) & SDL_GetWindowFlags(this->internal_SDL_window)); }
 
 
-std::array<int, 2> SDML::Video::Window::GetDisplayArea()
+std::array<int, 2> SDML::Video::Window::GetDisplayArea() const
 {
 	std::string_view display_name {this->GetDisplayName()};
 	SDL_Rect fullscreen_bounds {this->GetFullscreenDisplayBounds()};
@@ -282,7 +282,7 @@ std::array<int, 2> SDML::Video::Window::GetDisplayArea()
 }
 
 
-SDML::Video::DisplayOrientation SDML::Video::Window::GetDisplayOrientation()
+SDML::Video::DisplayOrientation SDML::Video::Window::GetDisplayOrientation() const
 {
 	DisplayOrientation display_orientation;
 
@@ -309,21 +309,21 @@ SDML::Video::DisplayOrientation SDML::Video::Window::GetDisplayOrientation()
 }
 
 
-std::string SDML::Video::Window::GetDisplayModePixelFormatName()
+std::string SDML::Video::Window::GetDisplayModePixelFormatName() const
 {
 	SDL_DisplayMode tmp {this->GetDisplayMode()};
 	return std::string {SDL_GetPixelFormatName(tmp.format)};
 }
 
 
-std::array<int, 2> SDML::Video::Window::GetDisplayModeArea()
+std::array<int, 2> SDML::Video::Window::GetDisplayModeArea() const
 {
 	SDL_DisplayMode tmp {this->GetDisplayMode()};
 	return std::array<int, 2> {tmp.w, tmp.h};
 }
 
 
-int SDML::Video::Window::GetDisplayModeRefreshRate()
+int SDML::Video::Window::GetDisplayModeRefreshRate() const
 {
 	SDL_DisplayMode tmp {this->GetDisplayMode()};
 	return tmp.refresh_rate;
@@ -368,7 +368,7 @@ uint32_t operator|(uint32_t first_flag, const SDML::Video::WindowInitFlag& secon
 
 
 std::ostream& operator<<(std::ostream& output_stream,
-						 SDML::Video::Window& window)
+						 const SDML::Video::Window& window)
 {
 	std::string display_orientation_string;
 	switch(window.GetDisplayOrientation())

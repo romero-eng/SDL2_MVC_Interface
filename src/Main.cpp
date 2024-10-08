@@ -37,6 +37,7 @@ int main( int argc, char* args[] )
 
 		SDML::Video::Texture renderTarget {rendererTest.GetTarget()};
 
+		std::cout << windowTest << std::endl;
 		std::cout << renderTarget << std::endl;
 
 		SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }
