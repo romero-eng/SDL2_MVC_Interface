@@ -79,6 +79,10 @@ namespace SDML
 
             void DisableClipping();
 
+            std::optional<std::array<int, 2>> GetLogicalArea();
+
+            void SetLogicalArea(const std::array<int, 2>& area);
+
             std::array<int, 2> GetMaxTextureArea();
 
             std::vector<std::string> GetTextureFormats();

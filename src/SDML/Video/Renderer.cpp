@@ -203,6 +203,33 @@ void SDML::Video::Renderer::DisableClipping()
 }
 
 
+std::optional<std::array<int, 2>> SDML::Video::Renderer::GetLogicalArea()
+{
+    int width {};
+    int height {};
+
+    SDL_RenderGetLogicalSize(this->internal_SDL_renderer, &width, &height);
+
+    if (width != 0 || height != 0) {
+        return std::array<int, 2> {width, height};
+    } else {
+        return std::nullopt;
+    }
+}
+
+
+void SDML::Video::Renderer::SetLogicalArea(const std::array<int, 2>& area)
+{
+    const auto& [width, height] = area;
+
+    if(SDL_RenderSetLogicalSize(this->internal_SDL_renderer, width, height) < 0) {
+        throw std::runtime_error(fmt::format("Could not set the logical area size for the '{:s}' Renderer: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+}
+
+
 std::array<int, 2> SDML::Video::Renderer::GetMaxTextureArea()
 {
     SDL_RendererInfo tmp {};
@@ -721,6 +748,12 @@ std::ostream& operator<<(std::ostream& output,
                                                                    clip_rect_top_left_y,
                                                                    clip_rect_width,
                                                                    clip_rect_height));
+    }
+
+    std::optional<std::array<int, 2>> logical_area {renderer.GetLogicalArea()};
+    if(logical_area) {
+        const auto& [logical_width, logical_height] = *logical_area;
+        printables.add_printable("Logical Area", fmt::format("[Width: {:d}, Height: {:d}]", logical_width, logical_height));
     }
 
     std::array<int, 2> max_texture_area {renderer.GetMaxTextureArea()};

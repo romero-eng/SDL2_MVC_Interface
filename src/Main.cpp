@@ -27,7 +27,7 @@ int main( int argc, char* args[] )
 		constexpr std::array<uint8_t, 4> green {0x0,  0xFF, 0x0,  0xFF};
 		constexpr std::array<uint8_t, 4>  blue {0x0,  0x0,  0xFF, 0xFF};
 
-		constexpr std::pair<std::array<int, 2>, std::array<int, 2>> clipping_rectangle {{50, 50}, {100, 100}};
+		constexpr std::array<int, 2> logical_area {100, 100};
 
 		SDML::Video::Window windowTest {"Test", 
 										std::array<int, 2> {640, 480},
@@ -36,10 +36,9 @@ int main( int argc, char* args[] )
 		SDML::Video::Renderer rendererTest {windowTest,
 											SDML::Video::RendererInitFlag::ACCELERATED};
 
-		rendererTest.SetClippingRectangle(clipping_rectangle);
 		std::cout << rendererTest << std::endl;
 
-		rendererTest.DisableClipping();
+		rendererTest.SetLogicalArea(logical_area);
 		std::cout << rendererTest << std::endl;
 
 		SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }
