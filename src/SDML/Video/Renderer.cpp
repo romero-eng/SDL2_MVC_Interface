@@ -203,6 +203,28 @@ void SDML::Video::Renderer::DisableClipping()
 }
 
 
+std::array<float, 2> SDML::Video::Renderer::GetScale()
+{
+    float scaleX;
+    float scaleY;
+    SDL_RenderGetScale(this->internal_SDL_renderer, &scaleX, &scaleY);
+
+    return std::array<float, 2> {scaleX, scaleY};
+}
+
+
+void SDML::Video::Renderer::SetScale(const std::array<float, 2>& scale)
+{
+    const auto& [scaleX, scaleY] = scale;
+
+    if(SDL_RenderSetScale(this->internal_SDL_renderer, scaleX, scaleY) < 0) {
+        throw std::runtime_error(fmt::format("Could not set the scale for the '{:s}' Renderer: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+}
+
+
 std::optional<std::array<int, 2>> SDML::Video::Renderer::GetLogicalArea()
 {
     int width {};
@@ -779,6 +801,10 @@ std::ostream& operator<<(std::ostream& output,
         const auto& [logical_width, logical_height] = *logical_area;
         printables.add_printable("Logical Area", fmt::format("[Width: {:d}, Height: {:d}]", logical_width, logical_height));
     }
+
+    std::array<float, 2> scale {renderer.GetScale()};
+    const auto& [scaleX, scaleY] = scale;
+    printables.add_printable("Scale", fmt::format("[X-scale: {:f}, Y-scale: {:f}]", scaleX, scaleY));
 
     std::array<int, 2> max_texture_area {renderer.GetMaxTextureArea()};
     const auto& [max_texture_width, max_texture_height] = max_texture_area;

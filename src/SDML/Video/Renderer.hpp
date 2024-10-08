@@ -79,6 +79,10 @@ namespace SDML
 
             void DisableClipping();
 
+            std::array<float, 2> GetScale();
+
+            void SetScale(const std::array<float, 2>& scale);
+
             std::optional<std::array<int, 2>> GetLogicalArea();
 
             void SetLogicalArea(const std::array<int, 2>& area);

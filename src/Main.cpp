@@ -27,6 +27,8 @@ int main( int argc, char* args[] )
 		constexpr std::array<uint8_t, 4> green {0x0,  0xFF, 0x0,  0xFF};
 		constexpr std::array<uint8_t, 4>  blue {0x0,  0x0,  0xFF, 0xFF};
 
+		constexpr std::array<float, 2> scale {1.2f, 1.2f};
+
 		SDML::Video::Window windowTest {"Test", 
 										std::array<int, 2> {640, 480},
 										SDML::Video::WindowInitFlag::RESIZABLE};
@@ -34,9 +36,7 @@ int main( int argc, char* args[] )
 		SDML::Video::Renderer rendererTest {windowTest,
 											SDML::Video::RendererInitFlag::ACCELERATED};
 
-		std::cout << rendererTest << std::endl;
-
-		rendererTest.ToggleVSync(true);
+		rendererTest.SetScale(scale);
 		std::cout << rendererTest << std::endl;
 
 		SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }
