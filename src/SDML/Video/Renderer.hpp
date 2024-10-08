@@ -75,7 +75,7 @@ namespace SDML
 
             std::optional<std::pair<std::array<int, 2>, std::array<int, 2>>> GetClippingRectangle();
 
-            void SetClippingRectangle(std::pair<std::array<int, 2>, std::array<int, 2>> clip_rect_info);
+            void SetClippingRectangle(const std::pair<std::array<int, 2>, std::array<int, 2>>& clip_rect_info);
 
             void DisableClipping();
 

@@ -176,7 +176,7 @@ std::optional<std::pair<std::array<int, 2>, std::array<int, 2>>> SDML::Video::Re
 }
 
 
-void SDML::Video::Renderer::SetClippingRectangle(std::pair<std::array<int, 2>, std::array<int, 2>> clip_rect_info)
+void SDML::Video::Renderer::SetClippingRectangle(const std::pair<std::array<int, 2>, std::array<int, 2>>& clip_rect_info)
 {
     const auto& [top_left_point, area] = clip_rect_info;
     const auto& [top_left_x, top_left_y] = top_left_point;
