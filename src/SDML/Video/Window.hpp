@@ -121,8 +121,12 @@ namespace SDML
 			std::array<int, 2> GetArea();
 
 			std::array<int, 2> GetMinimumArea();
+			
+			void SetMinimumArea(const std::array<int, 2>& minimum_area);
 
 			std::array<int, 2> GetMaximumArea();
+
+			void SetMaximumArea(const std::array<int, 2>& maximum_area);
 
 			float GetBrightness();
 
@@ -133,10 +137,6 @@ namespace SDML
 			bool CheckWindowInitFlags(uint32_t flags);
 
 			bool CheckWindowInitFlags(const WindowInitFlag& flag);
-
-			void SetMinimumArea(const std::array<int, 2>& minimum_area);
-
-			void SetMaximumArea(const std::array<int, 2>& maximum_area);
 
 			std::array<int, 2> GetDisplayArea();
 

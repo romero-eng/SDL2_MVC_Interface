@@ -205,6 +205,9 @@ std::array<int, 2> SDML::Video::Window::GetMinimumArea()
 }
 
 
+void SDML::Video::Window::SetMinimumArea(const std::array<int, 2>& minimum_area) { SDL_SetWindowMinimumSize(this->internal_SDL_window, minimum_area[0], minimum_area[1]); }
+
+
 std::array<int, 2> SDML::Video::Window::GetMaximumArea()
 {
 	std::array<int, 2> max_area;
@@ -213,6 +216,9 @@ std::array<int, 2> SDML::Video::Window::GetMaximumArea()
 
 	return max_area;
 }
+
+
+void SDML::Video::Window::SetMaximumArea(const std::array<int, 2>& maximum_area) { SDL_SetWindowMaximumSize(this->internal_SDL_window, maximum_area[0], maximum_area[1]); }
 
 
 float SDML::Video::Window::GetBrightness() { return SDL_GetWindowBrightness(this->internal_SDL_window); }
@@ -252,12 +258,6 @@ bool SDML::Video::Window::CheckWindowInitFlags(uint32_t flags) { return flags ==
 
 
 bool SDML::Video::Window::CheckWindowInitFlags(const WindowInitFlag& flag) { return std::to_underlying(flag) == (std::to_underlying(flag) & SDL_GetWindowFlags(this->internal_SDL_window)); }
-
-
-void SDML::Video::Window::SetMinimumArea(const std::array<int, 2>& minimum_area) { SDL_SetWindowMinimumSize(this->internal_SDL_window, minimum_area[0], minimum_area[1]); }
-
-
-void SDML::Video::Window::SetMaximumArea(const std::array<int, 2>& maximum_area) { SDL_SetWindowMaximumSize(this->internal_SDL_window, maximum_area[0], maximum_area[1]); }
 
 
 std::array<int, 2> SDML::Video::Window::GetDisplayArea()

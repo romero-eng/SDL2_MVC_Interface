@@ -57,6 +57,16 @@ std::array<uint8_t, 4> SDML::Video::Renderer::GetDrawingColor()
 }
 
 
+void SDML::Video::Renderer::SetDrawingColor(const std::array<uint8_t, 4>& color)
+{
+    if(SDL_SetRenderDrawColor(this->internal_SDL_renderer, color[0], color[1], color[2], color[3]) < 0) {
+        throw std::runtime_error(fmt::format("Could not set the color for the '{:s}' Renderer: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+}
+
+
 SDML::Video::BlendMode SDML::Video::Renderer::GetBlendMode()
 {
     SDL_BlendMode internal_blend_mode;
@@ -90,6 +100,40 @@ SDML::Video::BlendMode SDML::Video::Renderer::GetBlendMode()
     }
 
     return visible_blend_mode;
+}
+
+
+void SDML::Video::Renderer::SetBlendMode(const BlendMode& mode)
+{
+    SDL_BlendMode tmp;
+
+    switch(mode)
+    {
+        case BlendMode::REPLACE:
+            tmp = SDL_BLENDMODE_NONE;
+            break;
+        case BlendMode::ALPHA:
+            tmp = SDL_BLENDMODE_BLEND;
+            break;
+        case BlendMode::ADDITIVE:
+            tmp = SDL_BLENDMODE_ADD;
+            break;
+        case BlendMode::MODULATE:
+            tmp = SDL_BLENDMODE_MOD;
+            break;
+        case BlendMode::MULTIPLY:
+            tmp = SDL_BLENDMODE_MUL;
+            break;
+        case BlendMode::INVALID:
+            tmp = SDL_BLENDMODE_INVALID;
+            break;
+    }
+
+    if(SDL_SetRenderDrawBlendMode(this->internal_SDL_renderer, tmp) < 0) {
+        throw std::runtime_error(fmt::format("Could not set the Blend Mode for the '{:s}' Renderer: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
 }
 
 
@@ -140,50 +184,6 @@ bool SDML::Video::Renderer::CheckInitFlags(uint32_t flags)
 
 
 bool SDML::Video::Renderer::CheckInitFlags(const RendererInitFlag& flag) { return this->CheckInitFlags(std::to_underlying(flag)); } 
-
-
-void SDML::Video::Renderer::SetBlendMode(const BlendMode& mode)
-{
-    SDL_BlendMode tmp;
-
-    switch(mode)
-    {
-        case BlendMode::REPLACE:
-            tmp = SDL_BLENDMODE_NONE;
-            break;
-        case BlendMode::ALPHA:
-            tmp = SDL_BLENDMODE_BLEND;
-            break;
-        case BlendMode::ADDITIVE:
-            tmp = SDL_BLENDMODE_ADD;
-            break;
-        case BlendMode::MODULATE:
-            tmp = SDL_BLENDMODE_MOD;
-            break;
-        case BlendMode::MULTIPLY:
-            tmp = SDL_BLENDMODE_MUL;
-            break;
-        case BlendMode::INVALID:
-            tmp = SDL_BLENDMODE_INVALID;
-            break;
-    }
-
-    if(SDL_SetRenderDrawBlendMode(this->internal_SDL_renderer, tmp) < 0) {
-        throw std::runtime_error(fmt::format("Could not set the Blend Mode for the '{:s}' Renderer: {:s}",
-                                             this->GetName(),
-                                             SDL_GetError()));
-    }
-}
-
-
-void SDML::Video::Renderer::SetDrawingColor(const std::array<uint8_t, 4>& color)
-{
-    if(SDL_SetRenderDrawColor(this->internal_SDL_renderer, color[0], color[1], color[2], color[3]) < 0) {
-        throw std::runtime_error(fmt::format("Could not set the color for the '{:s}' Renderer: {:s}",
-                                             this->GetName(),
-                                             SDL_GetError()));
-    }
-}
 
 
 void SDML::Video::Renderer::DrawPoint(const std::array<int, 2>& point)

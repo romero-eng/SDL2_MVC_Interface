@@ -63,7 +63,11 @@ namespace SDML
 
             std::array<uint8_t, 4> GetDrawingColor();
 
+            void SetDrawingColor(const std::array<uint8_t, 4>& color);
+
             BlendMode GetBlendMode();
+
+            void SetBlendMode(const BlendMode& mode);
 
             std::array<int, 2> GetMaxTextureArea();
 
@@ -72,10 +76,6 @@ namespace SDML
             bool CheckInitFlags(uint32_t flags);
 
             bool CheckInitFlags(const RendererInitFlag& flag);
-
-            void SetBlendMode(const BlendMode& mode);
-
-            void SetDrawingColor(const std::array<uint8_t, 4>& color);
 
             void DrawPoint(const std::array<int, 2>& point);
 
