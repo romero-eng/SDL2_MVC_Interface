@@ -87,6 +87,10 @@ namespace SDML
 
             void SetLogicalArea(const std::array<int, 2>& area);
 
+            std::array<int, 2> ConvertLogicalPointToRealPoint(std::array<float, 2> logical_point);
+
+            std::array<float, 2> ConvertRealPointToLogicalPoint(std::array<int, 2> real_point);
+
             std::array<int, 2> GetMaxTextureArea();
 
             std::vector<std::string> GetTextureFormats();

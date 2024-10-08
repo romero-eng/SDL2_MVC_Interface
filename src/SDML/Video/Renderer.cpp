@@ -252,6 +252,35 @@ void SDML::Video::Renderer::SetLogicalArea(const std::array<int, 2>& area)
 }
 
 
+std::array<int, 2> SDML::Video::Renderer::ConvertLogicalPointToRealPoint(std::array<float, 2> logical_point)
+{
+    const auto& [logical_x, logical_y] = logical_point;
+    int real_x;
+    int real_y;
+
+    SDL_RenderLogicalToWindow(this->internal_SDL_renderer,
+                              logical_x, logical_y,
+                              &real_x, &real_y);
+
+    return std::array<int, 2> {real_x, real_y};
+}
+
+
+std::array<float, 2> SDML::Video::Renderer::ConvertRealPointToLogicalPoint(std::array<int, 2> real_point)
+{
+
+    const auto& [real_x, real_y] = real_point;
+    float logical_x;
+    float logical_y;
+
+    SDL_RenderWindowToLogical(this->internal_SDL_renderer,
+                              real_x, real_y, 
+                              &logical_x, &logical_y);
+
+    return std::array<float, 2> {logical_x, logical_y};
+}
+
+
 std::array<int, 2> SDML::Video::Renderer::GetMaxTextureArea()
 {
     SDL_RendererInfo tmp {};
