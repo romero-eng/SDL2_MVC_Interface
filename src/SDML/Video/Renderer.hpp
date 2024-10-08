@@ -69,6 +69,10 @@ namespace SDML
 
             void SetBlendMode(const BlendMode& mode);
 
+            std::pair<std::array<int, 2>, std::array<int, 2>> GetViewPort();
+
+            void SetViewPort(const std::pair<std::array<int, 2>, std::array<int, 2>>& rect_info);
+
             std::array<int, 2> GetMaxTextureArea();
 
             std::vector<std::string> GetTextureFormats();

@@ -137,6 +137,31 @@ void SDML::Video::Renderer::SetBlendMode(const BlendMode& mode)
 }
 
 
+std::pair<std::array<int, 2>, std::array<int, 2>> SDML::Video::Renderer::GetViewPort()
+{
+    SDL_Rect tmp {};
+    SDL_RenderGetViewport(this->internal_SDL_renderer, &tmp);
+
+    return std::pair<std::array<int, 2>, std::array<int, 2>> {{tmp.x, tmp.y}, {tmp.w, tmp.h}};
+}
+
+
+void SDML::Video::Renderer::SetViewPort(const std::pair<std::array<int, 2>, std::array<int, 2>>& rect_info)
+{
+    const auto& [top_left_point, area] = rect_info;
+    const auto& [top_left_x, top_left_y] = top_left_point;
+    const auto& [width, height] = area;
+
+    SDL_Rect tmp {top_left_x, top_left_y, width, height};
+
+    if(SDL_RenderSetViewport(this->internal_SDL_renderer, &tmp) < 0) {
+        throw std::runtime_error(fmt::format("Could not set the viewport for the '{:s}' Renderer: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+}
+
+
 std::array<int, 2> SDML::Video::Renderer::GetMaxTextureArea()
 {
     SDL_RendererInfo tmp {};
@@ -615,27 +640,35 @@ std::ostream& operator<<(std::ostream& output,
             break;
     }
 
-    std::array<int, 2> area {renderer.GetArea()};
-    std::array<uint8_t, 4> drawing_color {renderer.GetDrawingColor()};
-    std::array<int, 2> max_texture_area {renderer.GetMaxTextureArea()};
-
     Misc::Printables printables {fmt::format("'{:s}' Renderer", renderer.GetName())};
     printables.add_printable(          "Is Software Fallback", renderer.CheckInitFlags(SDML::Video::RendererInitFlag::SOFTWARE));
     printables.add_printable("Supports Hardware Acceleration", renderer.CheckInitFlags(SDML::Video::RendererInitFlag::ACCELERATED));
     printables.add_printable(                "Supports VSync", renderer.CheckInitFlags(SDML::Video::RendererInitFlag::PRESENTVSYNC));
     printables.add_printable( "Supports rendering to texture", renderer.CheckInitFlags(SDML::Video::RendererInitFlag::TARGETTEXTURE));
-    printables.add_printable(                          "Area", fmt::format("[Width: {width:d}, Height: {height:d}]",
-                                                                           fmt::arg( "width", area[0]),
-                                                                           fmt::arg("height", area[1])));
-    printables.add_printable(                 "Drawing Color", fmt::format("[Red: {red:d}, Green: {green:d}, Blue: {blue:d}, Alpha: {alpha:d}]",
-                                                                           fmt::arg(  "red", drawing_color[0]),
-                                                                           fmt::arg("green", drawing_color[1]),
-                                                                           fmt::arg( "blue", drawing_color[2]),
-                                                                           fmt::arg("alpha", drawing_color[3])));
-    printables.add_printable(                    "Blend Mode", blend_mode_string);
-    printables.add_printable(        "Maximum Texture Height", fmt::format("[Width: {width:d}, Height: {height:d}]",
-                                                                           fmt::arg( "width", max_texture_area[0]),
-                                                                           fmt::arg("height", max_texture_area[1])));
+
+    std::array<int, 2> area {renderer.GetArea()};
+    const auto& [width, height] = area;
+    printables.add_printable("Area", fmt::format("[Width: {:d}, Height: {:d}]", width, height));
+
+    std::array<uint8_t, 4> drawing_color {renderer.GetDrawingColor()};
+    const auto& [red, green, blue, alpha] = drawing_color;
+    printables.add_printable("Drawing Color", fmt::format("[Red: {:d}, Green: {:d}, Blue: {:d}, Alpha: {:d}]", red, green, blue, alpha));
+
+    printables.add_printable("Blend Mode", blend_mode_string);
+
+    std::pair<std::array<int, 2>, std::array<int, 2>> viewport {renderer.GetViewPort()};
+    const auto& [viewport_top_left_point, viewport_area] = viewport;
+    const auto& [viewPort_top_left_x, viewport_top_left_y] = viewport_top_left_point;
+    const auto& [viewport_width, viewport_height] = viewport_area;
+    printables.add_printable("Viewport", fmt::format("Area [Width: {:d}, Height: {:d}] from Top Left Point [X: {:d}, Y: {:d}]",
+                             viewPort_top_left_x,
+                             viewport_top_left_y,
+                             viewport_width,
+                             viewport_height));
+
+    std::array<int, 2> max_texture_area {renderer.GetMaxTextureArea()};
+    const auto& [max_texture_width, max_texture_height] = max_texture_area;
+    printables.add_printable("Maximum Texture Area", fmt::format("[Width: {:d}, Height: {:d}]", max_texture_width, max_texture_height));
 
     std::vector<std::string> texture_formats {renderer.GetTextureFormats()};
     for(std::size_t index = 0; index < texture_formats.size(); index++) {

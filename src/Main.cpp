@@ -37,16 +37,7 @@ int main( int argc, char* args[] )
 		SDML::Video::Renderer rendererTest {windowTest,
 											SDML::Video::RendererInitFlag::ACCELERATED};
 
-		rendererTest.SetDrawingColor(white);
-		rendererTest.DrawEntireTarget();
-
-		rendererTest.SetDrawingColor(green);
-		rendererTest.DrawRectangles(rects_info);
-
-		rendererTest.SetDrawingColor(red);
-		rendererTest.DrawRectangleOutlines(rects_info);
-
-		rendererTest.Update();
+		std::cout << rendererTest << std::endl;
 
 		SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }
 
