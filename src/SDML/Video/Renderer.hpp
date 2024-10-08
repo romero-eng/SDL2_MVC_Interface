@@ -60,45 +60,45 @@ namespace SDML
 
             ~Renderer();
 
-            bool CheckInitFlags(uint32_t flags);
+            bool CheckInitFlags(uint32_t flags) const;
 
-            bool CheckInitFlags(const RendererInitFlag& flag);
+            bool CheckInitFlags(const RendererInitFlag& flag) const;
             
             void ToggleVSync(bool enable_or_disable);
 
-            std::string GetName();
+            std::string GetName() const;
 
-            std::array<int, 2> GetArea();
+            std::array<int, 2> GetArea() const;
 
-            std::array<uint8_t, 4> GetDrawingColor();
+            std::array<uint8_t, 4> GetDrawingColor() const;
 
             void SetDrawingColor(const std::array<uint8_t, 4>& color);
 
-            BlendMode GetBlendMode();
+            BlendMode GetBlendMode () const;
 
             void SetBlendMode(const BlendMode& mode);
 
-            std::pair<std::array<int, 2>, std::array<int, 2>> GetViewPort();
+            std::pair<std::array<int, 2>, std::array<int, 2>> GetViewPort() const;
 
             void SetViewPort(const std::pair<std::array<int, 2>, std::array<int, 2>>& rect_info);
 
-            std::optional<std::pair<std::array<int, 2>, std::array<int, 2>>> GetClippingRectangle();
+            std::optional<std::pair<std::array<int, 2>, std::array<int, 2>>> GetClippingRectangle() const;
 
             void SetClippingRectangle(const std::pair<std::array<int, 2>, std::array<int, 2>>& clip_rect_info);
 
             void DisableClipping();
 
-            bool CheckClippingEnabled();
+            bool CheckClippingEnabled() const;
 
-            std::array<float, 2> GetScale();
+            std::array<float, 2> GetScale() const;
 
             void SetScale(const std::array<float, 2>& scale);
 
-            bool CheckIntegerScale();
+            bool CheckIntegerScale() const;
 
             void ToggleIntegerScale(bool enable_or_disable);
 
-            std::optional<std::array<int, 2>> GetLogicalArea();
+            std::optional<std::array<int, 2>> GetLogicalArea() const;
 
             void SetLogicalArea(const std::array<int, 2>& area);
 
@@ -106,9 +106,9 @@ namespace SDML
 
             std::array<float, 2> ConvertRealPointToLogicalPoint(std::array<int, 2> real_point);
 
-            std::array<int, 2> GetMaxTextureArea();
+            std::array<int, 2> GetMaxTextureArea() const;
 
-            std::vector<std::string> GetTextureFormats();
+            std::vector<std::string> GetTextureFormats() const;
 
             Texture GetTarget();
 
@@ -160,6 +160,6 @@ uint32_t operator|(uint32_t first_flag, const SDML::Video::RendererInitFlag& sec
 uint32_t operator|(const SDML::Video::RendererInitFlag& first_flag, uint32_t second_flag);
 
 std::ostream& operator<<(std::ostream& output,
-                         SDML::Video::Renderer& renderer);
+                         const SDML::Video::Renderer& renderer);
 
 #endif
