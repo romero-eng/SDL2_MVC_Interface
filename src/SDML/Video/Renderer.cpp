@@ -162,6 +162,46 @@ void SDML::Video::Renderer::SetViewPort(const std::pair<std::array<int, 2>, std:
 }
 
 
+std::optional<std::pair<std::array<int, 2>, std::array<int, 2>>> SDML::Video::Renderer::GetClippingRectangle()
+{
+    if(this->CheckClippingEnabled()) {
+
+        SDL_Rect tmp;
+        SDL_RenderGetClipRect(this->internal_SDL_renderer, &tmp);
+        return std::pair<std::array<int, 2>, std::array<int, 2>> {{tmp.x, tmp.y}, {tmp.w, tmp.h}};
+
+    } else {
+        return std::nullopt;
+    }
+}
+
+
+void SDML::Video::Renderer::SetClippingRectangle(std::pair<std::array<int, 2>, std::array<int, 2>> clip_rect_info)
+{
+    const auto& [top_left_point, area] = clip_rect_info;
+    const auto& [top_left_x, top_left_y] = top_left_point;
+    const auto& [width, height] = area;
+
+    SDL_Rect tmp {top_left_x, top_left_y, width, height};
+
+    if(SDL_RenderSetClipRect(this->internal_SDL_renderer, &tmp) < 0) {
+        throw std::runtime_error(fmt::format("Could not set a clipping rectangle for the '{:s}' Renderer: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+}
+
+
+void SDML::Video::Renderer::DisableClipping()
+{
+    if(SDL_RenderSetClipRect(this->internal_SDL_renderer, nullptr) < 0) {
+        throw std::runtime_error(fmt::format("Could not disable clipping for the '{:s}' Renderer: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+}
+
+
 std::array<int, 2> SDML::Video::Renderer::GetMaxTextureArea()
 {
     SDL_RendererInfo tmp {};
@@ -209,6 +249,9 @@ bool SDML::Video::Renderer::CheckInitFlags(uint32_t flags)
 
 
 bool SDML::Video::Renderer::CheckInitFlags(const RendererInitFlag& flag) { return this->CheckInitFlags(std::to_underlying(flag)); } 
+
+
+bool SDML::Video::Renderer::CheckClippingEnabled() { return SDL_RenderIsClipEnabled(this->internal_SDL_renderer); }
 
 
 void SDML::Video::Renderer::DrawPoint(const std::array<int, 2>& point)
@@ -645,6 +688,7 @@ std::ostream& operator<<(std::ostream& output,
     printables.add_printable("Supports Hardware Acceleration", renderer.CheckInitFlags(SDML::Video::RendererInitFlag::ACCELERATED));
     printables.add_printable(                "Supports VSync", renderer.CheckInitFlags(SDML::Video::RendererInitFlag::PRESENTVSYNC));
     printables.add_printable( "Supports rendering to texture", renderer.CheckInitFlags(SDML::Video::RendererInitFlag::TARGETTEXTURE));
+    printables.add_printable(           "Clipping is Enabled", renderer.CheckClippingEnabled());
 
     std::array<int, 2> area {renderer.GetArea()};
     const auto& [width, height] = area;
@@ -665,6 +709,18 @@ std::ostream& operator<<(std::ostream& output,
                              viewport_top_left_y,
                              viewport_width,
                              viewport_height));
+
+    std::optional<std::pair<std::array<int, 2>, std::array<int, 2>>> clip_rect_info {renderer.GetClippingRectangle()};
+    if (clip_rect_info){
+        const auto& [clip_rect_top_left_point, clip_rect_area] = *clip_rect_info;
+        const auto& [clip_rect_top_left_x, clip_rect_top_left_y] = clip_rect_top_left_point;
+        const auto& [clip_rect_width, clip_rect_height] = clip_rect_area;
+        printables.add_printable("Clipping Rectangle", fmt::format("Area [Width: {:d}, Height: {:d}] from Top Left Point [X: {:d}, Y: {:d}]",
+                                                                   clip_rect_top_left_x,
+                                                                   clip_rect_top_left_y,
+                                                                   clip_rect_width,
+                                                                   clip_rect_height));
+    }
 
     std::array<int, 2> max_texture_area {renderer.GetMaxTextureArea()};
     const auto& [max_texture_width, max_texture_height] = max_texture_area;

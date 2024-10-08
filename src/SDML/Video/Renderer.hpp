@@ -73,6 +73,12 @@ namespace SDML
 
             void SetViewPort(const std::pair<std::array<int, 2>, std::array<int, 2>>& rect_info);
 
+            std::optional<std::pair<std::array<int, 2>, std::array<int, 2>>> GetClippingRectangle();
+
+            void SetClippingRectangle(std::pair<std::array<int, 2>, std::array<int, 2>> clip_rect_info);
+
+            void DisableClipping();
+
             std::array<int, 2> GetMaxTextureArea();
 
             std::vector<std::string> GetTextureFormats();
@@ -80,6 +86,8 @@ namespace SDML
             bool CheckInitFlags(uint32_t flags);
 
             bool CheckInitFlags(const RendererInitFlag& flag);
+
+            bool CheckClippingEnabled();
 
             void DrawPoint(const std::array<int, 2>& point);
 
