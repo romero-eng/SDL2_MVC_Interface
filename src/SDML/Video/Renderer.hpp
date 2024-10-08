@@ -3,6 +3,7 @@
 
 // Custom Code from this project
 #include "Window.hpp"
+#include "Texture.hpp"
 #include "../../Misc/PrettyPrint.hpp"
 
 // Third-Party Libraries
@@ -35,6 +36,8 @@ namespace SDML
             MULTIPLY,
             INVALID
         };
+
+        class Texture;
 
         class Renderer
         {
@@ -106,6 +109,8 @@ namespace SDML
             std::array<int, 2> GetMaxTextureArea();
 
             std::vector<std::string> GetTextureFormats();
+
+            Texture GetTarget();
 
             void DrawPoint(const std::array<int, 2>& point);
 

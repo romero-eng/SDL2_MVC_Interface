@@ -11,6 +11,7 @@
 
 //C++ Standard Libraries
 #include <array>
+#include <iostream>
 
 
 namespace SDML
@@ -30,7 +31,7 @@ namespace SDML
         {
         private:
             std::string name;
-            std::optional<std::string_view> renderer_name;
+            std::optional<std::string> renderer_name;
             SDL_Texture* internal_SDL_texture;
 
         public:
@@ -41,18 +42,28 @@ namespace SDML
                     const TextureAccess& access,
                     const std::array<int, 2>& area);
 
-            Texture(Texture&) = delete;
-
-            Texture& operator=(Texture&) = delete;
+            Texture(const char* name,
+                    Renderer& renderer,
+                    SDL_Texture* texture);
 
             Texture(const char* name,
                     SDL_Texture* texture);
 
+            Texture(Texture&) = delete;
+
+            Texture& operator=(Texture&) = delete;
+
             ~Texture();
+
+            std::string GetName() const;
+
+            std::optional<std::string> GetContextName() const;
 
         };
     }
 }
 
+std::ostream& operator<<(std::ostream& output,
+                         const SDML::Video::Texture& texture);
 
 #endif

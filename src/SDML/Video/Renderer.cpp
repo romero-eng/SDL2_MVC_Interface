@@ -356,6 +356,14 @@ std::vector<std::string> SDML::Video::Renderer::GetTextureFormats()
 }
 
 
+SDML::Video::Texture SDML::Video::Renderer::GetTarget()
+{ 
+    return Texture("Render Target",
+                   *(this),
+                   SDL_GetRenderTarget(this->internal_SDL_renderer));
+}
+
+
 void SDML::Video::Renderer::DrawPoint(const std::array<int, 2>& point)
 {
     const auto& [x, y] = point;
@@ -817,7 +825,7 @@ std::ostream& operator<<(std::ostream& output,
                              viewport_height));
 
     std::optional<std::pair<std::array<int, 2>, std::array<int, 2>>> clip_rect_info {renderer.GetClippingRectangle()};
-    if (clip_rect_info){
+    if (clip_rect_info.has_value()){
         const auto& [clip_rect_top_left_point, clip_rect_area] = *clip_rect_info;
         const auto& [clip_rect_top_left_x, clip_rect_top_left_y] = clip_rect_top_left_point;
         const auto& [clip_rect_width, clip_rect_height] = clip_rect_area;
@@ -829,7 +837,7 @@ std::ostream& operator<<(std::ostream& output,
     }
 
     std::optional<std::array<int, 2>> logical_area {renderer.GetLogicalArea()};
-    if(logical_area) {
+    if(logical_area.has_value()) {
         const auto& [logical_width, logical_height] = *logical_area;
         printables.add_printable("Logical Area", fmt::format("[Width: {:d}, Height: {:d}]", logical_width, logical_height));
     }

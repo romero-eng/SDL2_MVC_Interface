@@ -4,6 +4,7 @@
 #include "SDML/Subsystem.hpp"
 #include "SDML/Video/Window.hpp"
 #include "SDML/Video/Renderer.hpp"
+#include "SDML/Video/Texture.hpp"
 
 // Third-party Libraries
 #include <SDL2/SDL.h>
@@ -34,7 +35,9 @@ int main( int argc, char* args[] )
 		SDML::Video::Renderer rendererTest {windowTest,
 											SDML::Video::RendererInitFlag::ACCELERATED};
 
-		std::cout << rendererTest << std::endl;
+		SDML::Video::Texture renderTarget {rendererTest.GetTarget()};
+
+		std::cout << renderTarget << std::endl;
 
 		SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }
 
