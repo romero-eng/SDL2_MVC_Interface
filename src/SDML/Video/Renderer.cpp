@@ -17,6 +17,32 @@ SDML::Video::Renderer::Renderer(Window& window): Renderer{window, 0} {};
 SDML::Video::Renderer::~Renderer() { SDL_DestroyRenderer(this->internal_SDL_renderer); }
 
 
+bool SDML::Video::Renderer::CheckInitFlags(uint32_t flags)
+{
+    SDL_RendererInfo tmp {};
+    if(SDL_GetRendererInfo(this->internal_SDL_renderer, &tmp) < 0) {
+        throw std::runtime_error(fmt::format("Could not retrieve information for '{:s}' Renderer: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+
+    return flags == (flags & tmp.flags); 
+}
+
+
+bool SDML::Video::Renderer::CheckInitFlags(const RendererInitFlag& flag) { return this->CheckInitFlags(std::to_underlying(flag)); }
+
+
+void SDML::Video::Renderer::ToggleVSync(bool enable_or_disable)
+{
+    if(SDL_RenderSetVSync(this->internal_SDL_renderer, enable_or_disable) < 0) {
+        throw std::runtime_error(fmt::format("Could not toggle the VSync for the '{:s}' Renderer: {:s}",
+                                 this->GetName(),
+                                 SDL_GetError()));
+    }
+}
+
+
 std::string SDML::Video::Renderer::GetName()
 {
     SDL_RendererInfo tmp {};
@@ -203,6 +229,9 @@ void SDML::Video::Renderer::DisableClipping()
 }
 
 
+bool SDML::Video::Renderer::CheckClippingEnabled() { return SDL_RenderIsClipEnabled(this->internal_SDL_renderer); }
+
+
 std::array<float, 2> SDML::Video::Renderer::GetScale()
 {
     float scaleX;
@@ -219,6 +248,19 @@ void SDML::Video::Renderer::SetScale(const std::array<float, 2>& scale)
 
     if(SDL_RenderSetScale(this->internal_SDL_renderer, scaleX, scaleY) < 0) {
         throw std::runtime_error(fmt::format("Could not set the scale for the '{:s}' Renderer: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+}
+
+
+bool SDML::Video::Renderer::CheckIntegerScale() { return SDL_RenderGetIntegerScale(this->internal_SDL_renderer); }
+
+
+void SDML::Video::Renderer::ToggleIntegerScale(bool enable_or_disable)
+{
+    if(SDL_RenderSetIntegerScale(this->internal_SDL_renderer, enable_or_disable ? SDL_TRUE : SDL_FALSE) < 0) {
+        throw std::runtime_error(fmt::format("Could not toggle the integer scale for the '{:s}' Renderer: {:s}",
                                              this->GetName(),
                                              SDL_GetError()));
     }
@@ -311,48 +353,6 @@ std::vector<std::string> SDML::Video::Renderer::GetTextureFormats()
     }
 
     return texture_formats;
-}
-
-
-bool SDML::Video::Renderer::CheckInitFlags(uint32_t flags)
-{
-    SDL_RendererInfo tmp {};
-    if(SDL_GetRendererInfo(this->internal_SDL_renderer, &tmp) < 0) {
-        throw std::runtime_error(fmt::format("Could not retrieve information for '{:s}' Renderer: {:s}",
-                                             this->GetName(),
-                                             SDL_GetError()));
-    }
-
-    return flags == (flags & tmp.flags); 
-}
-
-
-bool SDML::Video::Renderer::CheckInitFlags(const RendererInitFlag& flag) { return this->CheckInitFlags(std::to_underlying(flag)); } 
-
-
-bool SDML::Video::Renderer::CheckClippingEnabled() { return SDL_RenderIsClipEnabled(this->internal_SDL_renderer); }
-
-
-bool SDML::Video::Renderer::CheckIntegerScale() { return SDL_RenderGetIntegerScale(this->internal_SDL_renderer); }
-
-
-void SDML::Video::Renderer::ToggleIntegerScale(bool enable_or_disable)
-{
-    if(SDL_RenderSetIntegerScale(this->internal_SDL_renderer, enable_or_disable ? SDL_TRUE : SDL_FALSE) < 0) {
-        throw std::runtime_error(fmt::format("Could not toggle the integer scale for the '{:s}' Renderer: {:s}",
-                                             this->GetName(),
-                                             SDL_GetError()));
-    }
-}
-
-
-void SDML::Video::Renderer::ToggleVSync(bool enable_or_disable)
-{
-    if(SDL_RenderSetVSync(this->internal_SDL_renderer, enable_or_disable) < 0) {
-        throw std::runtime_error(fmt::format("Could not toggle the VSync for the '{:s}' Renderer: {:s}",
-                                 this->GetName(),
-                                 SDL_GetError()));
-    }
 }
 
 
@@ -746,6 +746,9 @@ void SDML::Video::Renderer::Update()
                                              SDL_GetError()));
     }
 }
+
+
+SDL_Renderer* SDML::Video::Renderer::Access_SDL_Backend() { return this->internal_SDL_renderer; }
 
 
 uint32_t operator|(const SDML::Video::RendererInitFlag& first_flag, const SDML::Video::RendererInitFlag& second_flag) { return std::to_underlying(first_flag) | std::to_underlying(second_flag); }

@@ -27,9 +27,6 @@ int main( int argc, char* args[] )
 		constexpr std::array<uint8_t, 4> green {0x0,  0xFF, 0x0,  0xFF};
 		constexpr std::array<uint8_t, 4>  blue {0x0,  0x0,  0xFF, 0xFF};
 
-		constexpr std::array<float, 2> scale {1.2f, 1.2f};
-		constexpr std::array<int, 2> real_point {100, 100};
-
 		SDML::Video::Window windowTest {"Test", 
 										std::array<int, 2> {640, 480},
 										SDML::Video::WindowInitFlag::RESIZABLE};
@@ -37,14 +34,7 @@ int main( int argc, char* args[] )
 		SDML::Video::Renderer rendererTest {windowTest,
 											SDML::Video::RendererInitFlag::ACCELERATED};
 
-		rendererTest.SetScale(scale);
-
-		std::array<float, 2>        logical_point {rendererTest.ConvertRealPointToLogicalPoint(   real_point)};
-		std::array<int, 2> reconverted_real_point {rendererTest.ConvertLogicalPointToRealPoint(logical_point)};
-		const auto& [logical_x, logical_y] = logical_point;
-		const auto& [real_x, real_y] = reconverted_real_point;
-		std::cout << fmt::format("Logical Point: [X: {:f}, Y: {:f}]\nReal Point: [X: {:d}, Y: {:d}]", logical_x, logical_y, real_x, real_y) << std::endl;
-		//std::cout << rendererTest << std::endl;
+		std::cout << rendererTest << std::endl;
 
 		SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }
 

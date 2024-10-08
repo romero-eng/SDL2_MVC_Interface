@@ -57,6 +57,12 @@ namespace SDML
 
             ~Renderer();
 
+            bool CheckInitFlags(uint32_t flags);
+
+            bool CheckInitFlags(const RendererInitFlag& flag);
+            
+            void ToggleVSync(bool enable_or_disable);
+
             std::string GetName();
 
             std::array<int, 2> GetArea();
@@ -79,9 +85,15 @@ namespace SDML
 
             void DisableClipping();
 
+            bool CheckClippingEnabled();
+
             std::array<float, 2> GetScale();
 
             void SetScale(const std::array<float, 2>& scale);
+
+            bool CheckIntegerScale();
+
+            void ToggleIntegerScale(bool enable_or_disable);
 
             std::optional<std::array<int, 2>> GetLogicalArea();
 
@@ -94,18 +106,6 @@ namespace SDML
             std::array<int, 2> GetMaxTextureArea();
 
             std::vector<std::string> GetTextureFormats();
-
-            bool CheckInitFlags(uint32_t flags);
-
-            bool CheckInitFlags(const RendererInitFlag& flag);
-
-            bool CheckClippingEnabled();
-
-            bool CheckIntegerScale();
-
-            void ToggleIntegerScale(bool enable_or_disable);
-            
-            void ToggleVSync(bool enable_or_disable);
 
             void DrawPoint(const std::array<int, 2>& point);
 
@@ -142,6 +142,8 @@ namespace SDML
             void DrawEntireTarget();
 
             void Update();
+
+            SDL_Renderer* Access_SDL_Backend();
         };
     }
 }
