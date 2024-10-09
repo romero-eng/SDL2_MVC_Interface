@@ -740,6 +740,17 @@ void SDML::Video::Renderer::DrawEntireTarget()
 }
 
 
+void SDML::Video::Renderer::Copy(Texture& texture)
+{
+    if(SDL_RenderCopy(this->internal_SDL_renderer, texture.Access_SDL_Backend(), nullptr, nullptr) < 0) {
+        throw std::runtime_error(fmt::format("Could not copy the '{:s}' Texture using the '{:s}' Renderer: {:s}",
+                                             texture.GetName(),
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+}
+
+
 void SDML::Video::Renderer::Update()
 {
     SDL_RenderPresent(this->internal_SDL_renderer);

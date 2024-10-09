@@ -39,6 +39,8 @@ int main( int argc, char* args[] )
 											SDML::Video::RendererInitFlag::ACCELERATED};
 
 		SDML::Video::Texture hello_world_texture {rendererTest, hello_world_bitmap};
+		rendererTest.Copy(hello_world_texture);
+		rendererTest.Update();
 
 		std::cout << hello_world_texture << std::endl;
 

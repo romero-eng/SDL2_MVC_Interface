@@ -59,6 +59,8 @@ namespace SDML
 
             std::string GetPixelFormatName() const;
 
+            SDL_Texture* Access_SDL_Backend();
+
         };
     }
 }

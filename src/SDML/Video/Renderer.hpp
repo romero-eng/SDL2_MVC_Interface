@@ -146,6 +146,8 @@ namespace SDML
 
             void DrawEntireTarget();
 
+            void Copy(Texture& texture);
+
             void Update();
 
             SDL_Renderer* Access_SDL_Backend();

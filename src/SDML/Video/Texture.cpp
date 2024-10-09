@@ -53,6 +53,9 @@ std::string SDML::Video::Texture::GetPixelFormatName() const
 }
 
 
+SDL_Texture* SDML::Video::Texture::Access_SDL_Backend() { return this->internal_SDL_texture; }
+
+
 std::ostream& operator<<(std::ostream& output,
                          const SDML::Video::Texture& texture)
 {
