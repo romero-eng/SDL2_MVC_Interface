@@ -29,7 +29,6 @@ int main( int argc, char* args[] )
 		constexpr std::array<uint8_t, 4>   red {0xFF, 0x0,  0x0,  0xFF};
 		constexpr std::array<uint8_t, 4> green {0x0,  0xFF, 0x0,  0xFF};
 		constexpr std::array<uint8_t, 4>  blue {0x0,  0x0,  0xFF, 0xFF};
-		const std::filesystem::path hello_world_bitmap {std::filesystem::current_path().parent_path().parent_path()/"res"/"hello_world.bmp"};
 
 		SDML::Video::Window windowTest {"Test", 
 										std::array<int, 2> {640, 480},
@@ -38,7 +37,9 @@ int main( int argc, char* args[] )
 		SDML::Video::Renderer rendererTest {windowTest,
 											SDML::Video::RendererInitFlag::ACCELERATED};
 
-		SDML::Video::Texture hello_world_texture {rendererTest, hello_world_bitmap};
+		SDML::Video::Texture hello_world_texture {rendererTest,
+												  std::filesystem::current_path().parent_path().parent_path()/"res"/"hello_world.bmp"};
+
 		rendererTest.Copy(hello_world_texture);
 		rendererTest.Update();
 

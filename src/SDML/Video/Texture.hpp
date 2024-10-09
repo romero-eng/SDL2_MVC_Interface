@@ -47,7 +47,7 @@ namespace SDML
                     SDL_Texture* texture);
 
             Texture(Renderer& renderer,
-                    std::filesystem::path image_file);
+                    const std::filesystem::path& image_file);
 
             Texture(Texture&) = delete;
 
