@@ -53,16 +53,76 @@ std::string SDML::Video::Texture::GetPixelFormatName() const
 }
 
 
+SDML::Video::TextureAccess SDML::Video::Texture::GetTextureAccess() const
+{
+    TextureAccess access; 
+    int tmp;
+
+    if(SDL_QueryTexture(this->internal_SDL_texture, nullptr, &tmp, nullptr, nullptr) < 0) {
+        throw std::runtime_error(fmt::format("Could not get the pixel format for the '{:s}' Texture: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+
+    switch(tmp) {
+        case SDL_TEXTUREACCESS_STATIC:
+            access = TextureAccess::STATIC;
+            break;
+        case SDL_TEXTUREACCESS_STREAMING:
+            access = TextureAccess::STREAMING;
+            break;
+        case SDL_TEXTUREACCESS_TARGET:
+            access = TextureAccess::TARGET;
+            break;
+    }
+
+    return access;
+}
+
+
+std::array<int, 2> SDML::Video::Texture::GetArea() const
+{
+    int width;
+    int height;
+
+    if(SDL_QueryTexture(this->internal_SDL_texture, nullptr, nullptr, &width, &height) < 0) {
+        throw std::runtime_error(fmt::format("Could not get the pixel format for the '{:s}' Texture: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+
+    return std::array<int, 2> {width, height};
+}
+
+
 SDL_Texture* SDML::Video::Texture::Access_SDL_Backend() { return this->internal_SDL_texture; }
 
 
 std::ostream& operator<<(std::ostream& output,
                          const SDML::Video::Texture& texture)
 {
+    std::string texture_access_string;
+    switch(texture.GetTextureAccess()) {
+        case SDML::Video::TextureAccess::STATIC:
+            texture_access_string = "Static";
+            break;
+        case SDML::Video::TextureAccess::STREAMING:
+            texture_access_string = "Streaming";
+            break;
+        case SDML::Video::TextureAccess::TARGET:
+            texture_access_string = "Target";
+            break;
+    }
+
     Misc::Printables printables {fmt::format("'{:s}' Texture", texture.GetName())};
 
     std::string pixel_format {texture.GetPixelFormatName()};
     printables.add_printable("Pixel Format Name", pixel_format);
+    printables.add_printable(   "Texture Access", texture_access_string);
+
+    std::array<int, 2> area {texture.GetArea()};
+    const auto& [width, height] = area;
+    printables.add_printable("Area", fmt::format("[Width: {:d}, Height: {:d}]", width, height));
 
     output << printables.print();
 

@@ -59,6 +59,10 @@ namespace SDML
 
             std::string GetPixelFormatName() const;
 
+            TextureAccess GetTextureAccess() const;
+
+            std::array<int, 2> GetArea() const;
+
             SDL_Texture* Access_SDL_Backend();
 
         };

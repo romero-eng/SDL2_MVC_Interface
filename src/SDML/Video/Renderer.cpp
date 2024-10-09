@@ -777,10 +777,9 @@ uint32_t operator|(const SDML::Video::RendererInitFlag& first_flag, uint32_t sec
 std::ostream& operator<<(std::ostream& output,
                          const SDML::Video::Renderer& renderer)
 {
-    SDML::Video::BlendMode blend_mode {renderer.GetBlendMode()};
-    std::string blend_mode_string {}; 
 
-    switch(blend_mode)
+    std::string blend_mode_string {}; 
+    switch(renderer.GetBlendMode())
     {
         case SDML::Video::BlendMode::REPLACE:
             blend_mode_string = "Replace";
