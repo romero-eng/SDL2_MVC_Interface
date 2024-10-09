@@ -6,10 +6,6 @@
 #include "SDML/Video/Renderer.hpp"
 #include "SDML/Video/Texture.hpp"
 
-// Third-party Libraries
-#include <SDL2/SDL.h>
-#include <fmt/core.h>
-#include <fmt/ranges.h>
 
 // C++ Standard Libraries
 #include <filesystem>
