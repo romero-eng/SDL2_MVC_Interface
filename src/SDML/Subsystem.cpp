@@ -1,10 +1,42 @@
 #if defined(__linux__) || defined(_WIN32) || defined(__APPLE__)
 #include "Subsystem.hpp"
 
+
+void SDML::Image::Initialize(InitFlag subsystem) { return Initialize(std::to_underlying(subsystem)); }
+
+
+void SDML::Image::Initialize(uint32_t subsystems)
+{
+	if(subsystems == static_cast<uint32_t>(IMG_Init(static_cast<int>(subsystems)))) {
+
+		constexpr std::array<std::pair<std::string_view, InitFlag>, 6> image_file_types {{{"JPG",  InitFlag::JPG},
+																						  {"PNG",  InitFlag::PNG},
+																						  {"TIF",  InitFlag::TIF},
+																						  {"WEBP", InitFlag::WEBP},
+																						  {"JXL",  InitFlag::JXL},
+																						  {"AVIF", InitFlag::AVIF}}};
+
+		std::string err_msg {fmt::format("Could not initialize image type: {:s}", SDL_GetError())};
+		for(std::pair<std::string_view, InitFlag> image_file_type: image_file_types) {
+			err_msg += fmt::format("{:s}: {:s}\n", image_file_type.first, IsInitialized(image_file_type.second) ? "On" : "Off");
+		}
+	}
+}
+
+
+bool SDML::Image::IsInitialized(uint32_t subsystems) { return subsystems == (subsystems & SDL_WasInit(subsystems)); }
+
+
+bool SDML::Image::IsInitialized(InitFlag subsystem) { return IsInitialized(std::to_underlying(subsystem)); }
+
+
+void SDML::Image::Quit() { IMG_Quit(); }
+
+
 void SDML::Subsystem::Initialize(uint32_t subsystems)
 {
-	if(SDL_Init(subsystems) < 0)
-	{
+	if(SDL_Init(subsystems) < 0) {
+
 		constexpr std::array<std::pair<std::string_view, InitFlag>, 7> subsystems {{{"Timer", 			InitFlag::TIMER},
 																				    {"Audio", 			InitFlag::AUDIO},
 																				    {"Video", 			InitFlag::VIDEO},
@@ -13,7 +45,7 @@ void SDML::Subsystem::Initialize(uint32_t subsystems)
 																				    {"Game Controller", InitFlag::GAMECONTROLLER},
 																				    {"Events", 			InitFlag::EVENTS}}};
 
-		std::string err_msg {"Could not initialize SDL Subsystems: {:s}\n", SDL_GetError()};
+		std::string err_msg {fmt::format("Could not initialize SDL Subsystems: {:s}\n", SDL_GetError())};
 		for(std::pair<std::string_view, InitFlag> subsystem : subsystems) {
 			err_msg += fmt::format("{:s}: {:s}\n", subsystem.first, IsInitialized(subsystem.second) ? "On" : "Off");
 		}
@@ -102,6 +134,22 @@ uint32_t operator|(uint32_t first_flag,
 uint32_t operator|(const SDML::Subsystem::InitFlag& first_flag,
 				 uint32_t second_flag)
 { return std::to_underlying(first_flag) | second_flag; }
+
+
+uint32_t operator|(const SDML::Image::InitFlag& first_flag,
+				   const SDML::Image::InitFlag& second_flag)
+{ return std::to_underlying(first_flag) | std::to_underlying(second_flag); }
+
+
+uint32_t operator|(uint32_t first_flag,
+				   const SDML::Image::InitFlag& second_flag)
+{ return first_flag | std::to_underlying(second_flag); }
+
+
+uint32_t operator|(const SDML::Image::InitFlag& first_flag,
+				   uint32_t second_flag)
+{ return std::to_underlying(first_flag) | second_flag; }
+
 
 #else
 #error "This file is only meant to be compiled on a Windows, Macintosh, or Linux OS"

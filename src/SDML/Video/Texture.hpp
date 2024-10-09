@@ -7,11 +7,13 @@
 
 // Third-Party Libraries
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include <fmt/format.h>
 
 //C++ Standard Libraries
 #include <array>
 #include <iostream>
+#include <filesystem>
 
 
 namespace SDML
@@ -43,6 +45,9 @@ namespace SDML
 
             Texture(const char* name,
                     SDL_Texture* texture);
+
+            Texture(Renderer& renderer,
+                    std::filesystem::path image_file);
 
             Texture(Texture&) = delete;
 

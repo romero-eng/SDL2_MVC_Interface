@@ -12,6 +12,7 @@
 #include <fmt/ranges.h>
 
 // C++ Standard Libraries
+#include <filesystem>
 #include <iostream>
 
 
@@ -19,6 +20,7 @@ int main( int argc, char* args[] )
 {
 
 	SDML::Subsystem::Initialize(SDML::Subsystem::InitFlag::VIDEO);
+	SDML::Image::Initialize(0);
 
 	try
 	{
@@ -27,6 +29,7 @@ int main( int argc, char* args[] )
 		constexpr std::array<uint8_t, 4>   red {0xFF, 0x0,  0x0,  0xFF};
 		constexpr std::array<uint8_t, 4> green {0x0,  0xFF, 0x0,  0xFF};
 		constexpr std::array<uint8_t, 4>  blue {0x0,  0x0,  0xFF, 0xFF};
+		const std::filesystem::path hello_world_bitmap {std::filesystem::current_path().parent_path().parent_path()/"res"/"hello_world.bmp"};
 
 		SDML::Video::Window windowTest {"Test", 
 										std::array<int, 2> {640, 480},
@@ -35,13 +38,9 @@ int main( int argc, char* args[] )
 		SDML::Video::Renderer rendererTest {windowTest,
 											SDML::Video::RendererInitFlag::ACCELERATED};
 
-		rendererTest.SetDrawingColor(white);
-		rendererTest.DrawEntireTarget();
+		SDML::Video::Texture hello_world_texture {rendererTest, hello_world_bitmap};
 
-		SDML::Video::Texture renderTarget {rendererTest.GetTarget()};
-
-		std::cout << SDL_GetRenderTarget(rendererTest.Access_SDL_Backend()) << std::endl;
-		std::cout << renderTarget << std::endl;
+		std::cout << hello_world_texture << std::endl;
 
 		SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }
 
@@ -51,6 +50,7 @@ int main( int argc, char* args[] )
 		std::cerr << error_message.what() << std::endl;
 	}
 
+	SDML::Image::Quit();
 	SDML::Subsystem::Quit();
 
 	return 0;

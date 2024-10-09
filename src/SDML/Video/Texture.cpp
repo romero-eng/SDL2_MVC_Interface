@@ -19,6 +19,12 @@ SDML::Video::Texture::Texture(const char* name,
                                                      internal_SDL_texture{texture} {}
 
 
+SDML::Video::Texture::Texture(Renderer& renderer,
+                              std::filesystem::path image_file): name{image_file.stem()},
+                                                                 internal_SDL_texture{IMG_LoadTexture(renderer.Access_SDL_Backend(),
+                                                                                                      image_file.string().c_str())} {}
+
+
 SDML::Video::Texture::~Texture() { SDL_DestroyTexture(this->internal_SDL_texture); }
 
 
