@@ -204,6 +204,56 @@ void SDML::Video::Texture::SetBlendMode(const BlendMode& mode)
 }
 
 
+SDML::Video::ScaleMode SDML::Video::Texture::GetScaleMode() const
+{
+    SDL_ScaleMode tmp;
+    if(SDL_GetTextureScaleMode(this->internal_SDL_texture, &tmp) < 0) {
+        throw std::runtime_error(fmt::format("Could not get the scale mode for the '{:s}' Texture: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+
+    ScaleMode mode;
+    switch(tmp) {
+        case SDL_ScaleModeNearest:
+            mode = ScaleMode::NEAREST;
+            break;
+        case SDL_ScaleModeLinear:
+            mode = ScaleMode::LINEAR;
+            break;
+        case SDL_ScaleModeBest:
+            mode = ScaleMode::BEST;
+            break;
+    }
+
+    return mode;
+}
+
+
+void SDML::Video::Texture::SetScaleMode(const ScaleMode& mode)
+{
+    SDL_ScaleMode tmp;
+
+    switch(mode) {
+        case ScaleMode::NEAREST:
+            tmp = SDL_ScaleModeNearest;
+            break;
+        case ScaleMode::LINEAR:
+            tmp = SDL_ScaleModeLinear;
+            break;
+        case ScaleMode::BEST:
+            tmp = SDL_ScaleModeBest;
+            break;
+    }
+
+    if(SDL_SetTextureScaleMode(this->internal_SDL_texture, tmp) < 0) {
+        throw std::runtime_error(fmt::format("Could not set the scale mode for the '{:s}' Texture: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+}
+
+
 SDL_Texture* SDML::Video::Texture::Access_SDL_Backend() { return this->internal_SDL_texture; }
 
 
@@ -245,6 +295,19 @@ std::ostream& operator<<(std::ostream& output,
             break;
     }
 
+    std::string scale_mode_string;
+    switch(texture.GetScaleMode()) {
+        case SDML::Video::ScaleMode::NEAREST:
+            scale_mode_string = "Nearest";
+            break;
+        case SDML::Video::ScaleMode::LINEAR:
+            scale_mode_string = "Linear";
+            break;
+        case SDML::Video::ScaleMode::BEST:
+            scale_mode_string = "Best";
+            break;
+    }
+
     Misc::Printables printables {fmt::format("'{:s}' Texture", texture.GetName())};
 
     std::string pixel_format {texture.GetPixelFormatName()};
@@ -260,6 +323,7 @@ std::ostream& operator<<(std::ostream& output,
     printables.add_printable("Color", fmt::format("[Red: {:d}, Green: {:d}, Blue: {:d}, Alpha: {:d}]", red, green, blue, alpha));
 
     printables.add_printable("Blend Mode", blend_mode_string);
+    printables.add_printable("Scale Mode", scale_mode_string);
 
     output << printables.print();
 

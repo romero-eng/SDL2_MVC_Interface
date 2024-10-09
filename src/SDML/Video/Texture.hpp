@@ -28,6 +28,13 @@ namespace SDML
            TARGET    = SDL_TEXTUREACCESS_TARGET
         };
 
+        enum class ScaleMode: int
+        {
+           NEAREST = SDL_ScaleModeNearest,
+           LINEAR  = SDL_ScaleModeLinear,
+           BEST    = SDL_ScaleModeBest
+        };
+
         class Renderer;
 
         class Texture
@@ -71,6 +78,10 @@ namespace SDML
             BlendMode GetBlendMode() const;
 
             void SetBlendMode(const BlendMode& mode);
+
+            ScaleMode GetScaleMode() const;
+
+            void SetScaleMode(const ScaleMode& mode);
 
             SDL_Texture* Access_SDL_Backend();
 
