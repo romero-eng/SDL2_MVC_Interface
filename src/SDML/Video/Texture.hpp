@@ -3,6 +3,7 @@
 
 // Custom Code from this project
 #include "Renderer.hpp"
+#include "BlendMode.hpp"
 #include "../../Misc/PrettyPrint.hpp"
 
 // Third-Party Libraries
@@ -66,6 +67,10 @@ namespace SDML
             std::array<uint8_t, 4> GetColor() const;
 
             void SetColor(const std::array<uint8_t, 4> color);
+
+            BlendMode GetBlendMode() const;
+
+            void SetBlendMode(const BlendMode& mode);
 
             SDL_Texture* Access_SDL_Backend();
 

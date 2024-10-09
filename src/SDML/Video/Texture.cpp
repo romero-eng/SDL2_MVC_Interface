@@ -135,6 +135,75 @@ void SDML::Video::Texture::SetColor(const std::array<uint8_t, 4> color)
 }
 
 
+SDML::Video::BlendMode SDML::Video::Texture::GetBlendMode() const
+{
+    SDL_BlendMode tmp;
+    BlendMode mode;
+
+    if(SDL_GetTextureBlendMode(this->internal_SDL_texture, &tmp) < 0) {
+        std::runtime_error(fmt::format("Could not get the blend mode for the '{:s}' Texture: {:s}",
+                                       this->GetName(),
+                                       SDL_GetError()));
+    }
+
+    switch(tmp) {
+        case SDL_BLENDMODE_NONE:
+            mode = BlendMode::REPLACE;
+            break;
+        case SDL_BLENDMODE_BLEND:
+            mode = BlendMode::ALPHA;
+            break;
+        case SDL_BLENDMODE_ADD:
+            mode = BlendMode::ADDITIVE;
+            break;
+        case SDL_BLENDMODE_MOD:
+            mode = BlendMode::MODULATE;
+            break;
+        case SDL_BLENDMODE_MUL:
+            mode = BlendMode::MULTIPLY;
+            break;
+        case SDL_BLENDMODE_INVALID:
+            mode = BlendMode::INVALID;
+            break;
+    }
+
+    return mode;
+}
+
+
+void SDML::Video::Texture::SetBlendMode(const BlendMode& mode)
+{
+    SDL_BlendMode tmp;
+
+    switch(mode) {
+        case BlendMode::REPLACE:
+            tmp = SDL_BLENDMODE_NONE;
+            break;
+        case BlendMode::ALPHA:
+            tmp = SDL_BLENDMODE_BLEND;
+            break;
+        case BlendMode::ADDITIVE:
+            tmp = SDL_BLENDMODE_ADD;
+            break;
+        case BlendMode::MODULATE:
+            tmp = SDL_BLENDMODE_MOD;
+            break;
+        case BlendMode::MULTIPLY:
+            tmp = SDL_BLENDMODE_MUL;
+            break;
+        case BlendMode::INVALID:
+            tmp = SDL_BLENDMODE_INVALID;
+            break;
+    }
+
+    if(SDL_SetTextureBlendMode(this->internal_SDL_texture, tmp) < 0) {
+        throw std::runtime_error(fmt::format("Could not set the blend mode for the '{:s}' Texture: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+}
+
+
 SDL_Texture* SDML::Video::Texture::Access_SDL_Backend() { return this->internal_SDL_texture; }
 
 
@@ -154,6 +223,28 @@ std::ostream& operator<<(std::ostream& output,
             break;
     }
 
+    std::string blend_mode_string;
+    switch(texture.GetBlendMode()) {
+        case SDML::Video::BlendMode::REPLACE:
+            blend_mode_string = "Replace";
+            break;
+        case SDML::Video::BlendMode::ALPHA:
+            blend_mode_string = "Alpha";
+            break;
+        case SDML::Video::BlendMode::ADDITIVE:
+            blend_mode_string = "Additive";
+            break;
+        case SDML::Video::BlendMode::MODULATE:
+            blend_mode_string = "Modulate";
+            break;
+        case SDML::Video::BlendMode::MULTIPLY:
+            blend_mode_string = "Multiply";
+            break;
+        case SDML::Video::BlendMode::INVALID:
+            blend_mode_string = "Invalid";
+            break;
+    }
+
     Misc::Printables printables {fmt::format("'{:s}' Texture", texture.GetName())};
 
     std::string pixel_format {texture.GetPixelFormatName()};
@@ -167,6 +258,8 @@ std::ostream& operator<<(std::ostream& output,
     std::array<uint8_t, 4> color {texture.GetColor()};
     const auto& [red, green, blue, alpha] = color;
     printables.add_printable("Color", fmt::format("[Red: {:d}, Green: {:d}, Blue: {:d}, Alpha: {:d}]", red, green, blue, alpha));
+
+    printables.add_printable("Blend Mode", blend_mode_string);
 
     output << printables.print();
 

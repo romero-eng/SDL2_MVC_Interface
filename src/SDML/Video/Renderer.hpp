@@ -4,6 +4,7 @@
 // Custom Code from this project
 #include "Window.hpp"
 #include "Texture.hpp"
+#include "BlendMode.hpp"
 #include "../../Misc/PrettyPrint.hpp"
 
 // Third-Party Libraries
@@ -25,16 +26,6 @@ namespace SDML
             ACCELERATED   = SDL_RENDERER_ACCELERATED,
             PRESENTVSYNC  = SDL_RENDERER_PRESENTVSYNC,
             TARGETTEXTURE = SDL_RENDERER_TARGETTEXTURE
-        };
-
-        enum class BlendMode
-        {
-            REPLACE,
-            ALPHA,
-            ADDITIVE,
-            MODULATE,
-            MULTIPLY,
-            INVALID
         };
 
         class Texture;
