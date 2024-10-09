@@ -63,6 +63,10 @@ namespace SDML
 
             std::array<int, 2> GetArea() const;
 
+            std::array<uint8_t, 4> GetColor() const;
+
+            void SetColor(const std::array<uint8_t, 4> color);
+
             SDL_Texture* Access_SDL_Backend();
 
         };

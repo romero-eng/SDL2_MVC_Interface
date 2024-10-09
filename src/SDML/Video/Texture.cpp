@@ -95,6 +95,46 @@ std::array<int, 2> SDML::Video::Texture::GetArea() const
 }
 
 
+std::array<uint8_t, 4> SDML::Video::Texture::GetColor() const
+{
+    uint8_t red;
+    uint8_t green;
+    uint8_t blue;
+    if(SDL_GetTextureColorMod(this->internal_SDL_texture, &red, &green, &blue) < 0) {
+        throw std::runtime_error(fmt::format("Could not get the RGB values for the '{:s}' Texture: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+
+    uint8_t alpha;
+    if(SDL_GetTextureAlphaMod(this->internal_SDL_texture, &alpha) < 0) {
+        throw std::runtime_error(fmt::format("Could not get the alpha value for the '{:s}' Texture: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+
+    return std::array<uint8_t, 4> {red, green, blue, alpha};
+}
+
+
+void SDML::Video::Texture::SetColor(const std::array<uint8_t, 4> color)
+{
+    const auto& [red, green, blue, alpha] = color;
+
+    if(SDL_SetTextureColorMod(this->internal_SDL_texture, red, green, blue) < 0) {
+        throw std::runtime_error(fmt::format("Could not set the RGB values for the '{:s}' Texture: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+
+    if(SDL_SetTextureAlphaMod(this->internal_SDL_texture, alpha) < 0) {
+        throw std::runtime_error(fmt::format("Could not set the alpha value for the '{:s}' Texture: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+}
+
+
 SDL_Texture* SDML::Video::Texture::Access_SDL_Backend() { return this->internal_SDL_texture; }
 
 
@@ -123,6 +163,10 @@ std::ostream& operator<<(std::ostream& output,
     std::array<int, 2> area {texture.GetArea()};
     const auto& [width, height] = area;
     printables.add_printable("Area", fmt::format("[Width: {:d}, Height: {:d}]", width, height));
+
+    std::array<uint8_t, 4> color {texture.GetColor()};
+    const auto& [red, green, blue, alpha] = color;
+    printables.add_printable("Color", fmt::format("[Red: {:d}, Green: {:d}, Blue: {:d}, Alpha: {:d}]", red, green, blue, alpha));
 
     output << printables.print();
 
