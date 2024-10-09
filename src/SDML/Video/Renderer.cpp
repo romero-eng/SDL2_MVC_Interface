@@ -356,12 +356,7 @@ std::vector<std::string> SDML::Video::Renderer::GetTextureFormats() const
 }
 
 
-SDML::Video::Texture SDML::Video::Renderer::GetTarget()
-{ 
-    return Texture("Render Target",
-                   *(this),
-                   SDL_GetRenderTarget(this->internal_SDL_renderer));
-}
+SDML::Video::Texture SDML::Video::Renderer::GetTarget() { return Texture("Render Target", SDL_GetRenderTarget(this->internal_SDL_renderer)); }
 
 
 void SDML::Video::Renderer::DrawPoint(const std::array<int, 2>& point)

@@ -31,7 +31,6 @@ namespace SDML
         {
         private:
             std::string name;
-            std::optional<std::string> renderer_name;
             SDL_Texture* internal_SDL_texture;
 
         public:
@@ -41,10 +40,6 @@ namespace SDML
                     uint32_t pixel_format,
                     const TextureAccess& access,
                     const std::array<int, 2>& area);
-
-            Texture(const char* name,
-                    Renderer& renderer,
-                    SDL_Texture* texture);
 
             Texture(const char* name,
                     SDL_Texture* texture);
@@ -57,7 +52,7 @@ namespace SDML
 
             std::string GetName() const;
 
-            std::optional<std::string> GetContextName() const;
+            std::string GetPixelFormatName() const;
 
         };
     }

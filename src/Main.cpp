@@ -35,9 +35,12 @@ int main( int argc, char* args[] )
 		SDML::Video::Renderer rendererTest {windowTest,
 											SDML::Video::RendererInitFlag::ACCELERATED};
 
+		rendererTest.SetDrawingColor(white);
+		rendererTest.DrawEntireTarget();
+
 		SDML::Video::Texture renderTarget {rendererTest.GetTarget()};
 
-		std::cout << windowTest << std::endl;
+		std::cout << SDL_GetRenderTarget(rendererTest.Access_SDL_Backend()) << std::endl;
 		std::cout << renderTarget << std::endl;
 
 		SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }
