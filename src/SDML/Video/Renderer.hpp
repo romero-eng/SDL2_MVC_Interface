@@ -35,6 +35,14 @@ namespace SDML
         private:
             SDL_Renderer* internal_SDL_renderer;
 
+            void Copy(Texture& texture,
+                      const std::optional<SDL_Rect>& src_rect,
+                      const std::optional<SDL_Rect>& dst_rect);
+
+            void Copy(Texture& texture,
+                      const std::optional<SDL_Rect>& src_rect,
+                      const SDL_FRect& dst_rect);
+
         public:
 
             Renderer(Window& window,

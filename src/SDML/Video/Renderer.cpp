@@ -740,9 +740,13 @@ void SDML::Video::Renderer::DrawEntireTarget()
 }
 
 
-void SDML::Video::Renderer::Copy(Texture& texture)
+void SDML::Video::Renderer::Copy(Texture& texture,
+                                 const std::optional<SDL_Rect>& src_rect,
+                                 const std::optional<SDL_Rect>& dst_rect)
 {
-    if(SDL_RenderCopy(this->internal_SDL_renderer, texture.Access_SDL_Backend(), nullptr, nullptr) < 0) {
+    if(SDL_RenderCopy(this->internal_SDL_renderer, texture.Access_SDL_Backend(),
+                      src_rect.has_value() ? &src_rect.value() : nullptr,
+                      dst_rect.has_value() ? &dst_rect.value() : nullptr) < 0) {
         throw std::runtime_error(fmt::format("Could not copy the '{:s}' Texture using the '{:s}' Renderer: {:s}",
                                              texture.GetName(),
                                              this->GetName(),
@@ -752,20 +756,31 @@ void SDML::Video::Renderer::Copy(Texture& texture)
 
 
 void SDML::Video::Renderer::Copy(Texture& texture,
+                                 const std::optional<SDL_Rect>& src_rect,
+                                 const SDL_FRect& dst_rect)
+{
+    if(SDL_RenderCopyF(this->internal_SDL_renderer, texture.Access_SDL_Backend(),
+                       src_rect.has_value() ? &src_rect.value() : nullptr,
+                       &dst_rect) < 0) {
+        throw std::runtime_error(fmt::format("Could not copy the '{:s}' Texture using the '{:s}' Renderer: {:s}",
+                                             texture.GetName(),
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+}
+
+
+void SDML::Video::Renderer::Copy(Texture& texture) { this->Copy(texture, std::nullopt, std::nullopt); }
+
+
+void SDML::Video::Renderer::Copy(Texture& texture,
                                  const std::pair<std::array<int, 2>, std::array<int, 2>>& destination_rect_info)
 {
     const auto& [top_left_point, area] = destination_rect_info;
     const auto& [top_left_x, top_left_y] = top_left_point;
     const auto& [width, height] = area;
 
-    SDL_Rect dst_rect {top_left_x, top_left_y, width, height};
-
-    if(SDL_RenderCopy(this->internal_SDL_renderer, texture.Access_SDL_Backend(), nullptr, &dst_rect) < 0) {
-        throw std::runtime_error(fmt::format("Could not copy the '{:s}' Texture using the '{:s}' Renderer: {:s}",
-                                             texture.GetName(),
-                                             this->GetName(),
-                                             SDL_GetError()));
-    }
+    this->Copy(texture, std::nullopt, SDL_Rect {top_left_x, top_left_y, width, height});
 }
 
 
@@ -777,20 +792,13 @@ void SDML::Video::Renderer::Copy(Texture& texture,
     const auto& [dst_top_left_x, dst_top_left_y] = dst_top_left_point;
     const auto& [dst_width, dst_height] = dst_area;
 
-    SDL_Rect dst_rect {dst_top_left_x, dst_top_left_y, dst_width, dst_height};
-
     const auto& [src_top_left_point, src_area] = source_rect_info;
     const auto& [src_top_left_x, src_top_left_y] = src_top_left_point;
     const auto& [src_width, src_height] = src_area;
 
-    SDL_Rect src_rect {src_top_left_x, src_top_left_y, src_width, src_height};
-
-    if(SDL_RenderCopy(this->internal_SDL_renderer, texture.Access_SDL_Backend(), &src_rect, &dst_rect) < 0) {
-        throw std::runtime_error(fmt::format("Could not copy the '{:s}' Texture using the '{:s}' Renderer: {:s}",
-                                             texture.GetName(),
-                                             this->GetName(),
-                                             SDL_GetError()));
-    }
+    this->Copy(texture,
+               SDL_Rect {src_top_left_x, src_top_left_y, src_width, src_height},
+               SDL_Rect {dst_top_left_x, dst_top_left_y, dst_width, dst_height});
 }
 
 
@@ -801,14 +809,7 @@ void SDML::Video::Renderer::Copy(Texture& texture,
     const auto& [top_left_x, top_left_y] = top_left_point;
     const auto& [width, height] = area;
 
-    SDL_FRect dst_rect {top_left_x, top_left_y, width, height};
-
-    if(SDL_RenderCopyF(this->internal_SDL_renderer, texture.Access_SDL_Backend(), nullptr, &dst_rect) < 0) {
-        throw std::runtime_error(fmt::format("Could not copy the '{:s}' Texture using the '{:s}' Renderer: {:s}",
-                                             texture.GetName(),
-                                             this->GetName(),
-                                             SDL_GetError()));
-    }
+    this->Copy(texture, std::nullopt, SDL_FRect {top_left_x, top_left_y, width, height});
 }
 
 
@@ -820,20 +821,13 @@ void SDML::Video::Renderer::Copy(Texture& texture,
     const auto& [dst_top_left_x, dst_top_left_y] = dst_top_left_point;
     const auto& [dst_width, dst_height] = dst_area;
 
-    SDL_FRect dst_rect {dst_top_left_x, dst_top_left_y, dst_width, dst_height};
-
     const auto& [src_top_left_point, src_area] = source_rect_info;
     const auto& [src_top_left_x, src_top_left_y] = src_top_left_point;
     const auto& [src_width, src_height] = src_area;
 
-    SDL_Rect src_rect {src_top_left_x, src_top_left_y, src_width, src_height};
-
-    if(SDL_RenderCopyF(this->internal_SDL_renderer, texture.Access_SDL_Backend(), &src_rect, &dst_rect) < 0) {
-        throw std::runtime_error(fmt::format("Could not copy the '{:s}' Texture using the '{:s}' Renderer: {:s}",
-                                             texture.GetName(),
-                                             this->GetName(),
-                                             SDL_GetError()));
-    }
+    this->Copy(texture,
+               SDL_Rect {src_top_left_x, src_top_left_y, src_width, src_height},
+               SDL_FRect {dst_top_left_x, dst_top_left_y, dst_width, dst_height});
 }
 
 
