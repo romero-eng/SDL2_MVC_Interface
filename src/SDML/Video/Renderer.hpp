@@ -139,6 +139,20 @@ namespace SDML
 
             void Copy(Texture& texture);
 
+            void Copy(Texture& texture,
+                      const std::pair<std::array<int, 2>, std::array<int, 2>>& destination_rect_info);
+
+            void Copy(Texture& texture,
+                      const std::pair<std::array<int, 2>, std::array<int, 2>>& source_rect_info,
+                      const std::pair<std::array<int, 2>, std::array<int, 2>>& destination_rect_info);
+
+            void Copy(Texture& texture,
+                      const std::pair<std::array<float, 2>, std::array<float, 2>>& destination_rect_info);
+
+            void Copy(Texture& texture,
+                      const std::pair<std::array<int, 2>, std::array<int, 2>>& source_rect_info,
+                      const std::pair<std::array<float, 2>, std::array<float, 2>>& destination_rect_info);
+
             void Update();
 
             SDL_Renderer* Access_SDL_Backend();

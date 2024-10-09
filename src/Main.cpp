@@ -37,13 +37,16 @@ int main( int argc, char* args[] )
 		SDML::Video::Renderer rendererTest {windowTest,
 											SDML::Video::RendererInitFlag::ACCELERATED};
 
-		SDML::Video::Texture hello_world_texture {rendererTest,
-												  std::filesystem::current_path().parent_path().parent_path()/"res"/"hello_world.bmp"};
+		SDML::Video::Texture example_texture {rendererTest,
+											  std::filesystem::current_path().parent_path().parent_path()/"res"/"stretch.bmp"};
 
-		rendererTest.Copy(hello_world_texture);
+		constexpr std::pair<std::array<float, 2>, std::array<float, 2>> example_texture_copy_info {{0.0, 0.0},
+																							   	   {320.0, 240.0}};
+
+		rendererTest.Copy(example_texture, example_texture_copy_info);
 		rendererTest.Update();
 
-		std::cout << hello_world_texture << std::endl;
+		std::cout << example_texture << std::endl;
 
 		SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }
 
