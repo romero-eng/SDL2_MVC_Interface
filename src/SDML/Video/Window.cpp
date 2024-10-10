@@ -397,7 +397,7 @@ std::ostream& operator<<(std::ostream& output_stream,
 	std::array<int, 2> display_area {window.GetDisplayArea()};
 	std::array<int, 2> display_mode_area {window.GetDisplayModeArea()};
 
-	Misc::Printables display_mode_settings {fmt::format("Display Mode", window.GetDisplayName())};
+	Misc::Printables display_mode_settings {fmt::format("'{:s}' Display Mode", window.GetDisplayName())};
 	display_mode_settings.add_printable(		"Area", fmt::format("[Width: {width:d}, Height: {height:d}]",
 																	fmt::arg( "width", display_mode_area[0]),
 																	fmt::arg("height", display_mode_area[1])));
