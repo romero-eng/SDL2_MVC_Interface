@@ -96,67 +96,21 @@ void SDML::Video::Renderer::SetDrawingColor(const std::array<uint8_t, 4>& color)
 
 SDML::Video::BlendMode SDML::Video::Renderer::GetBlendMode() const
 {
-    SDL_BlendMode internal_blend_mode;
-    BlendMode visible_blend_mode;
-    if(SDL_GetRenderDrawBlendMode(this->internal_SDL_renderer, &internal_blend_mode) < 0) {
+    SDL_BlendMode tmp;
+
+    if(SDL_GetRenderDrawBlendMode(this->internal_SDL_renderer, &tmp) < 0) {
         throw std::runtime_error(fmt::format("Could not get the Blend Mode for the '{:s}' Renderer: {:s}",
                                              this->GetName(),
                                              SDL_GetError()));
     }
 
-    switch(internal_blend_mode)
-    {
-        case SDL_BlendMode::SDL_BLENDMODE_NONE:
-            visible_blend_mode = BlendMode::REPLACE;
-            break;
-        case SDL_BlendMode::SDL_BLENDMODE_BLEND:
-            visible_blend_mode = BlendMode::ALPHA;
-            break;
-        case SDL_BlendMode::SDL_BLENDMODE_ADD:
-            visible_blend_mode = BlendMode::ADDITIVE;
-            break;
-        case SDL_BlendMode::SDL_BLENDMODE_MOD:
-            visible_blend_mode = BlendMode::MODULATE;
-            break;
-        case SDL_BlendMode::SDL_BLENDMODE_MUL:
-            visible_blend_mode = BlendMode::MODULATE;
-            break;
-        case SDL_BlendMode::SDL_BLENDMODE_INVALID:
-            visible_blend_mode = BlendMode::INVALID;
-            break;
-    }
-
-    return visible_blend_mode;
+    return SDL_to_SDML(tmp);
 }
 
 
 void SDML::Video::Renderer::SetBlendMode(const BlendMode& mode)
 {
-    SDL_BlendMode tmp;
-
-    switch(mode)
-    {
-        case BlendMode::REPLACE:
-            tmp = SDL_BLENDMODE_NONE;
-            break;
-        case BlendMode::ALPHA:
-            tmp = SDL_BLENDMODE_BLEND;
-            break;
-        case BlendMode::ADDITIVE:
-            tmp = SDL_BLENDMODE_ADD;
-            break;
-        case BlendMode::MODULATE:
-            tmp = SDL_BLENDMODE_MOD;
-            break;
-        case BlendMode::MULTIPLY:
-            tmp = SDL_BLENDMODE_MUL;
-            break;
-        case BlendMode::INVALID:
-            tmp = SDL_BLENDMODE_INVALID;
-            break;
-    }
-
-    if(SDL_SetRenderDrawBlendMode(this->internal_SDL_renderer, tmp) < 0) {
+    if(SDL_SetRenderDrawBlendMode(this->internal_SDL_renderer, SDML_to_SDL(mode)) < 0) {
         throw std::runtime_error(fmt::format("Could not set the Blend Mode for the '{:s}' Renderer: {:s}",
                                              this->GetName(),
                                              SDL_GetError()));
@@ -1199,30 +1153,6 @@ uint32_t operator|(const SDML::Video::RendererInitFlag& first_flag, uint32_t sec
 std::ostream& operator<<(std::ostream& output,
                          const SDML::Video::Renderer& renderer)
 {
-
-    std::string blend_mode_string {}; 
-    switch(renderer.GetBlendMode())
-    {
-        case SDML::Video::BlendMode::REPLACE:
-            blend_mode_string = "Replace";
-            break;
-        case SDML::Video::BlendMode::ALPHA:
-            blend_mode_string = "Alpha";
-            break;
-        case SDML::Video::BlendMode::ADDITIVE:
-            blend_mode_string = "Additive";
-            break;
-        case SDML::Video::BlendMode::MODULATE:
-            blend_mode_string = "Modulate";
-            break;
-        case SDML::Video::BlendMode::MULTIPLY:
-            blend_mode_string = "Multiply";
-            break;
-        case SDML::Video::BlendMode::INVALID:
-            blend_mode_string = "Invalid";
-            break;
-    }
-
     Misc::Printables printables {fmt::format("'{:s}' Renderer", renderer.GetName())};
     printables.add_printable(          "Is Software Fallback", renderer.CheckInitFlags(SDML::Video::RendererInitFlag::SOFTWARE));
     printables.add_printable("Supports Hardware Acceleration", renderer.CheckInitFlags(SDML::Video::RendererInitFlag::ACCELERATED));
@@ -1239,7 +1169,7 @@ std::ostream& operator<<(std::ostream& output,
     const auto& [red, green, blue, alpha] = drawing_color;
     printables.add_printable("Drawing Color", fmt::format("[Red: {:d}, Green: {:d}, Blue: {:d}, Alpha: {:d}]", red, green, blue, alpha));
 
-    printables.add_printable("Blend Mode", blend_mode_string);
+    printables.add_printable("Blend Mode", to_string(renderer.GetBlendMode()));
 
     std::pair<std::array<int, 2>, std::array<int, 2>> viewport {renderer.GetViewPort()};
     const auto& [viewport_top_left_point, viewport_area] = viewport;

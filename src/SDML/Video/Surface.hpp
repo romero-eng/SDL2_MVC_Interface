@@ -4,6 +4,7 @@
 // Custom Code from this project
 #include "../../Misc/PrettyPrint.hpp"
 #include "Window.hpp"
+#include "BlendMode.hpp"
 
 // Third-party Libraries
 #include <SDL2/SDL.h>
