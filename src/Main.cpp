@@ -31,13 +31,10 @@ int main( int argc, char* args[] )
 										std::array<int, 2> {640, 480},
 										SDML::Video::WindowInitFlag::RESIZABLE};
 
-		SDML::Video::Renderer rendererTest {windowTest};
-
-		SDML::Video::Texture textureTest {rendererTest,
+		SDML::Video::Surface surfaceTest {windowTest,
 										  std::filesystem::current_path().parent_path().parent_path()/"res"/"hello_world.bmp"};
 
-		std::cout << rendererTest << std::endl;
-		std::cout << textureTest << std::endl;
+		std::cout << surfaceTest << std::endl;
 
 		SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }
 

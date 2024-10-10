@@ -56,6 +56,30 @@ void SDML::Video::Surface::SetColor(const std::array<uint8_t, 4>& color)
 }
 
 
+SDML::Video::BlendMode SDML::Video::Surface::GetBlendMode() const
+{
+    SDL_BlendMode tmp;
+
+    if(SDL_GetSurfaceBlendMode(this->internal_SDL_surface, &tmp) < 0) {
+        std::runtime_error(fmt::format("Could not get the blend mode for the '{:s}' Texture: {:s}",
+                                       this->GetName(),
+                                       SDL_GetError()));
+    }
+
+    return SDL_to_SDML(tmp);
+}
+
+
+void SDML::Video::Surface::SetBlendMode(const BlendMode& mode)
+{
+    if(SDL_SetSurfaceBlendMode(this->internal_SDL_surface, SDML_to_SDL(mode)) < 0) {
+        throw std::runtime_error(fmt::format("Could not set the blend mode for the '{:s}' Texture: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+}
+
+
 std::ostream& operator<<(std::ostream& output,
                          const SDML::Video::Surface& surface)
 {
@@ -63,6 +87,7 @@ std::ostream& operator<<(std::ostream& output,
 
     const auto& [red, green, blue, alpha] = surface.GetColor();
     settings.add_printable("Color", fmt::format("[Red: {:d}, Green: {:d}, Blue: {:d}, Alpha {:d}]", red, green, blue, alpha));
+    settings.add_printable("Blend Mode", to_string(surface.GetBlendMode()));
 
     output << settings.print();
 

@@ -46,6 +46,9 @@ namespace SDML
 
             void SetColor(const std::array<uint8_t, 4>& color);
 
+            BlendMode GetBlendMode() const;
+
+            void SetBlendMode(const BlendMode& mode);
         };
     }
 }
