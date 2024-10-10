@@ -63,6 +63,8 @@ namespace SDML
             PORTRAIT_FLIPPED
 		};
 
+		class Surface;
+
 		class Window
 		{
 		private:
