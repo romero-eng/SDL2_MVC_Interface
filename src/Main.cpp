@@ -34,6 +34,9 @@ int main( int argc, char* args[] )
 		SDML::Video::Surface surfaceTest {windowTest,
 										  std::filesystem::current_path().parent_path().parent_path()/"res"/"hello_world.bmp"};
 
+		constexpr std::array<uint8_t, 3> simple_red {0x00, 0x2F, 0x00};
+		surfaceTest.EnableOrDisableTransparentColor(simple_red, true);
+
 		std::cout << surfaceTest << std::endl;
 
 		SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }

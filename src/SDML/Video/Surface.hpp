@@ -50,6 +50,11 @@ namespace SDML
 
             void SetBlendMode(const BlendMode& mode);
 
+            std::optional<std::array<uint8_t, 3>> GetTransparentColor() const;
+
+            void EnableOrDisableTransparentColor(std::array<uint8_t, 3> color,
+                                                 bool enable);
+
             void EnableOrDisable_RLE_Acceleration(bool enable);
 
             bool Has_RLE_Acceleration() const;

@@ -95,6 +95,49 @@ void SDML::Video::Surface::EnableOrDisable_RLE_Acceleration(bool enable)
 }
 
 
+std::optional<std::array<uint8_t, 3>> SDML::Video::Surface::GetTransparentColor() const
+{
+    uint32_t color_key;
+
+    if(SDL_GetColorKey(this->internal_SDL_surface, &color_key) < 0) {
+
+        std::cerr << fmt::format("Could not get the transparent color for the '{:s}' Surface: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()) << std::endl;
+
+        return std::nullopt;
+
+    } else {
+
+        uint8_t red;
+        uint8_t green;
+        uint8_t blue;
+
+        SDL_GetRGB(color_key,
+                   this->internal_SDL_surface->format,
+                   &red, &green, &blue);
+    
+        return std::array<uint8_t, 3> {red, green, blue};
+    }
+}
+
+
+void SDML::Video::Surface::EnableOrDisableTransparentColor(std::array<uint8_t, 3> color,
+                                                           bool enable)
+{
+    const auto& [red, green, blue] = color;
+
+    if(SDL_SetColorKey(this->internal_SDL_surface,
+                       enable? SDL_TRUE : SDL_FALSE,
+                       SDL_MapRGB(this->internal_SDL_surface->format, red, green, blue))) {
+        throw std::runtime_error(fmt::format("Could not {:s} '{:s}' the color transparency for the Surface: {:s}",
+                                             enable? "enable" : "disable",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+}
+
+
 bool SDML::Video::Surface::Has_RLE_Acceleration() const { return SDL_HasSurfaceRLE(this->internal_SDL_surface); }
 
 
@@ -107,6 +150,13 @@ std::ostream& operator<<(std::ostream& output,
     settings.add_printable("Color", fmt::format("[Red: {:d}, Green: {:d}, Blue: {:d}, Alpha {:d}]", red, green, blue, alpha));
     settings.add_printable("Blend Mode", to_string(surface.GetBlendMode()));
     settings.add_printable("RLE Acceleration", surface.Has_RLE_Acceleration());
+
+    
+	std::optional<std::array<uint8_t, 3>> transparent_color {surface.GetTransparentColor()};
+	if(transparent_color.has_value()){
+		const auto& [trans_red, trans_green, trans_blue] = transparent_color.value();
+		settings.add_printable("Transparent Color", fmt::format("[Red {:d}, Green {:d}, Blue: {:d}]", trans_red, trans_green, trans_blue));
+	}
 
     output << settings.print();
 
