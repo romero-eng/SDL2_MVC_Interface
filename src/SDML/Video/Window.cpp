@@ -390,46 +390,48 @@ std::ostream& operator<<(std::ostream& output_stream,
 			break;
 	}
 
-	std::array<int, 2> point {window.GetTopLeftpoint()};
-	std::array<int, 2> area {window.GetArea()};
-	std::array<int, 2> minimum_area {window.GetMinimumArea()};
-	std::array<int, 2> maximum_area {window.GetMaximumArea()};
-	std::array<int, 2> display_area {window.GetDisplayArea()};
-	std::array<int, 2> display_mode_area {window.GetDisplayModeArea()};
-
 	Misc::Printables display_mode_settings {fmt::format("'{:s}' Display Mode", window.GetDisplayName())};
-	display_mode_settings.add_printable(		"Area", fmt::format("[Width: {width:d}, Height: {height:d}]",
-																	fmt::arg( "width", display_mode_area[0]),
-																	fmt::arg("height", display_mode_area[1])));
+
+	std::array<int, 2> display_mode_area {window.GetDisplayModeArea()};
+	const auto& [display_mode_width, display_mode_height] = display_mode_area;
+	display_mode_settings.add_printable("Area", fmt::format("[Width: {:d}, Height: {:d}]", display_mode_width, display_mode_height));
+
 	display_mode_settings.add_printable("Refresh Rate", window.GetDisplayModeRefreshRate());
 
 	Misc::Printables display_settings {fmt::format("'{:s}' Display", window.GetDisplayName())};
-	display_settings.add_printable(			    "Area", fmt::format("[Width: {width:d}, Height: {height:d}]",
-																	fmt::arg( "width", display_area[0]),
-																	fmt::arg("height", display_area[1])));
+
+	std::array<int, 2> display_area {window.GetDisplayArea()};
+	const auto& [display_width, display_height] = display_area;
+	display_settings.add_printable("Area", fmt::format("[Width: {:d}, Height: {:d}]", display_width, display_height));
+
 	display_settings.add_printable(	     "Orientation", display_orientation_string);
 	display_settings.add_printable("Pixel Format Name", window.GetDisplayModePixelFormatName());
 	display_settings.add_printable(display_mode_settings);
 
 	Misc::Printables window_settings {fmt::format("'{:s}' Window", window.GetTitle())};
 	window_settings.add_printable(				   	  "ID", window.GetID());
-	window_settings.add_printable( "Top-Left X-point", fmt::format("[X: {x:d}, Y: {y:d}]",
-																		  fmt::arg("x", point[0]),
-																		  fmt::arg("y", point[1])));
-	window_settings.add_printable(				    "Area", fmt::format("[Width: {width:d}, Height: {height:d}]",
-																		  fmt::arg( "width", area[0]),
-																		  fmt::arg("height", area[1])));
-	window_settings.add_printable("Minimally Allowed Area", fmt::format("[Width: {width:d}, Height: {height:d}]",
-																		  fmt::arg( "width", minimum_area[0]),
-																		  fmt::arg("height", minimum_area[1])));
-	window_settings.add_printable("Maximally Allowed Area", fmt::format("[Width: {width:d}, Height: {height:d}]",
-																		  fmt::arg( "width", maximum_area[0]),
-																		  fmt::arg("height", maximum_area[1])));
-	window_settings.add_printable(		   	  "Brightness", window.GetBrightness());
-	window_settings.add_printable(			   	 "Opacity", window.GetOpacity());
-	window_settings.add_printable(		 	"Pixel Format", window.GetPixelFormatName());
-	window_settings.add_printable(		 "Window is shown", window.CheckWindowInitFlags(SDML::Video::WindowInitFlag::SHOWN));
-	window_settings.add_printable(	 "Window is resizable", window.CheckWindowInitFlags(SDML::Video::WindowInitFlag::RESIZABLE));
+
+	std::array<int, 2> point {window.GetTopLeftpoint()};
+	const auto& [top_left_x, top_left_y] = point;
+	window_settings.add_printable("Top-Left Point", fmt::format("[X: {:d}, Y: {:d}]", top_left_x, top_left_y));
+
+	std::array<int, 2> area {window.GetArea()};
+	const auto& [width, height] = area;
+	window_settings.add_printable("Area", fmt::format("[Width: {:d}, Height: {:d}]", width, height));
+
+	std::array<int, 2> minimum_area {window.GetMinimumArea()};
+	const auto& [minimum_width, minimum_height] = minimum_area;
+	window_settings.add_printable("Minimally Allowed Area", fmt::format("[Width: {:d}, Height: {:d}]", minimum_width, minimum_height));
+
+	std::array<int, 2> maximum_area {window.GetMaximumArea()};
+	const auto& [maximum_width, maximum_height] = maximum_area;
+	window_settings.add_printable("Maximally Allowed Area", fmt::format("[Width: {:d}, Height: {:d}]", maximum_width, maximum_height));
+
+	window_settings.add_printable(		   "Brightness", window.GetBrightness());
+	window_settings.add_printable(			  "Opacity", window.GetOpacity());
+	window_settings.add_printable(		 "Pixel Format", window.GetPixelFormatName());
+	window_settings.add_printable(	  "Window is shown", window.CheckWindowInitFlags(SDML::Video::WindowInitFlag::SHOWN));
+	window_settings.add_printable("Window is resizable", window.CheckWindowInitFlags(SDML::Video::WindowInitFlag::RESIZABLE));
 	window_settings.add_printable(display_settings);
 
 	std::cout << window_settings;
