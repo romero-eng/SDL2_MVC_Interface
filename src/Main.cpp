@@ -26,6 +26,11 @@ int main( int argc, char* args[] )
 		constexpr std::array<uint8_t, 4> green {0x0,  0xFF, 0x0,  0xFF};
 		constexpr std::array<uint8_t, 4>  blue {0x0,  0x0,  0xFF, 0xFF};
 
+		constexpr std::pair<std::array<int, 2>, std::array<int, 2>> example_texture_copy_info {{200,  50},
+																							   {320, 240}};
+
+		constexpr std::array<int, 2> center {0, 0};
+
 		SDML::Video::Window windowTest {"Test", 
 										std::array<int, 2> {640, 480},
 										SDML::Video::WindowInitFlag::RESIZABLE};
@@ -36,10 +41,7 @@ int main( int argc, char* args[] )
 		SDML::Video::Texture example_texture {rendererTest,
 											  std::filesystem::current_path().parent_path().parent_path()/"res"/"stretch.bmp"};
 
-		constexpr std::pair<std::array<float, 2>, std::array<float, 2>> example_texture_copy_info {{0.0, 0.0},
-																							   	   {320.0, 240.0}};
-
-		rendererTest.Copy(example_texture, example_texture_copy_info);
+		rendererTest.Copy(example_texture, example_texture_copy_info, 45.0, center, SDML::Video::FlipAction::NONE);
 		rendererTest.Update();
 
 		std::cout << example_texture << std::endl;

@@ -28,6 +28,13 @@ namespace SDML
             TARGETTEXTURE = SDL_RENDERER_TARGETTEXTURE
         };
 
+        enum class FlipAction
+        {
+            NONE,
+            HORIZONTAL,
+            VERTICAL
+        };
+
         class Texture;
 
         class Renderer
@@ -145,6 +152,30 @@ namespace SDML
             void Copy(Texture& texture,
                       const std::pair<std::array<int, 2>, std::array<int, 2>>& source_rect_info,
                       const std::pair<std::array<int, 2>, std::array<int, 2>>& destination_rect_info);
+
+            void Copy(Texture& texture,
+                      const std::pair<std::array<int, 2>, std::array<int, 2>>& destination_rect_info,
+                      double angle,
+                      const FlipAction& flip_action);
+
+            void Copy(Texture& texture,
+                      const std::pair<std::array<int, 2>, std::array<int, 2>>& source_rect_info,
+                      const std::pair<std::array<int, 2>, std::array<int, 2>>& destination_rect_info,
+                      double angle,
+                      const FlipAction& flip_action);
+
+            void Copy(Texture& texture,
+                      const std::pair<std::array<int, 2>, std::array<int, 2>>& destination_rect_info,
+                      double angle,
+                      const std::array<int, 2>& center,
+                      const FlipAction& flip_action);
+
+            void Copy(Texture& texture,
+                      const std::pair<std::array<int, 2>, std::array<int, 2>>& source_rect_info,
+                      const std::pair<std::array<int, 2>, std::array<int, 2>>& destination_rect_info,
+                      double angle,
+                      const std::array<int, 2>& center,
+                      const FlipAction& flip_action);
 
             void Copy(Texture& texture,
                       const std::pair<std::array<float, 2>, std::array<float, 2>>& destination_rect_info);
