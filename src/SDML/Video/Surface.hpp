@@ -49,6 +49,10 @@ namespace SDML
             BlendMode GetBlendMode() const;
 
             void SetBlendMode(const BlendMode& mode);
+
+            void EnableOrDisable_RLE_Acceleration(bool enable);
+
+            bool Has_RLE_Acceleration() const;
         };
     }
 }

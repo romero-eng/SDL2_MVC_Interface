@@ -6,7 +6,12 @@ SDML::Video::Surface::Surface(Window& window,
                               const std::filesystem::path& image_file): name{image_file.stem()},
                                                                         internal_SDL_surface{SDL_ConvertSurface(IMG_Load(image_file.string().c_str()),
                                                                                                                 SDL_GetWindowSurface(window.Access_SDL_Backend())->format,
-                                                                                                                0)} {}
+                                                                                                                0)}
+{
+    if(!(this->Has_RLE_Acceleration())){
+        this->EnableOrDisable_RLE_Acceleration(true);
+    }
+}
 
 
 SDML::Video::Surface::~Surface() { SDL_FreeSurface(this->internal_SDL_surface); }
@@ -80,6 +85,19 @@ void SDML::Video::Surface::SetBlendMode(const BlendMode& mode)
 }
 
 
+void SDML::Video::Surface::EnableOrDisable_RLE_Acceleration(bool enable)
+{
+    if(SDL_SetSurfaceRLE(this->internal_SDL_surface, enable ? 1 : 0) < 0) {
+        throw std::runtime_error(fmt::format("Could not enable RLE Acceleration for the '{:s}' Surface: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+}
+
+
+bool SDML::Video::Surface::Has_RLE_Acceleration() const { return SDL_HasSurfaceRLE(this->internal_SDL_surface); }
+
+
 std::ostream& operator<<(std::ostream& output,
                          const SDML::Video::Surface& surface)
 {
@@ -88,6 +106,7 @@ std::ostream& operator<<(std::ostream& output,
     const auto& [red, green, blue, alpha] = surface.GetColor();
     settings.add_printable("Color", fmt::format("[Red: {:d}, Green: {:d}, Blue: {:d}, Alpha {:d}]", red, green, blue, alpha));
     settings.add_printable("Blend Mode", to_string(surface.GetBlendMode()));
+    settings.add_printable("RLE Acceleration", surface.Has_RLE_Acceleration());
 
     output << settings.print();
 
