@@ -1005,6 +1005,174 @@ void SDML::Video::Renderer::Copy(Texture& texture,
 }
 
 
+void SDML::Video::Renderer::Copy(Texture& texture,
+                                 const std::pair<std::array<float, 2>, std::array<float, 2>>& destination_rect_info,
+                                 double angle,
+                                 const FlipAction& flip_action)
+{
+    const auto& [top_left_point, area] = destination_rect_info;
+    const auto& [top_left_x, top_left_y] = top_left_point;
+    const auto& [width, height] = area;
+
+    SDL_FRect dst_rect {top_left_x, top_left_y, width, height};
+
+    SDL_RendererFlip tmp_flip;
+    switch(flip_action){
+        case FlipAction::NONE:
+            tmp_flip = SDL_FLIP_NONE;
+            break;
+        case FlipAction::HORIZONTAL:
+            tmp_flip = SDL_FLIP_HORIZONTAL;
+            break;
+        case FlipAction::VERTICAL:
+            tmp_flip = SDL_FLIP_VERTICAL;
+            break;
+    }
+
+    if(SDL_RenderCopyExF(this->internal_SDL_renderer,
+                         texture.Access_SDL_Backend(),
+                         nullptr, &dst_rect, angle, nullptr,
+                         tmp_flip) < 0) {
+        throw std::runtime_error(fmt::format("Could not copy the '{:s}' Texture using the '{:s}' Renderer: {:s}",
+                                             texture.GetName(),
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+}
+
+
+void SDML::Video::Renderer::Copy(Texture& texture,
+                                 const std::pair<std::array<int, 2>, std::array<int, 2>>& source_rect_info,
+                                 const std::pair<std::array<float, 2>, std::array<float, 2>>& destination_rect_info,
+                                 double angle,
+                                 const FlipAction& flip_action)
+{
+    const auto& [src_top_left_point, src_area] = source_rect_info;
+    const auto& [src_top_left_x, src_top_left_y] = src_top_left_point;
+    const auto& [src_width, src_height] = src_area;
+
+    SDL_Rect src_rect {src_top_left_x, src_top_left_y, src_width, src_height};
+
+    const auto& [dst_top_left_point, dst_area] = destination_rect_info;
+    const auto& [dst_top_left_x, dst_top_left_y] = dst_top_left_point;
+    const auto& [dst_width, dst_height] = dst_area;
+
+    SDL_FRect dst_rect {dst_top_left_x, dst_top_left_y, dst_width, dst_height};
+
+    SDL_RendererFlip tmp_flip;
+    switch(flip_action){
+        case FlipAction::NONE:
+            tmp_flip = SDL_FLIP_NONE;
+            break;
+        case FlipAction::HORIZONTAL:
+            tmp_flip = SDL_FLIP_HORIZONTAL;
+            break;
+        case FlipAction::VERTICAL:
+            tmp_flip = SDL_FLIP_VERTICAL;
+            break;
+    }
+
+    if(SDL_RenderCopyExF(this->internal_SDL_renderer,
+                         texture.Access_SDL_Backend(),
+                         &src_rect, &dst_rect,
+                         angle, nullptr,
+                         tmp_flip) < 0) {
+        throw std::runtime_error(fmt::format("Could not copy the '{:s}' Texture using the '{:s}' Renderer: {:s}",
+                                             texture.GetName(),
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+}
+
+
+void SDML::Video::Renderer::Copy(Texture& texture,
+                                 const std::pair<std::array<float, 2>, std::array<float, 2>>& destination_rect_info,
+                                 double angle,
+                                 const std::array<float, 2>& center,
+                                 const FlipAction& flip_action)
+{
+    const auto& [top_left_point, area] = destination_rect_info;
+    const auto& [top_left_x, top_left_y] = top_left_point;
+    const auto& [width, height] = area;
+
+    SDL_FRect dst_rect {top_left_x, top_left_y, width, height};
+
+    const auto& [center_x, center_y] = center;
+    SDL_FPoint tmp_center {center_x, center_y};
+
+    SDL_RendererFlip tmp_flip;
+    switch(flip_action){
+        case FlipAction::NONE:
+            tmp_flip = SDL_FLIP_NONE;
+            break;
+        case FlipAction::HORIZONTAL:
+            tmp_flip = SDL_FLIP_HORIZONTAL;
+            break;
+        case FlipAction::VERTICAL:
+            tmp_flip = SDL_FLIP_VERTICAL;
+            break;
+    }
+
+    if(SDL_RenderCopyExF(this->internal_SDL_renderer,
+                         texture.Access_SDL_Backend(),
+                         nullptr, &dst_rect, angle, &tmp_center,
+                         tmp_flip) < 0) {
+        throw std::runtime_error(fmt::format("Could not copy the '{:s}' Texture using the '{:s}' Renderer: {:s}",
+                                             texture.GetName(),
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+}
+
+
+void SDML::Video::Renderer::Copy(Texture& texture,
+                                 const std::pair<std::array<int, 2>, std::array<int, 2>>& source_rect_info,
+                                 const std::pair<std::array<float, 2>, std::array<float, 2>>& destination_rect_info,
+                                 double angle,
+                                 const std::array<float, 2>& center,
+                                 const FlipAction& flip_action)
+{
+    const auto& [src_top_left_point, src_area] = source_rect_info;
+    const auto& [src_top_left_x, src_top_left_y] = src_top_left_point;
+    const auto& [src_width, src_height] = src_area;
+
+    SDL_Rect src_rect {src_top_left_x, src_top_left_y, src_width, src_height};
+
+    const auto& [dst_top_left_point, dst_area] = destination_rect_info;
+    const auto& [dst_top_left_x, dst_top_left_y] = dst_top_left_point;
+    const auto& [dst_width, dst_height] = dst_area;
+
+    SDL_FRect dst_rect {dst_top_left_x, dst_top_left_y, dst_width, dst_height};
+
+    const auto& [center_x, center_y] = center;
+    SDL_FPoint tmp_center {center_x, center_y};
+
+    SDL_RendererFlip tmp_flip;
+    switch(flip_action){
+        case FlipAction::NONE:
+            tmp_flip = SDL_FLIP_NONE;
+            break;
+        case FlipAction::HORIZONTAL:
+            tmp_flip = SDL_FLIP_HORIZONTAL;
+            break;
+        case FlipAction::VERTICAL:
+            tmp_flip = SDL_FLIP_VERTICAL;
+            break;
+    }
+
+    if(SDL_RenderCopyExF(this->internal_SDL_renderer,
+                         texture.Access_SDL_Backend(),
+                         &src_rect, &dst_rect,
+                         angle, &tmp_center,
+                         tmp_flip) < 0) {
+        throw std::runtime_error(fmt::format("Could not copy the '{:s}' Texture using the '{:s}' Renderer: {:s}",
+                                             texture.GetName(),
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+}
+
+
 void SDML::Video::Renderer::Update()
 {
     SDL_RenderPresent(this->internal_SDL_renderer);

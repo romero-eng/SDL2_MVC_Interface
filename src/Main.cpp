@@ -26,10 +26,10 @@ int main( int argc, char* args[] )
 		constexpr std::array<uint8_t, 4> green {0x0,  0xFF, 0x0,  0xFF};
 		constexpr std::array<uint8_t, 4>  blue {0x0,  0x0,  0xFF, 0xFF};
 
-		constexpr std::pair<std::array<int, 2>, std::array<int, 2>> example_texture_copy_info {{200,  50},
-																							   {320, 240}};
+		constexpr std::pair<std::array<float, 2>, std::array<float, 2>> example_texture_copy_info {{200.0f,  50.0f},
+																								   {320.0f, 240.0f}};
 
-		constexpr std::array<int, 2> center {0, 0};
+		constexpr std::array<float, 2> center {0.0f, 0.0f};
 
 		SDML::Video::Window windowTest {"Test", 
 										std::array<int, 2> {640, 480},
