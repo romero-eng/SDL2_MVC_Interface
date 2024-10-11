@@ -247,12 +247,10 @@ std::ostream& operator<<(std::ostream& output,
     printables.add_printable("Pixel Format Name", pixel_format);
     printables.add_printable(   "Texture Access", texture_access_string);
 
-    std::array<int, 2> area {texture.GetArea()};
-    const auto& [width, height] = area;
+    const auto& [width, height] {texture.GetArea()};
     printables.add_printable("Area", fmt::format("[Width: {:d}, Height: {:d}]", width, height));
 
-    std::array<uint8_t, 4> color {texture.GetColor()};
-    const auto& [red, green, blue, alpha] = color;
+    const auto& [red, green, blue, alpha] {texture.GetColor()};
     printables.add_printable("Color", fmt::format("[Red: {:d}, Green: {:d}, Blue: {:d}, Alpha: {:d}]", red, green, blue, alpha));
 
     printables.add_printable("Blend Mode", to_string(texture.GetBlendMode()));

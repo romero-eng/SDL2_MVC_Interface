@@ -199,11 +199,10 @@ std::ostream& operator<<(std::ostream& output,
 {
     Misc::Printables settings {fmt::format("'{:s}' Surface", surface.GetName())};
 
-    std::array<int, 2> area {surface.GetArea()};
-    const auto& [width, height] = area;
+    const auto& [width, height] {surface.GetArea()};
     settings.add_printable("Area", fmt::format("[Width: {:d}, Height: {:d}]", width, height));
 
-    const auto& [red, green, blue, alpha] = surface.GetColor();
+    const auto& [red, green, blue, alpha] {surface.GetColor()};
     settings.add_printable("Color", fmt::format("[Red: {:d}, Green: {:d}, Blue: {:d}, Alpha {:d}]", red, green, blue, alpha));
     settings.add_printable("Blend Mode", to_string(surface.GetBlendMode()));
     settings.add_printable("RLE Acceleration", surface.Has_RLE_Acceleration());
@@ -215,8 +214,7 @@ std::ostream& operator<<(std::ostream& output,
 		settings.add_printable("Transparent Color", fmt::format("[Red {:d}, Green {:d}, Blue: {:d}]", trans_red, trans_green, trans_blue));
 	}
 
-    std::pair<std::array<int, 2>, std::array<int, 2>> clip_rect_info {surface.GetClipRectangle()};
-    const auto& [clip_top_left_point, clip_area] = clip_rect_info;
+    const auto& [clip_top_left_point, clip_area] {surface.GetClipRectangle()};
     const auto& [clip_top_left_x, clip_top_left_y] = clip_top_left_point;
     const auto& [clip_width, clip_height] = clip_area;
     settings.add_printable("Clipping Rectangle", fmt::format("[Top Left X: {:d}, Top Left Y: {:d}, Width: {:d}, Height: {:d}]",

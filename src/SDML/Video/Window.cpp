@@ -378,10 +378,11 @@ void SDML::Video::Window::BlitOntoSurface(Surface& src,
 	}
 }
 
+
 void SDML::Video::Window::BlitOntoSurface(Surface& src)
 {
-	const auto& [src_width, src_height] = src.GetArea();
-	const auto& [dst_width, dst_height] = this->GetArea();
+	const auto& [src_width, src_height] {src.GetArea()};
+	const auto& [dst_width, dst_height] {this->GetArea()};
 
 	if(src_width*src_height >= dst_width*dst_height){
 		if(SDL_UpperBlit(src.Access_SDL_Backend(), nullptr, SDL_GetWindowSurface(this->internal_SDL_window), nullptr) < 0) {
@@ -446,16 +447,14 @@ std::ostream& operator<<(std::ostream& output_stream,
 
 	Misc::Printables display_mode_settings {fmt::format("'{:s}' Display Mode", window.GetDisplayName())};
 
-	std::array<int, 2> display_mode_area {window.GetDisplayModeArea()};
-	const auto& [display_mode_width, display_mode_height] = display_mode_area;
+	const auto& [display_mode_width, display_mode_height] {window.GetDisplayModeArea()};
 	display_mode_settings.add_printable("Area", fmt::format("[Width: {:d}, Height: {:d}]", display_mode_width, display_mode_height));
 
 	display_mode_settings.add_printable("Refresh Rate", window.GetDisplayModeRefreshRate());
 
 	Misc::Printables display_settings {fmt::format("'{:s}' Display", window.GetDisplayName())};
 
-	std::array<int, 2> display_area {window.GetDisplayArea()};
-	const auto& [display_width, display_height] = display_area;
+	const auto& [display_width, display_height] {window.GetDisplayArea()};
 	display_settings.add_printable("Area", fmt::format("[Width: {:d}, Height: {:d}]", display_width, display_height));
 
 	display_settings.add_printable(	     "Orientation", display_orientation_string);
@@ -463,22 +462,18 @@ std::ostream& operator<<(std::ostream& output_stream,
 	display_settings.add_printable(display_mode_settings);
 
 	Misc::Printables window_settings {fmt::format("'{:s}' Window", window.GetTitle())};
-	window_settings.add_printable(				   	  "ID", window.GetID());
+	window_settings.add_printable("ID", window.GetID());
 
-	std::array<int, 2> point {window.GetTopLeftpoint()};
-	const auto& [top_left_x, top_left_y] = point;
+	const auto& [top_left_x, top_left_y] {window.GetTopLeftpoint()};
 	window_settings.add_printable("Top-Left Point", fmt::format("[X: {:d}, Y: {:d}]", top_left_x, top_left_y));
 
-	std::array<int, 2> area {window.GetArea()};
-	const auto& [width, height] = area;
+	const auto& [width, height] {window.GetArea()};
 	window_settings.add_printable("Area", fmt::format("[Width: {:d}, Height: {:d}]", width, height));
 
-	std::array<int, 2> minimum_area {window.GetMinimumArea()};
-	const auto& [minimum_width, minimum_height] = minimum_area;
+	const auto& [minimum_width, minimum_height] {window.GetMinimumArea()};
 	window_settings.add_printable("Minimally Allowed Area", fmt::format("[Width: {:d}, Height: {:d}]", minimum_width, minimum_height));
 
-	std::array<int, 2> maximum_area {window.GetMaximumArea()};
-	const auto& [maximum_width, maximum_height] = maximum_area;
+	const auto& [maximum_width, maximum_height] {window.GetMaximumArea()};
 	window_settings.add_printable("Maximally Allowed Area", fmt::format("[Width: {:d}, Height: {:d}]", maximum_width, maximum_height));
 
 	window_settings.add_printable(		   "Brightness", window.GetBrightness());

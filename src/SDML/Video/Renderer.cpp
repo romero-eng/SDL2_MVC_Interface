@@ -1161,18 +1161,15 @@ std::ostream& operator<<(std::ostream& output,
     printables.add_printable(           "Clipping is Enabled", renderer.CheckClippingEnabled());
     printables.add_printable(          "Integer Scale is set", renderer.CheckIntegerScale());
 
-    std::array<int, 2> area {renderer.GetArea()};
-    const auto& [width, height] = area;
+    const auto& [width, height] {renderer.GetArea()};
     printables.add_printable("Area", fmt::format("[Width: {:d}, Height: {:d}]", width, height));
 
-    std::array<uint8_t, 4> drawing_color {renderer.GetDrawingColor()};
-    const auto& [red, green, blue, alpha] = drawing_color;
+    const auto& [red, green, blue, alpha] {renderer.GetDrawingColor()};
     printables.add_printable("Drawing Color", fmt::format("[Red: {:d}, Green: {:d}, Blue: {:d}, Alpha: {:d}]", red, green, blue, alpha));
 
     printables.add_printable("Blend Mode", to_string(renderer.GetBlendMode()));
 
-    std::pair<std::array<int, 2>, std::array<int, 2>> viewport {renderer.GetViewPort()};
-    const auto& [viewport_top_left_point, viewport_area] = viewport;
+    const auto& [viewport_top_left_point, viewport_area] {renderer.GetViewPort()};
     const auto& [viewPort_top_left_x, viewport_top_left_y] = viewport_top_left_point;
     const auto& [viewport_width, viewport_height] = viewport_area;
     printables.add_printable("Viewport", fmt::format("Area [Width: {:d}, Height: {:d}] from Top Left Point [X: {:d}, Y: {:d}]",
@@ -1199,12 +1196,10 @@ std::ostream& operator<<(std::ostream& output,
         printables.add_printable("Logical Area", fmt::format("[Width: {:d}, Height: {:d}]", logical_width, logical_height));
     }
 
-    std::array<float, 2> scale {renderer.GetScale()};
-    const auto& [scaleX, scaleY] = scale;
+    const auto& [scaleX, scaleY] {renderer.GetScale()};
     printables.add_printable("Scale", fmt::format("[X-scale: {:f}, Y-scale: {:f}]", scaleX, scaleY));
 
-    std::array<int, 2> max_texture_area {renderer.GetMaxTextureArea()};
-    const auto& [max_texture_width, max_texture_height] = max_texture_area;
+    const auto& [max_texture_width, max_texture_height] {renderer.GetMaxTextureArea()};
     printables.add_printable("Maximum Texture Area", fmt::format("[Width: {:d}, Height: {:d}]", max_texture_width, max_texture_height));
 
     std::vector<std::string> texture_formats {renderer.GetTextureFormats()};

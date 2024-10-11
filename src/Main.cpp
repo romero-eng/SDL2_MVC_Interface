@@ -17,7 +17,7 @@ int main( int argc, char* args[] )
 {
 
 	SDML::Subsystem::Initialize(SDML::Subsystem::InitFlag::VIDEO);
-	SDML::Image::Initialize(0);
+	SDML::Image::Initialize(SDML::Image::InitFlag::PNG);
 
 	try
 	{
@@ -31,9 +31,18 @@ int main( int argc, char* args[] )
 										std::array<int, 2> {640, 480},
 										SDML::Video::WindowInitFlag::RESIZABLE};
 
+		SDML::Video::Renderer rendererTest {windowTest};
+
 		SDML::Video::Surface surfaceTest {windowTest,
 										  std::filesystem::current_path().parent_path().parent_path()/"res"/"stretch.bmp"};
 
+		SDML::Video::Texture textureTest {rendererTest,
+										  std::filesystem::current_path().parent_path().parent_path()/"res"/"viewport.png"};
+
+		std::cout << windowTest << std::endl;
+		std::cout << rendererTest << std::endl;
+		std::cout << surfaceTest << std::endl;
+		std::cout << textureTest << std::endl;
 
 		windowTest.BlitOntoSurface(surfaceTest);
 		windowTest.Update();
