@@ -32,10 +32,11 @@ int main( int argc, char* args[] )
 										SDML::Video::WindowInitFlag::RESIZABLE};
 
 		SDML::Video::Surface surfaceTest {windowTest,
-										  std::filesystem::current_path().parent_path().parent_path()/"res"/"hello_world.bmp"};
+										  std::filesystem::current_path().parent_path().parent_path()/"res"/"stretch.bmp"};
 
 
-		std::cout << surfaceTest << std::endl;
+		windowTest.BlitOntoSurface(surfaceTest);
+		windowTest.Update();
 
 		// surfaceTest.DrawRect(first_rectangle, red);
 

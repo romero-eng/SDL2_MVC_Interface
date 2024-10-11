@@ -380,10 +380,21 @@ void SDML::Video::Window::BlitOntoSurface(Surface& src,
 
 void SDML::Video::Window::BlitOntoSurface(Surface& src)
 {
-	if(SDL_UpperBlit(src.Access_SDL_Backend(), nullptr, SDL_GetWindowSurface(this->internal_SDL_window), nullptr) < 0) {
-		throw std::runtime_error(fmt::format("Could not blit surface onto the '{:s}' Window: {:s}",
-											 this->GetTitle(),
-											 SDL_GetError()));
+	const auto& [src_width, src_height] = src.GetArea();
+	const auto& [dst_width, dst_height] = this->GetArea();
+
+	if(src_width*src_height >= dst_width*dst_height){
+		if(SDL_UpperBlit(src.Access_SDL_Backend(), nullptr, SDL_GetWindowSurface(this->internal_SDL_window), nullptr) < 0) {
+			throw std::runtime_error(fmt::format("Could not blit surface onto the '{:s}' Window: {:s}",
+												 this->GetTitle(),
+												 SDL_GetError()));
+		}
+	} else {
+		if(SDL_UpperBlitScaled(src.Access_SDL_Backend(), nullptr, SDL_GetWindowSurface(this->internal_SDL_window), nullptr) < 0) {
+			throw std::runtime_error(fmt::format("Could not blit surface onto the '{:s}' Window: {:s}",
+												 this->GetTitle(),
+												 SDL_GetError()));
+		}
 	}
 }
 
