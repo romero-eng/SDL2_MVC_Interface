@@ -141,6 +141,33 @@ void SDML::Video::Surface::EnableOrDisableTransparentColor(std::array<uint8_t, 3
 bool SDML::Video::Surface::Has_RLE_Acceleration() const { return SDL_HasSurfaceRLE(this->internal_SDL_surface); }
 
 
+std::pair<std::array<int, 2>, std::array<int, 2>> SDML::Video::Surface::GetClipRectangle() const
+{
+    SDL_Rect tmp {};
+    SDL_GetClipRect(this->internal_SDL_surface, &tmp);
+
+    return std::pair<std::array<int, 2>, std::array<int, 2>> {{tmp.x, tmp.y}, {tmp.w, tmp.h}};
+}
+
+
+bool SDML::Video::Surface::SetClipRectangle(std::pair<std::array<int, 2>, std::array<int, 2>> clip_rect_info)
+{
+    const auto& [top_left_point, area] = clip_rect_info;
+    const auto& [top_left_x, top_left_y] = top_left_point;
+    const auto& [width, height] = area;
+
+    SDL_Rect tmp {top_left_x, top_left_y, width, height};
+
+    return SDL_SetClipRect(this->internal_SDL_surface, &tmp);
+}
+
+
+void SDML::Video::Surface::DisableClipping() { SDL_SetClipRect(this->internal_SDL_surface, nullptr); }
+
+
+SDL_Surface* SDML::Video::Surface::Access_SDL_Backend() { return this->internal_SDL_surface; }
+
+
 std::ostream& operator<<(std::ostream& output,
                          const SDML::Video::Surface& surface)
 {
@@ -157,6 +184,16 @@ std::ostream& operator<<(std::ostream& output,
 		const auto& [trans_red, trans_green, trans_blue] = transparent_color.value();
 		settings.add_printable("Transparent Color", fmt::format("[Red {:d}, Green {:d}, Blue: {:d}]", trans_red, trans_green, trans_blue));
 	}
+
+    std::pair<std::array<int, 2>, std::array<int, 2>> clip_rect_info {surface.GetClipRectangle()};
+    const auto& [clip_top_left_point, clip_area] = clip_rect_info;
+    const auto& [clip_top_left_x, clip_top_left_y] = clip_top_left_point;
+    const auto& [clip_width, clip_height] = clip_area;
+    settings.add_printable("Clipping Rectangle", fmt::format("[Top Left X: {:d}, Top Left Y: {:d}, Width: {:d}, Height: {:d}]",
+                                                             clip_top_left_x,
+                                                             clip_top_left_y,
+                                                             clip_width,
+                                                             clip_height));
 
     output << settings.print();
 

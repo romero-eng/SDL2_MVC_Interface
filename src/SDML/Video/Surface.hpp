@@ -58,6 +58,14 @@ namespace SDML
             void EnableOrDisable_RLE_Acceleration(bool enable);
 
             bool Has_RLE_Acceleration() const;
+
+            std::pair<std::array<int, 2>, std::array<int, 2>> GetClipRectangle() const;
+
+            bool SetClipRectangle(std::pair<std::array<int, 2>, std::array<int, 2>> clip_rect_info);
+
+            void DisableClipping();
+
+            SDL_Surface* Access_SDL_Backend();
         };
     }
 }
