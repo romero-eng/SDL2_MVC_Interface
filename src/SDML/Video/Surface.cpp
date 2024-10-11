@@ -172,6 +172,54 @@ bool SDML::Video::Surface::SetClipRectangle(const std::pair<std::array<int, 2>, 
 void SDML::Video::Surface::DisableClipping() { SDL_SetClipRect(this->internal_SDL_surface, nullptr); }
 
 
+void SDML::Video::Surface::Blit(Surface& src,
+								const std::pair<std::array<int, 2>, std::array<int, 2>>& dst_rect_info,
+								const std::pair<std::array<int, 2>, std::array<int, 2>>& src_rect_info)
+{
+	const auto& [dst_top_left_point, dst_area] = dst_rect_info;
+	const auto& [dst_top_left_x, dst_top_left_y] = dst_top_left_point;
+	const auto& [dst_width, dst_height] = dst_area;
+
+	SDL_Rect dst_rect {dst_top_left_x, dst_top_left_y, dst_width, dst_height};
+
+	const auto& [src_top_left_point, src_area] = src_rect_info;
+	const auto& [src_top_left_x, src_top_left_y] = src_top_left_point;
+	const auto& [src_width, src_height] = src_area;
+
+	SDL_Rect src_rect {src_top_left_x, src_top_left_y, src_width, src_height};
+
+	if(SDL_UpperBlit(src.Access_SDL_Backend(), &src_rect, this->internal_SDL_surface, &dst_rect) < 0) {
+		throw std::runtime_error(fmt::format("Could not blit '{:s}' Surface onto the '{:s}' Surface: {:s}",
+                                             src.GetName(),
+											 this->GetName(),
+											 SDL_GetError()));
+	}
+}
+
+
+void SDML::Video::Surface::Blit(Surface& src)
+{
+	const auto& [src_width, src_height] {src.GetArea()};
+	const auto& [dst_width, dst_height] {this->GetArea()};
+
+	if(src_width*src_height >= dst_width*dst_height){
+		if(SDL_UpperBlit(src.Access_SDL_Backend(), nullptr, this->internal_SDL_surface, nullptr) < 0) {
+			throw std::runtime_error(fmt::format("Could not blit '{:s}' Surface onto the '{:s}' Surface: {:s}",
+                                                 src.GetName(),
+												 this->GetName(),
+												 SDL_GetError()));
+		}
+	} else {
+		if(SDL_UpperBlitScaled(src.Access_SDL_Backend(), nullptr, this->internal_SDL_surface, nullptr) < 0) {
+			throw std::runtime_error(fmt::format("Could not blit '{:s}' Surface onto the '{:s}' Window: {:s}",
+                                                 src.GetName(),
+												 this->GetName(),
+												 SDL_GetError()));
+		}
+	}
+}
+
+
 SDL_Surface* SDML::Video::Surface::Access_SDL_Backend() { return this->internal_SDL_surface; }
 
 

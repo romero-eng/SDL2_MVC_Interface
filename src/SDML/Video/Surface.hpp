@@ -67,6 +67,12 @@ namespace SDML
 
             void DisableClipping();
 
+            void Blit(Surface& src,
+					  const std::pair<std::array<int, 2>, std::array<int, 2>>& dst_rect_info,
+					  const std::pair<std::array<int, 2>, std::array<int, 2>>& src_rect_info);
+
+            void Blit(Surface& src);
+
             SDL_Surface* Access_SDL_Backend();
         };
     }
