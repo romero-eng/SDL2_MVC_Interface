@@ -419,7 +419,7 @@ void SDML::Video::Window::BlitOntoSurface(Surface& src)
 
 
 void SDML::Video::Window::DrawRect(const std::pair<std::array<int, 2>, std::array<int, 2>>& rect_info,
-                                    const std::array<uint8_t, 3>& color)
+                                   const std::array<uint8_t, 3>& color)
 {
     const auto& [top_left_point, area] = rect_info;
     const auto& [top_left_x, top_left_y] = top_left_point;
@@ -434,6 +434,41 @@ void SDML::Video::Window::DrawRect(const std::pair<std::array<int, 2>, std::arra
                                              this->GetTitle(),
                                              SDL_GetError()));
     }
+}
+
+void SDML::Video::Window::DrawRects(const std::vector<std::pair<std::array<int, 2>, std::array<int, 2>>>& rects_info,
+                                    const std::array<uint8_t, 3>& color)
+{
+	std::size_t num_rectangles {rects_info.size()};
+
+	SDL_Rect* rects = new SDL_Rect[num_rectangles];
+
+	try {
+		const auto& [red, green, blue] = color;
+
+		for(std::size_t i = 0; i < num_rectangles; i++) {
+			const auto& [top_left_point, area] {rects_info[i]};
+			const auto& [top_left_x, top_left_y] = top_left_point;
+			const auto& [width, height] = area;
+			rects[i] = SDL_Rect {top_left_x, top_left_y, width, height};
+		}
+
+		if(SDL_FillRects(SDL_GetWindowSurface(this->internal_SDL_window),
+					     rects,
+					     static_cast<int>(num_rectangles),
+					     SDL_MapRGB(SDL_GetWindowSurface(this->internal_SDL_window)->format,
+					  			    red, green, blue)) < 0) {
+			throw std::runtime_error(fmt::format("Could not draw rectangles onto the '{:s}' Window: {:s}",
+												 this->GetTitle(),
+												 SDL_GetError()));
+		}
+
+	} catch(...) {
+		delete [] rects;
+		throw;
+	}
+
+	delete [] rects;
 }
 
 
