@@ -21,11 +21,12 @@ int main( int argc, char* args[] )
 
 	try
 	{
-
+		/*
 		constexpr std::array<uint8_t, 3> red {0xFF, 0x00, 0x00};
 		constexpr std::pair<std::array<int, 2>, std::array<int, 2>> first_rectangle {{50, 50}, 
 																					 {100, 100}};
-
+		*/
+	
 		SDML::Video::Window windowTest {"Test", 
 										std::array<int, 2> {640, 480},
 										SDML::Video::WindowInitFlag::RESIZABLE};
