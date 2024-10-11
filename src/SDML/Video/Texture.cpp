@@ -20,6 +20,12 @@ SDML::Video::Texture::Texture(const char* name,
 
 
 SDML::Video::Texture::Texture(Renderer& renderer,
+                              Surface& surface): name{surface.GetName()},
+                                                 internal_SDL_texture{SDL_CreateTextureFromSurface(renderer.Access_SDL_Backend(),
+                                                                                                   surface.Access_SDL_Backend())} {}
+
+
+SDML::Video::Texture::Texture(Renderer& renderer,
                               const std::filesystem::path& image_file): name{image_file.stem()},
                                                                         internal_SDL_texture{IMG_LoadTexture(renderer.Access_SDL_Backend(),
                                                                                                              image_file.string().c_str())} {}

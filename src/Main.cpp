@@ -17,7 +17,7 @@ int main( int argc, char* args[] )
 {
 
 	SDML::Subsystem::Initialize(SDML::Subsystem::InitFlag::VIDEO);
-	SDML::Image::Initialize(SDML::Image::InitFlag::PNG);
+	SDML::Image::Initialize(0);
 
 	try
 	{
@@ -26,10 +26,18 @@ int main( int argc, char* args[] )
 										std::array<int, 2> {640, 480},
 										SDML::Video::WindowInitFlag::RESIZABLE};
 
+		SDML::Video::Renderer rendererTest {windowTest,
+										    SDML::Video::RendererInitFlag::ACCELERATED};
+
+		std::cout << rendererTest << std::endl;
+
 		SDML::Video::Surface helloWorldTest {windowTest,
 											 std::filesystem::current_path().parent_path().parent_path()/"res"/"hello_world.bmp"};
 
-		std::cout << helloWorldTest << std::endl;
+		SDML::Video::Texture helloWorldTest2 {rendererTest, helloWorldTest};
+
+		rendererTest.Copy(helloWorldTest2);
+		rendererTest.Update();
 
 		SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }
 

@@ -38,16 +38,7 @@ SDML::Video::Window::Window(const char *title,
 																		 		  SDL_WINDOWPOS_UNDEFINED,
 																		 		  area[0],
 																				  area[1],
-																		 		  flags)}
-{
-	if(SDL_HasSurfaceRLE(SDL_GetWindowSurface(this->internal_SDL_window))) {
-		if(SDL_SetSurfaceRLE(SDL_GetWindowSurface(this->internal_SDL_window), 1) < 0) {
-    		throw std::runtime_error(fmt::format("Could not enable RLE Acceleration for the '{:s}' Surface: {:s}",
-                		                         this->GetTitle(),
-                        		                 SDL_GetError()));
-    	}
-	}
-}
+																		 		  flags)} {}
 
 
 SDML::Video::Window::Window(const char *title,
@@ -58,16 +49,7 @@ SDML::Video::Window::Window(const char *title,
 																				  top_left_point[1],
 																	   			  area[0],
 																	   			  area[1],
-																	   			  flags)}
-{
-	if(SDL_HasSurfaceRLE(SDL_GetWindowSurface(this->internal_SDL_window))) {
-		if(SDL_SetSurfaceRLE(SDL_GetWindowSurface(this->internal_SDL_window), 1) < 0) {
-    		throw std::runtime_error(fmt::format("Could not enable RLE Acceleration for the '{:s}' Surface: {:s}",
-                		                         this->GetTitle(),
-                        		                 SDL_GetError()));
-    	}
-	}
-}
+																	   			  flags)} {}
 
 
 SDML::Video::Window::~Window()

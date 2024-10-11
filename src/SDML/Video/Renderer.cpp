@@ -4,7 +4,14 @@
 SDML::Video::Renderer::Renderer(Window& window,
                                 uint32_t flags): internal_SDL_renderer{SDL_CreateRenderer(window.Access_SDL_Backend(),
                                                                                           -1,
-                                                                                          flags)} {};
+                                                                                          flags)}
+{
+    if(this->internal_SDL_renderer == nullptr){
+        throw std::runtime_error(fmt::format("Could not create a renderer from the '{:s}' Window: {:s}",
+                                             window.GetTitle(),
+                                             SDL_GetError()));
+    }
+};
 
 
 SDML::Video::Renderer::Renderer(Window& window,

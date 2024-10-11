@@ -3,6 +3,7 @@
 
 // Custom Code from this project
 #include "Renderer.hpp"
+#include "Surface.hpp"
 #include "BlendMode.hpp"
 #include "../../Misc/PrettyPrint.hpp"
 
@@ -53,6 +54,9 @@ namespace SDML
 
             Texture(const char* name,
                     SDL_Texture* texture);
+
+            Texture(Renderer& renderer,
+                    Surface& surface);
 
             Texture(Renderer& renderer,
                     const std::filesystem::path& image_file);
