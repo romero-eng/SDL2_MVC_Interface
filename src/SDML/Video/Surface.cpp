@@ -172,6 +172,74 @@ bool SDML::Video::Surface::SetClipRectangle(const std::pair<std::array<int, 2>, 
 void SDML::Video::Surface::DisableClipping() { SDL_SetClipRect(this->internal_SDL_surface, nullptr); }
 
 
+SDML::Video::YUV_CONVERSION_MODE SDML::Video::Surface::Get_YUV_ConversionMode() const
+{
+    YUV_CONVERSION_MODE mode;
+    switch(SDL_GetYUVConversionMode()){
+        case SDL_YUV_CONVERSION_JPEG:
+            mode = YUV_CONVERSION_MODE::JPEG;
+            break;
+        case SDL_YUV_CONVERSION_BT601:
+            mode = YUV_CONVERSION_MODE::BT601;
+            break;
+        case SDL_YUV_CONVERSION_BT709:
+            mode = YUV_CONVERSION_MODE::BT709;
+            break;
+        case SDL_YUV_CONVERSION_AUTOMATIC:
+            mode = YUV_CONVERSION_MODE::AUTOMATIC;
+            break;
+    }
+
+    return mode;
+}
+
+
+SDML::Video::YUV_CONVERSION_MODE SDML::Video::Surface::Get_YUV_ConversionModeForResolution(Window& window) const
+{
+    const auto& [width, height] {window.GetDisplayArea()};
+
+    YUV_CONVERSION_MODE mode;
+    switch(SDL_GetYUVConversionModeForResolution(width, height)){
+        case SDL_YUV_CONVERSION_JPEG:
+            mode = YUV_CONVERSION_MODE::JPEG;
+            break;
+        case SDL_YUV_CONVERSION_BT601:
+            mode = YUV_CONVERSION_MODE::BT601;
+            break;
+        case SDL_YUV_CONVERSION_BT709:
+            mode = YUV_CONVERSION_MODE::BT709;
+            break;
+        case SDL_YUV_CONVERSION_AUTOMATIC:
+            mode = YUV_CONVERSION_MODE::AUTOMATIC;
+            break;
+    }
+
+    return mode;
+}
+
+
+void SDML::Video::Surface::Set_YUV_ConversionMode(YUV_CONVERSION_MODE mode)
+{
+    SDL_YUV_CONVERSION_MODE tmp;
+    switch(mode) {
+        case YUV_CONVERSION_MODE::JPEG:
+            tmp = SDL_YUV_CONVERSION_JPEG;
+            break;
+        case YUV_CONVERSION_MODE::BT601:
+            tmp = SDL_YUV_CONVERSION_BT601;
+            break;
+        case YUV_CONVERSION_MODE::BT709:
+            tmp = SDL_YUV_CONVERSION_BT709;
+            break;
+        case YUV_CONVERSION_MODE::AUTOMATIC:
+            tmp = SDL_YUV_CONVERSION_AUTOMATIC;
+            break;
+    }
+
+    SDL_SetYUVConversionMode(tmp);
+}
+
+
 void SDML::Video::Surface::Blit(Surface& src,
 								const std::pair<std::array<int, 2>, std::array<int, 2>>& dst_rect_info,
 								const std::pair<std::array<int, 2>, std::array<int, 2>>& src_rect_info)
@@ -226,10 +294,28 @@ SDL_Surface* SDML::Video::Surface::Access_SDL_Backend() { return this->internal_
 std::ostream& operator<<(std::ostream& output,
                          const SDML::Video::Surface& surface)
 {
+    std::string YUV_string;
+    switch(surface.Get_YUV_ConversionMode()) {
+        case SDML::Video::YUV_CONVERSION_MODE::JPEG:
+            YUV_string = "JPG";
+            break;
+        case SDML::Video::YUV_CONVERSION_MODE::BT601:
+            YUV_string = "BT601";
+            break;
+        case SDML::Video::YUV_CONVERSION_MODE::BT709:
+            YUV_string = "BT709";
+            break;
+        case SDML::Video::YUV_CONVERSION_MODE::AUTOMATIC:
+            YUV_string = "Automatic";
+            break;
+    }
+
     Misc::Printables settings {fmt::format("'{:s}' Surface", surface.GetName())};
 
     const auto& [width, height] {surface.GetArea()};
     settings.add_printable("Area", fmt::format("[Width: {:d}, Height: {:d}]", width, height));
+
+    settings.add_printable("YUV Conversion Mode", YUV_string);
 
     const auto& [red, green, blue, alpha] {surface.GetColor()};
     settings.add_printable("Color", fmt::format("[Red: {:d}, Green: {:d}, Blue: {:d}, Alpha {:d}]", red, green, blue, alpha));

@@ -29,15 +29,7 @@ int main( int argc, char* args[] )
 		SDML::Video::Surface helloWorldTest {windowTest,
 											 std::filesystem::current_path().parent_path().parent_path()/"res"/"hello_world.bmp"};
 
-		SDML::Video::Surface stretchTest {windowTest,
-										  std::filesystem::current_path().parent_path().parent_path()/"res"/"stretch.bmp"};
-
-		constexpr std::pair<std::array<int, 2>, std::array<int, 2>> src_rect_into {{0, 0}, {320, 240}};
-		constexpr std::pair<std::array<int, 2>, std::array<int, 2>> dst_rect_into {{0, 0}, {640, 480}};
-
-		helloWorldTest.Blit(stretchTest, dst_rect_into, src_rect_into);
-		windowTest.BlitOntoSurface(helloWorldTest);
-		windowTest.Update();
+		std::cout << helloWorldTest << std::endl;
 
 		SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }
 

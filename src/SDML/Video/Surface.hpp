@@ -20,6 +20,14 @@ namespace SDML
 {
     namespace Video
     {
+        enum class YUV_CONVERSION_MODE
+        {
+            JPEG,
+            BT601,
+            BT709,
+            AUTOMATIC
+        };
+
         class Window;
 
         class Surface
@@ -66,6 +74,12 @@ namespace SDML
             bool SetClipRectangle(const std::pair<std::array<int, 2>, std::array<int, 2>>& clip_rect_info);
 
             void DisableClipping();
+
+            YUV_CONVERSION_MODE Get_YUV_ConversionMode() const;
+
+            YUV_CONVERSION_MODE Get_YUV_ConversionModeForResolution(Window& window) const;
+
+            void Set_YUV_ConversionMode(YUV_CONVERSION_MODE mode);
 
             void Blit(Surface& src,
 					  const std::pair<std::array<int, 2>, std::array<int, 2>>& dst_rect_info,
