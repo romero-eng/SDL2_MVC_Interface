@@ -8,6 +8,12 @@ SDML::Video::Surface::Surface(Window& window,
                                                                                                                 SDL_GetWindowSurface(window.Access_SDL_Backend())->format,
                                                                                                                 0)}
 {
+    if(this->internal_SDL_surface == nullptr){
+        throw std::runtime_error(fmt::format("Could not create the '{:s}' Texture: {:s}",
+                                             this->name,
+                                             SDL_GetError()));
+    }
+
     if(!(this->Has_RLE_Acceleration())){
         this->EnableOrDisable_RLE_Acceleration(true);
     }

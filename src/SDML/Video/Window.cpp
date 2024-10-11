@@ -38,7 +38,14 @@ SDML::Video::Window::Window(const char *title,
 																		 		  SDL_WINDOWPOS_UNDEFINED,
 																		 		  area[0],
 																				  area[1],
-																		 		  flags)} {}
+																		 		  flags)}
+{
+    if(this->internal_SDL_window == nullptr){
+        throw std::runtime_error(fmt::format("Could not create the '{:s}' Window: {:s}",
+                                             title,
+                                             SDL_GetError()));
+    }
+}
 
 
 SDML::Video::Window::Window(const char *title,
@@ -49,7 +56,14 @@ SDML::Video::Window::Window(const char *title,
 																				  top_left_point[1],
 																	   			  area[0],
 																	   			  area[1],
-																	   			  flags)} {}
+																	   			  flags)}
+{
+    if(this->internal_SDL_window == nullptr){
+        throw std::runtime_error(fmt::format("Could not create the '{:s}' Window: {:s}",
+                                             title,
+                                             SDL_GetError()));
+    }
+}
 
 
 SDML::Video::Window::~Window()

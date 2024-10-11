@@ -11,24 +11,52 @@ SDML::Video::Texture::Texture(const char* name,
                                                                                                       pixel_format,
                                                                                                       std::to_underlying(access),
                                                                                                       area[0],
-                                                                                                      area[1])} {}
+                                                                                                      area[1])}
+{
+    if(this->internal_SDL_texture == nullptr){
+        throw std::runtime_error(fmt::format("Could not create the '{:s}' Texture: {:s}",
+                                             name,
+                                             SDL_GetError()));
+    }
+}
 
 
 SDML::Video::Texture::Texture(const char* name,
                               SDL_Texture* texture): name{std::string{name}},
-                                                     internal_SDL_texture{texture} {}
+                                                     internal_SDL_texture{texture} 
+{
+    if(this->internal_SDL_texture == nullptr){
+        throw std::runtime_error(fmt::format("Could not create the '{:s}' Texture: {:s}",
+                                             name,
+                                             SDL_GetError()));
+    }
+}
 
 
 SDML::Video::Texture::Texture(Renderer& renderer,
                               Surface& surface): name{surface.GetName()},
                                                  internal_SDL_texture{SDL_CreateTextureFromSurface(renderer.Access_SDL_Backend(),
-                                                                                                   surface.Access_SDL_Backend())} {}
+                                                                                                   surface.Access_SDL_Backend())}
+{
+    if(this->internal_SDL_texture == nullptr){
+        throw std::runtime_error(fmt::format("Could not create the '{:s}' Texture: {:s}",
+                                             this->name,
+                                             SDL_GetError()));
+    }
+}
 
 
 SDML::Video::Texture::Texture(Renderer& renderer,
                               const std::filesystem::path& image_file): name{image_file.stem()},
                                                                         internal_SDL_texture{IMG_LoadTexture(renderer.Access_SDL_Backend(),
-                                                                                                             image_file.string().c_str())} {}
+                                                                                                             image_file.string().c_str())}
+{
+    if(this->internal_SDL_texture == nullptr){
+        throw std::runtime_error(fmt::format("Could not create the '{:s}' Texture: {:s}",
+                                             this->name,
+                                             SDL_GetError()));
+    }
+}
 
 
 SDML::Video::Texture::~Texture() { SDL_DestroyTexture(this->internal_SDL_texture); }
