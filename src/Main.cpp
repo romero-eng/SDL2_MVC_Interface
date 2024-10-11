@@ -21,23 +21,22 @@ int main( int argc, char* args[] )
 
 	try
 	{
+		constexpr std::array<uint8_t, 3> red {0xFF, 0x00, 0x00};
+		constexpr std::array<int, 2> generic_area {100, 100};
+		constexpr std::array<int, 2> first_position {50, 50};
+		constexpr std::array<int, 2> second_position {250, 250};
+		constexpr std::array<int, 2> third_position {450, 250};
+
+		std::vector<std::pair<std::array<int, 2>, std::array<int, 2>>> rectangles {{ first_position, generic_area},
+																				   {second_position, generic_area},
+																				   { third_position, generic_area}};
 
 		SDML::Video::Window windowTest {"Test", 
 										std::array<int, 2> {640, 480},
 										SDML::Video::WindowInitFlag::RESIZABLE};
 
-		SDML::Video::Renderer rendererTest {windowTest,
-										    SDML::Video::RendererInitFlag::ACCELERATED};
-
-		std::cout << rendererTest << std::endl;
-
-		SDML::Video::Surface helloWorldTest {windowTest,
-											 std::filesystem::current_path().parent_path().parent_path()/"res"/"hello_world.bmp"};
-
-		SDML::Video::Texture helloWorldTest2 {rendererTest, helloWorldTest};
-
-		rendererTest.Copy(helloWorldTest2);
-		rendererTest.Update();
+		windowTest.DrawRects(rectangles, red);
+		windowTest.UpdateRects(rectangles);
 
 		SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }
 

@@ -479,6 +479,35 @@ void SDML::Video::Window::Update()
 }
 
 
+void SDML::Video::Window::UpdateRects(const std::vector<std::pair<std::array<int, 2>, std::array<int, 2>>>& rects_info)
+{
+	std::size_t num_rectangles {rects_info.size()};
+
+	SDL_Rect* rects = new SDL_Rect[num_rectangles];
+	try {
+
+		for(std::size_t i = 0; i < num_rectangles; i++) {
+			const auto& [top_left_point, area] {rects_info[i]};
+			const auto& [top_left_x, top_left_y] = top_left_point;
+			const auto& [width, height] = area;
+			rects[i] = SDL_Rect {top_left_x, top_left_y, width, height};
+		}
+
+		if(SDL_UpdateWindowSurfaceRects(this->internal_SDL_window, rects, static_cast<int>(num_rectangles)) < 0) {
+			throw std::runtime_error(fmt::format("Could not draw rectangles for the '{:s}' Window: {:s}",
+												 this->GetTitle(),
+												 SDL_GetError()));
+		}
+
+	} catch (...) {
+		delete [] rects;
+		throw;
+	}
+
+	delete [] rects;
+}
+
+
 SDL_Window* SDML::Video::Window::Access_SDL_Backend() { return this->internal_SDL_window; }
 
 

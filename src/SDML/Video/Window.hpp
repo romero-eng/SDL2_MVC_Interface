@@ -169,6 +169,8 @@ namespace SDML
 
 			void Update();
 
+			void UpdateRects(const std::vector<std::pair<std::array<int, 2>, std::array<int, 2>>>& rects_info);
+
 			SDL_Window* Access_SDL_Backend();
 		};
 	}
