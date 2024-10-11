@@ -3,6 +3,7 @@
 
 // Custom Code from this project
 #include "../../Misc/PrettyPrint.hpp"
+#include "Surface.hpp"
 
 // Third-party Libraries
 #include <SDL2/SDL.h>
@@ -153,6 +154,14 @@ namespace SDML
 			/*Not sure this function actually does anything, but I'll
 			leave it for the sake of completeness.*/
 			void Flash(FlashOperation operation);
+
+			void BlitOntoSurface(Surface& src,
+								 const std::pair<std::array<int, 2>, std::array<int, 2>>& dst_rect_info,
+								 const std::pair<std::array<int, 2>, std::array<int, 2>>& src_rect_info);
+
+			void BlitOntoSurface(Surface& src);
+
+			void Update();
 
 			SDL_Window* Access_SDL_Backend();
 		};

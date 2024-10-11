@@ -26,13 +26,16 @@ int main( int argc, char* args[] )
 		constexpr std::pair<std::array<int, 2>, std::array<int, 2>> first_rectangle {{50, 50}, 
 																					 {100, 100}};
 		*/
-	
+
 		SDML::Video::Window windowTest {"Test", 
 										std::array<int, 2> {640, 480},
 										SDML::Video::WindowInitFlag::RESIZABLE};
 
 		SDML::Video::Surface surfaceTest {windowTest,
 										  std::filesystem::current_path().parent_path().parent_path()/"res"/"hello_world.bmp"};
+
+
+		std::cout << surfaceTest << std::endl;
 
 		// surfaceTest.DrawRect(first_rectangle, red);
 

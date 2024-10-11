@@ -355,6 +355,49 @@ void SDML::Video::Window::Flash(FlashOperation operation)
 }
 
 
+void SDML::Video::Window::BlitOntoSurface(Surface& src,
+										  const std::pair<std::array<int, 2>, std::array<int, 2>>& dst_rect_info,
+										  const std::pair<std::array<int, 2>, std::array<int, 2>>& src_rect_info)
+{
+	const auto& [dst_top_left_point, dst_area] = dst_rect_info;
+	const auto& [dst_top_left_x, dst_top_left_y] = dst_top_left_point;
+	const auto& [dst_width, dst_height] = dst_area;
+
+	SDL_Rect dst_rect {dst_top_left_x, dst_top_left_y, dst_width, dst_height};
+
+	const auto& [src_top_left_point, src_area] = src_rect_info;
+	const auto& [src_top_left_x, src_top_left_y] = src_top_left_point;
+	const auto& [src_width, src_height] = src_area;
+
+	SDL_Rect src_rect {src_top_left_x, src_top_left_y, src_width, src_height};
+
+	if(SDL_UpperBlit(src.Access_SDL_Backend(), &src_rect, SDL_GetWindowSurface(this->internal_SDL_window), &dst_rect) < 0) {
+		throw std::runtime_error(fmt::format("Could not blit surface onto the '{:s}' Window: {:s}",
+											 this->GetTitle(),
+											 SDL_GetError()));
+	}
+}
+
+void SDML::Video::Window::BlitOntoSurface(Surface& src)
+{
+	if(SDL_UpperBlit(src.Access_SDL_Backend(), nullptr, SDL_GetWindowSurface(this->internal_SDL_window), nullptr) < 0) {
+		throw std::runtime_error(fmt::format("Could not blit surface onto the '{:s}' Window: {:s}",
+											 this->GetTitle(),
+											 SDL_GetError()));
+	}
+}
+
+
+void SDML::Video::Window::Update()
+{
+	if(SDL_UpdateWindowSurface(this->internal_SDL_window) < 0) {
+		throw std::runtime_error(fmt::format("Could not update the surface for the '{:s}' Window: {:s}", 
+											 this->GetTitle(), 
+											 SDL_GetError()));
+	}
+}
+
+
 SDL_Window* SDML::Video::Window::Access_SDL_Backend() { return this->internal_SDL_window; }
 
 

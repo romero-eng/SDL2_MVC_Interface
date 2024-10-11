@@ -42,6 +42,8 @@ namespace SDML
 
             std::string GetName() const;
 
+            std::array<int, 2> GetArea() const;
+
             std::array<uint8_t, 4> GetColor() const;
 
             void SetColor(const std::array<uint8_t, 4>& color);

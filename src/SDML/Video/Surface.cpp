@@ -20,6 +20,13 @@ SDML::Video::Surface::~Surface() { SDL_FreeSurface(this->internal_SDL_surface); 
 std::string SDML::Video::Surface::GetName() const { return this->name; }
 
 
+/* This function makes me feel uneasy since the fields I'm directly accessing
+   are not officially documented anywhere I can see, but I think it's important
+   to be able to see the area of the loaded surface.
+*/
+std::array<int, 2> SDML::Video::Surface::GetArea() const { return std::array<int, 2> {this->internal_SDL_surface->w, this->internal_SDL_surface->h}; }
+
+
 std::array<uint8_t, 4> SDML::Video::Surface::GetColor() const
 {
     uint8_t red;
@@ -191,6 +198,10 @@ std::ostream& operator<<(std::ostream& output,
                          const SDML::Video::Surface& surface)
 {
     Misc::Printables settings {fmt::format("'{:s}' Surface", surface.GetName())};
+
+    std::array<int, 2> area {surface.GetArea()};
+    const auto& [width, height] = area;
+    settings.add_printable("Area", fmt::format("[Width: {:d}, Height: {:d}]", width, height));
 
     const auto& [red, green, blue, alpha] = surface.GetColor();
     settings.add_printable("Color", fmt::format("[Red: {:d}, Green: {:d}, Blue: {:d}, Alpha {:d}]", red, green, blue, alpha));
