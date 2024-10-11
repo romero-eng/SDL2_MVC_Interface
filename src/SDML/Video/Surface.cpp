@@ -150,7 +150,7 @@ std::pair<std::array<int, 2>, std::array<int, 2>> SDML::Video::Surface::GetClipR
 }
 
 
-bool SDML::Video::Surface::SetClipRectangle(std::pair<std::array<int, 2>, std::array<int, 2>> clip_rect_info)
+bool SDML::Video::Surface::SetClipRectangle(const std::pair<std::array<int, 2>, std::array<int, 2>>& clip_rect_info)
 {
     const auto& [top_left_point, area] = clip_rect_info;
     const auto& [top_left_x, top_left_y] = top_left_point;
@@ -168,8 +168,8 @@ void SDML::Video::Surface::DisableClipping() { SDL_SetClipRect(this->internal_SD
 SDL_Surface* SDML::Video::Surface::Access_SDL_Backend() { return this->internal_SDL_surface; }
 
 /*
-void SDML::Video::Surface::DrawRect(std::pair<std::array<int, 2>, std::array<int, 2>> rect_info,
-                                    std::array<uint8_t, 3> color)
+void SDML::Video::Surface::DrawRect(const std::pair<std::array<int, 2>, std::array<int, 2>>& rect_info,
+                                    const std::array<uint8_t, 3>& color)
 {
     const auto& [top_left_point, area] = rect_info;
     const auto& [top_left_x, top_left_y] = top_left_point;

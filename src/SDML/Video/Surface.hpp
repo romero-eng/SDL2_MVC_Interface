@@ -61,13 +61,13 @@ namespace SDML
 
             std::pair<std::array<int, 2>, std::array<int, 2>> GetClipRectangle() const;
 
-            bool SetClipRectangle(std::pair<std::array<int, 2>, std::array<int, 2>> clip_rect_info);
+            bool SetClipRectangle(const std::pair<std::array<int, 2>, std::array<int, 2>>& clip_rect_info);
 
             void DisableClipping();
 
             /*
-            void DrawRect(std::pair<std::array<int, 2>, std::array<int, 2>> rect_info,
-                          std::array<uint8_t, 3> color);
+            void DrawRect(const std::pair<std::array<int, 2>, std::array<int, 2>>& rect_info,
+                          const std::array<uint8_t, 3>& color);
             */
 
             SDL_Surface* Access_SDL_Backend();
