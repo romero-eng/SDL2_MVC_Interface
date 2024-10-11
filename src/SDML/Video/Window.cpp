@@ -389,10 +389,18 @@ void SDML::Video::Window::BlitOntoSurface(Surface& src,
 
 	SDL_Rect src_rect {src_top_left_x, src_top_left_y, src_width, src_height};
 
-	if(SDL_UpperBlit(src.Access_SDL_Backend(), &src_rect, SDL_GetWindowSurface(this->internal_SDL_window), &dst_rect) < 0) {
-		throw std::runtime_error(fmt::format("Could not blit surface onto the '{:s}' Window: {:s}",
-											 this->GetTitle(),
-											 SDL_GetError()));
+	if(src_width*src_height >= dst_width*dst_height){
+		if(SDL_UpperBlit(src.Access_SDL_Backend(), &src_rect, SDL_GetWindowSurface(this->internal_SDL_window), &dst_rect) < 0) {
+			throw std::runtime_error(fmt::format("Could not blit surface onto the '{:s}' Window: {:s}",
+												 this->GetTitle(),
+												 SDL_GetError()));
+		}
+	} else {
+		if(SDL_UpperBlitScaled(src.Access_SDL_Backend(), &src_rect, SDL_GetWindowSurface(this->internal_SDL_window), &dst_rect) < 0) {
+			throw std::runtime_error(fmt::format("Could not blit surface onto the '{:s}' Window: {:s}",
+												 this->GetTitle(),
+												 SDL_GetError()));
+		}
 	}
 }
 
@@ -435,6 +443,7 @@ void SDML::Video::Window::DrawRect(const std::pair<std::array<int, 2>, std::arra
                                              SDL_GetError()));
     }
 }
+
 
 void SDML::Video::Window::DrawRects(const std::vector<std::pair<std::array<int, 2>, std::array<int, 2>>>& rects_info,
                                     const std::array<uint8_t, 3>& color)

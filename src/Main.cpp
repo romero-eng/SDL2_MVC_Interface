@@ -21,26 +21,15 @@ int main( int argc, char* args[] )
 
 	try
 	{
-		constexpr std::array<uint8_t, 3> red {0xFF, 0x00, 0x00};
-
-		constexpr std::pair<std::array<int, 2>, std::array<int, 2>> first_rectangle {{ 50,  50},
-																				   	 {100, 100}};
-
-		constexpr std::pair<std::array<int, 2>, std::array<int, 2>> second_rectangle {{250, 250},
-																		    		  {100, 100}};
-
-		constexpr std::pair<std::array<int, 2>, std::array<int, 2>> third_rectangle {{450, 250},
-																		    		 {100, 100}};
-
-		const std::vector<std::pair<std::array<int, 2>, std::array<int, 2>>> rectangles {first_rectangle,
-																						 second_rectangle,
-																						 third_rectangle};
 
 		SDML::Video::Window windowTest {"Test", 
 										std::array<int, 2> {640, 480},
 										SDML::Video::WindowInitFlag::RESIZABLE};
 
-		windowTest.DrawRects(rectangles, red);
+		SDML::Video::Surface surfaceTest {windowTest,
+										  std::filesystem::current_path().parent_path().parent_path()/"res"/"hello_world.bmp"};
+
+		windowTest.BlitOntoSurface(surfaceTest);
 		windowTest.Update();
 
 		SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }
