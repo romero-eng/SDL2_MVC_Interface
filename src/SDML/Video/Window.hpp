@@ -161,6 +161,9 @@ namespace SDML
 
 			void BlitOntoSurface(Surface& src);
 
+			void DrawRect(const std::pair<std::array<int, 2>, std::array<int, 2>>& rect_info,
+                          const std::array<uint8_t, 3>& color);
+
 			void Update();
 
 			SDL_Window* Access_SDL_Backend();

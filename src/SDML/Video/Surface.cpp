@@ -174,25 +174,6 @@ void SDML::Video::Surface::DisableClipping() { SDL_SetClipRect(this->internal_SD
 
 SDL_Surface* SDML::Video::Surface::Access_SDL_Backend() { return this->internal_SDL_surface; }
 
-/*
-void SDML::Video::Surface::DrawRect(const std::pair<std::array<int, 2>, std::array<int, 2>>& rect_info,
-                                    const std::array<uint8_t, 3>& color)
-{
-    const auto& [top_left_point, area] = rect_info;
-    const auto& [top_left_x, top_left_y] = top_left_point;
-    const auto& [width, height] = area;
-
-    SDL_Rect tmp {top_left_x, top_left_y, width, height};
-
-    const auto& [red, green, blue] = color;
-
-    if(SDL_FillRect(this->internal_SDL_surface, &tmp, SDL_MapRGB(this->internal_SDL_surface->format, red, blue, green)) < 0) {
-        throw std::runtime_error(fmt::format("Could not draw a rectangle over the '{:s}' Surface: {:s}",
-                                             this->GetName(),
-                                             SDL_GetError()));
-    }
-}
-*/
 
 std::ostream& operator<<(std::ostream& output,
                          const SDML::Video::Surface& surface)

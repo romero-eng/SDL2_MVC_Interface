@@ -38,7 +38,16 @@ SDML::Video::Window::Window(const char *title,
 																		 		  SDL_WINDOWPOS_UNDEFINED,
 																		 		  area[0],
 																				  area[1],
-																		 		  flags)} {}
+																		 		  flags)}
+{
+	if(SDL_HasSurfaceRLE(SDL_GetWindowSurface(this->internal_SDL_window))) {
+		if(SDL_SetSurfaceRLE(SDL_GetWindowSurface(this->internal_SDL_window), 1) < 0) {
+    		throw std::runtime_error(fmt::format("Could not enable RLE Acceleration for the '{:s}' Surface: {:s}",
+                		                         this->GetTitle(),
+                        		                 SDL_GetError()));
+    	}
+	}
+}
 
 
 SDML::Video::Window::Window(const char *title,
@@ -49,7 +58,16 @@ SDML::Video::Window::Window(const char *title,
 																				  top_left_point[1],
 																	   			  area[0],
 																	   			  area[1],
-																	   			  flags)} {}
+																	   			  flags)}
+{
+	if(SDL_HasSurfaceRLE(SDL_GetWindowSurface(this->internal_SDL_window))) {
+		if(SDL_SetSurfaceRLE(SDL_GetWindowSurface(this->internal_SDL_window), 1) < 0) {
+    		throw std::runtime_error(fmt::format("Could not enable RLE Acceleration for the '{:s}' Surface: {:s}",
+                		                         this->GetTitle(),
+                        		                 SDL_GetError()));
+    	}
+	}
+}
 
 
 SDML::Video::Window::~Window()
@@ -397,6 +415,25 @@ void SDML::Video::Window::BlitOntoSurface(Surface& src)
 												 SDL_GetError()));
 		}
 	}
+}
+
+
+void SDML::Video::Window::DrawRect(const std::pair<std::array<int, 2>, std::array<int, 2>>& rect_info,
+                                    const std::array<uint8_t, 3>& color)
+{
+    const auto& [top_left_point, area] = rect_info;
+    const auto& [top_left_x, top_left_y] = top_left_point;
+    const auto& [width, height] = area;
+
+    SDL_Rect tmp {top_left_x, top_left_y, width, height};
+
+    const auto& [red, green, blue] = color;
+
+    if(SDL_FillRect(SDL_GetWindowSurface(this->internal_SDL_window), &tmp, SDL_MapRGB(SDL_GetWindowSurface(this->internal_SDL_window)->format, red, blue, green)) < 0) {
+        throw std::runtime_error(fmt::format("Could not draw a rectangle over the '{:s}' Window: {:s}",
+                                             this->GetTitle(),
+                                             SDL_GetError()));
+    }
 }
 
 
