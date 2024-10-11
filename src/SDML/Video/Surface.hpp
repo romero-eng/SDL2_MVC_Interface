@@ -65,6 +65,11 @@ namespace SDML
 
             void DisableClipping();
 
+            /*
+            void DrawRect(std::pair<std::array<int, 2>, std::array<int, 2>> rect_info,
+                          std::array<uint8_t, 3> color);
+            */
+
             SDL_Surface* Access_SDL_Backend();
         };
     }

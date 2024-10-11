@@ -21,6 +21,11 @@ int main( int argc, char* args[] )
 
 	try
 	{
+
+		constexpr std::array<uint8_t, 3> red {0xFF, 0x00, 0x00};
+		constexpr std::pair<std::array<int, 2>, std::array<int, 2>> first_rectangle {{50, 50}, 
+																					 {100, 100}};
+
 		SDML::Video::Window windowTest {"Test", 
 										std::array<int, 2> {640, 480},
 										SDML::Video::WindowInitFlag::RESIZABLE};
@@ -28,13 +33,7 @@ int main( int argc, char* args[] )
 		SDML::Video::Surface surfaceTest {windowTest,
 										  std::filesystem::current_path().parent_path().parent_path()/"res"/"hello_world.bmp"};
 
-		constexpr std::pair<std::array<int, 2>, std::array<int, 2>> clip_rect_info {{50, 50}, {100, 100}};
-
-		surfaceTest.SetClipRectangle(clip_rect_info);
-		std::cout << surfaceTest << std::endl;
-
-		surfaceTest.DisableClipping();
-		std::cout << surfaceTest << std::endl;
+		// surfaceTest.DrawRect(first_rectangle, red);
 
 		SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }
 
