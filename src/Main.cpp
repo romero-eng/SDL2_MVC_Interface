@@ -6,39 +6,65 @@
 #include "SDML/Video/Surface.hpp"
 #include "SDML/Video/Renderer.hpp"
 #include "SDML/Video/Texture.hpp"
-
+#include "Misc/PrettyPrint.hpp"
 
 // C++ Standard Libraries
 #include <filesystem>
 #include <iostream>
 
 
+class GenericEvent
+{
+private:
+	uint32_t type_integer;
+	uint32_t timestamp;
+
+public:
+	GenericEvent(SDL_CommonEvent& event): type_integer{event.type},
+				 					  	  timestamp{event.timestamp} {};
+
+	uint32_t GetTypeInteger() const { return this->type_integer; }
+
+	uint32_t GetTimeStamp() const {return this->timestamp; }
+};
+
+
+std::ostream& operator<<(std::ostream& output, const GenericEvent& event)
+{
+	Misc::Printables event_description {"Generic Event"};
+	event_description.add_printable("Type", fmt::format("{:#x}", event.GetTypeInteger()));
+	event_description.add_printable("Timestamp", fmt::format("{:d}", event.GetTimeStamp()));
+
+	return output << event_description.print() << std::endl;
+}
+
+
 int main( int argc, char* args[] )
 {
 
-	SDML::Subsystem::Initialize(SDML::Subsystem::InitFlag::VIDEO);
+	SDML::Subsystem::Initialize(SDML::Subsystem::InitFlag::VIDEO | SDML::Subsystem::InitFlag::EVENTS);
 	SDML::Image::Initialize(0);
 
 	try
 	{
-		constexpr std::array<uint8_t, 3> red {0xFF, 0x00, 0x00};
-		constexpr std::array<int, 2> generic_area {100, 100};
-		constexpr std::array<int, 2> first_position {50, 50};
-		constexpr std::array<int, 2> second_position {250, 250};
-		constexpr std::array<int, 2> third_position {450, 250};
-
-		std::vector<std::pair<std::array<int, 2>, std::array<int, 2>>> rectangles {{ first_position, generic_area},
-																				   {second_position, generic_area},
-																				   { third_position, generic_area}};
-
 		SDML::Video::Window windowTest {"Test", 
 										std::array<int, 2> {640, 480},
 										SDML::Video::WindowInitFlag::RESIZABLE};
 
-		windowTest.DrawRects(rectangles, red);
-		windowTest.UpdateRects(rectangles);
+		std::cout << std::hex;
 
-		SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }
+		SDL_Event event;
+		bool quit = false;
+		while(!quit) {
+			while( SDL_PollEvent( &event ) ){
+
+				std::cout << GenericEvent{event.common} << std::endl;
+
+				if(event.type == SDL_QUIT) {
+					quit = true;
+				}
+			}
+		}
 
 	}
 	catch(const std::exception& error_message)
