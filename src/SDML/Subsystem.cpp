@@ -35,6 +35,18 @@ void SDML::Image::Quit() { IMG_Quit(); }
 
 void SDML::Subsystem::Initialize(uint32_t subsystems)
 {
+	SDL_version compiled_version;
+	SDL_version linked_version;
+	SDL_VERSION(&compiled_version);
+	SDL_GetVersion(&linked_version);
+	std::cout << fmt::format("Compiled SDL v.{:d}.{:d}.{:d}\nLinked SDL v.{:d}.{:d}.{:d}",
+							  compiled_version.major,
+							  compiled_version.minor,
+							  compiled_version.patch,
+							  linked_version.major,
+							  linked_version.minor,
+							  linked_version.patch) << std::endl << std::endl;
+
 	if(SDL_Init(subsystems) < 0) {
 
 		constexpr std::array<std::pair<std::string_view, InitFlag>, 7> subsystems {{{"Timer", 			InitFlag::TIMER},
