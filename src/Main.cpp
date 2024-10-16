@@ -17,10 +17,12 @@
 class GenericEvent
 {
 private:
+
 	uint32_t type_integer;
 	std::chrono::time_point<std::chrono::system_clock> timestamp;
 
 public:
+
 	GenericEvent(const SDL_CommonEvent& event,
 				 const std::chrono::time_point<std::chrono::system_clock> init_time_point): type_integer{event.type},
 				 																			timestamp {init_time_point + std::chrono::duration<int, std::milli>(event.timestamp)} {};
@@ -31,10 +33,36 @@ public:
 };
 
 
-std::ostream& operator<<(std::ostream& output, const GenericEvent& event)
+class QuitEvent
+{
+private:
+
+	std::chrono::time_point<std::chrono::system_clock> timestamp;
+
+public:
+
+	QuitEvent(const SDL_QuitEvent& event,
+			  const std::chrono::time_point<std::chrono::system_clock> init_time_point): timestamp{init_time_point + std::chrono::duration<int, std::milli>(event.timestamp)} {};
+
+	std::chrono::time_point<std::chrono::system_clock> GetTimeStamp() const { return this->timestamp; }
+};
+
+
+std::ostream& operator<<(std::ostream& output,
+						 const GenericEvent& event)
 {
 	Misc::Printables event_description {"Generic Event"};
 	event_description.add_printable("Type", fmt::format("{:#x}", event.GetTypeInteger()));
+	event_description.add_printable("Timestamp", Misc::time_to_string(event.GetTimeStamp()));
+
+	return output << event_description.print() << std::endl;
+}
+
+
+std::ostream& operator<<(std::ostream& output,
+						 const QuitEvent& event)
+{
+	Misc::Printables event_description {"Quit Event"};
 	event_description.add_printable("Timestamp", Misc::time_to_string(event.GetTimeStamp()));
 
 	return output << event_description.print() << std::endl;
@@ -58,9 +86,16 @@ int main( int argc, char* args[] )
 		SDL_Event event;
 		bool quit = false;
 		while(!quit) {
-			while( SDL_PollEvent( &event ) ){
+			while(SDL_PollEvent(&event)){
 
-				std::cout << GenericEvent{event.common, init_time_point} << std::endl;
+				switch(event.type) {
+					case SDL_QUIT:
+						std::cout << QuitEvent(event.quit, init_time_point) << std::endl;
+						break;
+					default:
+						std::cout << GenericEvent{event.common, init_time_point} << std::endl;
+						break;
+				}
 
 				if(event.type == SDL_QUIT) {
 					quit = true;
