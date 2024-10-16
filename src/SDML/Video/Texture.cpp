@@ -62,6 +62,53 @@ SDML::Video::Texture::Texture(Renderer& renderer,
 SDML::Video::Texture::~Texture() { SDL_DestroyTexture(this->internal_SDL_texture); }
 
 
+std::string SDML::Video::Texture::to_string() const
+{
+    std::string texture_access_string;
+    switch(this->GetTextureAccess()) {
+        case SDML::Video::TextureAccess::STATIC:
+            texture_access_string = "Static";
+            break;
+        case SDML::Video::TextureAccess::STREAMING:
+            texture_access_string = "Streaming";
+            break;
+        case SDML::Video::TextureAccess::TARGET:
+            texture_access_string = "Target";
+            break;
+    }
+
+    std::string scale_mode_string;
+    switch(this->GetScaleMode()) {
+        case SDML::Video::ScaleMode::NEAREST:
+            scale_mode_string = "Nearest";
+            break;
+        case SDML::Video::ScaleMode::LINEAR:
+            scale_mode_string = "Linear";
+            break;
+        case SDML::Video::ScaleMode::BEST:
+            scale_mode_string = "Best";
+            break;
+    }
+
+    Misc::Printables printables {fmt::format("'{:s}' Texture", this->GetName())};
+
+    std::string pixel_format {this->GetPixelFormatName()};
+    printables.add_printable("Pixel Format Name", pixel_format);
+    printables.add_printable(   "Texture Access", texture_access_string);
+
+    const auto& [width, height] {this->GetArea()};
+    printables.add_printable("Area", fmt::format("[Width: {:d}, Height: {:d}]", width, height));
+
+    const auto& [red, green, blue, alpha] {this->GetColor()};
+    printables.add_printable("Color", fmt::format("[Red: {:d}, Green: {:d}, Blue: {:d}, Alpha: {:d}]", red, green, blue, alpha));
+
+    printables.add_printable("Blend Mode", Blending::to_string(this->GetBlendMode()));
+    printables.add_printable("Scale Mode", scale_mode_string);
+
+    return printables.print();
+}
+
+
 std::string SDML::Video::Texture::GetName() const { return this->name; }
 
 
@@ -169,7 +216,7 @@ void SDML::Video::Texture::SetColor(const std::array<uint8_t, 4> color)
 }
 
 
-SDML::Video::BlendMode SDML::Video::Texture::GetBlendMode() const
+SDML::Video::Blending::Mode SDML::Video::Texture::GetBlendMode() const
 {
     SDL_BlendMode tmp;
 
@@ -179,13 +226,13 @@ SDML::Video::BlendMode SDML::Video::Texture::GetBlendMode() const
                                        SDL_GetError()));
     }
 
-    return SDL_to_SDML(tmp);
+    return Blending::SDL_to_SDML(tmp);
 }
 
 
-void SDML::Video::Texture::SetBlendMode(const BlendMode& mode)
+void SDML::Video::Texture::SetBlendMode(const Blending::Mode& mode)
 {
-    if(SDL_SetTextureBlendMode(this->internal_SDL_texture, SDML_to_SDL(mode)) < 0) {
+    if(SDL_SetTextureBlendMode(this->internal_SDL_texture, Blending::SDML_to_SDL(mode)) < 0) {
         throw std::runtime_error(fmt::format("Could not set the blend mode for the '{:s}' Texture: {:s}",
                                              this->GetName(),
                                              SDL_GetError()));
@@ -248,52 +295,7 @@ SDL_Texture* SDML::Video::Texture::Access_SDL_Backend() { return this->internal_
 
 std::ostream& operator<<(std::ostream& output,
                          const SDML::Video::Texture& texture)
-{
-    std::string texture_access_string;
-    switch(texture.GetTextureAccess()) {
-        case SDML::Video::TextureAccess::STATIC:
-            texture_access_string = "Static";
-            break;
-        case SDML::Video::TextureAccess::STREAMING:
-            texture_access_string = "Streaming";
-            break;
-        case SDML::Video::TextureAccess::TARGET:
-            texture_access_string = "Target";
-            break;
-    }
-
-    std::string scale_mode_string;
-    switch(texture.GetScaleMode()) {
-        case SDML::Video::ScaleMode::NEAREST:
-            scale_mode_string = "Nearest";
-            break;
-        case SDML::Video::ScaleMode::LINEAR:
-            scale_mode_string = "Linear";
-            break;
-        case SDML::Video::ScaleMode::BEST:
-            scale_mode_string = "Best";
-            break;
-    }
-
-    Misc::Printables printables {fmt::format("'{:s}' Texture", texture.GetName())};
-
-    std::string pixel_format {texture.GetPixelFormatName()};
-    printables.add_printable("Pixel Format Name", pixel_format);
-    printables.add_printable(   "Texture Access", texture_access_string);
-
-    const auto& [width, height] {texture.GetArea()};
-    printables.add_printable("Area", fmt::format("[Width: {:d}, Height: {:d}]", width, height));
-
-    const auto& [red, green, blue, alpha] {texture.GetColor()};
-    printables.add_printable("Color", fmt::format("[Red: {:d}, Green: {:d}, Blue: {:d}, Alpha: {:d}]", red, green, blue, alpha));
-
-    printables.add_printable("Blend Mode", to_string(texture.GetBlendMode()));
-    printables.add_printable("Scale Mode", scale_mode_string);
-
-    output << printables.print();
-
-    return output;
-}
+{ return output << texture.to_string(); }
 
 
 #else

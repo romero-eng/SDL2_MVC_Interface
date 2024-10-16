@@ -2,28 +2,28 @@
 #include "BlendMode.hpp"
 
 
-SDML::Video::BlendMode SDML::Video::SDL_to_SDML(const SDL_BlendMode& input_mode)
+SDML::Video::Blending::Mode SDML::Video::Blending::SDL_to_SDML(const SDL_BlendMode& input_mode)
 {
-    BlendMode return_mode;
+    Mode return_mode;
 
     switch(input_mode) {
         case SDL_BlendMode::SDL_BLENDMODE_NONE:
-            return_mode = BlendMode::REPLACE;
+            return_mode = Mode::REPLACE;
             break;
         case SDL_BlendMode::SDL_BLENDMODE_BLEND:
-            return_mode = BlendMode::ALPHA;
+            return_mode = Mode::ALPHA;
             break;
         case SDL_BlendMode::SDL_BLENDMODE_ADD:
-            return_mode = BlendMode::ADDITIVE;
+            return_mode = Mode::ADDITIVE;
             break;
         case SDL_BlendMode::SDL_BLENDMODE_MOD:
-            return_mode = BlendMode::MODULATE;
+            return_mode = Mode::MODULATE;
             break;
         case SDL_BlendMode::SDL_BLENDMODE_MUL:
-            return_mode = BlendMode::MODULATE;
+            return_mode = Mode::MODULATE;
             break;
         case SDL_BlendMode::SDL_BLENDMODE_INVALID:
-            return_mode = BlendMode::INVALID;
+            return_mode = Mode::INVALID;
             break;
     }
 
@@ -31,27 +31,27 @@ SDML::Video::BlendMode SDML::Video::SDL_to_SDML(const SDL_BlendMode& input_mode)
 }
 
 
-SDL_BlendMode SDML::Video::SDML_to_SDL(const BlendMode& input_mode)
+SDL_BlendMode SDML::Video::Blending::SDML_to_SDL(const Mode& input_mode)
 {
     SDL_BlendMode return_mode;
 
     switch(input_mode) {
-        case BlendMode::REPLACE:
+        case Mode::REPLACE:
             return_mode = SDL_BLENDMODE_NONE;
             break;
-        case BlendMode::ALPHA:
+        case Mode::ALPHA:
             return_mode = SDL_BLENDMODE_BLEND;
             break;
-        case BlendMode::ADDITIVE:
+        case Mode::ADDITIVE:
             return_mode = SDL_BLENDMODE_ADD;
             break;
-        case BlendMode::MODULATE:
+        case Mode::MODULATE:
             return_mode = SDL_BLENDMODE_MOD;
             break;
-        case BlendMode::MULTIPLY:
+        case Mode::MULTIPLY:
             return_mode = SDL_BLENDMODE_MUL;
             break;
-        case BlendMode::INVALID:
+        case Mode::INVALID:
             return_mode = SDL_BLENDMODE_INVALID;
             break;
     }
@@ -60,27 +60,27 @@ SDL_BlendMode SDML::Video::SDML_to_SDL(const BlendMode& input_mode)
 }
 
 
-std::string SDML::Video::to_string(const BlendMode& mode)
+std::string SDML::Video::Blending::to_string(const Mode& mode)
 {
     std::string blend_mode_string; 
     switch(mode)
     {
-        case BlendMode::REPLACE:
+        case Mode::REPLACE:
             blend_mode_string = "Replace";
             break;
-        case BlendMode::ALPHA:
+        case Mode::ALPHA:
             blend_mode_string = "Alpha";
             break;
-        case BlendMode::ADDITIVE:
+        case Mode::ADDITIVE:
             blend_mode_string = "Additive";
             break;
-        case BlendMode::MODULATE:
+        case Mode::MODULATE:
             blend_mode_string = "Modulate";
             break;
-        case BlendMode::MULTIPLY:
+        case Mode::MULTIPLY:
             blend_mode_string = "Multiply";
             break;
-        case BlendMode::INVALID:
+        case Mode::INVALID:
             blend_mode_string = "Invalid";
             break;
     }

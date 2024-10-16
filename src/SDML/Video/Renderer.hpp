@@ -58,6 +58,8 @@ namespace SDML
 
             ~Renderer();
 
+            std::string to_string() const;
+
             bool CheckInitFlags(uint32_t flags) const;
 
             bool CheckInitFlags(const RendererInitFlag& flag) const;
@@ -72,9 +74,9 @@ namespace SDML
 
             void SetDrawingColor(const std::array<uint8_t, 4>& color);
 
-            BlendMode GetBlendMode () const;
+            Blending::Mode GetBlendMode () const;
 
-            void SetBlendMode(const BlendMode& mode);
+            void SetBlendMode(const Blending::Mode& mode);
 
             std::pair<std::array<int, 2>, std::array<int, 2>> GetViewPort() const;
 

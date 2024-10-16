@@ -11,21 +11,24 @@ namespace SDML
 {
     namespace Video
     {
-        enum class BlendMode
+        namespace Blending
         {
-            REPLACE,
-            ALPHA,
-            ADDITIVE,
-            MODULATE,
-            MULTIPLY,
-            INVALID
-        };
+            enum class Mode
+            {
+                REPLACE,
+                ALPHA,
+                ADDITIVE,
+                MODULATE,
+                MULTIPLY,
+                INVALID
+            };
 
-        BlendMode SDL_to_SDML(const SDL_BlendMode& input_mode);
+            Mode SDL_to_SDML(const SDL_BlendMode& input_mode);
 
-        SDL_BlendMode SDML_to_SDL(const BlendMode& input_mode);
+            SDL_BlendMode SDML_to_SDL(const Mode& input_mode);
 
-        std::string to_string(const BlendMode& mode);
+            std::string to_string(const Mode& mode);
+        }
     }
 }
 

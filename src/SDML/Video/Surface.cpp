@@ -23,6 +23,56 @@ SDML::Video::Surface::Surface(Window& window,
 SDML::Video::Surface::~Surface() { SDL_FreeSurface(this->internal_SDL_surface); }
 
 
+std::string SDML::Video::Surface::to_string() const
+{
+    std::string YUV_string;
+    switch(this->Get_YUV_ConversionMode()) {
+        case SDML::Video::YUV_CONVERSION_MODE::JPEG:
+            YUV_string = "JPG";
+            break;
+        case SDML::Video::YUV_CONVERSION_MODE::BT601:
+            YUV_string = "BT601";
+            break;
+        case SDML::Video::YUV_CONVERSION_MODE::BT709:
+            YUV_string = "BT709";
+            break;
+        case SDML::Video::YUV_CONVERSION_MODE::AUTOMATIC:
+            YUV_string = "Automatic";
+            break;
+    }
+
+    Misc::Printables settings {fmt::format("'{:s}' Surface", this->GetName())};
+
+    const auto& [width, height] {this->GetArea()};
+    settings.add_printable("Area", fmt::format("[Width: {:d}, Height: {:d}]", width, height));
+
+    settings.add_printable("YUV Conversion Mode", YUV_string);
+
+    const auto& [red, green, blue, alpha] {this->GetColor()};
+    settings.add_printable("Color", fmt::format("[Red: {:d}, Green: {:d}, Blue: {:d}, Alpha {:d}]", red, green, blue, alpha));
+    settings.add_printable("Blend Mode", Blending::to_string(this->GetBlendMode()));
+    settings.add_printable("RLE Acceleration", this->Has_RLE_Acceleration());
+
+    
+	std::optional<std::array<uint8_t, 3>> transparent_color {this->GetTransparentColor()};
+	if(transparent_color.has_value()){
+		const auto& [trans_red, trans_green, trans_blue] = transparent_color.value();
+		settings.add_printable("Transparent Color", fmt::format("[Red {:d}, Green {:d}, Blue: {:d}]", trans_red, trans_green, trans_blue));
+	}
+
+    const auto& [clip_top_left_point, clip_area] {this->GetClipRectangle()};
+    const auto& [clip_top_left_x, clip_top_left_y] = clip_top_left_point;
+    const auto& [clip_width, clip_height] = clip_area;
+    settings.add_printable("Clipping Rectangle", fmt::format("[Top Left X: {:d}, Top Left Y: {:d}, Width: {:d}, Height: {:d}]",
+                                                             clip_top_left_x,
+                                                             clip_top_left_y,
+                                                             clip_width,
+                                                             clip_height));
+
+    return settings.print();
+}
+
+
 std::string SDML::Video::Surface::GetName() const { return this->name; }
 
 
@@ -74,7 +124,7 @@ void SDML::Video::Surface::SetColor(const std::array<uint8_t, 4>& color)
 }
 
 
-SDML::Video::BlendMode SDML::Video::Surface::GetBlendMode() const
+SDML::Video::Blending::Mode SDML::Video::Surface::GetBlendMode() const
 {
     SDL_BlendMode tmp;
 
@@ -84,13 +134,13 @@ SDML::Video::BlendMode SDML::Video::Surface::GetBlendMode() const
                                        SDL_GetError()));
     }
 
-    return SDL_to_SDML(tmp);
+    return Blending::SDL_to_SDML(tmp);
 }
 
 
-void SDML::Video::Surface::SetBlendMode(const BlendMode& mode)
+void SDML::Video::Surface::SetBlendMode(const Blending::Mode& mode)
 {
-    if(SDL_SetSurfaceBlendMode(this->internal_SDL_surface, SDML_to_SDL(mode)) < 0) {
+    if(SDL_SetSurfaceBlendMode(this->internal_SDL_surface, Blending::SDML_to_SDL(mode)) < 0) {
         throw std::runtime_error(fmt::format("Could not set the blend mode for the '{:s}' Texture: {:s}",
                                              this->GetName(),
                                              SDL_GetError()));
@@ -299,55 +349,7 @@ SDL_Surface* SDML::Video::Surface::Access_SDL_Backend() { return this->internal_
 
 std::ostream& operator<<(std::ostream& output,
                          const SDML::Video::Surface& surface)
-{
-    std::string YUV_string;
-    switch(surface.Get_YUV_ConversionMode()) {
-        case SDML::Video::YUV_CONVERSION_MODE::JPEG:
-            YUV_string = "JPG";
-            break;
-        case SDML::Video::YUV_CONVERSION_MODE::BT601:
-            YUV_string = "BT601";
-            break;
-        case SDML::Video::YUV_CONVERSION_MODE::BT709:
-            YUV_string = "BT709";
-            break;
-        case SDML::Video::YUV_CONVERSION_MODE::AUTOMATIC:
-            YUV_string = "Automatic";
-            break;
-    }
-
-    Misc::Printables settings {fmt::format("'{:s}' Surface", surface.GetName())};
-
-    const auto& [width, height] {surface.GetArea()};
-    settings.add_printable("Area", fmt::format("[Width: {:d}, Height: {:d}]", width, height));
-
-    settings.add_printable("YUV Conversion Mode", YUV_string);
-
-    const auto& [red, green, blue, alpha] {surface.GetColor()};
-    settings.add_printable("Color", fmt::format("[Red: {:d}, Green: {:d}, Blue: {:d}, Alpha {:d}]", red, green, blue, alpha));
-    settings.add_printable("Blend Mode", to_string(surface.GetBlendMode()));
-    settings.add_printable("RLE Acceleration", surface.Has_RLE_Acceleration());
-
-    
-	std::optional<std::array<uint8_t, 3>> transparent_color {surface.GetTransparentColor()};
-	if(transparent_color.has_value()){
-		const auto& [trans_red, trans_green, trans_blue] = transparent_color.value();
-		settings.add_printable("Transparent Color", fmt::format("[Red {:d}, Green {:d}, Blue: {:d}]", trans_red, trans_green, trans_blue));
-	}
-
-    const auto& [clip_top_left_point, clip_area] {surface.GetClipRectangle()};
-    const auto& [clip_top_left_x, clip_top_left_y] = clip_top_left_point;
-    const auto& [clip_width, clip_height] = clip_area;
-    settings.add_printable("Clipping Rectangle", fmt::format("[Top Left X: {:d}, Top Left Y: {:d}, Width: {:d}, Height: {:d}]",
-                                                             clip_top_left_x,
-                                                             clip_top_left_y,
-                                                             clip_width,
-                                                             clip_height));
-
-    output << settings.print();
-
-    return output;
-}
+{ return output << surface.to_string(); }
 
 
 #else

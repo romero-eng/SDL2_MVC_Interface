@@ -49,6 +49,8 @@ namespace SDML
 
             ~Surface();
 
+            std::string to_string() const;
+
             std::string GetName() const;
 
             std::array<int, 2> GetArea() const;
@@ -57,9 +59,9 @@ namespace SDML
 
             void SetColor(const std::array<uint8_t, 4>& color);
 
-            BlendMode GetBlendMode() const;
+            Blending::Mode GetBlendMode() const;
 
-            void SetBlendMode(const BlendMode& mode);
+            void SetBlendMode(const Blending::Mode& mode);
 
             std::optional<std::array<uint8_t, 3>> GetTransparentColor() const;
 

@@ -24,6 +24,66 @@ SDML::Video::Renderer::Renderer(Window& window): Renderer{window, 0} {};
 SDML::Video::Renderer::~Renderer() { SDL_DestroyRenderer(this->internal_SDL_renderer); }
 
 
+std::string SDML::Video::Renderer::to_string() const
+{
+    Misc::Printables printables {fmt::format("'{:s}' Renderer", this->GetName())};
+    printables.add_printable(          "Is Software Fallback", this->CheckInitFlags(SDML::Video::RendererInitFlag::SOFTWARE));
+    printables.add_printable("Supports Hardware Acceleration", this->CheckInitFlags(SDML::Video::RendererInitFlag::ACCELERATED));
+    printables.add_printable(                "Supports VSync", this->CheckInitFlags(SDML::Video::RendererInitFlag::PRESENTVSYNC));
+    printables.add_printable( "Supports rendering to texture", this->CheckInitFlags(SDML::Video::RendererInitFlag::TARGETTEXTURE));
+    printables.add_printable(           "Clipping is Enabled", this->CheckClippingEnabled());
+    printables.add_printable(          "Integer Scale is set", this->CheckIntegerScale());
+
+    const auto& [width, height] {this->GetArea()};
+    printables.add_printable("Area", fmt::format("[Width: {:d}, Height: {:d}]", width, height));
+
+    const auto& [red, green, blue, alpha] {this->GetDrawingColor()};
+    printables.add_printable("Drawing Color", fmt::format("[Red: {:d}, Green: {:d}, Blue: {:d}, Alpha: {:d}]", red, green, blue, alpha));
+
+    printables.add_printable("Blend Mode", Blending::to_string(this->GetBlendMode()));
+
+    const auto& [viewport_top_left_point, viewport_area] {this->GetViewPort()};
+    const auto& [viewPort_top_left_x, viewport_top_left_y] = viewport_top_left_point;
+    const auto& [viewport_width, viewport_height] = viewport_area;
+    printables.add_printable("Viewport", fmt::format("Area [Width: {:d}, Height: {:d}] from Top Left Point [X: {:d}, Y: {:d}]",
+                             viewPort_top_left_x,
+                             viewport_top_left_y,
+                             viewport_width,
+                             viewport_height));
+
+    std::optional<std::pair<std::array<int, 2>, std::array<int, 2>>> clip_rect_info {this->GetClippingRectangle()};
+    if (clip_rect_info.has_value()){
+        const auto& [clip_rect_top_left_point, clip_rect_area] = *clip_rect_info;
+        const auto& [clip_rect_top_left_x, clip_rect_top_left_y] = clip_rect_top_left_point;
+        const auto& [clip_rect_width, clip_rect_height] = clip_rect_area;
+        printables.add_printable("Clipping Rectangle", fmt::format("Area [Width: {:d}, Height: {:d}] from Top Left Point [X: {:d}, Y: {:d}]",
+                                                                   clip_rect_top_left_x,
+                                                                   clip_rect_top_left_y,
+                                                                   clip_rect_width,
+                                                                   clip_rect_height));
+    }
+
+    std::optional<std::array<int, 2>> logical_area {this->GetLogicalArea()};
+    if(logical_area.has_value()) {
+        const auto& [logical_width, logical_height] = *logical_area;
+        printables.add_printable("Logical Area", fmt::format("[Width: {:d}, Height: {:d}]", logical_width, logical_height));
+    }
+
+    const auto& [scaleX, scaleY] {this->GetScale()};
+    printables.add_printable("Scale", fmt::format("[X-scale: {:f}, Y-scale: {:f}]", scaleX, scaleY));
+
+    const auto& [max_texture_width, max_texture_height] {this->GetMaxTextureArea()};
+    printables.add_printable("Maximum Texture Area", fmt::format("[Width: {:d}, Height: {:d}]", max_texture_width, max_texture_height));
+
+    std::vector<std::string> texture_formats {this->GetTextureFormats()};
+    for(std::size_t index = 0; index < texture_formats.size(); index++) {
+        printables.add_printable(fmt::format("Texture Format #{:d}", index), texture_formats[index]);
+    }
+
+    return printables.print();
+}
+
+
 bool SDML::Video::Renderer::CheckInitFlags(uint32_t flags) const
 {
     SDL_RendererInfo tmp {};
@@ -101,7 +161,7 @@ void SDML::Video::Renderer::SetDrawingColor(const std::array<uint8_t, 4>& color)
 }
 
 
-SDML::Video::BlendMode SDML::Video::Renderer::GetBlendMode() const
+SDML::Video::Blending::Mode SDML::Video::Renderer::GetBlendMode() const
 {
     SDL_BlendMode tmp;
 
@@ -111,13 +171,13 @@ SDML::Video::BlendMode SDML::Video::Renderer::GetBlendMode() const
                                              SDL_GetError()));
     }
 
-    return SDL_to_SDML(tmp);
+    return Blending::SDL_to_SDML(tmp);
 }
 
 
-void SDML::Video::Renderer::SetBlendMode(const BlendMode& mode)
+void SDML::Video::Renderer::SetBlendMode(const Blending::Mode& mode)
 {
-    if(SDL_SetRenderDrawBlendMode(this->internal_SDL_renderer, SDML_to_SDL(mode)) < 0) {
+    if(SDL_SetRenderDrawBlendMode(this->internal_SDL_renderer, Blending::SDML_to_SDL(mode)) < 0) {
         throw std::runtime_error(fmt::format("Could not set the Blend Mode for the '{:s}' Renderer: {:s}",
                                              this->GetName(),
                                              SDL_GetError()));
@@ -1159,65 +1219,7 @@ uint32_t operator|(const SDML::Video::RendererInitFlag& first_flag, uint32_t sec
 
 std::ostream& operator<<(std::ostream& output,
                          const SDML::Video::Renderer& renderer)
-{
-    Misc::Printables printables {fmt::format("'{:s}' Renderer", renderer.GetName())};
-    printables.add_printable(          "Is Software Fallback", renderer.CheckInitFlags(SDML::Video::RendererInitFlag::SOFTWARE));
-    printables.add_printable("Supports Hardware Acceleration", renderer.CheckInitFlags(SDML::Video::RendererInitFlag::ACCELERATED));
-    printables.add_printable(                "Supports VSync", renderer.CheckInitFlags(SDML::Video::RendererInitFlag::PRESENTVSYNC));
-    printables.add_printable( "Supports rendering to texture", renderer.CheckInitFlags(SDML::Video::RendererInitFlag::TARGETTEXTURE));
-    printables.add_printable(           "Clipping is Enabled", renderer.CheckClippingEnabled());
-    printables.add_printable(          "Integer Scale is set", renderer.CheckIntegerScale());
-
-    const auto& [width, height] {renderer.GetArea()};
-    printables.add_printable("Area", fmt::format("[Width: {:d}, Height: {:d}]", width, height));
-
-    const auto& [red, green, blue, alpha] {renderer.GetDrawingColor()};
-    printables.add_printable("Drawing Color", fmt::format("[Red: {:d}, Green: {:d}, Blue: {:d}, Alpha: {:d}]", red, green, blue, alpha));
-
-    printables.add_printable("Blend Mode", to_string(renderer.GetBlendMode()));
-
-    const auto& [viewport_top_left_point, viewport_area] {renderer.GetViewPort()};
-    const auto& [viewPort_top_left_x, viewport_top_left_y] = viewport_top_left_point;
-    const auto& [viewport_width, viewport_height] = viewport_area;
-    printables.add_printable("Viewport", fmt::format("Area [Width: {:d}, Height: {:d}] from Top Left Point [X: {:d}, Y: {:d}]",
-                             viewPort_top_left_x,
-                             viewport_top_left_y,
-                             viewport_width,
-                             viewport_height));
-
-    std::optional<std::pair<std::array<int, 2>, std::array<int, 2>>> clip_rect_info {renderer.GetClippingRectangle()};
-    if (clip_rect_info.has_value()){
-        const auto& [clip_rect_top_left_point, clip_rect_area] = *clip_rect_info;
-        const auto& [clip_rect_top_left_x, clip_rect_top_left_y] = clip_rect_top_left_point;
-        const auto& [clip_rect_width, clip_rect_height] = clip_rect_area;
-        printables.add_printable("Clipping Rectangle", fmt::format("Area [Width: {:d}, Height: {:d}] from Top Left Point [X: {:d}, Y: {:d}]",
-                                                                   clip_rect_top_left_x,
-                                                                   clip_rect_top_left_y,
-                                                                   clip_rect_width,
-                                                                   clip_rect_height));
-    }
-
-    std::optional<std::array<int, 2>> logical_area {renderer.GetLogicalArea()};
-    if(logical_area.has_value()) {
-        const auto& [logical_width, logical_height] = *logical_area;
-        printables.add_printable("Logical Area", fmt::format("[Width: {:d}, Height: {:d}]", logical_width, logical_height));
-    }
-
-    const auto& [scaleX, scaleY] {renderer.GetScale()};
-    printables.add_printable("Scale", fmt::format("[X-scale: {:f}, Y-scale: {:f}]", scaleX, scaleY));
-
-    const auto& [max_texture_width, max_texture_height] {renderer.GetMaxTextureArea()};
-    printables.add_printable("Maximum Texture Area", fmt::format("[Width: {:d}, Height: {:d}]", max_texture_width, max_texture_height));
-
-    std::vector<std::string> texture_formats {renderer.GetTextureFormats()};
-    for(std::size_t index = 0; index < texture_formats.size(); index++) {
-        printables.add_printable(fmt::format("Texture Format #{:d}", index), texture_formats[index]);
-    }
-
-    output << printables;
-
-    return output;
-}
+{ return output << renderer.to_string(); }
 
 
 #else

@@ -67,6 +67,8 @@ namespace SDML
 
             ~Texture();
 
+            std::string to_string() const;
+
             std::string GetName() const;
 
             std::string GetPixelFormatName() const;
@@ -79,9 +81,9 @@ namespace SDML
 
             void SetColor(const std::array<uint8_t, 4> color);
 
-            BlendMode GetBlendMode() const;
+            Blending::Mode GetBlendMode() const;
 
-            void SetBlendMode(const BlendMode& mode);
+            void SetBlendMode(const Blending::Mode& mode);
 
             ScaleMode GetScaleMode() const;
 

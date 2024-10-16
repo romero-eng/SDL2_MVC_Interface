@@ -81,6 +81,70 @@ SDML::Video::Window::~Window()
 }
 
 
+std::string SDML::Video::Window::to_string() const
+{
+	std::string display_orientation_string;
+	switch(this->GetDisplayOrientation())
+	{
+		case SDML::Video::DisplayOrientation::UNKNOWN:
+			display_orientation_string = "Unknown";
+			break;
+		case SDML::Video::DisplayOrientation::LANDSCAPE:
+			display_orientation_string = "Landscape";
+			break;
+		case SDML::Video::DisplayOrientation::LANDSCAPE_FLIPPED:
+			display_orientation_string = "Flipped Landscape";
+			break;
+		case SDML::Video::DisplayOrientation::PORTRAIT:
+			display_orientation_string = "Portrait";
+			break;
+		case SDML::Video::DisplayOrientation::PORTRAIT_FLIPPED:
+			display_orientation_string = "Flipped Portrait";
+			break;
+	}
+
+	Misc::Printables display_mode_settings {fmt::format("'{:s}' Display Mode", this->GetDisplayName())};
+
+	const auto& [display_mode_width, display_mode_height] {this->GetDisplayModeArea()};
+	display_mode_settings.add_printable("Area", fmt::format("[Width: {:d}, Height: {:d}]", display_mode_width, display_mode_height));
+
+	display_mode_settings.add_printable("Refresh Rate", this->GetDisplayModeRefreshRate());
+
+	Misc::Printables display_settings {fmt::format("'{:s}' Display", this->GetDisplayName())};
+
+	const auto& [display_width, display_height] {this->GetDisplayArea()};
+	display_settings.add_printable("Area", fmt::format("[Width: {:d}, Height: {:d}]", display_width, display_height));
+
+	display_settings.add_printable(	     "Orientation", display_orientation_string);
+	display_settings.add_printable("Pixel Format Name", this->GetDisplayModePixelFormatName());
+	display_settings.add_printable(display_mode_settings);
+
+	Misc::Printables window_settings {fmt::format("'{:s}' Window", this->GetTitle())};
+	window_settings.add_printable("ID", this->GetID());
+
+	const auto& [top_left_x, top_left_y] {this->GetTopLeftpoint()};
+	window_settings.add_printable("Top-Left Point", fmt::format("[X: {:d}, Y: {:d}]", top_left_x, top_left_y));
+
+	const auto& [width, height] {this->GetArea()};
+	window_settings.add_printable("Area", fmt::format("[Width: {:d}, Height: {:d}]", width, height));
+
+	const auto& [minimum_width, minimum_height] {this->GetMinimumArea()};
+	window_settings.add_printable("Minimally Allowed Area", fmt::format("[Width: {:d}, Height: {:d}]", minimum_width, minimum_height));
+
+	const auto& [maximum_width, maximum_height] {this->GetMaximumArea()};
+	window_settings.add_printable("Maximally Allowed Area", fmt::format("[Width: {:d}, Height: {:d}]", maximum_width, maximum_height));
+
+	window_settings.add_printable(		   "Brightness", this->GetBrightness());
+	window_settings.add_printable(			  "Opacity", this->GetOpacity());
+	window_settings.add_printable(		 "Pixel Format", this->GetPixelFormatName());
+	window_settings.add_printable(	  "Window is shown", this->CheckWindowInitFlags(SDML::Video::WindowInitFlag::SHOWN));
+	window_settings.add_printable("Window is resizable", this->CheckWindowInitFlags(SDML::Video::WindowInitFlag::RESIZABLE));
+	window_settings.add_printable(display_settings);
+
+	return window_settings.print();
+}
+
+
 int SDML::Video::Window::GetDisplayIndex() const
 {
 	int display_index {SDL_GetWindowDisplayIndex(this->internal_SDL_window)};
@@ -522,69 +586,7 @@ uint32_t operator|(uint32_t first_flag, const SDML::Video::WindowInitFlag& secon
 
 std::ostream& operator<<(std::ostream& output_stream,
 						 const SDML::Video::Window& window)
-{
-	std::string display_orientation_string;
-	switch(window.GetDisplayOrientation())
-	{
-		case SDML::Video::DisplayOrientation::UNKNOWN:
-			display_orientation_string = "Unknown";
-			break;
-		case SDML::Video::DisplayOrientation::LANDSCAPE:
-			display_orientation_string = "Landscape";
-			break;
-		case SDML::Video::DisplayOrientation::LANDSCAPE_FLIPPED:
-			display_orientation_string = "Flipped Landscape";
-			break;
-		case SDML::Video::DisplayOrientation::PORTRAIT:
-			display_orientation_string = "Portrait";
-			break;
-		case SDML::Video::DisplayOrientation::PORTRAIT_FLIPPED:
-			display_orientation_string = "Flipped Portrait";
-			break;
-	}
-
-	Misc::Printables display_mode_settings {fmt::format("'{:s}' Display Mode", window.GetDisplayName())};
-
-	const auto& [display_mode_width, display_mode_height] {window.GetDisplayModeArea()};
-	display_mode_settings.add_printable("Area", fmt::format("[Width: {:d}, Height: {:d}]", display_mode_width, display_mode_height));
-
-	display_mode_settings.add_printable("Refresh Rate", window.GetDisplayModeRefreshRate());
-
-	Misc::Printables display_settings {fmt::format("'{:s}' Display", window.GetDisplayName())};
-
-	const auto& [display_width, display_height] {window.GetDisplayArea()};
-	display_settings.add_printable("Area", fmt::format("[Width: {:d}, Height: {:d}]", display_width, display_height));
-
-	display_settings.add_printable(	     "Orientation", display_orientation_string);
-	display_settings.add_printable("Pixel Format Name", window.GetDisplayModePixelFormatName());
-	display_settings.add_printable(display_mode_settings);
-
-	Misc::Printables window_settings {fmt::format("'{:s}' Window", window.GetTitle())};
-	window_settings.add_printable("ID", window.GetID());
-
-	const auto& [top_left_x, top_left_y] {window.GetTopLeftpoint()};
-	window_settings.add_printable("Top-Left Point", fmt::format("[X: {:d}, Y: {:d}]", top_left_x, top_left_y));
-
-	const auto& [width, height] {window.GetArea()};
-	window_settings.add_printable("Area", fmt::format("[Width: {:d}, Height: {:d}]", width, height));
-
-	const auto& [minimum_width, minimum_height] {window.GetMinimumArea()};
-	window_settings.add_printable("Minimally Allowed Area", fmt::format("[Width: {:d}, Height: {:d}]", minimum_width, minimum_height));
-
-	const auto& [maximum_width, maximum_height] {window.GetMaximumArea()};
-	window_settings.add_printable("Maximally Allowed Area", fmt::format("[Width: {:d}, Height: {:d}]", maximum_width, maximum_height));
-
-	window_settings.add_printable(		   "Brightness", window.GetBrightness());
-	window_settings.add_printable(			  "Opacity", window.GetOpacity());
-	window_settings.add_printable(		 "Pixel Format", window.GetPixelFormatName());
-	window_settings.add_printable(	  "Window is shown", window.CheckWindowInitFlags(SDML::Video::WindowInitFlag::SHOWN));
-	window_settings.add_printable("Window is resizable", window.CheckWindowInitFlags(SDML::Video::WindowInitFlag::RESIZABLE));
-	window_settings.add_printable(display_settings);
-
-	std::cout << window_settings;
-
-	return output_stream;
-}
+{ return output_stream << window.to_string(); }
 
 
 #else

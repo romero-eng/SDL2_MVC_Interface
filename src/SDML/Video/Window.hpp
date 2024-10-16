@@ -113,6 +113,8 @@ namespace SDML
 
 			~Window();
 
+			std::string to_string() const;
+
 			std::string GetTitle() const;
 
 			std::string GetDisplayName() const;
