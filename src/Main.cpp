@@ -34,10 +34,10 @@ int main( int argc, char* args[] )
 
 				switch(event.type) {
 					case SDL_QUIT:
-						std::cout << SDML::Event::QuitEvent(event.quit, init_time_point) << std::endl;
+						std::cout << SDML::Event::QuitEvent(event, init_time_point) << std::endl;
 						break;
 					default:
-						std::cout << SDML::Event::GenericEvent{event.common, init_time_point} << std::endl;
+						std::cout << SDML::Event::GenericEvent{event, init_time_point} << std::endl;
 						break;
 				}
 

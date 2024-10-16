@@ -2,9 +2,19 @@
 #include "Event.hpp"
 
 
-SDML::Event::GenericEvent::GenericEvent(const SDL_CommonEvent& event,
-			                            const std::chrono::time_point<std::chrono::system_clock> init_time_point): type_integer{event.type},
-				 																		        	               timestamp {init_time_point + std::chrono::duration<int, std::milli>(event.timestamp)} {};
+SDML::Event::AbstractEvent::AbstractEvent(const SDL_Event& event,
+                          				  const std::chrono::time_point<std::chrono::system_clock>& init_time_point): timestamp{init_time_point + std::chrono::duration<int, std::milli>(event.common.timestamp)} {}
+
+
+SDML::Event::AbstractEvent::~AbstractEvent() {}
+
+
+std::chrono::time_point<std::chrono::system_clock> SDML::Event::AbstractEvent::GetTimeStamp() const { return this->timestamp; }
+
+
+SDML::Event::GenericEvent::GenericEvent(const SDL_Event& event,
+			                            const std::chrono::time_point<std::chrono::system_clock> init_time_point): AbstractEvent{event, init_time_point},
+																												   type_integer{event.type} {};
 
 
 std::string SDML::Event::GenericEvent::to_string() const
@@ -20,11 +30,8 @@ std::string SDML::Event::GenericEvent::to_string() const
 uint32_t SDML::Event::GenericEvent::GetTypeInteger() const { return this->type_integer; }
 
 
-std::chrono::time_point<std::chrono::system_clock> SDML::Event::GenericEvent::GetTimeStamp() const { return this->timestamp; }
-
-
-SDML::Event::QuitEvent::QuitEvent(const SDL_QuitEvent& event,
-			                      const std::chrono::time_point<std::chrono::system_clock> init_time_point): timestamp{init_time_point + std::chrono::duration<int, std::milli>(event.timestamp)} {};
+SDML::Event::QuitEvent::QuitEvent(const SDL_Event& event,
+			                      const std::chrono::time_point<std::chrono::system_clock> init_time_point): AbstractEvent{event, init_time_point} {};
 
 
 std::string SDML::Event::QuitEvent::to_string() const
@@ -34,9 +41,6 @@ std::string SDML::Event::QuitEvent::to_string() const
 
 	return event_description.print();
 }
-
-
-std::chrono::time_point<std::chrono::system_clock> SDML::Event::QuitEvent::GetTimeStamp() const { return this->timestamp; }
 
 
 std::ostream& operator<<(std::ostream& output,

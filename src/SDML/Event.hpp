@@ -14,39 +14,50 @@ namespace SDML
 {
     namespace Event
     {
-        class GenericEvent
+        class AbstractEvent
+        {
+        private:
+
+            std::chrono::time_point<std::chrono::system_clock> timestamp;
+
+        public:
+
+            AbstractEvent(const SDL_Event& event,
+                          const std::chrono::time_point<std::chrono::system_clock>& init_time_point);
+
+            virtual ~AbstractEvent() = 0;
+
+            virtual std::string to_string() const = 0;
+
+            std::chrono::time_point<std::chrono::system_clock> GetTimeStamp() const;
+        };
+
+
+        class GenericEvent: public AbstractEvent
         {
         private:
 
     	    uint32_t type_integer;
-	        std::chrono::time_point<std::chrono::system_clock> timestamp;
 
         public:
 
-        	GenericEvent(const SDL_CommonEvent& event,
+        	GenericEvent(const SDL_Event& event,
 	        			 const std::chrono::time_point<std::chrono::system_clock> init_time_point);
 
-            std::string to_string() const;
+            std::string to_string() const override;
 
     	    uint32_t GetTypeInteger() const;
-
-	        std::chrono::time_point<std::chrono::system_clock> GetTimeStamp() const;
         };
 
-        class QuitEvent
+
+        class QuitEvent: public AbstractEvent
         {
-        private:
-
-    	    std::chrono::time_point<std::chrono::system_clock> timestamp;
-
         public:
 
-        	QuitEvent(const SDL_QuitEvent& event,
+        	QuitEvent(const SDL_Event& event,
 	        		  const std::chrono::time_point<std::chrono::system_clock> init_time_point);
 
-            std::string to_string() const;
-
-	        std::chrono::time_point<std::chrono::system_clock> GetTimeStamp() const;
+            std::string to_string() const override;
         };
     }
 }
