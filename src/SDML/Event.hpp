@@ -10,45 +10,49 @@
 // C++ Standard Libraries
 #include <chrono>
 
-
-class GenericEvent
+namespace SDML
 {
-private:
+    namespace Event
+    {
+       class GenericEvent
+        {
+        private:
 
-	uint32_t type_integer;
-	std::chrono::time_point<std::chrono::system_clock> timestamp;
+    	    uint32_t type_integer;
+	        std::chrono::time_point<std::chrono::system_clock> timestamp;
 
-public:
+        public:
 
-	GenericEvent(const SDL_CommonEvent& event,
-				 const std::chrono::time_point<std::chrono::system_clock> init_time_point);
+        	GenericEvent(const SDL_CommonEvent& event,
+	        			 const std::chrono::time_point<std::chrono::system_clock> init_time_point);
 
-	uint32_t GetTypeInteger() const;
+    	    uint32_t GetTypeInteger() const;
 
-	std::chrono::time_point<std::chrono::system_clock> GetTimeStamp() const;
-};
+	        std::chrono::time_point<std::chrono::system_clock> GetTimeStamp() const;
+    };
 
 
-class QuitEvent
-{
-private:
+        class QuitEvent
+        {
+        private:
 
-	std::chrono::time_point<std::chrono::system_clock> timestamp;
+    	    std::chrono::time_point<std::chrono::system_clock> timestamp;
 
-public:
+        public:
 
-	QuitEvent(const SDL_QuitEvent& event,
-			  const std::chrono::time_point<std::chrono::system_clock> init_time_point);
+        	QuitEvent(const SDL_QuitEvent& event,
+	        		  const std::chrono::time_point<std::chrono::system_clock> init_time_point);
 
-	std::chrono::time_point<std::chrono::system_clock> GetTimeStamp() const;
-};
+	        std::chrono::time_point<std::chrono::system_clock> GetTimeStamp() const;
+        };
+    }
+}
+
+std::ostream& operator<<(std::ostream& output,
+						 const SDML::Event::GenericEvent& event);
 
 
 std::ostream& operator<<(std::ostream& output,
-						 const GenericEvent& event);
-
-
-std::ostream& operator<<(std::ostream& output,
-						 const QuitEvent& event);
+						 const SDML::Event::QuitEvent& event);
 
 #endif

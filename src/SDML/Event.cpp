@@ -2,24 +2,27 @@
 #include "Event.hpp"
 
 
-GenericEvent::GenericEvent(const SDL_CommonEvent& event,
-			               const std::chrono::time_point<std::chrono::system_clock> init_time_point): type_integer{event.type},
-				 																		        	  timestamp {init_time_point + std::chrono::duration<int, std::milli>(event.timestamp)} {};
-
-uint32_t GenericEvent::GetTypeInteger() const { return this->type_integer; }
-
-std::chrono::time_point<std::chrono::system_clock> GenericEvent::GetTimeStamp() const { return this->timestamp; }
+SDML::Event::GenericEvent::GenericEvent(const SDL_CommonEvent& event,
+			                            const std::chrono::time_point<std::chrono::system_clock> init_time_point): type_integer{event.type},
+				 																		        	               timestamp {init_time_point + std::chrono::duration<int, std::milli>(event.timestamp)} {};
 
 
+uint32_t SDML::Event::GenericEvent::GetTypeInteger() const { return this->type_integer; }
 
-QuitEvent::QuitEvent(const SDL_QuitEvent& event,
-			         const std::chrono::time_point<std::chrono::system_clock> init_time_point): timestamp{init_time_point + std::chrono::duration<int, std::milli>(event.timestamp)} {};
 
-std::chrono::time_point<std::chrono::system_clock> QuitEvent::GetTimeStamp() const { return this->timestamp; }
+std::chrono::time_point<std::chrono::system_clock> SDML::Event::GenericEvent::GetTimeStamp() const { return this->timestamp; }
+
+
+
+SDML::Event::QuitEvent::QuitEvent(const SDL_QuitEvent& event,
+			                      const std::chrono::time_point<std::chrono::system_clock> init_time_point): timestamp{init_time_point + std::chrono::duration<int, std::milli>(event.timestamp)} {};
+
+
+std::chrono::time_point<std::chrono::system_clock> SDML::Event::QuitEvent::GetTimeStamp() const { return this->timestamp; }
 
 
 std::ostream& operator<<(std::ostream& output,
-						 const GenericEvent& event)
+						 const SDML::Event::GenericEvent& event)
 {
 	Misc::Printables event_description {"Generic Event"};
 	event_description.add_printable("Type", fmt::format("{:#x}", event.GetTypeInteger()));
@@ -30,7 +33,7 @@ std::ostream& operator<<(std::ostream& output,
 
 
 std::ostream& operator<<(std::ostream& output,
-						 const QuitEvent& event)
+						 const SDML::Event::QuitEvent& event)
 {
 	Misc::Printables event_description {"Quit Event"};
 	event_description.add_printable("Timestamp", Misc::time_to_string(event.GetTimeStamp()));
