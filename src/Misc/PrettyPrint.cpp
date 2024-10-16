@@ -6,7 +6,7 @@ std::string Misc::time_to_string(const std::chrono::time_point<std::chrono::syst
 {
     const std::chrono::time_point<std::chrono::system_clock> time_point_wo_ms {std::chrono::floor<std::chrono::seconds>(time_point)};
 
-    const int init_time_point_only_ms = std::chrono::duration_cast<std::chrono::milliseconds>(time_point - time_point_wo_ms).count();
+    const long int init_time_point_only_ms = std::chrono::duration_cast<std::chrono::milliseconds>(time_point - time_point_wo_ms).count();
 
     const std::time_t tmp {std::chrono::system_clock::to_time_t(time_point)};  // Creating a temporary std::time_t variable here because std::localtime() only accepts pointers (and not r-values)
     std::ostringstream output;                                                 // Creating an ostringstream object here since the objects std::put_time() were only designed to work with output streams
@@ -21,7 +21,7 @@ std::string Misc::date_and_time_to_string(const std::chrono::time_point<std::chr
 {
     const std::chrono::time_point<std::chrono::system_clock> time_point_wo_ms {std::chrono::floor<std::chrono::seconds>(time_point)};
 
-    const int init_time_point_only_ms = std::chrono::duration_cast<std::chrono::milliseconds>(time_point - time_point_wo_ms).count();
+    const long int init_time_point_only_ms = std::chrono::duration_cast<std::chrono::milliseconds>(time_point - time_point_wo_ms).count();
 
     const std::time_t tmp {std::chrono::system_clock::to_time_t(time_point)};  // Creating a temporary std::time_t variable here because std::localtime() only accepts pointers (and not r-values)
     std::ostringstream output;                                                 // Creating an ostringstream object here since the objects std::put_time() were only designed to work with output streams

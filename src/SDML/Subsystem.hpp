@@ -16,6 +16,7 @@
 #include <vector>
 #include <string>
 #include <string_view>
+#include <chrono>
 
 namespace SDML
 {

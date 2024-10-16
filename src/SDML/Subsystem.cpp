@@ -7,7 +7,7 @@ void SDML::Image::Initialize(InitFlag subsystem) { return Initialize(std::to_und
 
 void SDML::Image::Initialize(uint32_t subsystems)
 {
-	if(subsystems == static_cast<uint32_t>(IMG_Init(static_cast<int>(subsystems)))) {
+	if(subsystems != static_cast<uint32_t>(IMG_Init(static_cast<int>(subsystems)))) {
 
 		constexpr std::array<std::pair<std::string_view, InitFlag>, 6> image_file_types {{{"JPG",  InitFlag::JPG},
 																						  {"PNG",  InitFlag::PNG},
@@ -41,6 +41,7 @@ void SDML::Subsystem::Initialize(uint32_t subsystems)
 	SDL_version linked_version;
 	SDL_VERSION(&compiled_version);
 	SDL_GetVersion(&linked_version);
+	std::cout << Misc::date_and_time_to_string(std::chrono::system_clock::now()) << std::endl;
 	std::cout << fmt::format("Compiled SDL v.{:d}.{:d}.{:d}\nLinked SDL v.{:d}.{:d}.{:d}",
 							  compiled_version.major,
 							  compiled_version.minor,
