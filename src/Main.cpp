@@ -18,15 +18,16 @@ class GenericEvent
 {
 private:
 	uint32_t type_integer;
-	uint32_t timestamp;
+	std::chrono::time_point<std::chrono::system_clock> timestamp;
 
 public:
-	GenericEvent(SDL_CommonEvent& event): type_integer{event.type},
-				 					  	  timestamp{event.timestamp} {};
+	GenericEvent(const SDL_CommonEvent& event,
+				 const std::chrono::time_point<std::chrono::system_clock> init_time_point): type_integer{event.type},
+				 																			timestamp {init_time_point + std::chrono::duration<int, std::milli>(event.timestamp)} {};
 
 	uint32_t GetTypeInteger() const { return this->type_integer; }
 
-	uint32_t GetTimeStamp() const {return this->timestamp; }
+	std::chrono::time_point<std::chrono::system_clock> GetTimeStamp() const { return this->timestamp; }
 };
 
 
@@ -34,7 +35,7 @@ std::ostream& operator<<(std::ostream& output, const GenericEvent& event)
 {
 	Misc::Printables event_description {"Generic Event"};
 	event_description.add_printable("Type", fmt::format("{:#x}", event.GetTypeInteger()));
-	event_description.add_printable("Timestamp", fmt::format("{:d}", event.GetTimeStamp()));
+	event_description.add_printable("Timestamp", Misc::time_to_string(event.GetTimeStamp()));
 
 	return output << event_description.print() << std::endl;
 }
@@ -43,7 +44,7 @@ std::ostream& operator<<(std::ostream& output, const GenericEvent& event)
 int main( int argc, char* args[] )
 {
 
-	SDML::Subsystem::Initialize(SDML::Subsystem::InitFlag::VIDEO | SDML::Subsystem::InitFlag::EVENTS);
+	std::chrono::time_point<std::chrono::system_clock> init_time_point {SDML::Subsystem::Initialize(SDML::Subsystem::InitFlag::VIDEO | SDML::Subsystem::InitFlag::EVENTS)};
 	SDML::Image::Initialize(0);
 
 	try
@@ -59,7 +60,7 @@ int main( int argc, char* args[] )
 		while(!quit) {
 			while( SDL_PollEvent( &event ) ){
 
-				std::cout << GenericEvent{event.common} << std::endl;
+				std::cout << GenericEvent{event.common, init_time_point} << std::endl;
 
 				if(event.type == SDL_QUIT) {
 					quit = true;

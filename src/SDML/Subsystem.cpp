@@ -35,13 +35,15 @@ bool SDML::Image::IsInitialized(InitFlag subsystem) { return IsInitialized(std::
 void SDML::Image::Quit() { IMG_Quit(); }
 
 
-void SDML::Subsystem::Initialize(uint32_t subsystems)
+std::chrono::time_point<std::chrono::system_clock> SDML::Subsystem::Initialize(uint32_t subsystems)
 {
+	std::chrono::time_point<std::chrono::system_clock> init_time_point {std::chrono::system_clock::now()};
+
 	SDL_version compiled_version;
 	SDL_version linked_version;
 	SDL_VERSION(&compiled_version);
 	SDL_GetVersion(&linked_version);
-	std::cout << Misc::date_and_time_to_string(std::chrono::system_clock::now()) << std::endl;
+	std::cout << Misc::date_and_time_to_string(init_time_point) << std::endl;
 	std::cout << fmt::format("Compiled SDL v.{:d}.{:d}.{:d}\nLinked SDL v.{:d}.{:d}.{:d}",
 							  compiled_version.major,
 							  compiled_version.minor,
@@ -121,10 +123,12 @@ void SDML::Subsystem::Initialize(uint32_t subsystems)
 
 		std::cout << video_init_msgs << "\n" << std::endl;
 	}
+
+	return init_time_point;
 }
 
 
-void SDML::Subsystem::Initialize(InitFlag subsystem){ Initialize(std::to_underlying(subsystem)); }
+std::chrono::time_point<std::chrono::system_clock> SDML::Subsystem::Initialize(InitFlag subsystem){ return Initialize(std::to_underlying(subsystem)); }
 
 
 bool SDML::Subsystem::IsInitialized(uint32_t subsystems) { return subsystems == (subsystems & SDL_WasInit(subsystems)); }

@@ -57,9 +57,9 @@ namespace SDML
 			EVERYTHING     = SDL_INIT_EVERYTHING
 		};
 
-		void Initialize(uint32_t subsystems);
+		std::chrono::time_point<std::chrono::system_clock> Initialize(uint32_t subsystems);
 
-		void Initialize(InitFlag subsystem);
+		std::chrono::time_point<std::chrono::system_clock> Initialize(InitFlag subsystem);
 
 		bool IsInitialized(uint32_t subsystems);
 
