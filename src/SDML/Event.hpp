@@ -64,10 +64,9 @@ namespace SDML
 }
 
 std::ostream& operator<<(std::ostream& output,
-						 const SDML::Event::GenericEvent& event);
-
+						 const SDML::Event::QuitEvent& event);
 
 std::ostream& operator<<(std::ostream& output,
-						 const SDML::Event::QuitEvent& event);
+						 const SDML::Event::GenericEvent& event);
 
 #endif
