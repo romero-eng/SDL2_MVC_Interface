@@ -11,6 +11,7 @@
 // C++ Standard Libraries
 #include <filesystem>
 #include <iostream>
+#include <chrono>
 
 
 class GenericEvent

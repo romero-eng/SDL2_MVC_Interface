@@ -1,7 +1,6 @@
 #ifndef PRETTY_PRINT_H
 #define PRETTY_PRINT_H
 
-
 // Third-party Libraries
 #include <fmt/format.h>
 
@@ -9,10 +8,16 @@
 #include <string>
 #include <variant>
 #include <vector>
+#include <chrono>
+#include <iomanip>
 
 
 namespace Misc
 {
+    std::string time_to_string(const std::chrono::time_point<std::chrono::system_clock>& time_point);
+
+    std::string date_and_time_to_string(const std::chrono::time_point<std::chrono::system_clock>& time_point);
+
     class Printables
     {
         private:

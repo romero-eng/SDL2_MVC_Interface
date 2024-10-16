@@ -20,6 +20,8 @@ void SDML::Image::Initialize(uint32_t subsystems)
 		for(std::pair<std::string_view, InitFlag> image_file_type: image_file_types) {
 			err_msg += fmt::format("{:s}: {:s}\n", image_file_type.first, IsInitialized(image_file_type.second) ? "On" : "Off");
 		}
+
+		throw err_msg;
 	}
 }
 
