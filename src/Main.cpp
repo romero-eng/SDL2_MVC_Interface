@@ -27,8 +27,6 @@ int main( int argc, char* args[] )
 										std::array<int, 2> {640, 480},
 										SDML::Video::WindowInitFlag::RESIZABLE};
 
-		std::cout << std::hex;
-
 		SDL_Event event;
 		bool quit = false;
 		while(!quit) {

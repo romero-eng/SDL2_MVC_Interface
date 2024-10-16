@@ -14,7 +14,7 @@ namespace SDML
 {
     namespace Event
     {
-       class GenericEvent
+        class GenericEvent
         {
         private:
 
@@ -29,8 +29,7 @@ namespace SDML
     	    uint32_t GetTypeInteger() const;
 
 	        std::chrono::time_point<std::chrono::system_clock> GetTimeStamp() const;
-    };
-
+        };
 
         class QuitEvent
         {
