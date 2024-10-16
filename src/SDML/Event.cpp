@@ -13,8 +13,8 @@ std::chrono::time_point<std::chrono::system_clock> SDML::Event::AbstractEvent::G
 
 
 SDML::Event::GenericEvent::GenericEvent(const SDL_Event& event,
-			                            const std::chrono::time_point<std::chrono::system_clock> init_time_point): AbstractEvent{event, init_time_point},
-																												   type_integer{event.type} {};
+			                            const std::chrono::time_point<std::chrono::system_clock>& init_time_point): AbstractEvent{event, init_time_point},
+																												    type_integer{event.type} {};
 
 
 std::string SDML::Event::GenericEvent::to_string() const
@@ -31,7 +31,7 @@ uint32_t SDML::Event::GenericEvent::GetTypeInteger() const { return this->type_i
 
 
 SDML::Event::QuitEvent::QuitEvent(const SDL_Event& event,
-			                      const std::chrono::time_point<std::chrono::system_clock> init_time_point): AbstractEvent{event, init_time_point} {};
+			                      const std::chrono::time_point<std::chrono::system_clock>& init_time_point): AbstractEvent{event, init_time_point} {};
 
 
 std::string SDML::Event::QuitEvent::to_string() const

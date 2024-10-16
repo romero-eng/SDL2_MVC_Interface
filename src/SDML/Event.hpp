@@ -42,7 +42,7 @@ namespace SDML
         public:
 
         	GenericEvent(const SDL_Event& event,
-	        			 const std::chrono::time_point<std::chrono::system_clock> init_time_point);
+	        			 const std::chrono::time_point<std::chrono::system_clock>& init_time_point);
 
             std::string to_string() const override;
 
@@ -55,7 +55,7 @@ namespace SDML
         public:
 
         	QuitEvent(const SDL_Event& event,
-	        		  const std::chrono::time_point<std::chrono::system_clock> init_time_point);
+	        		  const std::chrono::time_point<std::chrono::system_clock>& init_time_point);
 
             std::string to_string() const override;
         };

@@ -41,9 +41,7 @@ int main( int argc, char* args[] )
 						break;
 				}
 
-				if(event.type == SDL_QUIT) {
-					quit = true;
-				}
+				quit = event.type == SDL_QUIT;
 			}
 		}
 
