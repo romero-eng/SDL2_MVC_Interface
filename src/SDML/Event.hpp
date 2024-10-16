@@ -26,6 +26,8 @@ namespace SDML
         	GenericEvent(const SDL_CommonEvent& event,
 	        			 const std::chrono::time_point<std::chrono::system_clock> init_time_point);
 
+            std::string to_string() const;
+
     	    uint32_t GetTypeInteger() const;
 
 	        std::chrono::time_point<std::chrono::system_clock> GetTimeStamp() const;
@@ -41,6 +43,8 @@ namespace SDML
 
         	QuitEvent(const SDL_QuitEvent& event,
 	        		  const std::chrono::time_point<std::chrono::system_clock> init_time_point);
+
+            std::string to_string() const;
 
 	        std::chrono::time_point<std::chrono::system_clock> GetTimeStamp() const;
         };

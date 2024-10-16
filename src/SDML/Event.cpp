@@ -7,15 +7,33 @@ SDML::Event::GenericEvent::GenericEvent(const SDL_CommonEvent& event,
 				 																		        	               timestamp {init_time_point + std::chrono::duration<int, std::milli>(event.timestamp)} {};
 
 
+std::string SDML::Event::GenericEvent::to_string() const
+{
+	Misc::Printables event_description {"Generic Event"};
+	event_description.add_printable("Type", fmt::format("{:#x}", this->GetTypeInteger()));
+	event_description.add_printable("Timestamp", Misc::time_to_string(this->GetTimeStamp()));
+
+	return event_description.print();
+}
+
+
 uint32_t SDML::Event::GenericEvent::GetTypeInteger() const { return this->type_integer; }
 
 
 std::chrono::time_point<std::chrono::system_clock> SDML::Event::GenericEvent::GetTimeStamp() const { return this->timestamp; }
 
 
-
 SDML::Event::QuitEvent::QuitEvent(const SDL_QuitEvent& event,
 			                      const std::chrono::time_point<std::chrono::system_clock> init_time_point): timestamp{init_time_point + std::chrono::duration<int, std::milli>(event.timestamp)} {};
+
+
+std::string SDML::Event::QuitEvent::to_string() const
+{
+	Misc::Printables event_description {"Quit Event"};
+	event_description.add_printable("Timestamp", Misc::time_to_string(this->GetTimeStamp()));
+
+	return event_description.print();
+}
 
 
 std::chrono::time_point<std::chrono::system_clock> SDML::Event::QuitEvent::GetTimeStamp() const { return this->timestamp; }
@@ -23,23 +41,12 @@ std::chrono::time_point<std::chrono::system_clock> SDML::Event::QuitEvent::GetTi
 
 std::ostream& operator<<(std::ostream& output,
 						 const SDML::Event::GenericEvent& event)
-{
-	Misc::Printables event_description {"Generic Event"};
-	event_description.add_printable("Type", fmt::format("{:#x}", event.GetTypeInteger()));
-	event_description.add_printable("Timestamp", Misc::time_to_string(event.GetTimeStamp()));
-
-	return output << event_description.print() << std::endl;
-}
+{ return output << event.to_string() << std::endl; }
 
 
 std::ostream& operator<<(std::ostream& output,
 						 const SDML::Event::QuitEvent& event)
-{
-	Misc::Printables event_description {"Quit Event"};
-	event_description.add_printable("Timestamp", Misc::time_to_string(event.GetTimeStamp()));
-
-	return output << event_description.print() << std::endl;
-}
+{ return output << event.to_string() << std::endl; }
 
 
 #else
