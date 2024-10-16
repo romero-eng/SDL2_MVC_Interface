@@ -33,6 +33,17 @@ namespace SDML
         };
 
 
+        class QuitEvent: public AbstractEvent
+        {
+        public:
+
+        	QuitEvent(const SDL_Event& event,
+	        		  const std::chrono::time_point<std::chrono::system_clock>& init_time_point);
+
+            std::string to_string() const override;
+        };
+
+
         class GenericEvent: public AbstractEvent
         {
         private:
@@ -49,16 +60,6 @@ namespace SDML
     	    uint32_t GetTypeInteger() const;
         };
 
-
-        class QuitEvent: public AbstractEvent
-        {
-        public:
-
-        	QuitEvent(const SDL_Event& event,
-	        		  const std::chrono::time_point<std::chrono::system_clock>& init_time_point);
-
-            std::string to_string() const override;
-        };
     }
 }
 
