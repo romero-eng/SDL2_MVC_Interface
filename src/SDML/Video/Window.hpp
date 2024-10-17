@@ -88,16 +88,14 @@ namespace SDML
 				   const std::array<int, 2>& area);
 
 			Window(const char *title,
-				   const std::array<int, 2>& top_left_point,
-				   const std::array<int, 2>& area);
+				   const std::pair<std::array<int, 2>, std::array<int, 2>>& rectangle);
 
 			Window(const char *title,
 				   const std::array<int, 2>& area,
 				   const InitFlag& flag);
 
 			Window(const char *title,
-                   const std::array<int, 2>& top_left_point,
-				   const std::array<int, 2>& area,
+				   const std::pair<std::array<int, 2>, std::array<int, 2>>& rectangle,
 				   const InitFlag& flag);
 
 			Window(const char *title,
@@ -105,8 +103,7 @@ namespace SDML
 				   uint32_t flags);
 
 			Window(const char *title,
-                   const std::array<int, 2>& top_left_point,
-				   const std::array<int, 2>& area,
+				   const std::pair<std::array<int, 2>, std::array<int, 2>>& rectangle,
 				   uint32_t flags);
 
 			Window(Window&) = delete;

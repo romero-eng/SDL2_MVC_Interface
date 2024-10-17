@@ -8,11 +8,9 @@ SDML::Video::Window::Window(const char *title,
 
 
 SDML::Video::Window::Window(const char *title,
-				   			const std::array<int, 2>& top_left_point,
-				   			const std::array<int, 2>& area): Window(title,
-							   					  					top_left_point,
-												   					area,
-												   					0) {}
+							const std::pair<std::array<int, 2>, std::array<int, 2>>& rectangle): Window(title,
+							   					  														rectangle,
+												   														0) {}
 
 
 SDML::Video::Window::Window(const char *title,
@@ -23,12 +21,10 @@ SDML::Video::Window::Window(const char *title,
 
 
 SDML::Video::Window::Window(const char *title,
-		                   	const std::array<int, 2>& top_left_point,
-						   	const std::array<int, 2>& area,
+							const std::pair<std::array<int, 2>, std::array<int, 2>>& rectangle,
 				   			const InitFlag& flag): Window(title,
-					   											top_left_point,
-													 			area,
-													 			std::to_underlying(flag)) {}
+					   									  rectangle,
+														  std::to_underlying(flag)) {}
 
 
 SDML::Video::Window::Window(const char *title,
@@ -49,13 +45,12 @@ SDML::Video::Window::Window(const char *title,
 
 
 SDML::Video::Window::Window(const char *title,
-                   			const std::array<int, 2>& top_left_point,
-						    const std::array<int, 2>& area,
+							const std::pair<std::array<int, 2>, std::array<int, 2>>& rectangle,
 				   			uint32_t flags): internal_SDL_window{SDL_CreateWindow(title,
-				   															      top_left_point[0],
-																				  top_left_point[1],
-																	   			  area[0],
-																	   			  area[1],
+				   															      rectangle.first[0],
+																				  rectangle.first[1],
+																	   			  rectangle.second[0],
+																	   			  rectangle.second[1],
 																	   			  flags)}
 {
     if(this->internal_SDL_window == nullptr){
