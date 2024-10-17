@@ -1,7 +1,7 @@
 # Potential API Improvements:
 
 **General**
-1. Split 4-int "Color" array int 3-int "Color" array and "Alpha" value \
+1. Split 4-int "Color" array int 3-int "Color" array and "Alpha" value, with "Alpha" value and "Blending Mode" having default parameters \
 &nbsp;&nbsp;- std::array<uint8_t, 4> SDML::Video::Renderer::GetDrawingColor const \
 &nbsp;&nbsp;- void SDML::Video::Renderer::SetDrawingColor(std::array<uint8_t, 4>& color) \
 &nbsp;&nbsp;- std::array<uint8_t, 4> SDML::Video::Surface::GetColor const \
