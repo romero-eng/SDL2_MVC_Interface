@@ -2,6 +2,29 @@
 #include "Window.hpp"
 
 
+SDML::Video::Window::Window(const std::string& title,
+						    const std::array<int, 2>& area,
+						    const InitFlag& flag): Window{title.c_str(), area, flag} {}
+
+SDML::Video::Window::Window(const std::string& title,
+						    const std::array<int, 2>& area,
+						    uint32_t flags): Window{title.c_str(), area, flags} {}
+
+SDML::Video::Window::Window(const std::string& title,
+						    const std::array<int, 2>& area): Window{title.c_str(), area} {}
+
+SDML::Video::Window::Window(const std::string& title,
+				   			const std::pair<std::array<int, 2>, std::array<int, 2>>& rectangle,
+				   			const InitFlag& flag): Window{title.c_str(), rectangle, flag} {}
+
+SDML::Video::Window::Window(const std::string& title,
+				   			const std::pair<std::array<int, 2>, std::array<int, 2>>& rectangle,
+				   			uint32_t flags): Window{title.c_str(), rectangle, flags} {}
+
+SDML::Video::Window::Window(const std::string& title,
+				   			const std::pair<std::array<int, 2>, std::array<int, 2>>& rectangle): Window{title.c_str(), rectangle} {}
+
+
 SDML::Video::Window::Window(const char *title,
 				   			const std::array<int, 2>& area,
 				   			const InitFlag& flag): Window(title,

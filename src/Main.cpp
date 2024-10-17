@@ -15,16 +15,19 @@
 #include <chrono>
 
 
+constexpr std::string TITLE {"Test"};
+constexpr std::array<int, 2> AREA {640, 480};
+
 int main( int argc, char* args[] )
 {
 
 	std::chrono::time_point<std::chrono::system_clock> init_time_point {SDML::Subsystem::Initialize(SDML::Subsystem::InitFlag::VIDEO | SDML::Subsystem::InitFlag::EVENTS)};
 	SDML::Image::Initialize(0);
 
-	try
-	{
-		SDML::Video::Window windowTest {"Test", 
-										std::array<int, 2> {640, 480},
+	try {
+
+		SDML::Video::Window windowTest {TITLE,
+										AREA,
 										SDML::Video::Window::InitFlag::RESIZABLE};
 
 		SDL_Event event;
