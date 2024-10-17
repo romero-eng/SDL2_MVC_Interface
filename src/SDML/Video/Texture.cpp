@@ -5,7 +5,7 @@
 SDML::Video::Texture::Texture(const char* name,
                               Renderer& renderer,
                               uint32_t pixel_format,
-                              const TextureAccess& access,
+                              const Access& access,
                               const std::array<int, 2>& area): name{std::string{name}},
                                                                internal_SDL_texture{SDL_CreateTexture(renderer.Access_SDL_Backend(),
                                                                                                       pixel_format,
@@ -65,27 +65,27 @@ SDML::Video::Texture::~Texture() { SDL_DestroyTexture(this->internal_SDL_texture
 std::string SDML::Video::Texture::to_string() const
 {
     std::string texture_access_string;
-    switch(this->GetTextureAccess()) {
-        case SDML::Video::TextureAccess::STATIC:
+    switch(this->GetAccess()) {
+        case Access::STATIC:
             texture_access_string = "Static";
             break;
-        case SDML::Video::TextureAccess::STREAMING:
+        case Access::STREAMING:
             texture_access_string = "Streaming";
             break;
-        case SDML::Video::TextureAccess::TARGET:
+        case Access::TARGET:
             texture_access_string = "Target";
             break;
     }
 
     std::string scale_mode_string;
     switch(this->GetScaleMode()) {
-        case SDML::Video::ScaleMode::NEAREST:
+        case ScaleMode::NEAREST:
             scale_mode_string = "Nearest";
             break;
-        case SDML::Video::ScaleMode::LINEAR:
+        case ScaleMode::LINEAR:
             scale_mode_string = "Linear";
             break;
-        case SDML::Video::ScaleMode::BEST:
+        case ScaleMode::BEST:
             scale_mode_string = "Best";
             break;
     }
@@ -134,9 +134,9 @@ std::string SDML::Video::Texture::GetPixelFormatName() const
 }
 
 
-SDML::Video::TextureAccess SDML::Video::Texture::GetTextureAccess() const
+SDML::Video::Texture::Access SDML::Video::Texture::GetAccess() const
 {
-    TextureAccess access; 
+    Access access; 
     int tmp;
 
     if(SDL_QueryTexture(this->internal_SDL_texture, nullptr, &tmp, nullptr, nullptr) < 0) {
@@ -147,13 +147,13 @@ SDML::Video::TextureAccess SDML::Video::Texture::GetTextureAccess() const
 
     switch(tmp) {
         case SDL_TEXTUREACCESS_STATIC:
-            access = TextureAccess::STATIC;
+            access = Access::STATIC;
             break;
         case SDL_TEXTUREACCESS_STREAMING:
-            access = TextureAccess::STREAMING;
+            access = Access::STREAMING;
             break;
         case SDL_TEXTUREACCESS_TARGET:
-            access = TextureAccess::TARGET;
+            access = Access::TARGET;
             break;
     }
 
@@ -240,7 +240,7 @@ void SDML::Video::Texture::SetBlendMode(const Blending::Mode& mode)
 }
 
 
-SDML::Video::ScaleMode SDML::Video::Texture::GetScaleMode() const
+SDML::Video::Texture::ScaleMode SDML::Video::Texture::GetScaleMode() const
 {
     SDL_ScaleMode tmp;
     if(SDL_GetTextureScaleMode(this->internal_SDL_texture, &tmp) < 0) {

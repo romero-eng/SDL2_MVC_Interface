@@ -22,24 +22,26 @@ namespace SDML
 {
     namespace Video
     {
-        enum class TextureAccess: int
-        {
-           STATIC    = SDL_TEXTUREACCESS_STATIC,
-           STREAMING = SDL_TEXTUREACCESS_STREAMING,
-           TARGET    = SDL_TEXTUREACCESS_TARGET
-        };
-
-        enum class ScaleMode: int
-        {
-           NEAREST = SDL_ScaleModeNearest,
-           LINEAR  = SDL_ScaleModeLinear,
-           BEST    = SDL_ScaleModeBest
-        };
-
         class Renderer;
 
         class Texture
         {
+        public:
+
+            enum class Access: int
+            {
+                STATIC    = SDL_TEXTUREACCESS_STATIC,
+                STREAMING = SDL_TEXTUREACCESS_STREAMING,
+                TARGET    = SDL_TEXTUREACCESS_TARGET
+            };
+
+            enum class ScaleMode: int
+            {
+                NEAREST = SDL_ScaleModeNearest,
+                LINEAR  = SDL_ScaleModeLinear,
+                BEST    = SDL_ScaleModeBest
+            };
+
         private:
             std::string name;
             SDL_Texture* internal_SDL_texture;
@@ -49,7 +51,7 @@ namespace SDML
             Texture(const char* name,
                     Renderer& renderer,
                     uint32_t pixel_format,
-                    const TextureAccess& access,
+                    const Access& access,
                     const std::array<int, 2>& area);
 
             Texture(const char* name,
@@ -73,7 +75,7 @@ namespace SDML
 
             std::string GetPixelFormatName() const;
 
-            TextureAccess GetTextureAccess() const;
+            Access GetAccess() const;
 
             std::array<int, 2> GetArea() const;
 
