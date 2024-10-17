@@ -1,6 +1,26 @@
 #if defined(__linux__) || defined(_WIN32) || defined(__APPLE__)
 #include "Renderer.hpp"
 
+
+SDL_RendererFlip SDML::Video::Renderer::SDML_to_SDL(FlipAction flip_action) const
+{
+    SDL_RendererFlip SDL_flip_action;
+    switch(flip_action){
+        case FlipAction::NONE:
+            SDL_flip_action = SDL_FLIP_NONE;
+            break;
+        case FlipAction::HORIZONTAL:
+            SDL_flip_action = SDL_FLIP_HORIZONTAL;
+            break;
+        case FlipAction::VERTICAL:
+            SDL_flip_action = SDL_FLIP_VERTICAL;
+            break;
+    }
+
+    return SDL_flip_action;
+}
+
+
 SDML::Video::Renderer::Renderer(Window& window,
                                 uint32_t flags): internal_SDL_renderer{SDL_CreateRenderer(window.Access_SDL_Backend(),
                                                                                           -1,
@@ -15,7 +35,7 @@ SDML::Video::Renderer::Renderer(Window& window,
 
 
 SDML::Video::Renderer::Renderer(Window& window,
-                                const RendererInitFlag& flag): Renderer{window, std::to_underlying(flag)} {};
+                                const InitFlag& flag): Renderer{window, std::to_underlying(flag)} {};
 
 
 SDML::Video::Renderer::Renderer(Window& window): Renderer{window, 0} {};
@@ -27,10 +47,10 @@ SDML::Video::Renderer::~Renderer() { SDL_DestroyRenderer(this->internal_SDL_rend
 std::string SDML::Video::Renderer::to_string() const
 {
     Misc::Printables printables {fmt::format("'{:s}' Renderer", this->GetName())};
-    printables.add_printable(          "Is Software Fallback", this->CheckInitFlags(SDML::Video::RendererInitFlag::SOFTWARE));
-    printables.add_printable("Supports Hardware Acceleration", this->CheckInitFlags(SDML::Video::RendererInitFlag::ACCELERATED));
-    printables.add_printable(                "Supports VSync", this->CheckInitFlags(SDML::Video::RendererInitFlag::PRESENTVSYNC));
-    printables.add_printable( "Supports rendering to texture", this->CheckInitFlags(SDML::Video::RendererInitFlag::TARGETTEXTURE));
+    printables.add_printable(          "Is Software Fallback", this->CheckInitFlags(SDML::Video::Renderer::InitFlag::SOFTWARE));
+    printables.add_printable("Supports Hardware Acceleration", this->CheckInitFlags(SDML::Video::Renderer::InitFlag::ACCELERATED));
+    printables.add_printable(                "Supports VSync", this->CheckInitFlags(SDML::Video::Renderer::InitFlag::PRESENTVSYNC));
+    printables.add_printable( "Supports rendering to texture", this->CheckInitFlags(SDML::Video::Renderer::InitFlag::TARGETTEXTURE));
     printables.add_printable(           "Clipping is Enabled", this->CheckClippingEnabled());
     printables.add_printable(          "Integer Scale is set", this->CheckIntegerScale());
 
@@ -97,7 +117,7 @@ bool SDML::Video::Renderer::CheckInitFlags(uint32_t flags) const
 }
 
 
-bool SDML::Video::Renderer::CheckInitFlags(const RendererInitFlag& flag) const { return this->CheckInitFlags(std::to_underlying(flag)); }
+bool SDML::Video::Renderer::CheckInitFlags(const InitFlag& flag) const { return this->CheckInitFlags(std::to_underlying(flag)); }
 
 
 void SDML::Video::Renderer::ToggleVSync(bool enable_or_disable)
@@ -801,23 +821,10 @@ void SDML::Video::Renderer::Copy(Texture& texture,
 
     SDL_Rect dst_rect {top_left_x, top_left_y, width, height};
 
-    SDL_RendererFlip tmp_flip;
-    switch(flip_action){
-        case FlipAction::NONE:
-            tmp_flip = SDL_FLIP_NONE;
-            break;
-        case FlipAction::HORIZONTAL:
-            tmp_flip = SDL_FLIP_HORIZONTAL;
-            break;
-        case FlipAction::VERTICAL:
-            tmp_flip = SDL_FLIP_VERTICAL;
-            break;
-    }
-
     if(SDL_RenderCopyEx(this->internal_SDL_renderer,
                         texture.Access_SDL_Backend(),
                         nullptr, &dst_rect, angle, nullptr,
-                        tmp_flip) < 0) {
+                        this->SDML_to_SDL(flip_action)) < 0) {
         throw std::runtime_error(fmt::format("Could not copy the '{:s}' Texture using the '{:s}' Renderer: {:s}",
                                              texture.GetName(),
                                              this->GetName(),
@@ -844,24 +851,11 @@ void SDML::Video::Renderer::Copy(Texture& texture,
 
     SDL_Rect dst_rect {dst_top_left_x, dst_top_left_y, dst_width, dst_height};
 
-    SDL_RendererFlip tmp_flip;
-    switch(flip_action){
-        case FlipAction::NONE:
-            tmp_flip = SDL_FLIP_NONE;
-            break;
-        case FlipAction::HORIZONTAL:
-            tmp_flip = SDL_FLIP_HORIZONTAL;
-            break;
-        case FlipAction::VERTICAL:
-            tmp_flip = SDL_FLIP_VERTICAL;
-            break;
-    }
-
     if(SDL_RenderCopyEx(this->internal_SDL_renderer,
                         texture.Access_SDL_Backend(),
                         &src_rect, &dst_rect,
                         angle, nullptr,
-                        tmp_flip) < 0) {
+                        this->SDML_to_SDL(flip_action)) < 0) {
         throw std::runtime_error(fmt::format("Could not copy the '{:s}' Texture using the '{:s}' Renderer: {:s}",
                                              texture.GetName(),
                                              this->GetName(),
@@ -885,23 +879,10 @@ void SDML::Video::Renderer::Copy(Texture& texture,
     const auto& [center_x, center_y] = center;
     SDL_Point tmp_center {center_x, center_y};
 
-    SDL_RendererFlip tmp_flip;
-    switch(flip_action){
-        case FlipAction::NONE:
-            tmp_flip = SDL_FLIP_NONE;
-            break;
-        case FlipAction::HORIZONTAL:
-            tmp_flip = SDL_FLIP_HORIZONTAL;
-            break;
-        case FlipAction::VERTICAL:
-            tmp_flip = SDL_FLIP_VERTICAL;
-            break;
-    }
-
     if(SDL_RenderCopyEx(this->internal_SDL_renderer,
                         texture.Access_SDL_Backend(),
                         nullptr, &dst_rect, angle, &tmp_center,
-                        tmp_flip) < 0) {
+                        this->SDML_to_SDL(flip_action)) < 0) {
         throw std::runtime_error(fmt::format("Could not copy the '{:s}' Texture using the '{:s}' Renderer: {:s}",
                                              texture.GetName(),
                                              this->GetName(),
@@ -932,24 +913,11 @@ void SDML::Video::Renderer::Copy(Texture& texture,
     const auto& [center_x, center_y] = center;
     SDL_Point tmp_center {center_x, center_y};
 
-    SDL_RendererFlip tmp_flip;
-    switch(flip_action){
-        case FlipAction::NONE:
-            tmp_flip = SDL_FLIP_NONE;
-            break;
-        case FlipAction::HORIZONTAL:
-            tmp_flip = SDL_FLIP_HORIZONTAL;
-            break;
-        case FlipAction::VERTICAL:
-            tmp_flip = SDL_FLIP_VERTICAL;
-            break;
-    }
-
     if(SDL_RenderCopyEx(this->internal_SDL_renderer,
                         texture.Access_SDL_Backend(),
                         &src_rect, &dst_rect,
                         angle, &tmp_center,
-                        tmp_flip) < 0) {
+                        this->SDML_to_SDL(flip_action)) < 0) {
         throw std::runtime_error(fmt::format("Could not copy the '{:s}' Texture using the '{:s}' Renderer: {:s}",
                                              texture.GetName(),
                                              this->GetName(),
@@ -1037,23 +1005,10 @@ void SDML::Video::Renderer::Copy(Texture& texture,
 
     SDL_FRect dst_rect {top_left_x, top_left_y, width, height};
 
-    SDL_RendererFlip tmp_flip;
-    switch(flip_action){
-        case FlipAction::NONE:
-            tmp_flip = SDL_FLIP_NONE;
-            break;
-        case FlipAction::HORIZONTAL:
-            tmp_flip = SDL_FLIP_HORIZONTAL;
-            break;
-        case FlipAction::VERTICAL:
-            tmp_flip = SDL_FLIP_VERTICAL;
-            break;
-    }
-
     if(SDL_RenderCopyExF(this->internal_SDL_renderer,
                          texture.Access_SDL_Backend(),
                          nullptr, &dst_rect, angle, nullptr,
-                         tmp_flip) < 0) {
+                         this->SDML_to_SDL(flip_action)) < 0) {
         throw std::runtime_error(fmt::format("Could not copy the '{:s}' Texture using the '{:s}' Renderer: {:s}",
                                              texture.GetName(),
                                              this->GetName(),
@@ -1080,24 +1035,11 @@ void SDML::Video::Renderer::Copy(Texture& texture,
 
     SDL_FRect dst_rect {dst_top_left_x, dst_top_left_y, dst_width, dst_height};
 
-    SDL_RendererFlip tmp_flip;
-    switch(flip_action){
-        case FlipAction::NONE:
-            tmp_flip = SDL_FLIP_NONE;
-            break;
-        case FlipAction::HORIZONTAL:
-            tmp_flip = SDL_FLIP_HORIZONTAL;
-            break;
-        case FlipAction::VERTICAL:
-            tmp_flip = SDL_FLIP_VERTICAL;
-            break;
-    }
-
     if(SDL_RenderCopyExF(this->internal_SDL_renderer,
                          texture.Access_SDL_Backend(),
                          &src_rect, &dst_rect,
                          angle, nullptr,
-                         tmp_flip) < 0) {
+                         this->SDML_to_SDL(flip_action)) < 0) {
         throw std::runtime_error(fmt::format("Could not copy the '{:s}' Texture using the '{:s}' Renderer: {:s}",
                                              texture.GetName(),
                                              this->GetName(),
@@ -1121,23 +1063,10 @@ void SDML::Video::Renderer::Copy(Texture& texture,
     const auto& [center_x, center_y] = center;
     SDL_FPoint tmp_center {center_x, center_y};
 
-    SDL_RendererFlip tmp_flip;
-    switch(flip_action){
-        case FlipAction::NONE:
-            tmp_flip = SDL_FLIP_NONE;
-            break;
-        case FlipAction::HORIZONTAL:
-            tmp_flip = SDL_FLIP_HORIZONTAL;
-            break;
-        case FlipAction::VERTICAL:
-            tmp_flip = SDL_FLIP_VERTICAL;
-            break;
-    }
-
     if(SDL_RenderCopyExF(this->internal_SDL_renderer,
                          texture.Access_SDL_Backend(),
                          nullptr, &dst_rect, angle, &tmp_center,
-                         tmp_flip) < 0) {
+                         this->SDML_to_SDL(flip_action)) < 0) {
         throw std::runtime_error(fmt::format("Could not copy the '{:s}' Texture using the '{:s}' Renderer: {:s}",
                                              texture.GetName(),
                                              this->GetName(),
@@ -1168,24 +1097,11 @@ void SDML::Video::Renderer::Copy(Texture& texture,
     const auto& [center_x, center_y] = center;
     SDL_FPoint tmp_center {center_x, center_y};
 
-    SDL_RendererFlip tmp_flip;
-    switch(flip_action){
-        case FlipAction::NONE:
-            tmp_flip = SDL_FLIP_NONE;
-            break;
-        case FlipAction::HORIZONTAL:
-            tmp_flip = SDL_FLIP_HORIZONTAL;
-            break;
-        case FlipAction::VERTICAL:
-            tmp_flip = SDL_FLIP_VERTICAL;
-            break;
-    }
-
     if(SDL_RenderCopyExF(this->internal_SDL_renderer,
                          texture.Access_SDL_Backend(),
                          &src_rect, &dst_rect,
                          angle, &tmp_center,
-                         tmp_flip) < 0) {
+                         this->SDML_to_SDL(flip_action)) < 0) {
         throw std::runtime_error(fmt::format("Could not copy the '{:s}' Texture using the '{:s}' Renderer: {:s}",
                                              texture.GetName(),
                                              this->GetName(),
@@ -1208,13 +1124,13 @@ void SDML::Video::Renderer::Update()
 SDL_Renderer* SDML::Video::Renderer::Access_SDL_Backend() { return this->internal_SDL_renderer; }
 
 
-uint32_t operator|(const SDML::Video::RendererInitFlag& first_flag, const SDML::Video::RendererInitFlag& second_flag) { return std::to_underlying(first_flag) | std::to_underlying(second_flag); }
+uint32_t operator|(const SDML::Video::Renderer::InitFlag& first_flag, const SDML::Video::Renderer::InitFlag& second_flag) { return std::to_underlying(first_flag) | std::to_underlying(second_flag); }
 
 
-uint32_t operator|(uint32_t first_flag, const SDML::Video::RendererInitFlag& second_flag) { return first_flag | std::to_underlying(second_flag); }
+uint32_t operator|(uint32_t first_flag, const SDML::Video::Renderer::InitFlag& second_flag) { return first_flag | std::to_underlying(second_flag); }
 
 
-uint32_t operator|(const SDML::Video::RendererInitFlag& first_flag, uint32_t second_flag) { return std::to_underlying(first_flag) | second_flag; }
+uint32_t operator|(const SDML::Video::Renderer::InitFlag& first_flag, uint32_t second_flag) { return std::to_underlying(first_flag) | second_flag; }
 
 
 std::ostream& operator<<(std::ostream& output,
