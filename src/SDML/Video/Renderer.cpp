@@ -2,7 +2,7 @@
 #include "Renderer.hpp"
 
 
-SDL_RendererFlip SDML::Video::Renderer::SDML_to_SDL(FlipAction flip_action) const
+SDL_RendererFlip SDML::Video::Renderer::SDML_to_SDL(const FlipAction& flip_action) const
 {
     SDL_RendererFlip SDL_flip_action;
     switch(flip_action){

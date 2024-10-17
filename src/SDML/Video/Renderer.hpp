@@ -44,7 +44,7 @@ namespace SDML
         private:
             SDL_Renderer* internal_SDL_renderer;
 
-            SDL_RendererFlip SDML_to_SDL(FlipAction action) const;
+            SDL_RendererFlip SDML_to_SDL(const FlipAction& action) const;
 
         public:
 
