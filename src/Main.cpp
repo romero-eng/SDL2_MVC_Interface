@@ -33,6 +33,9 @@ int main( int argc, char* args[] )
 			while(SDL_PollEvent(&event)){
 
 				switch(event.type) {
+					case SDL_WINDOWEVENT:
+						std::cout << SDML::Event::WindowEvent(event, init_time_point) << std::endl;
+						break;
 					case SDL_QUIT:
 						std::cout << SDML::Event::QuitEvent(event, init_time_point) << std::endl;
 						break;

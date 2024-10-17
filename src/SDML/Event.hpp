@@ -33,6 +33,24 @@ namespace SDML
         };
 
 
+        class WindowEvent: public AbstractEvent
+        {
+        private:
+
+            uint32_t window_id;
+            uint8_t event;
+            int32_t data1;
+            int32_t data2;
+        
+        public:
+
+            WindowEvent(const SDL_Event& event,
+                        const std::chrono::time_point<std::chrono::system_clock>& init_time_point);
+
+            std::string to_string() const override;
+        };
+
+
         class QuitEvent: public AbstractEvent
         {
         public:
@@ -62,6 +80,9 @@ namespace SDML
 
     }
 }
+
+std::ostream& operator<<(std::ostream& output,
+                         const SDML::Event::WindowEvent& event);
 
 std::ostream& operator<<(std::ostream& output,
 						 const SDML::Event::QuitEvent& event);
