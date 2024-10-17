@@ -1,11 +1,6 @@
 #if defined(__linux__) || defined(_WIN32) || defined(__APPLE__)
 #include "Window.hpp"
 
-SDML::Video::Window::Window(const char *title,
-				   			const std::array<int, 2>& area): Window(title,
-														   			area,
-											  	 					0) {}
-
 
 SDML::Video::Window::Window(const char *title,
 				   			const std::array<int, 2>& area,
@@ -32,9 +27,9 @@ SDML::Video::Window::Window(const char *title,
 
 
 SDML::Video::Window::Window(const char *title,
-							const std::pair<std::array<int, 2>, std::array<int, 2>>& rectangle): Window(title,
-							   					  														rectangle,
-												   														0) {}
+				   			const std::array<int, 2>& area): Window(title,
+														   			area,
+											  	 					0) {}
 
 
 SDML::Video::Window::Window(const char *title,
@@ -59,6 +54,12 @@ SDML::Video::Window::Window(const char *title,
                                              SDL_GetError()));
     }
 }
+
+
+SDML::Video::Window::Window(const char *title,
+							const std::pair<std::array<int, 2>, std::array<int, 2>>& rectangle): Window(title,
+							   					  														rectangle,
+												   														0) {}
 
 
 SDML::Video::Window::~Window()
