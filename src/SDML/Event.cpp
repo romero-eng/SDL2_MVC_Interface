@@ -23,6 +23,7 @@ SDML::Event::WindowEvent::WindowEvent(const SDL_Event& event,
 std::string SDML::Event::WindowEvent::to_string() const
 {
 	Misc::Printables event_description {"Window Event"};
+	event_description.add_printable("Timestamp", Misc::time_to_string(this->GetTimeStamp()));
 	event_description.add_printable("Window ID", this->window_id);
 	event_description.add_printable("Event", this->event);
 	event_description.add_printable("Data1", this->data1);
@@ -53,8 +54,8 @@ SDML::Event::GenericEvent::GenericEvent(const SDL_Event& event,
 std::string SDML::Event::GenericEvent::to_string() const
 {
 	Misc::Printables event_description {"Generic Event"};
-	event_description.add_printable("Type", fmt::format("{:#x}", this->GetTypeInteger()));
 	event_description.add_printable("Timestamp", Misc::time_to_string(this->GetTimeStamp()));
+	event_description.add_printable("Type", fmt::format("{:#x}", this->GetTypeInteger()));
 
 	return event_description.print();
 }
