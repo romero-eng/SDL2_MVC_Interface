@@ -17,7 +17,7 @@ SDML::Video::Window::Window(const char *title,
 
 SDML::Video::Window::Window(const char *title,
 				   			const std::array<int, 2>& area,
-				   			const WindowInitFlag& flag): Window(title,
+				   			const InitFlag& flag): Window(title,
 										 						area,
 										 						std::to_underlying(flag)) {}
 
@@ -25,7 +25,7 @@ SDML::Video::Window::Window(const char *title,
 SDML::Video::Window::Window(const char *title,
 		                   	const std::array<int, 2>& top_left_point,
 						   	const std::array<int, 2>& area,
-				   			const WindowInitFlag& flag): Window(title,
+				   			const InitFlag& flag): Window(title,
 					   											top_left_point,
 													 			area,
 													 			std::to_underlying(flag)) {}
@@ -86,19 +86,19 @@ std::string SDML::Video::Window::to_string() const
 	std::string display_orientation_string;
 	switch(this->GetDisplayOrientation())
 	{
-		case SDML::Video::DisplayOrientation::UNKNOWN:
+		case DisplayOrientation::UNKNOWN:
 			display_orientation_string = "Unknown";
 			break;
-		case SDML::Video::DisplayOrientation::LANDSCAPE:
+		case DisplayOrientation::LANDSCAPE:
 			display_orientation_string = "Landscape";
 			break;
-		case SDML::Video::DisplayOrientation::LANDSCAPE_FLIPPED:
+		case DisplayOrientation::LANDSCAPE_FLIPPED:
 			display_orientation_string = "Flipped Landscape";
 			break;
-		case SDML::Video::DisplayOrientation::PORTRAIT:
+		case DisplayOrientation::PORTRAIT:
 			display_orientation_string = "Portrait";
 			break;
-		case SDML::Video::DisplayOrientation::PORTRAIT_FLIPPED:
+		case DisplayOrientation::PORTRAIT_FLIPPED:
 			display_orientation_string = "Flipped Portrait";
 			break;
 	}
@@ -137,8 +137,8 @@ std::string SDML::Video::Window::to_string() const
 	window_settings.add_printable(		   "Brightness", this->GetBrightness());
 	window_settings.add_printable(			  "Opacity", this->GetOpacity());
 	window_settings.add_printable(		 "Pixel Format", this->GetPixelFormatName());
-	window_settings.add_printable(	  "Window is shown", this->CheckWindowInitFlags(SDML::Video::WindowInitFlag::SHOWN));
-	window_settings.add_printable("Window is resizable", this->CheckWindowInitFlags(SDML::Video::WindowInitFlag::RESIZABLE));
+	window_settings.add_printable(	  "Window is shown", this->CheckInitFlags(SDML::Video::Window::InitFlag::SHOWN));
+	window_settings.add_printable("Window is resizable", this->CheckInitFlags(SDML::Video::Window::InitFlag::RESIZABLE));
 	window_settings.add_printable(display_settings);
 
 	return window_settings.print();
@@ -332,10 +332,10 @@ std::string SDML::Video::Window::GetPixelFormatName() const
 }
 
 
-bool SDML::Video::Window::CheckWindowInitFlags(uint32_t flags) const { return flags == (flags & SDL_GetWindowFlags(this->internal_SDL_window)); }
+bool SDML::Video::Window::CheckInitFlags(uint32_t flags) const { return flags == (flags & SDL_GetWindowFlags(this->internal_SDL_window)); }
 
 
-bool SDML::Video::Window::CheckWindowInitFlags(const WindowInitFlag& flag) const { return std::to_underlying(flag) == (std::to_underlying(flag) & SDL_GetWindowFlags(this->internal_SDL_window)); }
+bool SDML::Video::Window::CheckInitFlags(const InitFlag& flag) const { return std::to_underlying(flag) == (std::to_underlying(flag) & SDL_GetWindowFlags(this->internal_SDL_window)); }
 
 
 std::array<int, 2> SDML::Video::Window::GetDisplayArea() const
@@ -360,7 +360,7 @@ std::array<int, 2> SDML::Video::Window::GetDisplayArea() const
 }
 
 
-SDML::Video::DisplayOrientation SDML::Video::Window::GetDisplayOrientation() const
+SDML::Video::Window::DisplayOrientation SDML::Video::Window::GetDisplayOrientation() const
 {
 	DisplayOrientation display_orientation;
 
@@ -575,13 +575,13 @@ void SDML::Video::Window::UpdateRects(const std::vector<std::pair<std::array<int
 SDL_Window* SDML::Video::Window::Access_SDL_Backend() { return this->internal_SDL_window; }
 
 
-uint32_t operator|(const SDML::Video::WindowInitFlag& first_flag, const SDML::Video::WindowInitFlag& second_flag) { return std::to_underlying(first_flag) | std::to_underlying(second_flag) ; }
+uint32_t operator|(const SDML::Video::Window::InitFlag& first_flag, const SDML::Video::Window::InitFlag& second_flag) { return std::to_underlying(first_flag) | std::to_underlying(second_flag) ; }
 
 
-uint32_t operator|(const SDML::Video::WindowInitFlag& first_flag, uint32_t second_flag) { return std::to_underlying(first_flag) | second_flag ; }
+uint32_t operator|(const SDML::Video::Window::InitFlag& first_flag, uint32_t second_flag) { return std::to_underlying(first_flag) | second_flag ; }
 
 
-uint32_t operator|(uint32_t first_flag, const SDML::Video::WindowInitFlag& second_flag) { return first_flag | std::to_underlying(second_flag) ; }
+uint32_t operator|(uint32_t first_flag, const SDML::Video::Window::InitFlag& second_flag) { return first_flag | std::to_underlying(second_flag) ; }
 
 
 std::ostream& operator<<(std::ostream& output_stream,

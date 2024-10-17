@@ -13,7 +13,5 @@
 
 3. Change name of SDML::Image::InitFlag scoped enumeration to reflect its true nature as initialization of libraries which load image file types
 
-4. Change various scoped enumerations within Window class to act more like SDML::Video::Blending::Mode enumeration instead
-
 **Renderer Class**:
 1. Implement Rendering of Geometry (i.e., [SDL_RenderGeometry()](https://wiki.libsdl.org/SDL2/SDL_RenderGeometry) and [SDL_RenderGeometryRaw()](https://wiki.libsdl.org/SDL2/SDL_RenderGeometryRaw))

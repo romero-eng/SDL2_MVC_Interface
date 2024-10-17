@@ -25,7 +25,7 @@ int main( int argc, char* args[] )
 	{
 		SDML::Video::Window windowTest {"Test", 
 										std::array<int, 2> {640, 480},
-										SDML::Video::WindowInitFlag::RESIZABLE};
+										SDML::Video::Window::InitFlag::RESIZABLE};
 
 		SDL_Event event;
 		bool quit = false;
