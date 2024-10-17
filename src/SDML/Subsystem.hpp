@@ -22,7 +22,7 @@ namespace SDML
 {
 	namespace Image
 	{
-		enum class InitFlag: uint32_t
+		enum class FileType: uint32_t
 		{
 			JPG  = IMG_INIT_JPG,
 			PNG  = IMG_INIT_PNG,
@@ -34,11 +34,11 @@ namespace SDML
 
 		void Initialize(uint32_t subsystems);
 
-		void Initialize(InitFlag subsystem);
+		void Initialize(FileType subsystem);
 
 		bool IsInitialized(uint32_t subsystems);
 
-		bool IsInitialized(InitFlag subsystem);
+		bool IsInitialized(FileType subsystem);
 
 		void Quit();
 	}
@@ -78,13 +78,13 @@ uint32_t operator|(uint32_t first_flag,
 uint32_t operator|(const SDML::Subsystem::InitFlag& first_flag,
 				   uint32_t second_flag);
 
-uint32_t operator|(const SDML::Image::InitFlag& first_flag,
-				   const SDML::Image::InitFlag& second_flag);
+uint32_t operator|(const SDML::Image::FileType& first_flag,
+				   const SDML::Image::FileType& second_flag);
 
 uint32_t operator|(uint32_t first_flag,
-				   const SDML::Image::InitFlag& second_flag);
+				   const SDML::Image::FileType& second_flag);
 
-uint32_t operator|(const SDML::Image::InitFlag& first_flag,
+uint32_t operator|(const SDML::Image::FileType& first_flag,
 				   uint32_t second_flag);
 
 
