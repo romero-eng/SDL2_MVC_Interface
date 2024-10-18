@@ -41,7 +41,29 @@ SDML::Video::Renderer::Renderer(Window& window,
 SDML::Video::Renderer::Renderer(Window& window): Renderer{window, 0} {};
 
 
-SDML::Video::Renderer::~Renderer() { SDL_DestroyRenderer(this->internal_SDL_renderer); }
+SDML::Video::Renderer::Renderer(): internal_SDL_renderer{nullptr} {}
+
+
+SDML::Video::Renderer::Renderer(Renderer&& rendererToMove) noexcept: internal_SDL_renderer{rendererToMove.internal_SDL_renderer} { rendererToMove.internal_SDL_renderer = nullptr; }
+
+
+SDML::Video::Renderer& SDML::Video::Renderer::operator=(Renderer&& rendererToMove)
+{
+    if(this != &rendererToMove) {
+        this->internal_SDL_renderer = rendererToMove.internal_SDL_renderer;
+        rendererToMove.internal_SDL_renderer = nullptr;
+    }
+
+    return *this;
+}
+
+
+SDML::Video::Renderer::~Renderer()
+{
+    if(this->internal_SDL_renderer != nullptr) {
+        SDL_DestroyRenderer(this->internal_SDL_renderer);
+    }
+}
 
 
 std::string SDML::Video::Renderer::to_string() const

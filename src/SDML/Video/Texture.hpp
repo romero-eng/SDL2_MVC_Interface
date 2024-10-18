@@ -63,9 +63,15 @@ namespace SDML
             Texture(Renderer& renderer,
                     const std::filesystem::path& image_file);
 
-            Texture(Texture&) = delete;
+            Texture();
 
-            Texture& operator=(Texture&) = delete;
+            Texture(const Texture&) = delete;
+
+            Texture& operator=(const Texture&) = delete;
+
+            Texture(Texture&& textureToMove) noexcept;
+
+            Texture& operator=(Texture&& textureToMove);
 
             ~Texture();
 

@@ -59,7 +59,33 @@ SDML::Video::Texture::Texture(Renderer& renderer,
 }
 
 
-SDML::Video::Texture::~Texture() { SDL_DestroyTexture(this->internal_SDL_texture); }
+SDML::Video::Texture::Texture(): name{""},
+                                 internal_SDL_texture{nullptr} {}
+
+
+SDML::Video::Texture::Texture(Texture&& textureToMove) noexcept: name{textureToMove.name},
+                                                                 internal_SDL_texture{textureToMove.internal_SDL_texture}
+{ textureToMove.internal_SDL_texture = nullptr; }
+
+
+SDML::Video::Texture& SDML::Video::Texture::operator=(Texture&& textureToMove)
+{
+    if(this != &textureToMove) {
+        this->name = textureToMove.name;
+        this->internal_SDL_texture = textureToMove.internal_SDL_texture;
+        textureToMove.internal_SDL_texture = nullptr;
+    }
+
+    return *this;
+}
+
+
+SDML::Video::Texture::~Texture()
+{
+    if(this->internal_SDL_texture != nullptr) {
+        SDL_DestroyTexture(this->internal_SDL_texture);
+    }
+}
 
 
 std::string SDML::Video::Texture::to_string() const

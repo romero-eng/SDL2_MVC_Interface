@@ -56,9 +56,15 @@ namespace SDML
 
             Renderer(Window& window);
 
-            Renderer(Renderer&) = delete;
+            Renderer();
 
-            Renderer& operator=(Renderer&) = delete;
+            Renderer(const Renderer&) = delete;
+
+            Renderer& operator=(const Renderer&) = delete;
+
+            Renderer(Renderer&& rendererToMove) noexcept;
+
+            Renderer& operator=(Renderer&& rendererToMove);
 
             ~Renderer();
 

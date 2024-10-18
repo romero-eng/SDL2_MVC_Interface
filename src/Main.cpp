@@ -26,12 +26,14 @@ int main( int argc, char* args[] )
 	try {
 
 		std::vector<SDML::Video::Window> windows (1);
-		std::vector<SDML::Video::Surface> surfaces (1);
+		std::vector<SDML::Video::Renderer> renderers (1);
+		std::vector<SDML::Video::Texture> textures (1);
 		windows[0] = SDML::Video::Window {"Test", AREA};
-		surfaces[0] = SDML::Video::Surface {windows[0], std::filesystem::current_path().parent_path().parent_path()/"res"/"hello_world.bmp"};
+		renderers[0] = SDML::Video::Renderer {windows[0]};
+		textures[0] = SDML::Video::Texture {renderers[0], std::filesystem::current_path().parent_path().parent_path()/"res"/"hello_world.bmp"};
 
-		windows[0].BlitOntoSurface(surfaces[0]);
-		windows[0].Update();
+		renderers[0].Copy(textures[0]);
+		renderers[0].Update();
 
 		SDL_Event event;
 		bool quit = false;
