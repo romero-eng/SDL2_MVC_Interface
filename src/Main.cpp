@@ -26,9 +26,7 @@ int main( int argc, char* args[] )
 
 	try {
 
-		SDML::Video::Window windowTest {TITLE,
-										AREA,
-										SDML::Video::Window::InitFlag::RESIZABLE};
+		SDML::Video::Window windowTest {TITLE, AREA};
 
 		SDL_Event event;
 		bool quit = false;
