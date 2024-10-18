@@ -15,7 +15,6 @@
 #include <chrono>
 
 
-constexpr std::string TITLE {"Test"};
 constexpr std::array<int, 2> AREA {640, 480};
 
 int main( int argc, char* args[] )
@@ -26,9 +25,7 @@ int main( int argc, char* args[] )
 
 	try {
 
-		SDML::Video::Window windowTest {TITLE,
-										AREA,
-										SDML::Video::Window::InitFlag::RESIZABLE};
+		SDML::Video::Window windowTest {AREA};
 
 		SDL_Event event;
 		bool quit = false;

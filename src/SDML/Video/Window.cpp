@@ -33,8 +33,8 @@ SDML::Video::Window::Window(const std::string& title,
 SDML::Video::Window::Window(const char *title,
 				   			const std::array<int, 2>& area,
 				   			const InitFlag& flag): Window(title,
-										 						area,
-										 						std::to_underlying(flag)) {}
+										 				  area,
+										 				  std::to_underlying(flag)) {}
 
 
 SDML::Video::Window::Window(const char *title,
@@ -58,6 +58,9 @@ SDML::Video::Window::Window(const char *title,
 				   			const std::array<int, 2>& area): Window(title,
 														   			area,
 											  	 					0) {}
+
+
+SDML::Video::Window::Window(const std::array<int, 2>& area): Window("", area, 0) {}
 
 
 SDML::Video::Window::Window(const char *title,
@@ -88,6 +91,12 @@ SDML::Video::Window::Window(const char *title,
 							const std::pair<std::array<int, 2>, std::array<int, 2>>& rectangle): Window(title,
 							   					  														rectangle,
 												   														0) {}
+
+
+SDML::Video::Window::Window(const std::pair<std::array<int, 2>, std::array<int, 2>>& rectangle): Window("", rectangle, 0) {}
+
+
+SDML::Video::Window::Window(): Window("", std::array<int, 2> {0, 0}, 0) {}
 
 
 SDML::Video::Window::~Window()
