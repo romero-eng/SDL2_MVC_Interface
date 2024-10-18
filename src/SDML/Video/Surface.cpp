@@ -121,7 +121,12 @@ SDML::Video::Surface& SDML::Video::Surface::operator=(Surface&& surfaceToMove)
 }
 
 
-SDML::Video::Surface::~Surface() { SDL_FreeSurface(this->internal_SDL_surface); }
+SDML::Video::Surface::~Surface()
+{
+    if(this->internal_SDL_surface != nullptr) {
+        SDL_FreeSurface(this->internal_SDL_surface);
+    }
+}
 
 
 std::string SDML::Video::Surface::to_string() const
