@@ -57,9 +57,15 @@ namespace SDML
             Surface(Window& window,
                     const std::filesystem::path& image_file);
 
-            Surface(Surface&) = delete;
+            Surface();
 
-            Surface& operator=(Surface&) = delete;
+            Surface(const Surface&) = delete;
+
+            Surface& operator=(const Surface&) = delete;
+
+            Surface(Surface&& surfaceToMove) noexcept;
+
+            Surface& operator=(Surface&& surfaceToMove);
 
             ~Surface();
 

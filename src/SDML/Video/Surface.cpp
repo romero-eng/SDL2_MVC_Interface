@@ -100,6 +100,27 @@ SDML::Video::Surface::Surface(Window& window,
 }
 
 
+SDML::Video::Surface::Surface(): name{""},
+                                 internal_SDL_surface{nullptr} {}
+
+
+SDML::Video::Surface::Surface(Surface&& surfaceToMove) noexcept: name{surfaceToMove.name},
+                                                                 internal_SDL_surface{surfaceToMove.internal_SDL_surface}
+{ surfaceToMove.internal_SDL_surface = nullptr; }
+
+
+SDML::Video::Surface& SDML::Video::Surface::operator=(Surface&& surfaceToMove)
+{
+    if(this != &surfaceToMove) {
+        this->name = surfaceToMove.name;
+        this->internal_SDL_surface = surfaceToMove.internal_SDL_surface;
+        surfaceToMove.internal_SDL_surface = nullptr;
+    }
+
+    return *this;
+}
+
+
 SDML::Video::Surface::~Surface() { SDL_FreeSurface(this->internal_SDL_surface); }
 
 
