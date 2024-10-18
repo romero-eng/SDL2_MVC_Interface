@@ -96,21 +96,37 @@ SDML::Video::Window::Window(const char *title,
 SDML::Video::Window::Window(const std::pair<std::array<int, 2>, std::array<int, 2>>& rectangle): Window("", rectangle, 0) {}
 
 
-SDML::Video::Window::Window(): Window("", std::array<int, 2> {0, 0}, 0) {}
+SDML::Video::Window::Window(): internal_SDL_window{nullptr} {}
+
+
+SDML::Video::Window::Window(Window&& windowToMove) noexcept: internal_SDL_window{windowToMove.internal_SDL_window} { windowToMove.internal_SDL_window = nullptr; }
+
+
+SDML::Video::Window& SDML::Video::Window::operator=(Window&& windowToMove)
+{
+	if(this != &windowToMove) {
+		this->internal_SDL_window = windowToMove.internal_SDL_window;
+		windowToMove.internal_SDL_window = nullptr;
+	}
+
+	return *this;
+}
 
 
 SDML::Video::Window::~Window()
 {
-	if(SDL_HasWindowSurface(this->internal_SDL_window))
-	{
-		if(SDL_DestroyWindowSurface(this->internal_SDL_window) < 0)
+	if(this->internal_SDL_window != nullptr) {
+		if(SDL_HasWindowSurface(this->internal_SDL_window))
 		{
-			std::cerr << fmt::format("Could not Destroy Surface for '{:s}' Window: {:s}",
-									 this->GetTitle(),
-									 SDL_GetError());
+			if(SDL_DestroyWindowSurface(this->internal_SDL_window) < 0)
+			{
+				std::cerr << fmt::format("Could not Destroy Surface for '{:s}' Window: {:s}",
+										 this->GetTitle(),
+										 SDL_GetError());
+			}
 		}
+		SDL_DestroyWindow(this->internal_SDL_window);
 	}
-	SDL_DestroyWindow(this->internal_SDL_window);
 }
 
 

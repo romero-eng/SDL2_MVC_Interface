@@ -134,9 +134,13 @@ namespace SDML
 
 			Window();
 
-			Window(Window&) = delete;
+			Window(const Window&) = delete;
 			
-			Window& operator=(Window&) = delete;
+			Window& operator=(const Window&) = delete;
+
+			Window(Window&& windowToMove) noexcept;
+
+			Window& operator=(Window&& windowToMove);
 
 			~Window();
 
