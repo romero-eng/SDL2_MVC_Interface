@@ -24,7 +24,8 @@ SDL_RendererFlip SDML::Video::Renderer::SDML_to_SDL(const FlipAction& flip_actio
 SDML::Video::Renderer::Renderer(Window& window,
                                 uint32_t flags): internal_SDL_renderer{SDL_CreateRenderer(window.Access_SDL_Backend(),
                                                                                           -1,
-                                                                                          flags)}
+                                                                                          flags)},
+                                                 internal_SDL_renderer_ownership{true}
 {
     if(this->internal_SDL_renderer == nullptr){
         throw std::runtime_error(fmt::format("Could not create a renderer from the '{:s}' Window: {:s}",
@@ -41,17 +42,39 @@ SDML::Video::Renderer::Renderer(Window& window,
 SDML::Video::Renderer::Renderer(Window& window): Renderer{window, 0} {};
 
 
-SDML::Video::Renderer::Renderer(): internal_SDL_renderer{nullptr} {}
+SDML::Video::Renderer::Renderer(): internal_SDL_renderer{nullptr}, internal_SDL_renderer_ownership{false} {}
 
 
-SDML::Video::Renderer::Renderer(Renderer&& rendererToMove) noexcept: internal_SDL_renderer{rendererToMove.internal_SDL_renderer} { rendererToMove.internal_SDL_renderer = nullptr; }
+SDML::Video::Renderer::Renderer(const Renderer& rendererToCopy): internal_SDL_renderer{rendererToCopy.internal_SDL_renderer},
+                                                                 internal_SDL_renderer_ownership{false} {}
+
+
+SDML::Video::Renderer& SDML::Video::Renderer::operator=(const Renderer& rendererToCopy)
+{
+    if(this != &rendererToCopy) {
+        this->internal_SDL_renderer = rendererToCopy.internal_SDL_renderer;
+        this->internal_SDL_renderer_ownership = false;
+    }
+
+    return *this;
+}
+
+
+SDML::Video::Renderer::Renderer(Renderer&& rendererToMove) noexcept: internal_SDL_renderer{rendererToMove.internal_SDL_renderer},
+                                                                     internal_SDL_renderer_ownership{true}
+{
+    rendererToMove.internal_SDL_renderer = nullptr;
+    rendererToMove.internal_SDL_renderer_ownership = false;
+}
 
 
 SDML::Video::Renderer& SDML::Video::Renderer::operator=(Renderer&& rendererToMove)
 {
     if(this != &rendererToMove) {
         this->internal_SDL_renderer = rendererToMove.internal_SDL_renderer;
+        this->internal_SDL_renderer_ownership = true;
         rendererToMove.internal_SDL_renderer = nullptr;
+        rendererToMove.internal_SDL_renderer_ownership = false;
     }
 
     return *this;
@@ -60,7 +83,7 @@ SDML::Video::Renderer& SDML::Video::Renderer::operator=(Renderer&& rendererToMov
 
 SDML::Video::Renderer::~Renderer()
 {
-    if(this->internal_SDL_renderer != nullptr) {
+    if(this->internal_SDL_renderer != nullptr && this->internal_SDL_renderer_ownership) {
         SDL_DestroyRenderer(this->internal_SDL_renderer);
     }
 }

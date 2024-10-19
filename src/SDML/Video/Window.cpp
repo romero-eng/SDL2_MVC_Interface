@@ -139,7 +139,7 @@ SDML::Video::Window& SDML::Video::Window::operator=(Window&& windowToMove)
 
 SDML::Video::Window::~Window()
 {
-	if(this->internal_SDL_window != nullptr && internal_SDL_window_ownership) {
+	if(this->internal_SDL_window != nullptr && this->internal_SDL_window_ownership) {
 		if(SDL_HasWindowSurface(this->internal_SDL_window))
 		{
 			if(SDL_DestroyWindowSurface(this->internal_SDL_window) < 0)

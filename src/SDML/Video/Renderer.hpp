@@ -42,7 +42,10 @@ namespace SDML
             };
 
         private:
+
             SDL_Renderer* internal_SDL_renderer;
+
+            bool internal_SDL_renderer_ownership;
 
             SDL_RendererFlip SDML_to_SDL(const FlipAction& action) const;
 
@@ -58,9 +61,9 @@ namespace SDML
 
             Renderer();
 
-            Renderer(const Renderer&) = delete;
+            Renderer(const Renderer& rendererToCopy);
 
-            Renderer& operator=(const Renderer&) = delete;
+            Renderer& operator=(const Renderer& rendererToCopy);
 
             Renderer(Renderer&& rendererToMove) noexcept;
 
