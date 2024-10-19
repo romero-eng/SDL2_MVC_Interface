@@ -43,8 +43,12 @@ namespace SDML
             };
 
         private:
+    
             std::string name;
+
             SDL_Texture* internal_SDL_texture;
+
+            bool internal_SDL_texture_ownership;
 
         public:
 
@@ -65,9 +69,9 @@ namespace SDML
 
             Texture();
 
-            Texture(const Texture&) = delete;
+            Texture(const Texture& textureToCopy);
 
-            Texture& operator=(const Texture&) = delete;
+            Texture& operator=(const Texture& textureToCopy);
 
             Texture(Texture&& textureToMove) noexcept;
 

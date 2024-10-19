@@ -35,7 +35,9 @@ int main( int argc, char* args[] )
 		SDML::Video::Renderer rendererTest {windows[0]};
 		renderers[0] = rendererTest;
 
-		textures[0] = SDML::Video::Texture {renderers[0], std::filesystem::current_path().parent_path().parent_path()/"res"/"hello_world.bmp"};
+		SDML::Video::Texture textureTest {renderers[0],
+										  std::filesystem::current_path().parent_path().parent_path()/"res"/"hello_world.bmp"};
+		textures[0] = textureTest;
 
 		renderers[0].Copy(textures[0]);
 		renderers[0].Update();
