@@ -91,6 +91,7 @@ SDML::Video::Texture::Texture(Texture&& textureToMove) noexcept: name{textureToM
                                                                  internal_SDL_texture{textureToMove.internal_SDL_texture},
                                                                  internal_SDL_texture_ownership{true}
 {
+    textureToMove.name = "";
     textureToMove.internal_SDL_texture = nullptr;
     textureToMove.internal_SDL_texture_ownership = false;
 }

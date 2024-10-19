@@ -38,7 +38,10 @@ namespace SDML
         private:
 
             std::string name;
+
             SDL_Surface* internal_SDL_surface;
+
+            bool internal_SDL_surface_ownership;
 
             static YUV_CONVERSION_MODE SDL_to_SDML(const SDL_YUV_CONVERSION_MODE& mode);
 
@@ -59,9 +62,9 @@ namespace SDML
 
             Surface();
 
-            Surface(const Surface&) = delete;
+            Surface(const Surface& surfaceToCopy);
 
-            Surface& operator=(const Surface&) = delete;
+            Surface& operator=(const Surface& surfaceToCopy);
 
             Surface(Surface&& surfaceToMove) noexcept;
 
