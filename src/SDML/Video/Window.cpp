@@ -44,7 +44,8 @@ SDML::Video::Window::Window(const char *title,
 																		 		  SDL_WINDOWPOS_UNDEFINED,
 																		 		  area[0],
 																				  area[1],
-																		 		  flags)}
+																		 		  flags)},
+											 internal_SDL_window_ownership{true}
 {
     if(this->internal_SDL_window == nullptr){
         throw std::runtime_error(fmt::format("Could not create the '{:s}' Window: {:s}",
@@ -77,7 +78,8 @@ SDML::Video::Window::Window(const char *title,
 																				  rectangle.first[1],
 																	   			  rectangle.second[0],
 																	   			  rectangle.second[1],
-																	   			  flags)}
+																	   			  flags)},
+											 internal_SDL_window_ownership{true}
 {
     if(this->internal_SDL_window == nullptr){
         throw std::runtime_error(fmt::format("Could not create the '{:s}' Window: {:s}",
@@ -96,17 +98,39 @@ SDML::Video::Window::Window(const char *title,
 SDML::Video::Window::Window(const std::pair<std::array<int, 2>, std::array<int, 2>>& rectangle): Window("", rectangle, 0) {}
 
 
-SDML::Video::Window::Window(): internal_SDL_window{nullptr} {}
+SDML::Video::Window::Window(): internal_SDL_window{nullptr}, internal_SDL_window_ownership{false} {}
 
 
-SDML::Video::Window::Window(Window&& windowToMove) noexcept: internal_SDL_window{windowToMove.internal_SDL_window} { windowToMove.internal_SDL_window = nullptr; }
+SDML::Video::Window::Window(const Window& windowToCopy): internal_SDL_window{windowToCopy.internal_SDL_window},
+														 internal_SDL_window_ownership{false} {}
+			
+
+SDML::Video::Window& SDML::Video::Window::operator=(const Window& windowToCopy)
+{
+	if(this != &windowToCopy) {
+		this->internal_SDL_window = windowToCopy.internal_SDL_window;
+		this->internal_SDL_window_ownership = false;
+	}
+
+	return *this;
+}
+
+
+SDML::Video::Window::Window(Window&& windowToMove) noexcept: internal_SDL_window{windowToMove.internal_SDL_window},
+															 internal_SDL_window_ownership{true}
+{ 
+	windowToMove.internal_SDL_window = nullptr;
+	windowToMove.internal_SDL_window_ownership = false;
+}
 
 
 SDML::Video::Window& SDML::Video::Window::operator=(Window&& windowToMove)
 {
 	if(this != &windowToMove) {
 		this->internal_SDL_window = windowToMove.internal_SDL_window;
+		this->internal_SDL_window_ownership = true;
 		windowToMove.internal_SDL_window = nullptr;
+		windowToMove.internal_SDL_window_ownership = false;
 	}
 
 	return *this;
@@ -115,7 +139,7 @@ SDML::Video::Window& SDML::Video::Window::operator=(Window&& windowToMove)
 
 SDML::Video::Window::~Window()
 {
-	if(this->internal_SDL_window != nullptr) {
+	if(this->internal_SDL_window != nullptr && internal_SDL_window_ownership) {
 		if(SDL_HasWindowSurface(this->internal_SDL_window))
 		{
 			if(SDL_DestroyWindowSurface(this->internal_SDL_window) < 0)

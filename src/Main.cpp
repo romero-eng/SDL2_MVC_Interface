@@ -25,10 +25,12 @@ int main( int argc, char* args[] )
 
 	try {
 
+		SDML::Video::Window windowTest {"Test", AREA};
+
 		std::vector<SDML::Video::Window> windows (1);
 		std::vector<SDML::Video::Renderer> renderers (1);
 		std::vector<SDML::Video::Texture> textures (1);
-		windows[0] = SDML::Video::Window {"Test", AREA};
+		windows[0] = windowTest;
 		renderers[0] = SDML::Video::Renderer {windows[0]};
 		textures[0] = SDML::Video::Texture {renderers[0], std::filesystem::current_path().parent_path().parent_path()/"res"/"hello_world.bmp"};
 

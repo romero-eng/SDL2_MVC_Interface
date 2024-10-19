@@ -73,6 +73,8 @@ namespace SDML
 		private:
 
 			SDL_Window* internal_SDL_window;
+			
+			bool internal_SDL_window_ownership;
 
 			int GetDisplayIndex() const;
 
@@ -134,9 +136,9 @@ namespace SDML
 
 			Window();
 
-			Window(const Window&) = delete;
+			Window(const Window& windowToCopy);
 			
-			Window& operator=(const Window&) = delete;
+			Window& operator=(const Window& windowToCopy);
 
 			Window(Window&& windowToMove) noexcept;
 
