@@ -15,7 +15,8 @@
 #include <chrono>
 
 
-constexpr std::array<int, 2> AREA {640, 480};
+constexpr std::string WINDOW_TITLE {"Test"};
+constexpr std::array<int, 2> WINDOW_AREA {640, 480};
 
 int main( int argc, char* args[] )
 {
@@ -25,19 +26,8 @@ int main( int argc, char* args[] )
 
 	try {
 
-		std::vector<SDML::Video::Window> windows (1);
-		std::vector<SDML::Video::Surface> surfaces (1);
-
-		SDML::Video::Window windowTest {"Test", AREA};
-		windows[0] = windowTest;
-
-		SDML::Video::Surface surfaceTest {windows[0],
-										  std::filesystem::current_path().parent_path().parent_path()/"res"/"hello_world.bmp"};
-		surfaces[0] = surfaceTest;
-
-		windows[0].BlitOntoSurface(surfaces[0]);
-		windows[0].Update();
-
+		windows.push_back(SDML::Video::Window {WINDOW_TITLE, WINDOW_AREA});
+		
 		SDL_Event event;
 		bool quit = false;
 		while(!quit) {

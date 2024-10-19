@@ -222,4 +222,6 @@ uint32_t operator|(uint32_t first_flag,
 std::ostream& operator<<(std::ostream& output_stream,
 						 const SDML::Video::Window& window);
 
+extern std::vector<SDML::Video::Window> windows;
+
 #endif

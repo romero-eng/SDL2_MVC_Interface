@@ -2,6 +2,9 @@
 #include "Window.hpp"
 
 
+std::vector<SDML::Video::Window> windows;
+
+
 SDML::Video::Window::Window(const std::string& title,
 						    const std::array<int, 2>& area,
 						    const InitFlag& flag): Window{title.c_str(), area, flag} {}

@@ -11,7 +11,7 @@ std::string Misc::time_to_string(const std::chrono::time_point<std::chrono::syst
     const std::time_t tmp {std::chrono::system_clock::to_time_t(time_point)};  // Creating a temporary std::time_t variable here because std::localtime() only accepts pointers (and not r-values)
     std::ostringstream output;                                                 // Creating an ostringstream object here since the objects std::put_time() were only designed to work with output streams
 
-    output << std::put_time(std::localtime(&tmp), "%I:%M:%S") << fmt::format(" [{:d} ms]", init_time_point_only_ms);
+    output << std::put_time(std::localtime(&tmp), "%I:%M:%S %p") << fmt::format(" [{:d} ms]", init_time_point_only_ms);
     
     return output.str();
 }

@@ -3,6 +3,7 @@
 
 // Custom Code from this project
 #include "../Misc/PrettyPrint.hpp"
+#include "Video/Window.hpp"
 
 // Third-Party APIs
 #include <SDL2/SDL.h>
@@ -36,11 +37,13 @@ namespace SDML
         class WindowEvent: public AbstractEvent
         {
         private:
-
-            uint32_t window_id;
+            
+            Video::Window window;
             uint8_t event;
             int32_t data1;
             int32_t data2;
+
+            Video::Window FindWindow(const SDL_Event& event);
         
         public:
 
