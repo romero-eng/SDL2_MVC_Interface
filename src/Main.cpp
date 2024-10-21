@@ -28,7 +28,7 @@ int main( int argc, char* args[] )
 
 	try {
 
-		windows.push_back(SDML::Video::Window {WINDOW_TITLE, WINDOW_AREA, SDML::Video::Window::InitFlag::RESIZABLE});
+		SDML::Video::windows.push_back(SDML::Video::Window {WINDOW_TITLE, WINDOW_AREA, SDML::Video::Window::InitFlag::RESIZABLE});
 		
 		SDL_Event event;
 		bool quit = false;

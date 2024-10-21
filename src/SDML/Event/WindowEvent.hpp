@@ -49,8 +49,6 @@ namespace SDML
             std::array<int32_t, 2> data;
 
             Description SDL_to_SDML(SDL_Event event);
-
-            Video::Window FindWindow(const SDL_Event& event);
         
         public:
 

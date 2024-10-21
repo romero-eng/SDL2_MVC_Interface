@@ -66,31 +66,9 @@ SDML::Event::WindowEvent::Description SDML::Event::WindowEvent::SDL_to_SDML(SDL_
 }
 
 
-SDML::Video::Window SDML::Event::WindowEvent::FindWindow(const SDL_Event& event)
-{
-	Video::Window found_window;
-
-	if(windows.size() == 0) {
-		found_window = windows[0];
-	} else {
-
-		std::size_t current_window_index = 0;
-		bool found = false;
-		while(current_window_index < windows.size() && !found) {
-			found = windows[current_window_index].GetID() == event.window.windowID;
-			if(!found) { current_window_index++; } 
-		}
-
-		found_window = windows[current_window_index];
-	}
-
-	return found_window;
-}
-
-
 SDML::Event::WindowEvent::WindowEvent(const SDL_Event& event,
 									  const std::chrono::time_point<std::chrono::system_clock>& init_time_point): AbstractEvent{event, init_time_point},
-									  																			  window{this->FindWindow(event)},
+									  																			  window{Video::FindWindow(event.window.windowID)},
 																												  description{this->SDL_to_SDML(event)},
 																												  data{event.window.data1, event.window.data2} {}
 

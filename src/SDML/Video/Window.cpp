@@ -2,9 +2,6 @@
 #include "Window.hpp"
 
 
-std::vector<SDML::Video::Window> windows;
-
-
 SDML::Video::Window::Window(const std::string& title,
 						    const std::array<int, 2>& area,
 						    const InitFlag& flag): Window{title.c_str(), area, flag} {}
@@ -649,6 +646,31 @@ void SDML::Video::Window::UpdateRects(const std::vector<std::pair<std::array<int
 
 
 SDL_Window* SDML::Video::Window::Access_SDL_Backend() { return this->internal_SDL_window; }
+
+
+std::vector<SDML::Video::Window> SDML::Video::windows;
+
+
+SDML::Video::Window SDML::Video::FindWindow(uint32_t windowID)
+{
+	Window found_window;
+
+	if(windows.size() == 0) {
+		found_window = windows[0];
+	} else {
+
+		std::size_t current_window_index = 0;
+		bool found = false;
+		while(current_window_index < windows.size() && !found) {
+			found = windows[current_window_index].GetID() == windowID;
+			if(!found) { current_window_index++; } 
+		}
+
+		found_window = windows[current_window_index];
+	}
+
+	return found_window;
+}
 
 
 uint32_t operator|(const SDML::Video::Window::InitFlag& first_flag, const SDML::Video::Window::InitFlag& second_flag) { return std::to_underlying(first_flag) | std::to_underlying(second_flag) ; }
