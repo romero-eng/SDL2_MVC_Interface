@@ -18,12 +18,37 @@ namespace SDML
     {
         class WindowEvent: public AbstractEvent
         {
+        public:
+
+            enum class Description
+            {
+                SHOWN,
+                HIDDEN,
+                EXPOSED,
+                MOVED,          // Window has been moved to data1, data2
+                RESIZED,        // Window has been resized to data1xdata2
+                SIZE_CHANGED,
+                MINIMIZED,
+                MAXIMIZED,
+                RESTORED,
+                ENTER,
+                LEAVE,
+                FOCUS_GAINED,
+                FOCUS_LOST,
+                CLOSE,
+                TAKE_FOCUS,
+                HIT_TEST,
+                ICC_CHANGED,
+                DISPLAY_CHANGED
+            };
+
         private:
             
             Video::Window window;
-            uint8_t event;
-            int32_t data1;
-            int32_t data2;
+            Description description;
+            std::array<int32_t, 2> data;
+
+            Description SDL_to_SDML(SDL_Event event);
 
             Video::Window FindWindow(const SDL_Event& event);
         
