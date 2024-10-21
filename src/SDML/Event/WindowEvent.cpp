@@ -34,9 +34,7 @@ SDML::Event::WindowEvent::WindowEvent(const SDL_Event& event,
 
 std::string SDML::Event::WindowEvent::to_string() const
 {
-	Misc::Printables event_description {"Window Event"};
-	event_description.add_printable("Timestamp", Misc::time_to_string(this->GetTimeStamp()));
-	event_description.add_printable("Window", this->window.GetTitle());
+	Misc::Printables event_description {fmt::format("'{:s}' Window Event at {:s}", this->window.GetTitle(), Misc::time_to_string(this->GetTimeStamp()))};
 	event_description.add_printable("Event", this->event);
 	event_description.add_printable("Data1", this->data1);
 	event_description.add_printable("Data2", this->data2);
