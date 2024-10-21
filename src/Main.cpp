@@ -6,8 +6,9 @@
 #include "SDML/Video/Surface.hpp"
 #include "SDML/Video/Renderer.hpp"
 #include "SDML/Video/Texture.hpp"
-#include "Misc/PrettyPrint.hpp"
-#include "SDML/Event/Event.hpp"
+#include "SDML/Event/GenericEvent.hpp"
+#include "SDML/Event/QuitEvent.hpp"
+#include "SDML/Event/WindowEvent.hpp"
 
 // C++ Standard Libraries
 #include <filesystem>

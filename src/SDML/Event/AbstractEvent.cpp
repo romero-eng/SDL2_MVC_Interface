@@ -1,5 +1,5 @@
 #if defined(__linux__) || defined(_WIN32) || defined(__APPLE__)
-#include "Event.hpp"
+#include "AbstractEvent.hpp"
 
 
 SDML::Event::AbstractEvent::AbstractEvent(const SDL_Event& event,
