@@ -25,8 +25,8 @@ namespace SDML
                 SHOWN,
                 HIDDEN,
                 EXPOSED,
-                MOVED,          // Window has been moved to data1, data2
-                RESIZED,        // Window has been resized to data1xdata2
+                MOVED,
+                RESIZED,
                 SIZE_CHANGED,
                 MINIMIZED,
                 MAXIMIZED,
