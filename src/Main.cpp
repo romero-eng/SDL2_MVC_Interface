@@ -6,9 +6,10 @@
 #include "SDML/Video/Surface.hpp"
 #include "SDML/Video/Renderer.hpp"
 #include "SDML/Video/Texture.hpp"
-#include "SDML/Event/GenericEvent.hpp"
-#include "SDML/Event/QuitEvent.hpp"
+#include "SDML/Event/MouseMotionEvent.hpp"
 #include "SDML/Event/WindowEvent.hpp"
+#include "SDML/Event/QuitEvent.hpp"
+#include "SDML/Event/GenericEvent.hpp"
 
 // C++ Standard Libraries
 #include <filesystem>
@@ -35,6 +36,9 @@ int main( int argc, char* args[] )
 			while(SDL_PollEvent(&event)){
 
 				switch(event.type) {
+					case SDL_MOUSEMOTION:
+						std::cout << SDML::Event::MouseMotionEvent(event, init_time_point) << std::endl;
+						break;
 					case SDL_WINDOWEVENT:
 						std::cout << SDML::Event::WindowEvent(event, init_time_point) << std::endl;
 						break;
