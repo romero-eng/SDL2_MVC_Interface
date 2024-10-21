@@ -7,7 +7,7 @@
 #include "SDML/Video/Renderer.hpp"
 #include "SDML/Video/Texture.hpp"
 #include "Misc/PrettyPrint.hpp"
-#include "SDML/Event.hpp"
+#include "SDML/Event/Event.hpp"
 
 // C++ Standard Libraries
 #include <filesystem>

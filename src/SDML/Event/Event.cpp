@@ -2,16 +2,6 @@
 #include "Event.hpp"
 
 
-SDML::Event::AbstractEvent::AbstractEvent(const SDL_Event& event,
-                          				  const std::chrono::time_point<std::chrono::system_clock>& init_time_point): timestamp{init_time_point + std::chrono::duration<int, std::milli>(event.common.timestamp)} {}
-
-
-SDML::Event::AbstractEvent::~AbstractEvent() {}
-
-
-std::chrono::time_point<std::chrono::system_clock> SDML::Event::AbstractEvent::GetTimeStamp() const { return this->timestamp; }
-
-
 SDML::Video::Window SDML::Event::WindowEvent::FindWindow(const SDL_Event& event)
 {
 	Video::Window found_window;

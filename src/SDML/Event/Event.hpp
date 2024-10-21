@@ -2,8 +2,9 @@
 #define EVENT_H
 
 // Custom Code from this project
-#include "../Misc/PrettyPrint.hpp"
-#include "Video/Window.hpp"
+#include "../../Misc/PrettyPrint.hpp"
+#include "../Video/Window.hpp"
+#include "AbstractEvent.hpp"
 
 // Third-Party APIs
 #include <SDL2/SDL.h>
@@ -15,25 +16,6 @@ namespace SDML
 {
     namespace Event
     {
-        class AbstractEvent
-        {
-        private:
-
-            std::chrono::time_point<std::chrono::system_clock> timestamp;
-
-        public:
-
-            AbstractEvent(const SDL_Event& event,
-                          const std::chrono::time_point<std::chrono::system_clock>& init_time_point);
-
-            virtual ~AbstractEvent() = 0;
-
-            virtual std::string to_string() const = 0;
-
-            std::chrono::time_point<std::chrono::system_clock> GetTimeStamp() const;
-        };
-
-
         class WindowEvent: public AbstractEvent
         {
         private:
