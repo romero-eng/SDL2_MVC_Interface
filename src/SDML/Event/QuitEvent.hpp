@@ -6,6 +6,7 @@
 #include "AbstractEvent.hpp"
 
 // Third-Party APIs
+#include <fmt/format.h>
 #include <SDL2/SDL.h>
 
 // C++ Standard Libraries

@@ -6,13 +6,7 @@ SDML::Event::QuitEvent::QuitEvent(const SDL_Event& event,
 			                      const std::chrono::time_point<std::chrono::system_clock>& init_time_point): AbstractEvent{event, init_time_point} {}
 
 
-std::string SDML::Event::QuitEvent::to_string() const
-{
-	Misc::Printables event_description {"Quit Event"};
-	event_description.add_printable("Timestamp", Misc::time_to_string(this->GetTimeStamp()));
-
-	return event_description.print();
-}
+std::string SDML::Event::QuitEvent::to_string() const { return fmt::format("Quit Event at {:s}",  Misc::time_to_string(this->GetTimeStamp())); }
 
 
 std::ostream& operator<<(std::ostream& output,
