@@ -33,7 +33,7 @@ namespace Misc
 }
 
 
-extern Misc::Logfile LogFile;
+extern Misc::Logfile MainLogFile;
 
 
 #endif
