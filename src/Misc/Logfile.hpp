@@ -25,9 +25,9 @@ namespace Misc
         Logfile(std::filesystem::path logfile_dir,
                 std::string_view logfile_name);
 
-        void WriteLine(const char* line);
+        void Write(const char* text);
 
-        void WriteLine(const std::string& line);
+        void Write(const std::string& text);
 
     };
 }

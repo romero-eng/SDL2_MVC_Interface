@@ -3,6 +3,7 @@
 
 // Custom Code from this project
 #include "../Misc/PrettyPrint.hpp"
+#include "../Misc/Logfile.hpp"
 
 // Third-party Libraries
 #include <SDL2/SDL.h>

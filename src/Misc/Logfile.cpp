@@ -6,10 +6,10 @@ Misc::Logfile::Logfile(std::filesystem::path logfile_dir,
               		   std::string_view logfile_name): output{std::make_shared<std::ofstream>(logfile_dir/fmt::format("{:s}.log", logfile_name))} {}
 
 
-void Misc::Logfile::WriteLine(const char* line) { this->output->write(fmt::format("{:s}\n", line).c_str(), static_cast<std::streamsize>(std::strlen(line) + 1)); }
+void Misc::Logfile::Write(const char* text) { this->output->write(fmt::format("{:s}\n", text).c_str(), static_cast<std::streamsize>(std::strlen(text) + 1)); }
 
 
-void Misc::Logfile::WriteLine(const std::string& line) { this->WriteLine(line.c_str()); }
+void Misc::Logfile::Write(const std::string& text) { this->Write(text.c_str()); }
 
 
 #else
