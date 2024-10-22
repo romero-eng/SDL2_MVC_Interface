@@ -1,3 +1,6 @@
+# Customly-created log files
+*.log
+
 # Windows Subsystem for Linux Configuration Files
 /wsl_config
 
