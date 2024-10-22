@@ -21,7 +21,7 @@
 
 constexpr std::string WINDOW_TITLE {"Test"};
 constexpr std::array<int, 2> WINDOW_AREA {640, 480};
-Misc::Logfile LogFile {std::filesystem::current_path().parent_path().parent_path(), "Test"};
+Misc::Logfile MainLogFile {std::filesystem::current_path().parent_path().parent_path(), "Test"};
 
 
 int main( int argc, char* args[] )
@@ -55,8 +55,6 @@ int main( int argc, char* args[] )
 						current_event = std::make_unique<SDML::Event::GenericEvent>(event, init_time_point);
 						break;
 				}
-
-				LogFile.WriteLine(current_event->to_string());
 
 				quit = event.type == SDL_QUIT;
 			}
