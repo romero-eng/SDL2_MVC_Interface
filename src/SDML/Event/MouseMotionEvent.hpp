@@ -3,6 +3,7 @@
 
 // Custom Code from this project
 #include "../../Misc/PrettyPrint.hpp"
+#include "../Video/Window.hpp"
 #include "AbstractEvent.hpp"
 
 // Third-Party APIs
@@ -10,6 +11,7 @@
 
 // C++ Standard Libraries
 #include <chrono>
+#include <bitset>
 
 namespace SDML
 {
@@ -17,6 +19,13 @@ namespace SDML
     {
         class MouseMotionEvent: public AbstractEvent
         {
+        private:
+
+            Video::Window window;
+            std::array<int, 2> position;
+            std::array<int, 2> velocity;
+            std::bitset<32> state;
+
         public:
 
         	MouseMotionEvent(const SDL_Event& event,
