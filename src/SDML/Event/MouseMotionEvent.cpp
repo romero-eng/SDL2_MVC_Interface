@@ -7,7 +7,8 @@ SDML::Event::MouseMotionEvent::MouseMotionEvent(const SDL_Event& event,
                                                                                                                             window{Video::FindWindow(event.motion.windowID)},
                                                                                                                             position{event.motion.x, event.motion.y},
                                                                                                                             velocity{event.motion.xrel, event.motion.yrel},
-                                                                                                                            state{event.motion.state} {}
+                                                                                                                            state{event.motion.state},
+                                                                                                                            ID{event.motion.which} {}
 
 
 std::string SDML::Event::MouseMotionEvent::to_string() const
@@ -15,12 +16,17 @@ std::string SDML::Event::MouseMotionEvent::to_string() const
     const auto& [X, Y] = position;
     const auto& [dX_dt, dY_dt] = velocity;
 
-    Misc::Printables mouse_event_description {fmt::format("{:s}: '{:s}' Window mouse motion", Misc::time_to_string(this->GetTimeStamp()), this->window.GetTitle())};
+    Misc::Printables mouse_event_description {fmt::format("{:s}: Motion for Mouse #{:d} in '{:s}' Window",
+                                                          Misc::time_to_string(this->GetTimeStamp()),
+                                                          this->ID,
+                                                          this->window.GetTitle())};
     mouse_event_description.add_printable("Position", fmt::format("[X: {:d}, Y: {:d}]", X, Y));
     mouse_event_description.add_printable("Velocity", fmt::format("[dX_dt: {:d}, dY_dt: {:d}]", dX_dt, dY_dt));
-    mouse_event_description.add_printable("State", state.to_string());
+    mouse_event_description.add_printable("Left Button Held", this->state.test(0));
+    mouse_event_description.add_printable("Right Button Held", this->state.test(2));
+    mouse_event_description.add_printable("Middle Button Held", this->state.test(1));
 
-	return mouse_event_description.print();
+	return fmt::format("{:s}\n", mouse_event_description.print());
 }
 
 

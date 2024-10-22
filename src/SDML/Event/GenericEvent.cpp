@@ -12,7 +12,7 @@ std::string SDML::Event::GenericEvent::to_string() const
 	Misc::Printables event_description {fmt::format("Generic Event at {:s}", Misc::time_to_string(this->GetTimeStamp()))};
 	event_description.add_printable("Type", fmt::format("{:#x}", this->GetTypeInteger()));
 
-	return event_description.print();
+	return fmt::format("{:s}\n", event_description.print());
 }
 
 

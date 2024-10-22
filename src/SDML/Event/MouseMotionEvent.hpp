@@ -25,6 +25,7 @@ namespace SDML
             std::array<int, 2> position;
             std::array<int, 2> velocity;
             std::bitset<32> state;
+            uint32_t ID;
 
         public:
 
