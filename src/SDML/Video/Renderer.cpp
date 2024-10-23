@@ -91,7 +91,7 @@ SDML::Video::Renderer::~Renderer()
 
 std::string SDML::Video::Renderer::to_string() const
 {
-    Misc::Printables printables {fmt::format("'{:s}' Renderer", this->GetName())};
+    Logging::Printables printables {fmt::format("'{:s}' Renderer", this->GetName())};
     printables.add_printable(          "Is Software Fallback", this->CheckInitFlags(SDML::Video::Renderer::InitFlag::SOFTWARE));
     printables.add_printable("Supports Hardware Acceleration", this->CheckInitFlags(SDML::Video::Renderer::InitFlag::ACCELERATED));
     printables.add_printable(                "Supports VSync", this->CheckInitFlags(SDML::Video::Renderer::InitFlag::PRESENTVSYNC));

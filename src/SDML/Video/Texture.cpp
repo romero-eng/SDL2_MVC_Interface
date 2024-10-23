@@ -147,7 +147,7 @@ std::string SDML::Video::Texture::to_string() const
             break;
     }
 
-    Misc::Printables printables {fmt::format("'{:s}' Texture", this->GetName())};
+    Logging::Printables printables {fmt::format("'{:s}' Texture", this->GetName())};
 
     std::string pixel_format {this->GetPixelFormatName()};
     printables.add_printable("Pixel Format Name", pixel_format);

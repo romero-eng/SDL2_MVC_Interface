@@ -16,8 +16,8 @@ std::string SDML::Event::MouseMotionEvent::to_string() const
     const auto& [X, Y] = position;
     const auto& [dX_dt, dY_dt] = velocity;
 
-    Misc::Printables mouse_event_description {fmt::format("{:s}: Motion for Mouse #{:d} in '{:s}' Window",
-                                                          Misc::time_to_string(this->GetTimeStamp()),
+    Logging::Printables mouse_event_description {fmt::format("{:s}: Motion for Mouse #{:d} in '{:s}' Window",
+                                                          Logging::time_to_string(this->GetTimeStamp()),
                                                           this->ID,
                                                           this->window.GetTitle())};
     mouse_event_description.add_printable("Position", fmt::format("[X: {:d}, Y: {:d}]", X, Y));

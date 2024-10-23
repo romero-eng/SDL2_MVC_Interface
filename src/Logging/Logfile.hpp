@@ -12,7 +12,7 @@
 #include <cstring>
 
 
-namespace Misc
+namespace Logging
 {
     class Logfile
     {
@@ -33,7 +33,7 @@ namespace Misc
 }
 
 
-extern Misc::Logfile MainLogFile;
+extern Logging::Logfile MainLogFile;
 
 
 #endif

@@ -2,7 +2,7 @@
 #include "PrettyPrint.hpp"
 
 
-std::string Misc::time_to_string(const std::chrono::time_point<std::chrono::system_clock>& time_point)
+std::string Logging::time_to_string(const std::chrono::time_point<std::chrono::system_clock>& time_point)
 {
     const std::chrono::time_point<std::chrono::system_clock> time_point_wo_ms {std::chrono::floor<std::chrono::seconds>(time_point)};
 
@@ -17,7 +17,7 @@ std::string Misc::time_to_string(const std::chrono::time_point<std::chrono::syst
 }
 
 
-std::string Misc::date_and_time_to_string(const std::chrono::time_point<std::chrono::system_clock>& time_point)
+std::string Logging::date_and_time_to_string(const std::chrono::time_point<std::chrono::system_clock>& time_point)
 {
     const std::chrono::time_point<std::chrono::system_clock> time_point_wo_ms {std::chrono::floor<std::chrono::seconds>(time_point)};
 
@@ -32,45 +32,45 @@ std::string Misc::date_and_time_to_string(const std::chrono::time_point<std::chr
 }
 
 
-const char* Misc::Printables::get_title() { return this->title.c_str(); }
+const char* Logging::Printables::get_title() { return this->title.c_str(); }
 
-void Misc::Printables::set_title(const char* new_title) { this->set_title(std::string {new_title}); }
+void Logging::Printables::set_title(const char* new_title) { this->set_title(std::string {new_title}); }
 
-void Misc::Printables::set_title(std::string new_title) { this->title = new_title; }
+void Logging::Printables::set_title(std::string new_title) { this->title = new_title; }
 
-void Misc::Printables::add_printable(const char* key, bool value) { this->add_printable(std::string {key}, value); }
+void Logging::Printables::add_printable(const char* key, bool value) { this->add_printable(std::string {key}, value); }
 
-void Misc::Printables::add_printable(const std::string& key, bool value) { this->printables.push_back(std::pair<std::string, std::string> {key, std::string{value ? "True" : "False"}}); }
+void Logging::Printables::add_printable(const std::string& key, bool value) { this->printables.push_back(std::pair<std::string, std::string> {key, std::string{value ? "True" : "False"}}); }
 
-void Misc::Printables::add_printable(const char* key, uint32_t value) { this->add_printable(std::string {key}, value); }
+void Logging::Printables::add_printable(const char* key, uint32_t value) { this->add_printable(std::string {key}, value); }
 
-void Misc::Printables::add_printable(const std::string& key, uint32_t value) { this->printables.push_back(std::pair<std::string, std::string> {key, std::to_string(value)}); }
+void Logging::Printables::add_printable(const std::string& key, uint32_t value) { this->printables.push_back(std::pair<std::string, std::string> {key, std::to_string(value)}); }
 
-void Misc::Printables::add_printable(const char* key, int value) { this->add_printable(std::string {key}, value); }
+void Logging::Printables::add_printable(const char* key, int value) { this->add_printable(std::string {key}, value); }
 
-void Misc::Printables::add_printable(const std::string& key, int value) { this->printables.push_back(std::pair<std::string, std::string> {key, std::to_string(value)}); }
+void Logging::Printables::add_printable(const std::string& key, int value) { this->printables.push_back(std::pair<std::string, std::string> {key, std::to_string(value)}); }
 
-void Misc::Printables::add_printable(const char* key, float value) { this->add_printable(std::string {key}, value); }
+void Logging::Printables::add_printable(const char* key, float value) { this->add_printable(std::string {key}, value); }
 
-void Misc::Printables::add_printable(const std::string& key, float value) { this->printables.push_back(std::pair<std::string, std::string> {key, std::to_string(value)}); }
+void Logging::Printables::add_printable(const std::string& key, float value) { this->printables.push_back(std::pair<std::string, std::string> {key, std::to_string(value)}); }
 
-void Misc::Printables::add_printable(const char* key, const char* value) { this->add_printable(std::string {key}, value); }
+void Logging::Printables::add_printable(const char* key, const char* value) { this->add_printable(std::string {key}, value); }
 
-void Misc::Printables::add_printable(const std::string& key, const char* value) { this->printables.push_back(std::pair<std::string, std::string> {key, std::string{value}}); }
+void Logging::Printables::add_printable(const std::string& key, const char* value) { this->printables.push_back(std::pair<std::string, std::string> {key, std::string{value}}); }
 
-void Misc::Printables::add_printable(const char* key, const std::string& value) { this->add_printable(std::string {key}, value); }
+void Logging::Printables::add_printable(const char* key, const std::string& value) { this->add_printable(std::string {key}, value); }
 
-void Misc::Printables::add_printable(const std::string& key, const std::string& value) { this->printables.push_back(std::pair<std::string, std::string> {key, value}); }
+void Logging::Printables::add_printable(const std::string& key, const std::string& value) { this->printables.push_back(std::pair<std::string, std::string> {key, value}); }
 
-void Misc::Printables::add_printable(const char* key, const std::vector<std::string>& value) { this->add_printable(std::string {key}, value); }
+void Logging::Printables::add_printable(const char* key, const std::vector<std::string>& value) { this->add_printable(std::string {key}, value); }
 
-void Misc::Printables::add_printable(const std::string& key, const std::vector<std::string>& value) { this->printables.push_back(std::pair<std::string, std::string> {key, fmt::format("[{}]", fmt::join(value, ", "))}); }
+void Logging::Printables::add_printable(const std::string& key, const std::vector<std::string>& value) { this->printables.push_back(std::pair<std::string, std::string> {key, fmt::format("[{}]", fmt::join(value, ", "))}); }
 
-void Misc::Printables::add_printable(Printables& printables) { this->printables.push_back(printables); }
+void Logging::Printables::add_printable(Printables& printables) { this->printables.push_back(printables); }
 
-void Misc::Printables::copy_into_printables(Printables printables) { this->printables.push_back(printables); }
+void Logging::Printables::copy_into_printables(Printables printables) { this->printables.push_back(printables); }
 
-std::string Misc::Printables::print(std::size_t prior_level)
+std::string Logging::Printables::print(std::size_t prior_level)
 {
 	std::size_t num_tab_spaces {6};
 
@@ -119,9 +119,9 @@ std::string Misc::Printables::print(std::size_t prior_level)
 	return fmt::format("{}", fmt::join(lines, "\n"));
 }
 
-void Misc::Printables::clear() { this->printables.clear(); }
+void Logging::Printables::clear() { this->printables.clear(); }
 
-std::ostream& operator<<(std::ostream& output, Misc::Printables& printables) { return output << printables.print(); }
+std::ostream& operator<<(std::ostream& output, Logging::Printables& printables) { return output << printables.print(); }
 
 #else
 #error "This file is only meant to be compiled on a Windows, Macintosh, or Linux OS"

@@ -2,7 +2,7 @@
 #define QUIT_EVENT_H
 
 // Custom Code from this project
-#include "../../Misc/PrettyPrint.hpp"
+#include "../../Logging/PrettyPrint.hpp"
 #include "AbstractEvent.hpp"
 
 // Third-Party APIs

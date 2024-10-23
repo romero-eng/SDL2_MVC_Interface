@@ -2,7 +2,7 @@
 #define WINDOW_EVENT_H
 
 // Custom Code from this project
-#include "../../Misc/PrettyPrint.hpp"
+#include "../../Logging/PrettyPrint.hpp"
 #include "../Video/Window.hpp"
 #include "AbstractEvent.hpp"
 

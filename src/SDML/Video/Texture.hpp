@@ -5,7 +5,7 @@
 #include "Renderer.hpp"
 #include "Surface.hpp"
 #include "BlendMode.hpp"
-#include "../../Misc/PrettyPrint.hpp"
+#include "../../Logging/PrettyPrint.hpp"
 
 // Third-Party Libraries
 #include <SDL2/SDL.h>

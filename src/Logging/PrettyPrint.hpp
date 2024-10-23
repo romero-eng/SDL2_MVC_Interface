@@ -12,7 +12,7 @@
 #include <iomanip>
 
 
-namespace Misc
+namespace Logging
 {
     std::string time_to_string(const std::chrono::time_point<std::chrono::system_clock>& time_point);
 
@@ -73,6 +73,6 @@ namespace Misc
     };
 }
 
-std::ostream& operator<<(std::ostream& output, Misc::Printables& printables);
+std::ostream& operator<<(std::ostream& output, Logging::Printables& printables);
 
 #endif

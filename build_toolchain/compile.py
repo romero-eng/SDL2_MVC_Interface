@@ -138,7 +138,7 @@ def compile_object_file(compiler_cli_name: str,
         if treat_warnings_as_errors:
             warning_flags.append('error')
 
-    compile_command: str = '{compiler:s} -c {source_file:s} -o {object_file:s} {language_standard:s} {build_configuration:s} {miscellaneous:s} {header_locations:s} {warnings:s} {preprocessor_macros:s}'  # noqa: E501
+    compile_command: str = '{compiler:s} -c {source_file:s} -o {object_file:s} {language_standard:s} {build_configuration:s} {Loggingellaneous:s} {header_locations:s} {warnings:s} {preprocessor_macros:s}'  # noqa: E501
 
     common_path: Path = \
         Path(commonpath([source_file_path,
@@ -150,7 +150,7 @@ def compile_object_file(compiler_cli_name: str,
                                              object_file=str(object_file_path.relative_to(common_path)),
                                              language_standard=f'-std=c{language_standard:s}',
                                              build_configuration=' '.join([f'-{flag:s}' for flag in interpret_build_configuration(build_configuration)]),                                # noqa: E501
-                                             miscellaneous='-pedantic-errors' if disable_compiler_extensions else '',
+                                             Loggingellaneous='-pedantic-errors' if disable_compiler_extensions else '',
                                              header_locations=' '.join([f'-I {str(include_directory):s}' for include_directory in include_directories]) if include_directories else '',  # noqa: E501
                                              warnings=' '.join([f'-W{warning_flag:s}' for warning_flag in warning_flags]) if warnings else '',                                           # noqa: E501
                                              preprocessor_macros=' '.join([f'-D{macro:s}' for macro in preprocessor_macros]) if preprocessor_macros else '').rstrip(),                   # noqa: E501

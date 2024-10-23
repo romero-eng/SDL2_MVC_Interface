@@ -134,7 +134,7 @@ std::string SDML::Event::WindowEvent::to_string() const
 	}
 
 	return fmt::format("{:s}: '{:s}' Window {:s}",
-					   Misc::time_to_string(this->GetTimeStamp()),
+					   Logging::time_to_string(this->GetTimeStamp()),
 					   this->window.GetTitle(),
 					   event_description_string);
 }

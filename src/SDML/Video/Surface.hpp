@@ -2,7 +2,7 @@
 #define SURFACE_H
 
 // Custom Code from this project
-#include "../../Misc/PrettyPrint.hpp"
+#include "../../Logging/PrettyPrint.hpp"
 #include "Window.hpp"
 #include "BlendMode.hpp"
 

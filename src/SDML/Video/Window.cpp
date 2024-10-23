@@ -176,14 +176,14 @@ std::string SDML::Video::Window::to_string() const
 			break;
 	}
 
-	Misc::Printables display_mode_settings {fmt::format("'{:s}' Display Mode", this->GetDisplayName())};
+	Logging::Printables display_mode_settings {fmt::format("'{:s}' Display Mode", this->GetDisplayName())};
 
 	const auto& [display_mode_width, display_mode_height] {this->GetDisplayModeArea()};
 	display_mode_settings.add_printable("Area", fmt::format("[Width: {:d}, Height: {:d}]", display_mode_width, display_mode_height));
 
 	display_mode_settings.add_printable("Refresh Rate", this->GetDisplayModeRefreshRate());
 
-	Misc::Printables display_settings {fmt::format("'{:s}' Display", this->GetDisplayName())};
+	Logging::Printables display_settings {fmt::format("'{:s}' Display", this->GetDisplayName())};
 
 	const auto& [display_width, display_height] {this->GetDisplayArea()};
 	display_settings.add_printable("Area", fmt::format("[Width: {:d}, Height: {:d}]", display_width, display_height));
@@ -192,7 +192,7 @@ std::string SDML::Video::Window::to_string() const
 	display_settings.add_printable("Pixel Format Name", this->GetDisplayModePixelFormatName());
 	display_settings.add_printable(display_mode_settings);
 
-	Misc::Printables window_settings {fmt::format("'{:s}' Window", this->GetTitle())};
+	Logging::Printables window_settings {fmt::format("'{:s}' Window", this->GetTitle())};
 	window_settings.add_printable("ID", this->GetID());
 
 	const auto& [top_left_x, top_left_y] {this->GetTopLeftpoint()};

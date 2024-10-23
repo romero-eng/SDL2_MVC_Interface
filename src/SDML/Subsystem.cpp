@@ -43,7 +43,7 @@ std::chrono::time_point<std::chrono::system_clock> SDML::Subsystem::Initialize(u
 	SDL_version linked_version;
 	SDL_VERSION(&compiled_version);
 	SDL_GetVersion(&linked_version);
-	MainLogFile.Write(Misc::date_and_time_to_string(init_time_point));
+	MainLogFile.Write(Logging::date_and_time_to_string(init_time_point));
 	MainLogFile.Write(fmt::format("Compiled SDL v.{:d}.{:d}.{:d}\nLinked SDL v.{:d}.{:d}.{:d}",
 								  compiled_version.major,
 								  compiled_version.minor,
@@ -88,12 +88,12 @@ std::chrono::time_point<std::chrono::system_clock> SDML::Subsystem::Initialize(u
 			video_drivers[video_driver_index] = std::string {SDL_GetVideoDriver(static_cast<int>(video_driver_index))};
 		}
 
-		Misc::Printables video_init_msgs {"SDML Video Subsystem Initialized"};
+		Logging::Printables video_init_msgs {"SDML Video Subsystem Initialized"};
 		video_init_msgs.add_printable("Available Video Drivers", video_drivers);
 		video_init_msgs.add_printable(   "Current Video Driver", SDL_GetCurrentVideoDriver());
 
 		SDL_RendererInfo current_render_driver_info {};
-		Misc::Printables printable_render_driver_info;
+		Logging::Printables printable_render_driver_info;
 
 		for(std::size_t render_driver_index = 0; render_driver_index < num_render_drivers; render_driver_index++) {
 			if(SDL_GetRenderDriverInfo(static_cast<int>(render_driver_index), &current_render_driver_info) < 0) {

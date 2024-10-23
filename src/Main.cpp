@@ -1,7 +1,7 @@
 #if defined(__linux__) || defined(_WIN32) || defined(__APPLE__)
 
 // Custom Code from this project
-#include "Misc/Logfile.hpp"
+#include "Logging/Logfile.hpp"
 #include "SDML/Subsystem.hpp"
 #include "SDML/Video/Window.hpp"
 #include "SDML/Video/Surface.hpp"
@@ -21,7 +21,7 @@
 
 constexpr std::string WINDOW_TITLE {"Test"};
 constexpr std::array<int, 2> WINDOW_AREA {640, 480};
-Misc::Logfile MainLogFile {std::filesystem::current_path().parent_path().parent_path(), "Test"};
+Logging::Logfile MainLogFile {std::filesystem::current_path().parent_path().parent_path(), "Test"};
 
 
 int main( int argc, char* args[] )

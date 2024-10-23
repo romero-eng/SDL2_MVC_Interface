@@ -157,7 +157,7 @@ SDML::Video::Surface::~Surface()
 
 std::string SDML::Video::Surface::to_string() const
 {
-    Misc::Printables settings {fmt::format("'{:s}' Surface", this->GetName())};
+    Logging::Printables settings {fmt::format("'{:s}' Surface", this->GetName())};
 
     const auto& [width, height] {this->GetArea()};
     settings.add_printable("Area", fmt::format("[Width: {:d}, Height: {:d}]", width, height));

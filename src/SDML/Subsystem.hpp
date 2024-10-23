@@ -2,8 +2,8 @@
 #define SUBSYSTEM_H
 
 // Custom Code from this project
-#include "../Misc/PrettyPrint.hpp"
-#include "../Misc/Logfile.hpp"
+#include "../Logging/PrettyPrint.hpp"
+#include "../Logging/Logfile.hpp"
 
 // Third-party Libraries
 #include <SDL2/SDL.h>

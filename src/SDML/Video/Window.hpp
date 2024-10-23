@@ -2,7 +2,7 @@
 #define WINDOW_H
 
 // Custom Code from this project
-#include "../../Misc/PrettyPrint.hpp"
+#include "../../Logging/PrettyPrint.hpp"
 #include "Surface.hpp"
 
 // Third-party Libraries
