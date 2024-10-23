@@ -7,7 +7,7 @@ SDML::Event::MouseButtonEvent::MouseButtonEvent(const SDL_Event& event,
                                                                                                                             window{Video::FindWindow(event.button.windowID)},
                                                                                                                             position{event.button.x, event.button.y},
                                                                                                                             button_name{this->button_names[event.button.button - 1]},
-                                                                                                                            button_state{this->button_states[event.button.state]},
+                                                                                                                            pressed{event.button.state == SDL_PRESSED},
                                                                                                                             clicks{event.button.clicks},
                                                                                                                             ID {event.button.which}
 { MainLogFile.Write(this->to_string()); }
@@ -20,7 +20,7 @@ std::string SDML::Event::MouseButtonEvent::to_string() const
     Logging::Printables event_description {fmt::format("{:s}: {:s} Button {:s} for Mouse #{:d} in '{:s}' Window",
                                                        Logging::time_to_string(this->GetTimeStamp()),
                                                        this->button_name,
-                                                       this->button_state,
+                                                       this->pressed ? "Pressed" : "Released",
                                                        this->ID,
                                                        this->window.GetTitle())};
     event_description.add_printable("Position", fmt::format("[X: {:d}, Y: {:d}]", X, Y));
