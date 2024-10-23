@@ -6,6 +6,7 @@
 #include "Texture.hpp"
 #include "BlendMode.hpp"
 #include "../../Logging/PrettyPrint.hpp"
+#include "../../Logging/Logfile.hpp"
 
 // Third-Party Libraries
 #include <SDL2/SDL.h>

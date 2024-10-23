@@ -18,6 +18,8 @@ SDML::Video::Texture::Texture(const char* name,
         throw std::runtime_error(fmt::format("Could not create the '{:s}' Texture: {:s}",
                                              name,
                                              SDL_GetError()));
+    } else {
+        MainLogFile.Write(this->to_string());
     }
 }
 
@@ -33,6 +35,8 @@ SDML::Video::Texture::Texture(const char* name,
         throw std::runtime_error(fmt::format("Could not create the '{:s}' Texture: {:s}",
                                              name,
                                              SDL_GetError()));
+    } else {
+        MainLogFile.Write(this->to_string());
     }
 }
 
@@ -47,6 +51,8 @@ SDML::Video::Texture::Texture(Renderer& renderer,
         throw std::runtime_error(fmt::format("Could not create the '{:s}' Texture: {:s}",
                                              this->name,
                                              SDL_GetError()));
+    } else {
+        MainLogFile.Write(this->to_string());
     }
 }
 
@@ -61,6 +67,8 @@ SDML::Video::Texture::Texture(Renderer& renderer,
         throw std::runtime_error(fmt::format("Could not create the '{:s}' Texture: {:s}",
                                              this->name,
                                              SDL_GetError()));
+    } else {
+        MainLogFile.Write(this->to_string());
     }
 }
 

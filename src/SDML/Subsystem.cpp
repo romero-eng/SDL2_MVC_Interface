@@ -117,7 +117,7 @@ std::chrono::time_point<std::chrono::system_clock> SDML::Subsystem::Initialize(u
 																		   render_format_index + 1),
 															   SDL_GetPixelFormatName(current_render_driver_info.texture_formats[0]));
 				}
-				video_init_msgs.copy_into_printables(printable_render_driver_info);
+				video_init_msgs.add_printables(printable_render_driver_info);
 			}
 		}
 

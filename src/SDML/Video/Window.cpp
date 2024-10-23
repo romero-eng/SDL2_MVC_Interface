@@ -51,7 +51,9 @@ SDML::Video::Window::Window(const char *title,
         throw std::runtime_error(fmt::format("Could not create the '{:s}' Window: {:s}",
                                              title,
                                              SDL_GetError()));
-    }
+    } else {
+		MainLogFile.Write(this->to_string());
+	}
 }
 
 
@@ -85,7 +87,9 @@ SDML::Video::Window::Window(const char *title,
         throw std::runtime_error(fmt::format("Could not create the '{:s}' Window: {:s}",
                                              title,
                                              SDL_GetError()));
-    }
+    } else {
+		MainLogFile.Write(this->to_string());
+	}
 }
 
 
@@ -190,7 +194,7 @@ std::string SDML::Video::Window::to_string() const
 
 	display_settings.add_printable(	     "Orientation", display_orientation_string);
 	display_settings.add_printable("Pixel Format Name", this->GetDisplayModePixelFormatName());
-	display_settings.add_printable(display_mode_settings);
+	display_settings.add_printables(display_mode_settings);
 
 	Logging::Printables window_settings {fmt::format("'{:s}' Window", this->GetTitle())};
 	window_settings.add_printable("ID", this->GetID());
@@ -212,7 +216,7 @@ std::string SDML::Video::Window::to_string() const
 	window_settings.add_printable(		 "Pixel Format", this->GetPixelFormatName());
 	window_settings.add_printable(	  "Window is shown", this->CheckInitFlags(SDML::Video::Window::InitFlag::SHOWN));
 	window_settings.add_printable("Window is resizable", this->CheckInitFlags(SDML::Video::Window::InitFlag::RESIZABLE));
-	window_settings.add_printable(display_settings);
+	window_settings.add_printables(display_settings);
 
 	return window_settings.print();
 }

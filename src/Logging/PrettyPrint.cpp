@@ -53,9 +53,7 @@ void Logging::Printables::add_printable(const char* key, const std::vector<std::
 
 void Logging::Printables::add_printable(const std::string& key, const std::vector<std::string>& value) { this->printables.push_back(std::pair<std::string, std::string> {key, fmt::format("[{}]", fmt::join(value, ", "))}); }
 
-void Logging::Printables::add_printable(Printables& printables) { this->printables.push_back(printables); }
-
-void Logging::Printables::copy_into_printables(Printables printables) { this->printables.push_back(printables); }
+void Logging::Printables::add_printables(Printables& printables) { this->printables.push_back(printables); }
 
 std::string Logging::Printables::print(std::size_t prior_level)
 {
@@ -99,11 +97,11 @@ std::string Logging::Printables::print(std::size_t prior_level)
 							fmt::arg("key_length", max_key_length),
 							fmt::arg(	  "value", std::get<std::pair<std::string, std::string>>(this->printables[index - index_offset]).second));
 		} else {
-			lines[index] = "\n" + std::get<Printables>(this->printables[index-index_offset]).print(prior_level + 1) + "\n";
+			lines[index] = "\n" + std::get<Printables>(this->printables[index-index_offset]).print(prior_level + 1);
 		}
 	}
 
-	return fmt::format("{}", fmt::join(lines, "\n"));
+	return fmt::format("{:s}{:s}", fmt::join(lines, "\n"), prior_level == 0 ? "\n" : "");
 }
 
 void Logging::Printables::clear() { this->printables.clear(); }

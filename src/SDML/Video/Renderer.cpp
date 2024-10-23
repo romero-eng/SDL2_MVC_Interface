@@ -31,6 +31,8 @@ SDML::Video::Renderer::Renderer(Window& window,
         throw std::runtime_error(fmt::format("Could not create a renderer from the '{:s}' Window: {:s}",
                                              window.GetTitle(),
                                              SDL_GetError()));
+    } else {
+        MainLogFile.Write(this->to_string());
     }
 };
 

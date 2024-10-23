@@ -36,6 +36,10 @@ int main( int argc, char* args[] )
 	try {
 
 		SDML::Video::windows.push_back(SDML::Video::Window {WINDOW_TITLE, WINDOW_AREA, SDML::Video::Window::InitFlag::RESIZABLE});
+		SDML::Video::Renderer renderer{SDML::Video::windows[0]};
+		SDML::Video::Texture hello_world_texture {renderer, std::filesystem::current_path().parent_path().parent_path()/"res"/"hello_world.bmp"};
+		renderer.Copy(hello_world_texture);
+		renderer.Update();
 		
 		SDL_Event event;
 		std::unique_ptr<SDML::Event::Event> current_event;
