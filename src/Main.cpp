@@ -56,8 +56,6 @@ int main( int argc, char* args[] )
 						break;
 				}
 
-				MainLogFile.Write(current_event->to_string());
-
 				quit = event.type == SDL_QUIT;
 			}
 		}

@@ -70,7 +70,8 @@ SDML::Event::WindowEvent::WindowEvent(const SDL_Event& event,
 									  const std::chrono::time_point<std::chrono::system_clock>& init_time_point): AbstractEvent{event, init_time_point},
 									  																			  window{Video::FindWindow(event.window.windowID)},
 																												  description{this->SDL_to_SDML(event)},
-																												  data{event.window.data1, event.window.data2} {}
+																												  data{event.window.data1, event.window.data2}
+{ MainLogFile.Write(this->to_string()); }
 
 
 std::string SDML::Event::WindowEvent::to_string() const

@@ -3,6 +3,7 @@
 
 // Custom Code from this project
 #include "../../Logging/PrettyPrint.hpp"
+#include "../../Logging/Logfile.hpp"
 #include "../Video/Window.hpp"
 #include "AbstractEvent.hpp"
 
