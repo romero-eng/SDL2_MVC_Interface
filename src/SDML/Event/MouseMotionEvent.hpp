@@ -11,6 +11,7 @@
 #include <SDL2/SDL.h>
 
 // C++ Standard Libraries
+#include <array>
 #include <chrono>
 #include <bitset>
 

@@ -14,20 +14,20 @@ SDML::Event::MouseMotionEvent::MouseMotionEvent(const SDL_Event& event,
 
 std::string SDML::Event::MouseMotionEvent::to_string() const
 {
-    const auto& [X, Y] = position;
-    const auto& [dX_dt, dY_dt] = velocity;
+    const auto& [X, Y] = this->position;
+    const auto& [dX_dt, dY_dt] = this->velocity;
 
-    Logging::Printables mouse_event_description {fmt::format("{:s}: Motion for Mouse #{:d} in '{:s}' Window",
+    Logging::Printables event_description {fmt::format("{:s}: Motion for Mouse #{:d} in '{:s}' Window",
                                                           Logging::time_to_string(this->GetTimeStamp()),
                                                           this->ID,
                                                           this->window.GetTitle())};
-    mouse_event_description.add_printable("Position", fmt::format("[X: {:d}, Y: {:d}]", X, Y));
-    mouse_event_description.add_printable("Velocity", fmt::format("[dX_dt: {:d}, dY_dt: {:d}]", dX_dt, dY_dt));
-    mouse_event_description.add_printable("Left Button Held", this->state.test(0));
-    mouse_event_description.add_printable("Right Button Held", this->state.test(2));
-    mouse_event_description.add_printable("Middle Button Held", this->state.test(1));
+    event_description.add_printable("Position", fmt::format("[X: {:d}, Y: {:d}]", X, Y));
+    event_description.add_printable("Velocity", fmt::format("[dX_dt: {:d}, dY_dt: {:d}]", dX_dt, dY_dt));
+    event_description.add_printable("Left Button Held", this->state.test(0));
+    event_description.add_printable("Right Button Held", this->state.test(2));
+    event_description.add_printable("Middle Button Held", this->state.test(1));
 
-	return fmt::format("{:s}\n", mouse_event_description.print());
+	return fmt::format("{:s}\n", event_description.print());
 }
 
 
