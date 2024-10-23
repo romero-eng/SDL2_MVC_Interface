@@ -3,6 +3,8 @@
 
 // Custom Code from this project
 #include "../../Logging/Logfile.hpp"
+#include "../../Logging/PrettyPrint.hpp"
+#include "../Video/Window.hpp"
 #include "Event.hpp"
 
 // Third-Party APIs
@@ -17,6 +19,12 @@ namespace SDML
     {
         class KeyboardEvent: public Event
         {
+        private:
+
+            Video::Window window;
+            bool pressed;
+            uint8_t repeat;
+
         public:
 
             KeyboardEvent(const SDL_Event& event,
