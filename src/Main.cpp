@@ -55,6 +55,7 @@ int main( int argc, char* args[] )
 						break;
 					case SDL_MOUSEWHEEL:
 						current_event = std::make_unique<SDML::Event::MouseWheelEvent>(event, init_time_point);
+						break;
 					case SDL_WINDOWEVENT:
 						current_event = std::make_unique<SDML::Event::WindowEvent>(event, init_time_point);
 						break;
