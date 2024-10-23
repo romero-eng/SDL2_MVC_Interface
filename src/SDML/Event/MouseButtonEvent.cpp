@@ -6,6 +6,9 @@ SDML::Event::MouseButtonEvent::MouseButtonEvent(const SDL_Event& event,
                                                 const std::chrono::time_point<std::chrono::system_clock>& init_time_point): Event(event, init_time_point),
                                                                                                                             window{Video::FindWindow(event.button.windowID)},
                                                                                                                             position{event.button.x, event.button.y},
+                                                                                                                            button_name{this->button_names[event.button.button - 1]},
+                                                                                                                            button_state{this->button_states[event.button.state]},
+                                                                                                                            clicks{event.button.clicks},
                                                                                                                             ID {event.button.which}
 { MainLogFile.Write(this->to_string()); }
 
@@ -14,11 +17,14 @@ std::string SDML::Event::MouseButtonEvent::to_string() const
 {
     const auto& [X, Y] = this->position;
 
-    Logging::Printables event_description {fmt::format("{:s}: Button Click for Mouse #{:d} in '{:s}' Window",
+    Logging::Printables event_description {fmt::format("{:s}: {:s} Button {:s} for Mouse #{:d} in '{:s}' Window",
                                                        Logging::time_to_string(this->GetTimeStamp()),
+                                                       this->button_name,
+                                                       this->button_state,
                                                        this->ID,
                                                        this->window.GetTitle())};
     event_description.add_printable("Position", fmt::format("[X: {:d}, Y: {:d}]", X, Y));
+    event_description.add_printable("Clicks", this->clicks);
 
     return fmt::format("{:s}\n", event_description.print());
 }

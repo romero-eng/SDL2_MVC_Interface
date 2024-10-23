@@ -14,6 +14,7 @@
 // C++ Standard Libraries
 #include <array>
 #include <chrono>
+#include <string_view>
 
 namespace SDML
 {
@@ -23,8 +24,14 @@ namespace SDML
         {
         private:
 
+            static constexpr std::array<std::string_view, 3> button_names {"Left", "Middle", "Right"};
+            static constexpr std::array<std::string_view, 2> button_states {"Released", "Pressed"};
+
             Video::Window window;
             std::array<int, 2> position;
+            std::string_view button_name;
+            std::string_view button_state;
+            uint8_t clicks;
             uint32_t ID;
 
         public:
