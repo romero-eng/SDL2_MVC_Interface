@@ -3,7 +3,7 @@
 
 
 SDML::Event::MouseMotionEvent::MouseMotionEvent(const SDL_Event& event,
-	        			                        const std::chrono::time_point<std::chrono::system_clock>& init_time_point): AbstractEvent(event, init_time_point),
+	        			                        const std::chrono::time_point<std::chrono::system_clock>& init_time_point): Event(event, init_time_point),
                                                                                                                             window{Video::FindWindow(event.motion.windowID)},
                                                                                                                             position{event.motion.x, event.motion.y},
                                                                                                                             velocity{event.motion.xrel, event.motion.yrel},

@@ -5,7 +5,7 @@
 #include "../../Logging/PrettyPrint.hpp"
 #include "../../Logging/Logfile.hpp"
 #include "../Video/Window.hpp"
-#include "AbstractEvent.hpp"
+#include "Event.hpp"
 
 // Third-Party APIs
 #include <SDL2/SDL.h>
@@ -18,7 +18,7 @@ namespace SDML
 {
     namespace Event
     {
-        class MouseMotionEvent: public AbstractEvent
+        class MouseMotionEvent: public Event
         {
         private:
 

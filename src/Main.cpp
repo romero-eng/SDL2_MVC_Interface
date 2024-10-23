@@ -35,7 +35,7 @@ int main( int argc, char* args[] )
 		SDML::Video::windows.push_back(SDML::Video::Window {WINDOW_TITLE, WINDOW_AREA, SDML::Video::Window::InitFlag::RESIZABLE});
 		
 		SDL_Event event;
-		std::unique_ptr<SDML::Event::AbstractEvent> current_event;
+		std::unique_ptr<SDML::Event::Event> current_event;
 		bool quit = false;
 
 		while(!quit) {

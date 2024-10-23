@@ -67,7 +67,7 @@ SDML::Event::WindowEvent::Description SDML::Event::WindowEvent::SDL_to_SDML(SDL_
 
 
 SDML::Event::WindowEvent::WindowEvent(const SDL_Event& event,
-									  const std::chrono::time_point<std::chrono::system_clock>& init_time_point): AbstractEvent{event, init_time_point},
+									  const std::chrono::time_point<std::chrono::system_clock>& init_time_point): Event{event, init_time_point},
 									  																			  window{Video::FindWindow(event.window.windowID)},
 																												  description{this->SDL_to_SDML(event)},
 																												  data{event.window.data1, event.window.data2}

@@ -4,7 +4,7 @@
 // Custom Code from this project
 #include "../../Logging/PrettyPrint.hpp"
 #include "../../Logging/Logfile.hpp"
-#include "AbstractEvent.hpp"
+#include "Event.hpp"
 
 // Third-Party APIs
 #include <fmt/format.h>
@@ -17,7 +17,7 @@ namespace SDML
 {
     namespace Event
     {
-        class QuitEvent: public AbstractEvent
+        class QuitEvent: public Event
         {
         public:
 
