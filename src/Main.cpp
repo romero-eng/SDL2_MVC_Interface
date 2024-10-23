@@ -9,6 +9,7 @@
 #include "SDML/Video/Texture.hpp"
 #include "SDML/Event/MouseMotionEvent.hpp"
 #include "SDML/Event/MouseButtonEvent.hpp"
+#include "SDML/Event/MouseWheelEvent.hpp"
 #include "SDML/Event/WindowEvent.hpp"
 #include "SDML/Event/QuitEvent.hpp"
 #include "SDML/Event/GenericEvent.hpp"
@@ -52,6 +53,8 @@ int main( int argc, char* args[] )
 					case SDL_MOUSEBUTTONUP:
 						current_event = std::make_unique<SDML::Event::MouseButtonEvent>(event, init_time_point);
 						break;
+					case SDL_MOUSEWHEEL:
+						current_event = std::make_unique<SDML::Event::MouseWheelEvent>(event, init_time_point);
 					case SDL_WINDOWEVENT:
 						current_event = std::make_unique<SDML::Event::WindowEvent>(event, init_time_point);
 						break;

@@ -23,6 +23,7 @@ namespace SDML
 
             enum class Description
             {
+                NONE,
                 SHOWN,
                 HIDDEN,
                 EXPOSED,

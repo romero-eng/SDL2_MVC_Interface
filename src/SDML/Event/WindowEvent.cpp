@@ -6,6 +6,9 @@ SDML::Event::WindowEvent::Description SDML::Event::WindowEvent::SDL_to_SDML(SDL_
 {
 	Description description;
 	switch(event.window.event) {
+		case SDL_WINDOWEVENT_NONE:
+			description = Description::NONE;
+			break;
 		case SDL_WINDOWEVENT_SHOWN:
 			description = Description::SHOWN;
 			break;
@@ -78,6 +81,9 @@ std::string SDML::Event::WindowEvent::to_string() const
 {
 	std::string event_description_string;
 	switch(this->description) {
+		case Description::NONE:
+			event_description_string = "none";
+			break;
 		case Description::SHOWN:
 			event_description_string = "shown";
 			break;
