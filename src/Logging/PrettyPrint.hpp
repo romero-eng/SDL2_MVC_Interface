@@ -3,6 +3,7 @@
 
 // Third-party Libraries
 #include <fmt/format.h>
+#include <fmt/chrono.h>
 
 // C++ Standard Libraries
 #include <string>
