@@ -17,7 +17,7 @@ std::string SDML::Event::MouseWheelEvent::to_string() const
     const auto& [X, Y] = this->position;
     const auto& [horizontal, vertical] = this->scroll;
 
-    Logging::Printables event_description {fmt::format("{:s}: Unfinished Wheel Scroll Event for Mouse #{:d} for '{:s}' Window",
+    Logging::Printables event_description {fmt::format("{:s}: Wheel Scroll Event for Mouse #{:d} in '{:s}' Window",
                                                        Logging::time_to_string(this->GetTimeStamp()),
                                                        this->ID,
                                                        this->window.GetTitle())};
