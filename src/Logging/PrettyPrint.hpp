@@ -10,7 +10,6 @@
 #include <variant>
 #include <vector>
 #include <chrono>
-#include <iomanip>
 
 
 namespace Logging
