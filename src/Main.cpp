@@ -10,6 +10,7 @@
 #include "SDML/Event/MouseMotionEvent.hpp"
 #include "SDML/Event/MouseButtonEvent.hpp"
 #include "SDML/Event/MouseWheelEvent.hpp"
+#include "SDML/Event/KeyboardEvent.hpp"
 #include "SDML/Event/WindowEvent.hpp"
 #include "SDML/Event/QuitEvent.hpp"
 #include "SDML/Event/GenericEvent.hpp"
@@ -55,6 +56,12 @@ int main( int argc, char* args[] )
 						break;
 					case SDL_MOUSEWHEEL:
 						current_event = std::make_unique<SDML::Event::MouseWheelEvent>(event, init_time_point);
+						break;
+					case SDL_KEYDOWN:
+						current_event = std::make_unique<SDML::Event::KeyboardEvent>(event, init_time_point);
+						break;
+					case SDL_KEYUP:
+						current_event = std::make_unique<SDML::Event::KeyboardEvent>(event, init_time_point);
 						break;
 					case SDL_WINDOWEVENT:
 						current_event = std::make_unique<SDML::Event::WindowEvent>(event, init_time_point);
