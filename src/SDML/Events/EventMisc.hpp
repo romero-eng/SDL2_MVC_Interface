@@ -14,12 +14,16 @@
 // Third-Party APIs
 #include <SDL2/SDL.h>
 
+// C++ Standard Libraries
+#include <chrono>
+#include <memory>
+#include <optional>
+
 namespace SDML
 {
     namespace Events
     {
-        std::unique_ptr<Event> SDL_to_SDML(const SDL_Event& sdl_event,
-                                           const std::chrono::time_point<std::chrono::system_clock>& init_time_point);
+        std::optional<std::unique_ptr<Event>> PollEvent(const std::chrono::time_point<std::chrono::system_clock>& init_time_point);
     }
 }
 

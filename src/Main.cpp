@@ -42,20 +42,15 @@ int main( int argc, char* args[] )
 		renderer.Copy(hello_world_texture);
 		renderer.Update();
 		
-		SDL_Event event;
-		std::unique_ptr<SDML::Events::Event> current_event;
+		std::optional<std::unique_ptr<SDML::Events::Event>> current_event;
 		bool quit = false;
 
 		while(!quit) {
-			while(SDL_PollEvent(&event)){
-
-				current_event = SDML::Events::SDL_to_SDML(event, init_time_point);
-
-				quit = current_event->Quit();
+			current_event = SDML::Events::PollEvent(init_time_point);
+			if(current_event.has_value()){
+				quit = current_event.value()->Quit();
 			}
 		}
-		
-		current_event = nullptr;
 
 	}
 	catch(const std::exception& error_message)
