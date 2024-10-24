@@ -51,7 +51,7 @@ int main( int argc, char* args[] )
 
 				current_event = SDML::Events::SDL_to_SDML(event, init_time_point);
 
-				quit = event.type == SDL_QUIT;
+				quit = current_event->Quit();
 			}
 		}
 		

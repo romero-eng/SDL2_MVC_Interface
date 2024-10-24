@@ -3,7 +3,7 @@
 
 
 SDML::Events::QuitEvent::QuitEvent(const SDL_Event& event,
-			                      const std::chrono::time_point<std::chrono::system_clock>& init_time_point): Event{event, init_time_point}
+			                      const std::chrono::time_point<std::chrono::system_clock>& init_time_point): Event{event, init_time_point, true}
 { MainLogFile.Write(this->to_string()); }
 
 

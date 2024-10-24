@@ -3,13 +3,13 @@
 
 
 SDML::Events::MouseButtonEvent::MouseButtonEvent(const SDL_Event& event,
-                                                const std::chrono::time_point<std::chrono::system_clock>& init_time_point): Event(event, init_time_point),
-                                                                                                                            window{Video::FindWindow(event.button.windowID)},
-                                                                                                                            position{event.button.x, event.button.y},
-                                                                                                                            button_name{this->button_names[event.button.button - 1]},
-                                                                                                                            pressed{event.button.state == SDL_PRESSED},
-                                                                                                                            clicks{event.button.clicks},
-                                                                                                                            ID {event.button.which}
+                                                 const std::chrono::time_point<std::chrono::system_clock>& init_time_point): Event(event, init_time_point, false),
+                                                                                                                             window{Video::FindWindow(event.button.windowID)},
+                                                                                                                             position{event.button.x, event.button.y},
+                                                                                                                             button_name{this->button_names[event.button.button - 1]},
+                                                                                                                             pressed{event.button.state == SDL_PRESSED},
+                                                                                                                             clicks{event.button.clicks},
+                                                                                                                             ID {event.button.which}
 { MainLogFile.Write(this->to_string()); }
 
 

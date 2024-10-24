@@ -18,17 +18,21 @@ namespace SDML
         private:
 
             std::chrono::time_point<std::chrono::system_clock> timestamp;
+            bool quit;
 
         public:
 
             Event(const SDL_Event& event,
-                          const std::chrono::time_point<std::chrono::system_clock>& init_time_point);
+                  const std::chrono::time_point<std::chrono::system_clock>& init_time_point,
+                  bool quit);
 
             virtual ~Event() = 0;
 
             virtual std::string to_string() const = 0;
 
             std::chrono::time_point<std::chrono::system_clock> GetTimeStamp() const;
+
+            bool Quit() const;
         };
     }
 }

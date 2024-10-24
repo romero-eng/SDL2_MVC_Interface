@@ -3,10 +3,10 @@
 
 
 SDML::Events::KeyboardEvent::KeyboardEvent(const SDL_Event& event,
-                                          const std::chrono::time_point<std::chrono::system_clock> init_time_point): Event(event, init_time_point),
-                                                                                                                     window{Video::FindWindow(event.key.windowID)},
-                                                                                                                     pressed{event.key.state == SDL_PRESSED},
-                                                                                                                     repeat{event.key.repeat}
+                                           const std::chrono::time_point<std::chrono::system_clock> init_time_point): Event(event, init_time_point, false),
+                                                                                                                      window{Video::FindWindow(event.key.windowID)},
+                                                                                                                      pressed{event.key.state == SDL_PRESSED},
+                                                                                                                      repeat{event.key.repeat}
 {
 
     std::array<std::string, 2> codes {fmt::format("Scancode: {:#x}", event.key.keysym.scancode),
