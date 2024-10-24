@@ -14,6 +14,7 @@
 #include "SDML/Event/WindowEvent.hpp"
 #include "SDML/Event/QuitEvent.hpp"
 #include "SDML/Event/GenericEvent.hpp"
+#include "SDML/Event/EventMisc.hpp"
 
 // C++ Standard Libraries
 #include <filesystem>
@@ -48,35 +49,7 @@ int main( int argc, char* args[] )
 		while(!quit) {
 			while(SDL_PollEvent(&event)){
 
-				switch(event.type) {
-					case SDL_MOUSEMOTION:
-						current_event = std::make_unique<SDML::Events::MouseMotionEvent>(event, init_time_point);
-						break;
-					case SDL_MOUSEBUTTONDOWN:
-						current_event = std::make_unique<SDML::Events::MouseButtonEvent>(event, init_time_point);
-						break;
-					case SDL_MOUSEBUTTONUP:
-						current_event = std::make_unique<SDML::Events::MouseButtonEvent>(event, init_time_point);
-						break;
-					case SDL_MOUSEWHEEL:
-						current_event = std::make_unique<SDML::Events::MouseWheelEvent>(event, init_time_point);
-						break;
-					case SDL_KEYDOWN:
-						current_event = std::make_unique<SDML::Events::KeyboardEvent>(event, init_time_point);
-						break;
-					case SDL_KEYUP:
-						current_event = std::make_unique<SDML::Events::KeyboardEvent>(event, init_time_point);
-						break;
-					case SDL_WINDOWEVENT:
-						current_event = std::make_unique<SDML::Events::WindowEvent>(event, init_time_point);
-						break;
-					case SDL_QUIT:
-						current_event = std::make_unique<SDML::Events::QuitEvent>(event, init_time_point);
-						break;
-					default:
-						current_event = std::make_unique<SDML::Events::GenericEvent>(event, init_time_point);
-						break;
-				}
+				current_event = SDML::Events::SDL_to_SDML(event, init_time_point);
 
 				quit = event.type == SDL_QUIT;
 			}
