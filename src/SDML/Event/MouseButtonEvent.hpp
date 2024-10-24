@@ -18,7 +18,7 @@
 
 namespace SDML
 {
-    namespace Event
+    namespace Events
     {
         class MouseButtonEvent: public Event
         {

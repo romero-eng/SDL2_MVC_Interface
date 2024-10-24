@@ -2,7 +2,7 @@
 #include "MouseMotionEvent.hpp"
 
 
-SDML::Event::MouseMotionEvent::MouseMotionEvent(const SDL_Event& event,
+SDML::Events::MouseMotionEvent::MouseMotionEvent(const SDL_Event& event,
 	        			                        const std::chrono::time_point<std::chrono::system_clock>& init_time_point): Event(event, init_time_point),
                                                                                                                             window{Video::FindWindow(event.motion.windowID)},
                                                                                                                             position{event.motion.x, event.motion.y},
@@ -12,7 +12,7 @@ SDML::Event::MouseMotionEvent::MouseMotionEvent(const SDL_Event& event,
 { MainLogFile.Write(this->to_string()); }
 
 
-std::string SDML::Event::MouseMotionEvent::to_string() const
+std::string SDML::Events::MouseMotionEvent::to_string() const
 {
     const auto& [X, Y] = this->position;
     const auto& [dX_dt, dY_dt] = this->velocity;
@@ -32,7 +32,7 @@ std::string SDML::Event::MouseMotionEvent::to_string() const
 
 
 std::ostream& operator<<(std::ostream& output,
-						 const SDML::Event::MouseMotionEvent& event)
+						 const SDML::Events::MouseMotionEvent& event)
 { return output << event.to_string() << std::endl; }
 
 

@@ -2,13 +2,13 @@
 #include "GenericEvent.hpp"
 
 
-SDML::Event::GenericEvent::GenericEvent(const SDL_Event& event,
+SDML::Events::GenericEvent::GenericEvent(const SDL_Event& event,
 			                            const std::chrono::time_point<std::chrono::system_clock>& init_time_point): Event{event, init_time_point},
 																												    type_integer{event.type}
 { MainLogFile.Write(this->to_string()); }
 
 
-std::string SDML::Event::GenericEvent::to_string() const
+std::string SDML::Events::GenericEvent::to_string() const
 {
 	Logging::Printables event_description {fmt::format("Generic Event at {:s}", Logging::time_to_string(this->GetTimeStamp()))};
 	event_description.add_printable("Type", fmt::format("{:#x}", this->GetTypeInteger()));
@@ -17,11 +17,11 @@ std::string SDML::Event::GenericEvent::to_string() const
 }
 
 
-uint32_t SDML::Event::GenericEvent::GetTypeInteger() const { return this->type_integer; }
+uint32_t SDML::Events::GenericEvent::GetTypeInteger() const { return this->type_integer; }
 
 
 std::ostream& operator<<(std::ostream& output,
-						 const SDML::Event::GenericEvent& event)
+						 const SDML::Events::GenericEvent& event)
 { return output << event.to_string() << std::endl; }
 
 

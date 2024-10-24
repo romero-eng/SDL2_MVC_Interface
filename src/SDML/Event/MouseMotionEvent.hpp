@@ -17,7 +17,7 @@
 
 namespace SDML
 {
-    namespace Event
+    namespace Events
     {
         class MouseMotionEvent: public Event
         {
@@ -40,6 +40,6 @@ namespace SDML
 }
 
 std::ostream& operator<<(std::ostream& output,
-						 const SDML::Event::MouseMotionEvent& event);
+						 const SDML::Events::MouseMotionEvent& event);
 
 #endif

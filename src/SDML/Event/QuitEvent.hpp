@@ -15,7 +15,7 @@
 
 namespace SDML
 {
-    namespace Event
+    namespace Events
     {
         class QuitEvent: public Event
         {
@@ -30,6 +30,6 @@ namespace SDML
 }
 
 std::ostream& operator<<(std::ostream& output,
-                         const SDML::Event::QuitEvent& event);
+                         const SDML::Events::QuitEvent& event);
 
 #endif

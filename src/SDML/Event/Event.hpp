@@ -11,7 +11,7 @@
 
 namespace SDML
 {
-    namespace Event
+    namespace Events
     {
         class Event
         {

@@ -15,7 +15,7 @@
 
 namespace SDML
 {
-    namespace Event
+    namespace Events
     {
         class GenericEvent: public Event
         {
@@ -36,6 +36,6 @@ namespace SDML
 }
 
 std::ostream& operator<<(std::ostream& output,
-						 const SDML::Event::GenericEvent& event);
+						 const SDML::Events::GenericEvent& event);
 
 #endif

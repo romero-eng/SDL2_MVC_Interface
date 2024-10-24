@@ -2,7 +2,7 @@
 #include "MouseButtonEvent.hpp"
 
 
-SDML::Event::MouseButtonEvent::MouseButtonEvent(const SDL_Event& event,
+SDML::Events::MouseButtonEvent::MouseButtonEvent(const SDL_Event& event,
                                                 const std::chrono::time_point<std::chrono::system_clock>& init_time_point): Event(event, init_time_point),
                                                                                                                             window{Video::FindWindow(event.button.windowID)},
                                                                                                                             position{event.button.x, event.button.y},
@@ -13,7 +13,7 @@ SDML::Event::MouseButtonEvent::MouseButtonEvent(const SDL_Event& event,
 { MainLogFile.Write(this->to_string()); }
 
 
-std::string SDML::Event::MouseButtonEvent::to_string() const
+std::string SDML::Events::MouseButtonEvent::to_string() const
 {
     const auto& [X, Y] = this->position;
 

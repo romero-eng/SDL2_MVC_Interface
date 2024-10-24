@@ -2,7 +2,7 @@
 #include "WindowEvent.hpp"
 
 
-SDML::Event::WindowEvent::Description SDML::Event::WindowEvent::SDL_to_SDML(SDL_Event event)
+SDML::Events::WindowEvent::Description SDML::Events::WindowEvent::SDL_to_SDML(SDL_Event event)
 {
 	Description description;
 	switch(event.window.event) {
@@ -69,7 +69,7 @@ SDML::Event::WindowEvent::Description SDML::Event::WindowEvent::SDL_to_SDML(SDL_
 }
 
 
-SDML::Event::WindowEvent::WindowEvent(const SDL_Event& event,
+SDML::Events::WindowEvent::WindowEvent(const SDL_Event& event,
 									  const std::chrono::time_point<std::chrono::system_clock>& init_time_point): Event{event, init_time_point},
 									  																			  window{Video::FindWindow(event.window.windowID)},
 																												  description{this->SDL_to_SDML(event)},
@@ -77,7 +77,7 @@ SDML::Event::WindowEvent::WindowEvent(const SDL_Event& event,
 { MainLogFile.Write(this->to_string()); }
 
 
-std::string SDML::Event::WindowEvent::to_string() const
+std::string SDML::Events::WindowEvent::to_string() const
 {
 	std::string event_description_string;
 	switch(this->description) {
@@ -148,7 +148,7 @@ std::string SDML::Event::WindowEvent::to_string() const
 
 
 std::ostream& operator<<(std::ostream& output,
-						 const SDML::Event::WindowEvent& event)
+						 const SDML::Events::WindowEvent& event)
 { return output << event.to_string() << std::endl; }
 
 

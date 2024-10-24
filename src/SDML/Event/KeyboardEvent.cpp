@@ -2,7 +2,7 @@
 #include "KeyboardEvent.hpp"
 
 
-SDML::Event::KeyboardEvent::KeyboardEvent(const SDL_Event& event,
+SDML::Events::KeyboardEvent::KeyboardEvent(const SDL_Event& event,
                                           const std::chrono::time_point<std::chrono::system_clock> init_time_point): Event(event, init_time_point),
                                                                                                                      window{Video::FindWindow(event.key.windowID)},
                                                                                                                      pressed{event.key.state == SDL_PRESSED},
@@ -17,7 +17,7 @@ SDML::Event::KeyboardEvent::KeyboardEvent(const SDL_Event& event,
 }
 
 
-std::string SDML::Event::KeyboardEvent::to_string() const
+std::string SDML::Events::KeyboardEvent::to_string() const
 {
     Logging::Printables event_description {fmt::format("Unfinished Key {:s} Event in '{:s}' Window",
                                                        this->pressed ? "Pressed" : "Released",

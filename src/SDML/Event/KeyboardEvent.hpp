@@ -15,7 +15,7 @@
 
 namespace SDML
 {
-    namespace Event
+    namespace Events
     {
         class KeyboardEvent: public Event
         {

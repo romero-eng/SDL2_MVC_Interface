@@ -42,7 +42,7 @@ int main( int argc, char* args[] )
 		renderer.Update();
 		
 		SDL_Event event;
-		std::unique_ptr<SDML::Event::Event> current_event;
+		std::unique_ptr<SDML::Events::Event> current_event;
 		bool quit = false;
 
 		while(!quit) {
@@ -50,31 +50,31 @@ int main( int argc, char* args[] )
 
 				switch(event.type) {
 					case SDL_MOUSEMOTION:
-						current_event = std::make_unique<SDML::Event::MouseMotionEvent>(event, init_time_point);
+						current_event = std::make_unique<SDML::Events::MouseMotionEvent>(event, init_time_point);
 						break;
 					case SDL_MOUSEBUTTONDOWN:
-						current_event = std::make_unique<SDML::Event::MouseButtonEvent>(event, init_time_point);
+						current_event = std::make_unique<SDML::Events::MouseButtonEvent>(event, init_time_point);
 						break;
 					case SDL_MOUSEBUTTONUP:
-						current_event = std::make_unique<SDML::Event::MouseButtonEvent>(event, init_time_point);
+						current_event = std::make_unique<SDML::Events::MouseButtonEvent>(event, init_time_point);
 						break;
 					case SDL_MOUSEWHEEL:
-						current_event = std::make_unique<SDML::Event::MouseWheelEvent>(event, init_time_point);
+						current_event = std::make_unique<SDML::Events::MouseWheelEvent>(event, init_time_point);
 						break;
 					case SDL_KEYDOWN:
-						current_event = std::make_unique<SDML::Event::KeyboardEvent>(event, init_time_point);
+						current_event = std::make_unique<SDML::Events::KeyboardEvent>(event, init_time_point);
 						break;
 					case SDL_KEYUP:
-						current_event = std::make_unique<SDML::Event::KeyboardEvent>(event, init_time_point);
+						current_event = std::make_unique<SDML::Events::KeyboardEvent>(event, init_time_point);
 						break;
 					case SDL_WINDOWEVENT:
-						current_event = std::make_unique<SDML::Event::WindowEvent>(event, init_time_point);
+						current_event = std::make_unique<SDML::Events::WindowEvent>(event, init_time_point);
 						break;
 					case SDL_QUIT:
-						current_event = std::make_unique<SDML::Event::QuitEvent>(event, init_time_point);
+						current_event = std::make_unique<SDML::Events::QuitEvent>(event, init_time_point);
 						break;
 					default:
-						current_event = std::make_unique<SDML::Event::GenericEvent>(event, init_time_point);
+						current_event = std::make_unique<SDML::Events::GenericEvent>(event, init_time_point);
 						break;
 				}
 

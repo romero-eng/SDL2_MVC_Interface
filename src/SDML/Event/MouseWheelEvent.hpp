@@ -16,7 +16,7 @@
 
 namespace SDML
 {
-    namespace Event
+    namespace Events
     {
         class MouseWheelEvent: public Event
         {

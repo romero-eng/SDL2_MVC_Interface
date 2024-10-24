@@ -2,14 +2,14 @@
 #include "Event.hpp"
 
 
-SDML::Event::Event::Event(const SDL_Event& event,
+SDML::Events::Event::Event(const SDL_Event& event,
                           				  const std::chrono::time_point<std::chrono::system_clock>& init_time_point): timestamp{init_time_point + std::chrono::duration<int, std::milli>(event.common.timestamp)} {}
 
 
-SDML::Event::Event::~Event() {}
+SDML::Events::Event::~Event() {}
 
 
-std::chrono::time_point<std::chrono::system_clock> SDML::Event::Event::GetTimeStamp() const { return this->timestamp; }
+std::chrono::time_point<std::chrono::system_clock> SDML::Events::Event::GetTimeStamp() const { return this->timestamp; }
 
 
 #else

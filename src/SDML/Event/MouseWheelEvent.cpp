@@ -2,7 +2,7 @@
 #include "MouseWheelEvent.hpp"
 
 
-SDML::Event::MouseWheelEvent::MouseWheelEvent(const SDL_Event& event,
+SDML::Events::MouseWheelEvent::MouseWheelEvent(const SDL_Event& event,
                                               const std::chrono::time_point<std::chrono::system_clock> init_time_point): Event(event, init_time_point),
                                                                                                                          window{Video::FindWindow(event.wheel.windowID)},
                                                                                                                          position{event.wheel.mouseX, event.wheel.mouseY},
@@ -12,7 +12,7 @@ SDML::Event::MouseWheelEvent::MouseWheelEvent(const SDL_Event& event,
 { MainLogFile.Write(this->to_string()); }
 
 
-std::string SDML::Event::MouseWheelEvent::to_string() const
+std::string SDML::Events::MouseWheelEvent::to_string() const
 {
     const auto& [X, Y] = this->position;
     const auto& [horizontal, vertical] = this->scroll;
