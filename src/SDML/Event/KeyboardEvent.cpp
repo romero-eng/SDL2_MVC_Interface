@@ -7,7 +7,14 @@ SDML::Event::KeyboardEvent::KeyboardEvent(const SDL_Event& event,
                                                                                                                      window{Video::FindWindow(event.key.windowID)},
                                                                                                                      pressed{event.key.state == SDL_PRESSED},
                                                                                                                      repeat{event.key.repeat}
-{ MainLogFile.Write(this->to_string()); }
+{
+
+    std::array<std::string, 2> codes {fmt::format("Scancode: {:#x}", event.key.keysym.scancode),
+                                      fmt::format(" Unicode: {:#x}", event.key.keysym.sym)};
+
+    MainLogFile.Write(this->to_string());
+    std::cout << fmt::format("\n{:s}\n", fmt::join(codes, "\n")) << std::endl;
+}
 
 
 std::string SDML::Event::KeyboardEvent::to_string() const
