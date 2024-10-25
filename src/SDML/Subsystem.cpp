@@ -43,8 +43,8 @@ std::chrono::time_point<std::chrono::system_clock> SDML::Subsystem::Initialize(u
 	SDL_version linked_version;
 	SDL_VERSION(&compiled_version);
 	SDL_GetVersion(&linked_version);
-	MainLogFile.Write(Logging::date_and_time_to_string(init_time_point));
-	MainLogFile.Write(fmt::format("Compiled SDL v.{:d}.{:d}.{:d}\nLinked SDL v.{:d}.{:d}.{:d}",
+	::MainLogFile.Write(Logging::date_and_time_to_string(init_time_point));
+	::MainLogFile.Write(fmt::format("Compiled SDL v.{:d}.{:d}.{:d}\nLinked SDL v.{:d}.{:d}.{:d}",
 								  compiled_version.major,
 								  compiled_version.minor,
 								  compiled_version.patch,
@@ -121,7 +121,7 @@ std::chrono::time_point<std::chrono::system_clock> SDML::Subsystem::Initialize(u
 			}
 		}
 
-		MainLogFile.Write(video_init_msgs.print());
+		::MainLogFile.Write(video_init_msgs.print());
 	}
 
 	return init_time_point;
