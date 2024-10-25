@@ -13,7 +13,6 @@
 
 // C++ Standard Libraries
 #include <array>
-#include <chrono>
 #include <string_view>
 
 namespace SDML

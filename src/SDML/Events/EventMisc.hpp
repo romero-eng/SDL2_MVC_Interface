@@ -16,7 +16,6 @@
 #include <SDL2/SDL.h>
 
 // C++ Standard Libraries
-#include <chrono>
 #include <memory>
 #include <optional>
 

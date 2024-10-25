@@ -9,9 +9,6 @@
 // Third-Party APIs
 #include <SDL2/SDL.h>
 
-// C++ Standard Libraries
-#include <chrono>
-
 
 namespace SDML
 {

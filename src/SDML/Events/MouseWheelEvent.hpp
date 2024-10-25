@@ -12,7 +12,6 @@
 
 // C++ Standard Libraries
 #include <array>
-#include <chrono>
 
 namespace SDML
 {
