@@ -7,19 +7,12 @@
 #include "SDML/Video/Surface.hpp"
 #include "SDML/Video/Renderer.hpp"
 #include "SDML/Video/Texture.hpp"
-#include "SDML/Events/MouseMotionEvent.hpp"
-#include "SDML/Events/MouseButtonEvent.hpp"
-#include "SDML/Events/MouseWheelEvent.hpp"
-#include "SDML/Events/KeyboardEvent.hpp"
-#include "SDML/Events/WindowEvent.hpp"
-#include "SDML/Events/QuitEvent.hpp"
-#include "SDML/Events/GenericEvent.hpp"
+#include "SDML/Events/Event.hpp"
 #include "SDML/Events/EventMisc.hpp"
 
 // C++ Standard Libraries
 #include <filesystem>
 #include <iostream>
-#include <chrono>
 #include <memory>
 
 
