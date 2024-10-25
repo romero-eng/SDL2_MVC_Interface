@@ -10,7 +10,7 @@ SDML::Events::GenericEvent::GenericEvent(const SDL_Event& event,
 
 std::string SDML::Events::GenericEvent::to_string() const
 {
-	Logging::Printables event_description {fmt::format("Generic Event at {:s}", Logging::time_to_string(this->GetTimeStamp()))};
+	Logging::Printables event_description {fmt::format("{:s}: Generic Event", Logging::time_to_string(this->GetTimeStamp()))};
 	event_description.add_printable("Type", fmt::format("{:#x}", this->GetTypeInteger()));
 
 	return fmt::format("{:s}\n", event_description.print());
