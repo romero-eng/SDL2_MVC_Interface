@@ -52,14 +52,13 @@ SDML::Events::KeyboardEvent::Modifier SDML::Events::KeyboardEvent::SDL_to_SDML(u
 }
 
 
-SDML::Events::KeyboardEvent::KeyboardEvent(const SDL_Event& event,
-                                           const std::chrono::time_point<std::chrono::system_clock> init_time_point): Event(event, init_time_point, false),
-                                                                                                                      window{Video::FindWindow(event.key.windowID)},
-                                                                                                                      pressed{event.key.state == SDL_PRESSED},
-                                                                                                                      scancode{SDL_GetScancodeName(event.key.keysym.scancode)},
-                                                                                                                      unicode{SDL_GetKeyName(event.key.keysym.sym)},
-                                                                                                                      repeat{event.key.repeat},
-                                                                                                                      mod{this->SDL_to_SDML(event.key.keysym.mod)}
+SDML::Events::KeyboardEvent::KeyboardEvent(const SDL_Event& event): Event(event, false),
+                                                                    window{Video::FindWindow(event.key.windowID)},
+                                                                    pressed{event.key.state == SDL_PRESSED},
+                                                                    scancode{SDL_GetScancodeName(event.key.keysym.scancode)},
+                                                                    unicode{SDL_GetKeyName(event.key.keysym.sym)},
+                                                                    repeat{event.key.repeat},
+                                                                    mod{this->SDL_to_SDML(event.key.keysym.mod)}
 { ::MainLogFile.Write(this->to_string()); }
 
 

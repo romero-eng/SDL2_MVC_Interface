@@ -58,9 +58,9 @@ namespace SDML
 			EVERYTHING     = SDL_INIT_EVERYTHING
 		};
 
-		std::chrono::time_point<std::chrono::system_clock> Initialize(uint32_t subsystems);
+		void Initialize(uint32_t subsystems);
 
-		std::chrono::time_point<std::chrono::system_clock> Initialize(InitFlag subsystem);
+		void Initialize(InitFlag subsystem);
 
 		bool IsInitialized(uint32_t subsystems);
 
@@ -88,5 +88,6 @@ uint32_t operator|(uint32_t first_flag,
 uint32_t operator|(const SDML::Image::FileType& first_flag,
 				   uint32_t second_flag);
 
+extern std::chrono::time_point<std::chrono::system_clock> init_time_point;
 
 #endif

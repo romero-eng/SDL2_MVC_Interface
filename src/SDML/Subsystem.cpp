@@ -2,6 +2,9 @@
 #include "Subsystem.hpp"
 
 
+std::chrono::time_point<std::chrono::system_clock> init_time_point;
+
+
 void SDML::Image::Initialize(FileType subsystem) { return Initialize(std::to_underlying(subsystem)); }
 
 
@@ -35,9 +38,9 @@ bool SDML::Image::IsInitialized(FileType subsystem) { return IsInitialized(std::
 void SDML::Image::Quit() { IMG_Quit(); }
 
 
-std::chrono::time_point<std::chrono::system_clock> SDML::Subsystem::Initialize(uint32_t subsystems)
+void SDML::Subsystem::Initialize(uint32_t subsystems)
 {
-	std::chrono::time_point<std::chrono::system_clock> init_time_point {std::chrono::system_clock::now()};
+	::init_time_point = std::chrono::system_clock::now();
 
 	SDL_version compiled_version;
 	SDL_version linked_version;
@@ -123,12 +126,10 @@ std::chrono::time_point<std::chrono::system_clock> SDML::Subsystem::Initialize(u
 
 		::MainLogFile.Write(video_init_msgs.print());
 	}
-
-	return init_time_point;
 }
 
 
-std::chrono::time_point<std::chrono::system_clock> SDML::Subsystem::Initialize(InitFlag subsystem){ return Initialize(std::to_underlying(subsystem)); }
+void SDML::Subsystem::Initialize(InitFlag subsystem){ Initialize(std::to_underlying(subsystem)); }
 
 
 bool SDML::Subsystem::IsInitialized(uint32_t subsystems) { return subsystems == (subsystems & SDL_WasInit(subsystems)); }

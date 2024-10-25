@@ -27,8 +27,7 @@ namespace SDML
 
         public:
 
-            TextInputEvent(const SDL_Event& event,
-                           const std::chrono::time_point<std::chrono::system_clock>& init_time_point);
+            TextInputEvent(const SDL_Event& event);
 
             std::string to_string() const override;
 

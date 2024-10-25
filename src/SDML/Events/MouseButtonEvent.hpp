@@ -35,8 +35,7 @@ namespace SDML
 
         public:
 
-            MouseButtonEvent(const SDL_Event& event,
-                             const std::chrono::time_point<std::chrono::system_clock>& init_time_point);
+            MouseButtonEvent(const SDL_Event& event);
 
             std::string to_string() const override;
 

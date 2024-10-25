@@ -2,13 +2,12 @@
 #include "MouseWheelEvent.hpp"
 
 
-SDML::Events::MouseWheelEvent::MouseWheelEvent(const SDL_Event& event,
-                                               const std::chrono::time_point<std::chrono::system_clock> init_time_point): Event(event, init_time_point, false),
-                                                                                                                          window{Video::FindWindow(event.wheel.windowID)},
-                                                                                                                          position{event.wheel.mouseX, event.wheel.mouseY},
-                                                                                                                          scroll{event.wheel.preciseX, event.wheel.preciseY},
-                                                                                                                          flipped{event.wheel.direction == SDL_MOUSEWHEEL_FLIPPED},
-                                                                                                                          ID{event.wheel.which}
+SDML::Events::MouseWheelEvent::MouseWheelEvent(const SDL_Event& event): Event(event, false),
+                                                                        window{Video::FindWindow(event.wheel.windowID)},
+                                                                        position{event.wheel.mouseX, event.wheel.mouseY},
+                                                                        scroll{event.wheel.preciseX, event.wheel.preciseY},
+                                                                        flipped{event.wheel.direction == SDL_MOUSEWHEEL_FLIPPED},
+                                                                        ID{event.wheel.which}
 { ::MainLogFile.Write(this->to_string()); }
 
 

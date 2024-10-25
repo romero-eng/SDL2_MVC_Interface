@@ -2,13 +2,12 @@
 #include "MouseMotionEvent.hpp"
 
 
-SDML::Events::MouseMotionEvent::MouseMotionEvent(const SDL_Event& event,
-	        			                         const std::chrono::time_point<std::chrono::system_clock>& init_time_point): Event(event, init_time_point, false),
-                                                                                                                             window{Video::FindWindow(event.motion.windowID)},
-                                                                                                                             position{event.motion.x, event.motion.y},
-                                                                                                                             velocity{event.motion.xrel, event.motion.yrel},
-                                                                                                                             state{event.motion.state},
-                                                                                                                             ID{event.motion.which}
+SDML::Events::MouseMotionEvent::MouseMotionEvent(const SDL_Event& event): Event(event, false),
+                                                                          window{Video::FindWindow(event.motion.windowID)},
+                                                                          position{event.motion.x, event.motion.y},
+                                                                          velocity{event.motion.xrel, event.motion.yrel},
+                                                                          state{event.motion.state},
+                                                                          ID{event.motion.which}
 { ::MainLogFile.Write(this->to_string()); }
 
 

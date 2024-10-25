@@ -1,6 +1,9 @@
 #ifndef ABSTRACT_EVENT_H
 #define ABSTRACT_EVENT_H
 
+// Custom Code from this project
+#include "../Subsystem.hpp"
+
 // Third-Party APIs
 #include <SDL2/SDL.h>
 
@@ -23,7 +26,6 @@ namespace SDML
         public:
 
             Event(const SDL_Event& event,
-                  const std::chrono::time_point<std::chrono::system_clock>& init_time_point,
                   bool quit);
 
             virtual ~Event() = 0;

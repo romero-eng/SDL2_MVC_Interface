@@ -2,10 +2,9 @@
 #include "TextInputEvent.hpp"
 
 
-SDML::Events::TextInputEvent::TextInputEvent(const SDL_Event& event,
-                                             const std::chrono::time_point<std::chrono::system_clock>& init_time_point): Event(event, init_time_point, false),
-                                                                                                                         window{Video::FindWindow(event.text.windowID)},
-                                                                                                                         text{event.text.text}
+SDML::Events::TextInputEvent::TextInputEvent(const SDL_Event& event): Event(event, false),
+                                                                      window{Video::FindWindow(event.text.windowID)},
+                                                                      text{event.text.text}
 { ::MainLogFile.Write(this->to_string()); }
 
 

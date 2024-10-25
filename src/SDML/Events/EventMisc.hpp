@@ -24,7 +24,7 @@ namespace SDML
 {
     namespace Events
     {
-        std::optional<std::unique_ptr<Event>> PollEvent(const std::chrono::time_point<std::chrono::system_clock>& init_time_point);
+        std::optional<std::unique_ptr<Event>> PollEvent();
     }
 }
 

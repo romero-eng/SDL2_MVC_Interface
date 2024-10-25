@@ -31,7 +31,7 @@ Logging::Logfile MainLogFile {std::filesystem::current_path().parent_path().pare
 int main( int argc, char* args[] )
 {
 
-	std::chrono::time_point<std::chrono::system_clock> init_time_point {SDML::Subsystem::Initialize(SDML::Subsystem::InitFlag::VIDEO | SDML::Subsystem::InitFlag::EVENTS)};
+	SDML::Subsystem::Initialize(SDML::Subsystem::InitFlag::VIDEO | SDML::Subsystem::InitFlag::EVENTS);
 	SDML::Image::Initialize(0);
 
 	try {
@@ -46,7 +46,7 @@ int main( int argc, char* args[] )
 		bool quit = false;
 
 		while(!quit) {
-			current_event = SDML::Events::PollEvent(init_time_point);
+			current_event = SDML::Events::PollEvent();
 			if(current_event.has_value()){
 				quit = current_event.value()->Quit();
 			}

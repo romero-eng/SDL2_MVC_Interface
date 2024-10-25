@@ -2,9 +2,8 @@
 #include "GenericEvent.hpp"
 
 
-SDML::Events::GenericEvent::GenericEvent(const SDL_Event& event,
-			                             const std::chrono::time_point<std::chrono::system_clock>& init_time_point): Event{event, init_time_point, false},
-																												     type_integer{event.type}
+SDML::Events::GenericEvent::GenericEvent(const SDL_Event& event): Event{event, false},
+																  type_integer{event.type}
 { ::MainLogFile.Write(this->to_string()); }
 
 
