@@ -4,7 +4,7 @@
 
 SDML::Events::QuitEvent::QuitEvent(const SDL_Event& event,
 			                      const std::chrono::time_point<std::chrono::system_clock>& init_time_point): Event{event, init_time_point, true}
-{ MainLogFile.Write(this->to_string()); }
+{ ::MainLogFile.Write(this->to_string()); }
 
 
 std::string SDML::Events::QuitEvent::to_string() const { return fmt::format("{:s}: Quit",  Logging::time_to_string(this->GetTimeStamp())); }
