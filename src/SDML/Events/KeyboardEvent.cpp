@@ -108,7 +108,8 @@ std::string SDML::Events::KeyboardEvent::to_string() const
             break;
     }
 
-    Logging::Printables event_description {fmt::format("'{:s}' Key {:s} in '{:s}' Window",
+    Logging::Printables event_description {fmt::format("{:s}: '{:s}' Key {:s} in '{:s}' Window",
+                                                       Logging::time_to_string(this->GetTimeStamp()),
                                                        this->unicode,
                                                        this->pressed ? "Pressed" : "Released",
                                                        this->window.GetTitle())};
