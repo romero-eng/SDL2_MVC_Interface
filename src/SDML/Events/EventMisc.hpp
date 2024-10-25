@@ -5,6 +5,7 @@
 #include "Event.hpp"
 #include "GenericEvent.hpp"
 #include "KeyboardEvent.hpp"
+#include "TextInputEvent.hpp"
 #include "MouseButtonEvent.hpp"
 #include "MouseMotionEvent.hpp"
 #include "MouseWheelEvent.hpp"

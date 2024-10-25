@@ -27,6 +27,9 @@ std::optional<std::unique_ptr<SDML::Events::Event>> SDML::Events::PollEvent(cons
 			case SDL_KEYUP:
 				event = std::make_unique<SDML::Events::KeyboardEvent>(sdl_event, init_time_point);
 				break;
+			case SDL_TEXTINPUT:
+				event = std::make_unique<SDML::Events::TextInputEvent>(sdl_event, init_time_point);
+				break;
 			case SDL_WINDOWEVENT:
 				event = std::make_unique<SDML::Events::WindowEvent>(sdl_event, init_time_point);
 				break;
