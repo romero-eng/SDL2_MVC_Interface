@@ -49,6 +49,7 @@ int main( int argc, char* args[] )
 	catch(const std::exception& error_message)
 	{
 		std::cerr << error_message.what() << std::endl;
+		::MainLogFile.Write(error_message.what());
 	}
 
 	SDML::Image::Quit();

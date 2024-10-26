@@ -32,7 +32,7 @@ SDML::Video::Renderer::Renderer(Window& window,
                                              window.GetTitle(),
                                              SDL_GetError()));
     } else {
-        MainLogFile.Write(this->to_string());
+        ::MainLogFile.Write(this->to_string());
     }
 };
 
