@@ -659,15 +659,12 @@ SDML::Video::Window SDML::Video::FindWindow(uint32_t windowID)
 	if(windows.size() == 0) {
 		found_window = windows[0];
 	} else {
-
-		std::size_t current_window_index = 0;
-		bool found = false;
-		while(current_window_index < windows.size() && !found) {
-			found = windows[current_window_index].GetID() == windowID;
-			if(!found) { current_window_index++; } 
+		for(Window current_window : windows) {
+			if(current_window.GetID() == windowID) {
+				found_window = current_window;
+				break; 
+			} 
 		}
-
-		found_window = windows[current_window_index];
 	}
 
 	return found_window;
