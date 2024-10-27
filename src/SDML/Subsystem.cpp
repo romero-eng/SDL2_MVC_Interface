@@ -5,39 +5,6 @@
 std::chrono::time_point<std::chrono::system_clock> init_time_point;
 
 
-void SDML::Image::Initialize(FileType subsystem) { return Initialize(std::to_underlying(subsystem)); }
-
-
-void SDML::Image::Initialize(uint32_t subsystems)
-{
-	if(subsystems != static_cast<uint32_t>(IMG_Init(static_cast<int>(subsystems)))) {
-
-		constexpr std::array<std::pair<std::string_view, FileType>, 6> image_file_types {{{"JPG",  FileType::JPG},
-																						  {"PNG",  FileType::PNG},
-																						  {"TIF",  FileType::TIF},
-																						  {"WEBP", FileType::WEBP},
-																						  {"JXL",  FileType::JXL},
-																						  {"AVIF", FileType::AVIF}}};
-
-		std::string err_msg {fmt::format("Could not initialize image type: {:s}", SDL_GetError())};
-		for(std::pair<std::string_view, FileType> image_file_type: image_file_types) {
-			err_msg += fmt::format("{:s}: {:s}\n", image_file_type.first, IsInitialized(image_file_type.second) ? "On" : "Off");
-		}
-
-		throw err_msg;
-	}
-}
-
-
-bool SDML::Image::IsInitialized(uint32_t subsystems) { return subsystems == (subsystems & SDL_WasInit(subsystems)); }
-
-
-bool SDML::Image::IsInitialized(FileType subsystem) { return IsInitialized(std::to_underlying(subsystem)); }
-
-
-void SDML::Image::Quit() { IMG_Quit(); }
-
-
 void SDML::Subsystem::Initialize(uint32_t subsystems)
 {
 	::init_time_point = std::chrono::system_clock::now();
@@ -141,34 +108,19 @@ bool SDML::Subsystem::IsInitialized(InitFlag subsystem) { return IsInitialized(s
 void SDML::Subsystem::Quit() { SDL_Quit(); }
 
 
-uint32_t operator|(const SDML::Subsystem::InitFlag& first_flag,
-				 const SDML::Subsystem::InitFlag& second_flag)
-{ return std::to_underlying(first_flag) | std::to_underlying(second_flag); }
+uint32_t operator|(const SDML::Subsystem::InitFlag& first_init_flag,
+				 const SDML::Subsystem::InitFlag& second_init_flag)
+{ return std::to_underlying(first_init_flag) | std::to_underlying(second_init_flag); }
 
 
-uint32_t operator|(uint32_t first_flag,
-				 const SDML::Subsystem::InitFlag& second_flag)
-{ return first_flag | std::to_underlying(second_flag); }
+uint32_t operator|(uint32_t first_init_flag,
+				 const SDML::Subsystem::InitFlag& second_init_flag)
+{ return first_init_flag | std::to_underlying(second_init_flag); }
 
 
-uint32_t operator|(const SDML::Subsystem::InitFlag& first_flag,
-				 uint32_t second_flag)
-{ return std::to_underlying(first_flag) | second_flag; }
-
-
-uint32_t operator|(const SDML::Image::FileType& first_flag,
-				   const SDML::Image::FileType& second_flag)
-{ return std::to_underlying(first_flag) | std::to_underlying(second_flag); }
-
-
-uint32_t operator|(uint32_t first_flag,
-				   const SDML::Image::FileType& second_flag)
-{ return first_flag | std::to_underlying(second_flag); }
-
-
-uint32_t operator|(const SDML::Image::FileType& first_flag,
-				   uint32_t second_flag)
-{ return std::to_underlying(first_flag) | second_flag; }
+uint32_t operator|(const SDML::Subsystem::InitFlag& first_init_flag,
+				 uint32_t second_init_flag)
+{ return std::to_underlying(first_init_flag) | second_init_flag; }
 
 
 #else
