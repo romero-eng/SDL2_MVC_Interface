@@ -19,7 +19,7 @@ SDML::Video::Texture::Texture(const char* name,
                                              name,
                                              SDL_GetError()));
     } else {
-        ::MainLogFile.Write(this->to_string());
+        Logging::MainLogFile.Write(this->to_string());
     }
 }
 
@@ -36,7 +36,7 @@ SDML::Video::Texture::Texture(const char* name,
                                              name,
                                              SDL_GetError()));
     } else {
-        ::MainLogFile.Write(this->to_string());
+        Logging::MainLogFile.Write(this->to_string());
     }
 }
 
@@ -52,7 +52,7 @@ SDML::Video::Texture::Texture(Renderer& renderer,
                                              this->name,
                                              SDL_GetError()));
     } else {
-        ::MainLogFile.Write(this->to_string());
+        Logging::MainLogFile.Write(this->to_string());
     }
 }
 
@@ -68,7 +68,7 @@ SDML::Video::Texture::Texture(Renderer& renderer,
                                              this->name,
                                              SDL_GetError()));
     } else {
-        ::MainLogFile.Write(this->to_string());
+        Logging::MainLogFile.Write(this->to_string());
     }
 }
 

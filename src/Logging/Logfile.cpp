@@ -2,8 +2,14 @@
 #include "Logfile.hpp"
 
 
+Logging::Logfile Logging::MainLogFile;
+
+
 Logging::Logfile::Logfile(std::filesystem::path logfile_dir,
-              		   std::string_view logfile_name): output{std::make_shared<std::ofstream>(logfile_dir/fmt::format("{:s}.log", logfile_name))} {}
+              		      std::string_view logfile_name): output{std::make_shared<std::ofstream>(logfile_dir/fmt::format("{:s}.log", logfile_name))} {}
+
+
+Logging::Logfile::Logfile(): output{nullptr} {}
 
 
 void Logging::Logfile::Write(const char* text) { this->output->write(fmt::format("{:s}\n", text).c_str(), static_cast<std::streamsize>(std::strlen(text) + 1)); }

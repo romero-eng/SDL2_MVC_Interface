@@ -8,7 +8,7 @@ SDML::Events::MouseWheelEvent::MouseWheelEvent(const SDL_Event& event): Event(ev
                                                                         scroll{event.wheel.preciseX, event.wheel.preciseY},
                                                                         flipped{event.wheel.direction == SDL_MOUSEWHEEL_FLIPPED},
                                                                         ID{event.wheel.which}
-{ ::MainLogFile.Write(this->to_string()); }
+{ Logging::MainLogFile.Write(this->to_string()); }
 
 
 std::string SDML::Events::MouseWheelEvent::to_string() const

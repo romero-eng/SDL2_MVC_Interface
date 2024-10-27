@@ -8,7 +8,7 @@ SDML::Events::MouseMotionEvent::MouseMotionEvent(const SDL_Event& event): Event(
                                                                           velocity{event.motion.xrel, event.motion.yrel},
                                                                           state{event.motion.state},
                                                                           ID{event.motion.which}
-{ ::MainLogFile.Write(this->to_string()); }
+{ Logging::MainLogFile.Write(this->to_string()); }
 
 
 std::string SDML::Events::MouseMotionEvent::to_string() const

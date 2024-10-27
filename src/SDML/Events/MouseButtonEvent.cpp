@@ -9,7 +9,7 @@ SDML::Events::MouseButtonEvent::MouseButtonEvent(const SDL_Event& event): Event(
                                                                           pressed{event.button.state == SDL_PRESSED},
                                                                           clicks{event.button.clicks},
                                                                           ID {event.button.which}
-{ ::MainLogFile.Write(this->to_string()); }
+{ Logging::MainLogFile.Write(this->to_string()); }
 
 
 std::string SDML::Events::MouseButtonEvent::to_string() const

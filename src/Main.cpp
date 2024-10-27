@@ -17,15 +17,15 @@
 #include <memory>
 
 
+constexpr std::string LOGFILE_NAME {"Test"};
 constexpr std::string WINDOW_TITLE {"Test"};
 constexpr std::array<int, 2> WINDOW_AREA {640, 480};
-Logging::Logfile MainLogFile {std::filesystem::current_path().parent_path().parent_path(), "Test"};
-
 
 int main( int argc, char* args[] )
 {
+	Logging::MainLogFile = Logging::Logfile{std::filesystem::current_path().parent_path().parent_path(), LOGFILE_NAME};
 
-	SDML::Subsystem::Initialize(SDML::Subsystem::InitFlag::VIDEO | SDML::Subsystem::InitFlag::EVENTS);
+	SDML::Subsystem::Initialize(LOGFILE_NAME, SDML::Subsystem::InitFlag::VIDEO | SDML::Subsystem::InitFlag::EVENTS);
 	SDML::Image::Initialize(SDML::Image::FileType::PNG);
 
 	try {
@@ -50,7 +50,7 @@ int main( int argc, char* args[] )
 	catch(const std::exception& error_message)
 	{
 		std::cerr << error_message.what() << std::endl;
-		::MainLogFile.Write(error_message.what());
+		Logging::MainLogFile.Write(error_message.what());
 	}
 
 	SDML::Image::Quit();

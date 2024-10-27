@@ -52,7 +52,7 @@ SDML::Video::Window::Window(const char *title,
                                              title,
                                              SDL_GetError()));
     } else {
-		::MainLogFile.Write(this->to_string());
+		Logging::MainLogFile.Write(this->to_string());
 	}
 }
 
@@ -88,7 +88,7 @@ SDML::Video::Window::Window(const char *title,
                                              title,
                                              SDL_GetError()));
     } else {
-		::MainLogFile.Write(this->to_string());
+		Logging::MainLogFile.Write(this->to_string());
 	}
 }
 
@@ -337,12 +337,12 @@ std::array<int, 2> SDML::Video::Window::GetArea() const
 
 	for(std::size_t i = 0; i < area_names.size(); i++) {
 		if(area[i] != area_in_pixels[i]) {
-			::MainLogFile.Write(fmt::format("Warning: For the '{window_name:s}' Window, The {value_name:s} of the client area is different from the {value_name:s} in pixels:\n{capitalized_value_name:s}: {value:d}\nPixel {capitalized_value_name:s}: {value_in_pixels:d}\n",
-									 		fmt::arg(	  		 "window_name", this->GetTitle()),
-									 		fmt::arg(	   		  "value_name", area_names[i]),
-									 		fmt::arg("capitalized_value_name", std::string{static_cast<char>(toupper(area_names[i][0]))} + std::string{area_names[i].begin() + 1, area_names[i].end()}),
-									 		fmt::arg(				   "value", area[i]),
-									 		fmt::arg(		 "value_in_pixels", area_in_pixels[i])));
+			Logging::MainLogFile.Write(fmt::format("Warning: For the '{window_name:s}' Window, The {value_name:s} of the client area is different from the {value_name:s} in pixels:\n{capitalized_value_name:s}: {value:d}\nPixel {capitalized_value_name:s}: {value_in_pixels:d}\n",
+										 		   fmt::arg(	  		 "window_name", this->GetTitle()),
+										 		   fmt::arg(	   		  "value_name", area_names[i]),
+										 		   fmt::arg("capitalized_value_name", std::string{static_cast<char>(toupper(area_names[i][0]))} + std::string{area_names[i].begin() + 1, area_names[i].end()}),
+										 		   fmt::arg(				   "value", area[i]),
+										 		   fmt::arg(		 "value_in_pixels", area_in_pixels[i])));
 		}
 	}
 
@@ -422,15 +422,15 @@ std::array<int, 2> SDML::Video::Window::GetDisplayArea() const
 	SDL_Rect usable_bounds {this->GetUsableDisplayBounds()};
 
 	if(fullscreen_bounds.w != usable_bounds.w) {
-		::MainLogFile.Write(fmt::format("Warning: difference detected between Fullscreen Width and Usable Width:\nFullscreen Width: {:d}\nUsable Width: {:d}",
-								 		fullscreen_bounds.w,
-								 		usable_bounds.w));
+		Logging::MainLogFile.Write(fmt::format("Warning: difference detected between Fullscreen Width and Usable Width:\nFullscreen Width: {:d}\nUsable Width: {:d}",
+									 		   fullscreen_bounds.w,
+									 		   usable_bounds.w));
 	}
 
 	if(fullscreen_bounds.h != usable_bounds.h) {
-		::MainLogFile.Write(fmt::format("Warning: difference detected between Fullscreen Height and Usable Height:\nFullscreen Height: {:d}\nUsable Height: {:d}",
-								 		fullscreen_bounds.h,
-								 		usable_bounds.h));
+		Logging::MainLogFile.Write(fmt::format("Warning: difference detected between Fullscreen Height and Usable Height:\nFullscreen Height: {:d}\nUsable Height: {:d}",
+								 			   fullscreen_bounds.h,
+								 			   usable_bounds.h));
 	}
 
 	return std::array<int, 2> {fullscreen_bounds.w, fullscreen_bounds.h};

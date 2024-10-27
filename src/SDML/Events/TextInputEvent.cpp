@@ -5,7 +5,7 @@
 SDML::Events::TextInputEvent::TextInputEvent(const SDL_Event& event): Event(event, false),
                                                                       window{Video::FindWindow(event.text.windowID)},
                                                                       text{event.text.text}
-{ ::MainLogFile.Write(this->to_string()); }
+{ Logging::MainLogFile.Write(this->to_string()); }
 
 
 std::string SDML::Events::TextInputEvent::to_string() const

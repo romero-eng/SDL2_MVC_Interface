@@ -34,9 +34,11 @@ namespace SDML
 			EVERYTHING     = SDL_INIT_EVERYTHING
 		};
 
-		void Initialize(uint32_t subsystems);
+		void Initialize(const std::string& logfile_name,
+						uint32_t subsystems);
 
-		void Initialize(InitFlag subsystem);
+		void Initialize(const std::string& logfile_name,
+						InitFlag subsystem);
 
 		bool IsInitialized(uint32_t subsystems);
 

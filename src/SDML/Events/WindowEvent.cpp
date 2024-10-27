@@ -73,7 +73,7 @@ SDML::Events::WindowEvent::WindowEvent(const SDL_Event& event): Event{event, fal
 									  							window{Video::FindWindow(event.window.windowID)},
 															    description{this->SDL_to_SDML(event)},
 																data{event.window.data1, event.window.data2}
-{ ::MainLogFile.Write(this->to_string()); }
+{ Logging::MainLogFile.Write(this->to_string()); }
 
 
 std::string SDML::Events::WindowEvent::to_string() const

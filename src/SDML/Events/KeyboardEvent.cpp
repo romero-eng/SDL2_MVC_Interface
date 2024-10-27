@@ -59,7 +59,7 @@ SDML::Events::KeyboardEvent::KeyboardEvent(const SDL_Event& event): Event(event,
                                                                     unicode{SDL_GetKeyName(event.key.keysym.sym)},
                                                                     repeat{event.key.repeat},
                                                                     mod{this->SDL_to_SDML(event.key.keysym.mod)}
-{ ::MainLogFile.Write(this->to_string()); }
+{ Logging::MainLogFile.Write(this->to_string()); }
 
 
 std::string SDML::Events::KeyboardEvent::to_string() const

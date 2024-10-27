@@ -4,7 +4,7 @@
 
 SDML::Events::GenericEvent::GenericEvent(const SDL_Event& event): Event{event, false},
 																  type_integer{event.type}
-{ ::MainLogFile.Write(this->to_string()); }
+{ Logging::MainLogFile.Write(this->to_string()); }
 
 
 std::string SDML::Events::GenericEvent::to_string() const

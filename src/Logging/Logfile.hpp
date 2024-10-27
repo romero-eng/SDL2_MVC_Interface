@@ -25,15 +25,17 @@ namespace Logging
         Logfile(std::filesystem::path logfile_dir,
                 std::string_view logfile_name);
 
+        Logfile();
+
         void Write(const char* text);
 
         void Write(const std::string& text);
 
     };
+
+    extern Logfile MainLogFile;
 }
 
-
-extern Logging::Logfile MainLogFile;
 
 
 #endif

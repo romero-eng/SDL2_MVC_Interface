@@ -99,7 +99,7 @@ SDML::Video::Surface::Surface(Window& window,
         this->EnableOrDisable_RLE_Acceleration(true);
     }
 
-    ::MainLogFile.Write(this->to_string());
+    Logging::MainLogFile.Write(this->to_string());
 }
 
 
