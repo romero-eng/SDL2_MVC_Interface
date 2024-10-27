@@ -2,7 +2,7 @@
 #define ABSTRACT_EVENT_H
 
 // Custom Code from this project
-#include "../Subsystem.hpp"
+#include "../../Logging/Logfile.hpp"
 
 // Third-Party APIs
 #include <SDL2/SDL.h>

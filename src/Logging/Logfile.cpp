@@ -4,6 +4,8 @@
 
 Logging::Logfile Logging::MainLogFile;
 
+std::chrono::time_point<std::chrono::system_clock> Logging::init_time_point;
+
 
 Logging::Logfile::Logfile(std::filesystem::path logfile_dir,
               		      std::string_view logfile_name): output{std::make_shared<std::ofstream>(logfile_dir/fmt::format("{:s}.log", logfile_name))} {}

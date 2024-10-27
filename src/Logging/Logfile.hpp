@@ -10,6 +10,7 @@
 #include <filesystem>
 #include <string_view>
 #include <cstring>
+#include <chrono>
 
 
 namespace Logging
@@ -34,8 +35,7 @@ namespace Logging
     };
 
     extern Logfile MainLogFile;
+    extern std::chrono::time_point<std::chrono::system_clock> init_time_point;
 }
-
-
 
 #endif

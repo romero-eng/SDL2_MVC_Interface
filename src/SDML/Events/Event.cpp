@@ -3,7 +3,7 @@
 
 
 SDML::Events::Event::Event(const SDL_Event& event,
-						   bool quit): timestamp{::init_time_point + std::chrono::duration<int, std::milli>(event.common.timestamp)},
+						   bool quit): timestamp{Logging::init_time_point + std::chrono::duration<int, std::milli>(event.common.timestamp)},
 						   			   quit{quit} {}
 
 

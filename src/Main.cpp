@@ -23,7 +23,6 @@ constexpr std::array<int, 2> WINDOW_AREA {640, 480};
 
 int main( int argc, char* args[] )
 {
-	Logging::MainLogFile = Logging::Logfile{std::filesystem::current_path().parent_path().parent_path(), LOGFILE_NAME};
 
 	SDML::Subsystem::Initialize(LOGFILE_NAME, SDML::Subsystem::InitFlag::VIDEO | SDML::Subsystem::InitFlag::EVENTS);
 	SDML::Image::Initialize(SDML::Image::FileType::PNG);

@@ -57,6 +57,4 @@ uint32_t operator|(uint32_t first_init_flag,
 uint32_t operator|(const SDML::Subsystem::InitFlag& first_init_flag,
 				   uint32_t second_init_flag);
 
-extern std::chrono::time_point<std::chrono::system_clock> init_time_point;
-
 #endif

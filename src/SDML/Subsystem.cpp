@@ -2,20 +2,17 @@
 #include "Subsystem.hpp"
 
 
-std::chrono::time_point<std::chrono::system_clock> init_time_point;
-
-
 void SDML::Subsystem::Initialize(const std::string& logfile_name,
 								 uint32_t subsystems)
 {
 	Logging::MainLogFile = Logging::Logfile{std::filesystem::current_path().parent_path().parent_path(), logfile_name};
-	::init_time_point = std::chrono::system_clock::now();
+	Logging::init_time_point = std::chrono::system_clock::now();
 
 	SDL_version compiled_version;
 	SDL_version linked_version;
 	SDL_VERSION(&compiled_version);
 	SDL_GetVersion(&linked_version);
-	Logging::MainLogFile.Write(Logging::date_and_time_to_string(init_time_point));
+	Logging::MainLogFile.Write(Logging::date_and_time_to_string(Logging::init_time_point));
 	Logging::MainLogFile.Write(fmt::format("Compiled SDL v.{:d}.{:d}.{:d}\nLinked SDL v.{:d}.{:d}.{:d}",
 										   compiled_version.major,
 										   compiled_version.minor,
