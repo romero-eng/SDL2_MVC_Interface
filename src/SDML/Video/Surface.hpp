@@ -22,9 +22,14 @@ namespace SDML
     namespace Video
     {
         class Window;
+        class Texture;
 
         class Surface
         {
+
+        friend class Window;
+        friend class Texture;
+
         public:
 
             enum class YUV_CONVERSION_MODE
@@ -41,7 +46,7 @@ namespace SDML
 
             SDL_Surface* internal_SDL_surface;
 
-            bool internal_SDL_surface_ownership;
+            bool _internal_SDL_surface_ownership;
 
             static YUV_CONVERSION_MODE SDL_to_SDML(const SDL_YUV_CONVERSION_MODE& mode);
 
@@ -106,8 +111,6 @@ namespace SDML
 					  const std::pair<std::array<int, 2>, std::array<int, 2>>& src_rect_info);
 
             void Blit(Surface& src);
-
-            SDL_Surface* Access_SDL_Backend();
         };
     }
 }

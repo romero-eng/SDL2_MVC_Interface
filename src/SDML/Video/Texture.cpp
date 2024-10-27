@@ -7,12 +7,12 @@ SDML::Video::Texture::Texture(const char* name,
                               uint32_t pixel_format,
                               const Access& access,
                               const std::array<int, 2>& area): name{std::string{name}},
-                                                               internal_SDL_texture{SDL_CreateTexture(renderer.Access_SDL_Backend(),
+                                                               internal_SDL_texture{SDL_CreateTexture(renderer.internal_SDL_renderer,
                                                                                                       pixel_format,
                                                                                                       std::to_underlying(access),
                                                                                                       area[0],
                                                                                                       area[1])},
-                                                               internal_SDL_texture_ownership{true}
+                                                               _internal_SDL_texture_ownership{true}
 {
     if(this->internal_SDL_texture == nullptr){
         throw std::runtime_error(fmt::format("Could not create the '{:s}' Texture: {:s}",
@@ -29,7 +29,7 @@ SDML::Video::Texture::Texture(const char* name,
 SDML::Video::Texture::Texture(const char* name,
                               SDL_Texture* texture): name{std::string{name}},
                                                      internal_SDL_texture{texture},
-                                                     internal_SDL_texture_ownership{false}
+                                                     _internal_SDL_texture_ownership{false}
 {
     if(this->internal_SDL_texture == nullptr){
         throw std::runtime_error(fmt::format("Could not create the '{:s}' Texture: {:s}",
@@ -43,9 +43,9 @@ SDML::Video::Texture::Texture(const char* name,
 
 SDML::Video::Texture::Texture(Renderer& renderer,
                               Surface& surface): name{surface.GetName()},
-                                                 internal_SDL_texture{SDL_CreateTextureFromSurface(renderer.Access_SDL_Backend(),
-                                                                                                   surface.Access_SDL_Backend())},
-                                                 internal_SDL_texture_ownership{true}
+                                                 internal_SDL_texture{SDL_CreateTextureFromSurface(renderer.internal_SDL_renderer,
+                                                                                                   surface.internal_SDL_surface)},
+                                                 _internal_SDL_texture_ownership{true}
 {
     if(this->internal_SDL_texture == nullptr){
         throw std::runtime_error(fmt::format("Could not create the '{:s}' Texture: {:s}",
@@ -59,9 +59,9 @@ SDML::Video::Texture::Texture(Renderer& renderer,
 
 SDML::Video::Texture::Texture(Renderer& renderer,
                               const std::filesystem::path& image_file): name{image_file.stem()},
-                                                                        internal_SDL_texture{IMG_LoadTexture(renderer.Access_SDL_Backend(),
+                                                                        internal_SDL_texture{IMG_LoadTexture(renderer.internal_SDL_renderer,
                                                                                                              image_file.string().c_str())},
-                                                                        internal_SDL_texture_ownership{true}
+                                                                        _internal_SDL_texture_ownership{true}
 {
     if(this->internal_SDL_texture == nullptr){
         throw std::runtime_error(fmt::format("Could not create the '{:s}' Texture: {:s}",
@@ -75,12 +75,12 @@ SDML::Video::Texture::Texture(Renderer& renderer,
 
 SDML::Video::Texture::Texture(): name{""},
                                  internal_SDL_texture{nullptr},
-                                 internal_SDL_texture_ownership{false} {}
+                                 _internal_SDL_texture_ownership{false} {}
 
 
 SDML::Video::Texture::Texture(const Texture& textureToCopy): name{textureToCopy.name},
                                                              internal_SDL_texture{textureToCopy.internal_SDL_texture},
-                                                             internal_SDL_texture_ownership{false} {}
+                                                             _internal_SDL_texture_ownership{false} {}
 
 
 SDML::Video::Texture& SDML::Video::Texture::operator=(const Texture& textureToCopy)
@@ -88,7 +88,7 @@ SDML::Video::Texture& SDML::Video::Texture::operator=(const Texture& textureToCo
     if(this != &textureToCopy) {
         this->name = textureToCopy.name;
         this->internal_SDL_texture = textureToCopy.internal_SDL_texture;
-        this->internal_SDL_texture_ownership = false;
+        this->_internal_SDL_texture_ownership = false;
     }
 
     return *this;
@@ -97,11 +97,11 @@ SDML::Video::Texture& SDML::Video::Texture::operator=(const Texture& textureToCo
 
 SDML::Video::Texture::Texture(Texture&& textureToMove) noexcept: name{textureToMove.name},
                                                                  internal_SDL_texture{textureToMove.internal_SDL_texture},
-                                                                 internal_SDL_texture_ownership{true}
+                                                                 _internal_SDL_texture_ownership{true}
 {
     textureToMove.name = "";
     textureToMove.internal_SDL_texture = nullptr;
-    textureToMove.internal_SDL_texture_ownership = false;
+    textureToMove._internal_SDL_texture_ownership = false;
 }
 
 
@@ -110,9 +110,9 @@ SDML::Video::Texture& SDML::Video::Texture::operator=(Texture&& textureToMove)
     if(this != &textureToMove) {
         this->name = textureToMove.name;
         this->internal_SDL_texture = textureToMove.internal_SDL_texture;
-        this->internal_SDL_texture_ownership = true;
+        this->_internal_SDL_texture_ownership = true;
         textureToMove.internal_SDL_texture = nullptr;
-        textureToMove.internal_SDL_texture_ownership = false;
+        textureToMove._internal_SDL_texture_ownership = false;
     }
 
     return *this;
@@ -121,7 +121,7 @@ SDML::Video::Texture& SDML::Video::Texture::operator=(Texture&& textureToMove)
 
 SDML::Video::Texture::~Texture()
 {
-    if(this->internal_SDL_texture != nullptr && this->internal_SDL_texture_ownership) {
+    if(this->internal_SDL_texture != nullptr && this->_internal_SDL_texture_ownership) {
         SDL_DestroyTexture(this->internal_SDL_texture);
     }
 }
@@ -353,9 +353,6 @@ void SDML::Video::Texture::SetScaleMode(const ScaleMode& mode)
                                              SDL_GetError()));
     }
 }
-
-
-SDL_Texture* SDML::Video::Texture::Access_SDL_Backend() { return this->internal_SDL_texture; }
 
 
 std::ostream& operator<<(std::ostream& output,

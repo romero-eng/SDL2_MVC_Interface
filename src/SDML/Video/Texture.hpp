@@ -22,10 +22,14 @@ namespace SDML
 {
     namespace Video
     {
+        class Surface;
         class Renderer;
 
         class Texture
         {
+
+        friend class Renderer;
+
         public:
 
             enum class Access: int
@@ -48,7 +52,7 @@ namespace SDML
 
             SDL_Texture* internal_SDL_texture;
 
-            bool internal_SDL_texture_ownership;
+            bool _internal_SDL_texture_ownership;
 
         public:
 
@@ -100,8 +104,6 @@ namespace SDML
             ScaleMode GetScaleMode() const;
 
             void SetScaleMode(const ScaleMode& mode);
-
-            SDL_Texture* Access_SDL_Backend();
 
         };
     }

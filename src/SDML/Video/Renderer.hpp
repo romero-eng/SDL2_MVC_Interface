@@ -21,10 +21,14 @@ namespace SDML
 {
     namespace Video
     {
+        class Window;
         class Texture;
 
         class Renderer
         {
+
+        friend class Texture;
+
         public:
 
             enum class InitFlag: uint32_t
@@ -46,7 +50,7 @@ namespace SDML
 
             SDL_Renderer* internal_SDL_renderer;
 
-            bool internal_SDL_renderer_ownership;
+            bool _internal_SDL_renderer_ownership;
 
             SDL_RendererFlip SDML_to_SDL(const FlipAction& action) const;
 
@@ -225,8 +229,6 @@ namespace SDML
                       const std::pair<std::array<float, 2>, std::array<float, 2>>& destination_rect_info);
 
             void Update();
-
-            SDL_Renderer* Access_SDL_Backend();
         };
     }
 }

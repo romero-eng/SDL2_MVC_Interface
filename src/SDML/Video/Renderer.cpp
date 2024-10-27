@@ -22,10 +22,10 @@ SDL_RendererFlip SDML::Video::Renderer::SDML_to_SDL(const FlipAction& flip_actio
 
 
 SDML::Video::Renderer::Renderer(Window& window,
-                                uint32_t flags): internal_SDL_renderer{SDL_CreateRenderer(window.Access_SDL_Backend(),
+                                uint32_t flags): internal_SDL_renderer{SDL_CreateRenderer(window.internal_SDL_window,
                                                                                           -1,
                                                                                           flags)},
-                                                 internal_SDL_renderer_ownership{true}
+                                                 _internal_SDL_renderer_ownership{true}
 {
     if(this->internal_SDL_renderer == nullptr){
         throw std::runtime_error(fmt::format("Could not create a renderer from the '{:s}' Window: {:s}",
@@ -44,18 +44,18 @@ SDML::Video::Renderer::Renderer(Window& window,
 SDML::Video::Renderer::Renderer(Window& window): Renderer{window, 0} {};
 
 
-SDML::Video::Renderer::Renderer(): internal_SDL_renderer{nullptr}, internal_SDL_renderer_ownership{false} {}
+SDML::Video::Renderer::Renderer(): internal_SDL_renderer{nullptr}, _internal_SDL_renderer_ownership{false} {}
 
 
 SDML::Video::Renderer::Renderer(const Renderer& rendererToCopy): internal_SDL_renderer{rendererToCopy.internal_SDL_renderer},
-                                                                 internal_SDL_renderer_ownership{false} {}
+                                                                 _internal_SDL_renderer_ownership{false} {}
 
 
 SDML::Video::Renderer& SDML::Video::Renderer::operator=(const Renderer& rendererToCopy)
 {
     if(this != &rendererToCopy) {
         this->internal_SDL_renderer = rendererToCopy.internal_SDL_renderer;
-        this->internal_SDL_renderer_ownership = false;
+        this->_internal_SDL_renderer_ownership = false;
     }
 
     return *this;
@@ -63,10 +63,10 @@ SDML::Video::Renderer& SDML::Video::Renderer::operator=(const Renderer& renderer
 
 
 SDML::Video::Renderer::Renderer(Renderer&& rendererToMove) noexcept: internal_SDL_renderer{rendererToMove.internal_SDL_renderer},
-                                                                     internal_SDL_renderer_ownership{true}
+                                                                     _internal_SDL_renderer_ownership{true}
 {
     rendererToMove.internal_SDL_renderer = nullptr;
-    rendererToMove.internal_SDL_renderer_ownership = false;
+    rendererToMove._internal_SDL_renderer_ownership = false;
 }
 
 
@@ -74,9 +74,9 @@ SDML::Video::Renderer& SDML::Video::Renderer::operator=(Renderer&& rendererToMov
 {
     if(this != &rendererToMove) {
         this->internal_SDL_renderer = rendererToMove.internal_SDL_renderer;
-        this->internal_SDL_renderer_ownership = true;
+        this->_internal_SDL_renderer_ownership = true;
         rendererToMove.internal_SDL_renderer = nullptr;
-        rendererToMove.internal_SDL_renderer_ownership = false;
+        rendererToMove._internal_SDL_renderer_ownership = false;
     }
 
     return *this;
@@ -85,7 +85,7 @@ SDML::Video::Renderer& SDML::Video::Renderer::operator=(Renderer&& rendererToMov
 
 SDML::Video::Renderer::~Renderer()
 {
-    if(this->internal_SDL_renderer != nullptr && this->internal_SDL_renderer_ownership) {
+    if(this->internal_SDL_renderer != nullptr && this->_internal_SDL_renderer_ownership) {
         SDL_DestroyRenderer(this->internal_SDL_renderer);
     }
 }
@@ -830,7 +830,7 @@ void SDML::Video::Renderer::DrawEntireTarget()
 
 void SDML::Video::Renderer::Copy(Texture& texture)
 {
-    if(SDL_RenderCopy(this->internal_SDL_renderer, texture.Access_SDL_Backend(), nullptr, nullptr) < 0) {
+    if(SDL_RenderCopy(this->internal_SDL_renderer, texture.internal_SDL_texture, nullptr, nullptr) < 0) {
         throw std::runtime_error(fmt::format("Could not copy the '{:s}' Texture using the '{:s}' Renderer: {:s}",
                                              texture.GetName(),
                                              this->GetName(),
@@ -848,7 +848,7 @@ void SDML::Video::Renderer::Copy(Texture& texture,
 
     SDL_Rect dst_rect {top_left_x, top_left_y, width, height};
 
-    if(SDL_RenderCopy(this->internal_SDL_renderer, texture.Access_SDL_Backend(), nullptr, &dst_rect) < 0) {
+    if(SDL_RenderCopy(this->internal_SDL_renderer, texture.internal_SDL_texture, nullptr, &dst_rect) < 0) {
         throw std::runtime_error(fmt::format("Could not copy the '{:s}' Texture using the '{:s}' Renderer: {:s}",
                                              texture.GetName(),
                                              this->GetName(),
@@ -869,7 +869,7 @@ void SDML::Video::Renderer::Copy(Texture& texture,
     SDL_Rect dst_rect {top_left_x, top_left_y, width, height};
 
     if(SDL_RenderCopyEx(this->internal_SDL_renderer,
-                        texture.Access_SDL_Backend(),
+                        texture.internal_SDL_texture,
                         nullptr, &dst_rect, angle, nullptr,
                         this->SDML_to_SDL(flip_action)) < 0) {
         throw std::runtime_error(fmt::format("Could not copy the '{:s}' Texture using the '{:s}' Renderer: {:s}",
@@ -899,7 +899,7 @@ void SDML::Video::Renderer::Copy(Texture& texture,
     SDL_Rect dst_rect {dst_top_left_x, dst_top_left_y, dst_width, dst_height};
 
     if(SDL_RenderCopyEx(this->internal_SDL_renderer,
-                        texture.Access_SDL_Backend(),
+                        texture.internal_SDL_texture,
                         &src_rect, &dst_rect,
                         angle, nullptr,
                         this->SDML_to_SDL(flip_action)) < 0) {
@@ -927,7 +927,7 @@ void SDML::Video::Renderer::Copy(Texture& texture,
     SDL_Point tmp_center {center_x, center_y};
 
     if(SDL_RenderCopyEx(this->internal_SDL_renderer,
-                        texture.Access_SDL_Backend(),
+                        texture.internal_SDL_texture,
                         nullptr, &dst_rect, angle, &tmp_center,
                         this->SDML_to_SDL(flip_action)) < 0) {
         throw std::runtime_error(fmt::format("Could not copy the '{:s}' Texture using the '{:s}' Renderer: {:s}",
@@ -961,7 +961,7 @@ void SDML::Video::Renderer::Copy(Texture& texture,
     SDL_Point tmp_center {center_x, center_y};
 
     if(SDL_RenderCopyEx(this->internal_SDL_renderer,
-                        texture.Access_SDL_Backend(),
+                        texture.internal_SDL_texture,
                         &src_rect, &dst_rect,
                         angle, &tmp_center,
                         this->SDML_to_SDL(flip_action)) < 0) {
@@ -989,7 +989,7 @@ void SDML::Video::Renderer::Copy(Texture& texture,
 
     SDL_Rect src_rect {src_top_left_x, src_top_left_y, src_width, src_height};
 
-    if(SDL_RenderCopy(this->internal_SDL_renderer, texture.Access_SDL_Backend(), &src_rect, &dst_rect) < 0) {
+    if(SDL_RenderCopy(this->internal_SDL_renderer, texture.internal_SDL_texture, &src_rect, &dst_rect) < 0) {
         throw std::runtime_error(fmt::format("Could not copy the '{:s}' Texture using the '{:s}' Renderer: {:s}",
                                              texture.GetName(),
                                              this->GetName(),
@@ -1007,7 +1007,7 @@ void SDML::Video::Renderer::Copy(Texture& texture,
 
     SDL_FRect dst_rect {top_left_x, top_left_y, width, height};
 
-    if(SDL_RenderCopyF(this->internal_SDL_renderer, texture.Access_SDL_Backend(), nullptr, &dst_rect) < 0) {
+    if(SDL_RenderCopyF(this->internal_SDL_renderer, texture.internal_SDL_texture, nullptr, &dst_rect) < 0) {
         throw std::runtime_error(fmt::format("Could not copy the '{:s}' Texture using the '{:s}' Renderer: {:s}",
                                              texture.GetName(),
                                              this->GetName(),
@@ -1032,7 +1032,7 @@ void SDML::Video::Renderer::Copy(Texture& texture,
 
     SDL_Rect src_rect {src_top_left_x, src_top_left_y, src_width, src_height};
 
-    if(SDL_RenderCopyF(this->internal_SDL_renderer, texture.Access_SDL_Backend(), &src_rect, &dst_rect) < 0) {
+    if(SDL_RenderCopyF(this->internal_SDL_renderer, texture.internal_SDL_texture, &src_rect, &dst_rect) < 0) {
         throw std::runtime_error(fmt::format("Could not copy the '{:s}' Texture using the '{:s}' Renderer: {:s}",
                                              texture.GetName(),
                                              this->GetName(),
@@ -1053,7 +1053,7 @@ void SDML::Video::Renderer::Copy(Texture& texture,
     SDL_FRect dst_rect {top_left_x, top_left_y, width, height};
 
     if(SDL_RenderCopyExF(this->internal_SDL_renderer,
-                         texture.Access_SDL_Backend(),
+                         texture.internal_SDL_texture,
                          nullptr, &dst_rect, angle, nullptr,
                          this->SDML_to_SDL(flip_action)) < 0) {
         throw std::runtime_error(fmt::format("Could not copy the '{:s}' Texture using the '{:s}' Renderer: {:s}",
@@ -1083,7 +1083,7 @@ void SDML::Video::Renderer::Copy(Texture& texture,
     SDL_FRect dst_rect {dst_top_left_x, dst_top_left_y, dst_width, dst_height};
 
     if(SDL_RenderCopyExF(this->internal_SDL_renderer,
-                         texture.Access_SDL_Backend(),
+                         texture.internal_SDL_texture,
                          &src_rect, &dst_rect,
                          angle, nullptr,
                          this->SDML_to_SDL(flip_action)) < 0) {
@@ -1111,7 +1111,7 @@ void SDML::Video::Renderer::Copy(Texture& texture,
     SDL_FPoint tmp_center {center_x, center_y};
 
     if(SDL_RenderCopyExF(this->internal_SDL_renderer,
-                         texture.Access_SDL_Backend(),
+                         texture.internal_SDL_texture,
                          nullptr, &dst_rect, angle, &tmp_center,
                          this->SDML_to_SDL(flip_action)) < 0) {
         throw std::runtime_error(fmt::format("Could not copy the '{:s}' Texture using the '{:s}' Renderer: {:s}",
@@ -1145,7 +1145,7 @@ void SDML::Video::Renderer::Copy(Texture& texture,
     SDL_FPoint tmp_center {center_x, center_y};
 
     if(SDL_RenderCopyExF(this->internal_SDL_renderer,
-                         texture.Access_SDL_Backend(),
+                         texture.internal_SDL_texture,
                          &src_rect, &dst_rect,
                          angle, &tmp_center,
                          this->SDML_to_SDL(flip_action)) < 0) {
@@ -1166,9 +1166,6 @@ void SDML::Video::Renderer::Update()
                                              SDL_GetError()));
     }
 }
-
-
-SDL_Renderer* SDML::Video::Renderer::Access_SDL_Backend() { return this->internal_SDL_renderer; }
 
 
 uint32_t operator|(const SDML::Video::Renderer::InitFlag& first_flag, const SDML::Video::Renderer::InitFlag& second_flag) { return std::to_underlying(first_flag) | std::to_underlying(second_flag); }

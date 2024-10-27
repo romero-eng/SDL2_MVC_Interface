@@ -45,7 +45,7 @@ SDML::Video::Window::Window(const char *title,
 																		 		  area[0],
 																				  area[1],
 																		 		  flags)},
-											 internal_SDL_window_ownership{true}
+											 _internal_SDL_window_ownership{true}
 {
     if(this->internal_SDL_window == nullptr){
         throw std::runtime_error(fmt::format("Could not create the '{:s}' Window: {:s}",
@@ -81,7 +81,7 @@ SDML::Video::Window::Window(const char *title,
 																	   			  rectangle.second[0],
 																	   			  rectangle.second[1],
 																	   			  flags)},
-											 internal_SDL_window_ownership{true}
+											 _internal_SDL_window_ownership{true}
 {
     if(this->internal_SDL_window == nullptr){
         throw std::runtime_error(fmt::format("Could not create the '{:s}' Window: {:s}",
@@ -102,18 +102,18 @@ SDML::Video::Window::Window(const char *title,
 SDML::Video::Window::Window(const std::pair<std::array<int, 2>, std::array<int, 2>>& rectangle): Window("", rectangle, 0) {}
 
 
-SDML::Video::Window::Window(): internal_SDL_window{nullptr}, internal_SDL_window_ownership{false} {}
+SDML::Video::Window::Window(): internal_SDL_window{nullptr}, _internal_SDL_window_ownership{false} {}
 
 
 SDML::Video::Window::Window(const Window& windowToCopy): internal_SDL_window{windowToCopy.internal_SDL_window},
-														 internal_SDL_window_ownership{false} {}
+														 _internal_SDL_window_ownership{false} {}
 			
 
 SDML::Video::Window& SDML::Video::Window::operator=(const Window& windowToCopy)
 {
 	if(this != &windowToCopy) {
 		this->internal_SDL_window = windowToCopy.internal_SDL_window;
-		this->internal_SDL_window_ownership = false;
+		this->_internal_SDL_window_ownership = false;
 	}
 
 	return *this;
@@ -121,10 +121,10 @@ SDML::Video::Window& SDML::Video::Window::operator=(const Window& windowToCopy)
 
 
 SDML::Video::Window::Window(Window&& windowToMove) noexcept: internal_SDL_window{windowToMove.internal_SDL_window},
-															 internal_SDL_window_ownership{true}
+															 _internal_SDL_window_ownership{true}
 { 
 	windowToMove.internal_SDL_window = nullptr;
-	windowToMove.internal_SDL_window_ownership = false;
+	windowToMove._internal_SDL_window_ownership = false;
 }
 
 
@@ -132,9 +132,9 @@ SDML::Video::Window& SDML::Video::Window::operator=(Window&& windowToMove)
 {
 	if(this != &windowToMove) {
 		this->internal_SDL_window = windowToMove.internal_SDL_window;
-		this->internal_SDL_window_ownership = true;
+		this->_internal_SDL_window_ownership = true;
 		windowToMove.internal_SDL_window = nullptr;
-		windowToMove.internal_SDL_window_ownership = false;
+		windowToMove._internal_SDL_window_ownership = false;
 	}
 
 	return *this;
@@ -143,7 +143,7 @@ SDML::Video::Window& SDML::Video::Window::operator=(Window&& windowToMove)
 
 SDML::Video::Window::~Window()
 {
-	if(this->internal_SDL_window != nullptr && this->internal_SDL_window_ownership) {
+	if(this->internal_SDL_window != nullptr && this->_internal_SDL_window_ownership) {
 		if(SDL_HasWindowSurface(this->internal_SDL_window))
 		{
 			if(SDL_DestroyWindowSurface(this->internal_SDL_window) < 0)
@@ -526,7 +526,7 @@ void SDML::Video::Window::BlitOntoSurface(Surface& src,
 
 	SDL_Rect src_rect {src_top_left_x, src_top_left_y, src_width, src_height};
 
-	if(SDL_UpperBlit(src.Access_SDL_Backend(), &src_rect, SDL_GetWindowSurface(this->internal_SDL_window), &dst_rect) < 0) {
+	if(SDL_UpperBlit(src.internal_SDL_surface, &src_rect, SDL_GetWindowSurface(this->internal_SDL_window), &dst_rect) < 0) {
 		throw std::runtime_error(fmt::format("Could not blit surface onto the '{:s}' Window: {:s}",
 											 this->GetTitle(),
 											 SDL_GetError()));
@@ -540,13 +540,13 @@ void SDML::Video::Window::BlitOntoSurface(Surface& src)
 	const auto& [dst_width, dst_height] {this->GetArea()};
 
 	if(src_width*src_height >= dst_width*dst_height){
-		if(SDL_UpperBlit(src.Access_SDL_Backend(), nullptr, SDL_GetWindowSurface(this->internal_SDL_window), nullptr) < 0) {
+		if(SDL_UpperBlit(src.internal_SDL_surface, nullptr, SDL_GetWindowSurface(this->internal_SDL_window), nullptr) < 0) {
 			throw std::runtime_error(fmt::format("Could not blit surface onto the '{:s}' Window: {:s}",
 												 this->GetTitle(),
 												 SDL_GetError()));
 		}
 	} else {
-		if(SDL_UpperBlitScaled(src.Access_SDL_Backend(), nullptr, SDL_GetWindowSurface(this->internal_SDL_window), nullptr) < 0) {
+		if(SDL_UpperBlitScaled(src.internal_SDL_surface, nullptr, SDL_GetWindowSurface(this->internal_SDL_window), nullptr) < 0) {
 			throw std::runtime_error(fmt::format("Could not blit surface onto the '{:s}' Window: {:s}",
 												 this->GetTitle(),
 												 SDL_GetError()));
@@ -647,9 +647,6 @@ void SDML::Video::Window::UpdateRects(const std::vector<std::pair<std::array<int
 
 	delete [] rects;
 }
-
-
-SDL_Window* SDML::Video::Window::Access_SDL_Backend() { return this->internal_SDL_window; }
 
 
 std::vector<SDML::Video::Window> SDML::Video::windows;

@@ -5,6 +5,7 @@
 #include "../../Logging/PrettyPrint.hpp"
 #include "../../Logging/Logfile.hpp"
 #include "Surface.hpp"
+#include "Renderer.hpp"
 
 // Third-party Libraries
 #include <SDL2/SDL.h>
@@ -22,9 +23,14 @@ namespace SDML
 	namespace Video
 	{
 		class Surface;
+		class Renderer;
 
 		class Window
 		{
+
+		friend class Surface;
+		friend class Renderer;
+
 		public:
 
 			enum class InitFlag: uint32_t
@@ -75,7 +81,7 @@ namespace SDML
 
 			SDL_Window* internal_SDL_window;
 			
-			bool internal_SDL_window_ownership;
+			bool _internal_SDL_window_ownership;
 
 			int GetDisplayIndex() const;
 
@@ -206,8 +212,6 @@ namespace SDML
 			void Update();
 
 			void UpdateRects(const std::vector<std::pair<std::array<int, 2>, std::array<int, 2>>>& rects_info);
-
-			SDL_Window* Access_SDL_Backend();
 		};
 
 		extern std::vector<Window> windows;

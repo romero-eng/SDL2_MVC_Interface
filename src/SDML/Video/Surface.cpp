@@ -85,9 +85,9 @@ std::string SDML::Video::Surface::to_string(YUV_CONVERSION_MODE mode)
 SDML::Video::Surface::Surface(Window& window,
                               const std::filesystem::path& image_file): name{image_file.stem()},
                                                                         internal_SDL_surface{SDL_ConvertSurface(IMG_Load(image_file.string().c_str()),
-                                                                                                                SDL_GetWindowSurface(window.Access_SDL_Backend())->format,
+                                                                                                                SDL_GetWindowSurface(window.internal_SDL_window)->format,
                                                                                                                 0)},
-                                                                        internal_SDL_surface_ownership{true}
+                                                                        _internal_SDL_surface_ownership{true}
 {
     if(this->internal_SDL_surface == nullptr){
         throw std::runtime_error(fmt::format("Could not create the '{:s}' Texture: {:s}",
@@ -105,12 +105,12 @@ SDML::Video::Surface::Surface(Window& window,
 
 SDML::Video::Surface::Surface(): name{""},
                                  internal_SDL_surface{nullptr},
-                                 internal_SDL_surface_ownership{false} {}
+                                 _internal_SDL_surface_ownership{false} {}
 
 
 SDML::Video::Surface::Surface(const Surface& surfaceToCopy): name {surfaceToCopy.name},
                                                              internal_SDL_surface{surfaceToCopy.internal_SDL_surface},
-                                                             internal_SDL_surface_ownership{false} {}
+                                                             _internal_SDL_surface_ownership{false} {}
 
 
 SDML::Video::Surface& SDML::Video::Surface::operator=(const Surface& surfaceToCopy)
@@ -118,7 +118,7 @@ SDML::Video::Surface& SDML::Video::Surface::operator=(const Surface& surfaceToCo
     if(this != &surfaceToCopy) {
         this->name = surfaceToCopy.name;
         this->internal_SDL_surface = surfaceToCopy.internal_SDL_surface;
-        this->internal_SDL_surface_ownership = false;
+        this->_internal_SDL_surface_ownership = false;
     }
 
     return *this;
@@ -127,11 +127,11 @@ SDML::Video::Surface& SDML::Video::Surface::operator=(const Surface& surfaceToCo
 
 SDML::Video::Surface::Surface(Surface&& surfaceToMove) noexcept: name{surfaceToMove.name},
                                                                  internal_SDL_surface{surfaceToMove.internal_SDL_surface},
-                                                                 internal_SDL_surface_ownership{true}
+                                                                 _internal_SDL_surface_ownership{true}
 {
     surfaceToMove.name = "";
     surfaceToMove.internal_SDL_surface = nullptr;
-    surfaceToMove.internal_SDL_surface_ownership = false;
+    surfaceToMove._internal_SDL_surface_ownership = false;
 }
 
 
@@ -140,9 +140,9 @@ SDML::Video::Surface& SDML::Video::Surface::operator=(Surface&& surfaceToMove)
     if(this != &surfaceToMove) {
         this->name = surfaceToMove.name;
         this->internal_SDL_surface = surfaceToMove.internal_SDL_surface;
-        this->internal_SDL_surface_ownership = true;
+        this->_internal_SDL_surface_ownership = true;
         surfaceToMove.internal_SDL_surface = nullptr;
-        surfaceToMove.internal_SDL_surface_ownership = false;
+        surfaceToMove._internal_SDL_surface_ownership = false;
     }
 
     return *this;
@@ -151,7 +151,7 @@ SDML::Video::Surface& SDML::Video::Surface::operator=(Surface&& surfaceToMove)
 
 SDML::Video::Surface::~Surface()
 {
-    if(this->internal_SDL_surface != nullptr && this->internal_SDL_surface_ownership) {
+    if(this->internal_SDL_surface != nullptr && this->_internal_SDL_surface_ownership) {
         SDL_FreeSurface(this->internal_SDL_surface);
     }
 }
@@ -360,7 +360,7 @@ void SDML::Video::Surface::Blit(Surface& src,
 
 	SDL_Rect src_rect {src_top_left_x, src_top_left_y, src_width, src_height};
 
-	if(SDL_UpperBlit(src.Access_SDL_Backend(), &src_rect, this->internal_SDL_surface, &dst_rect) < 0) {
+	if(SDL_UpperBlit(src.internal_SDL_surface, &src_rect, this->internal_SDL_surface, &dst_rect) < 0) {
 		throw std::runtime_error(fmt::format("Could not blit '{:s}' Surface onto the '{:s}' Surface: {:s}",
                                              src.GetName(),
 											 this->GetName(),
@@ -375,14 +375,14 @@ void SDML::Video::Surface::Blit(Surface& src)
 	const auto& [dst_width, dst_height] {this->GetArea()};
 
 	if(src_width*src_height >= dst_width*dst_height){
-		if(SDL_UpperBlit(src.Access_SDL_Backend(), nullptr, this->internal_SDL_surface, nullptr) < 0) {
+		if(SDL_UpperBlit(src.internal_SDL_surface, nullptr, this->internal_SDL_surface, nullptr) < 0) {
 			throw std::runtime_error(fmt::format("Could not blit '{:s}' Surface onto the '{:s}' Surface: {:s}",
                                                  src.GetName(),
 												 this->GetName(),
 												 SDL_GetError()));
 		}
 	} else {
-		if(SDL_UpperBlitScaled(src.Access_SDL_Backend(), nullptr, this->internal_SDL_surface, nullptr) < 0) {
+		if(SDL_UpperBlitScaled(src.internal_SDL_surface, nullptr, this->internal_SDL_surface, nullptr) < 0) {
 			throw std::runtime_error(fmt::format("Could not blit '{:s}' Surface onto the '{:s}' Window: {:s}",
                                                  src.GetName(),
 												 this->GetName(),
@@ -390,9 +390,6 @@ void SDML::Video::Surface::Blit(Surface& src)
 		}
 	}
 }
-
-
-SDL_Surface* SDML::Video::Surface::Access_SDL_Backend() { return this->internal_SDL_surface; }
 
 
 std::ostream& operator<<(std::ostream& output,
