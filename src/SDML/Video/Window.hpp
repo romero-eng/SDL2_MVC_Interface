@@ -12,6 +12,7 @@
 #include <fmt/format.h>
 
 // C++ Standard Libraries
+#include <map>
 #include <array>
 #include <vector>
 #include <string_view>
@@ -213,8 +214,6 @@ namespace SDML
 
 			void UpdateRects(const std::vector<std::pair<std::array<int, 2>, std::array<int, 2>>>& rects_info);
 		};
-
-		extern std::vector<Window> windows;
 
 		Window FindWindow(uint32_t windowID);
 

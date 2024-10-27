@@ -2,6 +2,9 @@
 #include "Window.hpp"
 
 
+std::map<uint32_t, SDML::Video::Window> window_per_ID;
+
+
 SDML::Video::Window::Window(const std::string& title,
 						    const std::array<int, 2>& area,
 						    const InitFlag& flag): Window{title.c_str(), area, flag} {}
@@ -52,6 +55,14 @@ SDML::Video::Window::Window(const char *title,
                                              title,
                                              SDL_GetError()));
     } else {
+
+		const auto& [_, insertion_success] = window_per_ID.insert({this->GetID(), *this});
+		if(!insertion_success) {
+			throw std::runtime_error(fmt::format("Could not report the '{:s}' Window as Window #{:d}",
+												 this->GetTitle(),
+												 this->GetID()));
+		}
+
 		Logging::MainLogFile.Write(this->to_string());
 	}
 }
@@ -88,6 +99,14 @@ SDML::Video::Window::Window(const char *title,
                                              title,
                                              SDL_GetError()));
     } else {
+
+		const auto& [_, insertion_success] = window_per_ID.insert({this->GetID(), *this});
+		if(!insertion_success) {
+			throw std::runtime_error(fmt::format("Could not report the '{:s}' Window as Window #{:d}",
+												 this->GetTitle(),
+												 this->GetID()));
+		}
+
 		Logging::MainLogFile.Write(this->to_string());
 	}
 }
@@ -153,6 +172,7 @@ SDML::Video::Window::~Window()
 										  SDL_GetError());
 			}
 		}
+		window_per_ID.extract(this->GetID());
 		SDL_DestroyWindow(this->internal_SDL_window);
 	}
 }
@@ -649,25 +669,13 @@ void SDML::Video::Window::UpdateRects(const std::vector<std::pair<std::array<int
 }
 
 
-std::vector<SDML::Video::Window> SDML::Video::windows;
-
-
 SDML::Video::Window SDML::Video::FindWindow(uint32_t windowID)
 {
-	Window found_window;
-
-	if(windows.size() == 0) {
-		found_window = windows[0];
-	} else {
-		for(Window current_window : windows) {
-			if(current_window.GetID() == windowID) {
-				found_window = current_window;
-				break; 
-			} 
-		}
+	if(!window_per_ID.contains(windowID)){
+		throw std::runtime_error(fmt::format("Could not find any reported window with ID #{:d}", windowID));
 	}
 
-	return found_window;
+	return window_per_ID[windowID];
 }
 
 
