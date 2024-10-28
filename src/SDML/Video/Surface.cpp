@@ -280,13 +280,17 @@ std::optional<std::array<uint8_t, 3>> SDML::Video::Surface::GetTransparentColor(
 
     if(SDL_GetColorKey(this->internal_SDL_surface, &color_key) < 0) {
 
-        throw std::runtime_error(fmt::format("Could not get the transparent color for the '{:s}' Surface: {:s}",
-                                             this->GetName(),
-                                             SDL_GetError()));
+        Logging::MainLogFile.Write(fmt::format("Warning: the '{:s}' Surface has no transparent color", this->GetName()));
 
         return std::nullopt;
 
     } else {
+
+        if(SDL_GetColorKey(this->internal_SDL_surface, &color_key) < 0) {
+            throw std::runtime_error(fmt::format("Could not get the transparent color for the '{:s}' Surface: {:s}",
+                                                 this->GetName(),
+                                                 SDL_GetError()));
+        }
 
         uint8_t red;
         uint8_t green;
