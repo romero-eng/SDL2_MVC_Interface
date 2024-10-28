@@ -211,8 +211,9 @@ def main() -> None:
         binary_directory.mkdir()
 
     if resource_directory.exists():
-        shutil.copytree(resource_directory,
-                        binary_directory/resource_directory.name)
+        if not (binary_directory/resource_directory.name).exists():
+            shutil.copytree(resource_directory,
+                            binary_directory/resource_directory.name)
 
     try:
 
