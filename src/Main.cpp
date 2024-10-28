@@ -31,7 +31,7 @@ int main( int argc, char* args[] )
 
 		SDML::Video::Window test_window {WINDOW_TITLE, WINDOW_AREA, SDML::Video::Window::InitFlag::RESIZABLE};
 		SDML::Video::Renderer renderer{test_window};
-		SDML::Video::Texture hello_world_texture {renderer, std::filesystem::current_path().parent_path().parent_path()/"res"/"texture.png"};
+		SDML::Video::Texture hello_world_texture {renderer, std::filesystem::current_path()/"res"/"texture.png"};
 		renderer.Copy(hello_world_texture);
 		renderer.Update();
 		

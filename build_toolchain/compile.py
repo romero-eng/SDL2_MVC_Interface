@@ -196,6 +196,8 @@ def main() -> None:
 
     source_directory: Path = repository_path/'src'
 
+    resource_directory: Path = repository_path/'res'
+
     build_directory: Path = repository_path/'build'
     if not build_directory.exists():
         build_directory.mkdir()
@@ -207,6 +209,10 @@ def main() -> None:
     binary_directory: Path = build_directory/'bin'
     if not binary_directory.exists():
         binary_directory.mkdir()
+
+    if resource_directory.exists():
+        shutil.copytree(resource_directory,
+                        binary_directory/resource_directory.name)
 
     try:
 
