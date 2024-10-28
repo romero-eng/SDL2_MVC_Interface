@@ -194,10 +194,6 @@ namespace SDML
 
 			int GetDisplayModeRefreshRate() const;
 
-			/*Not sure this function actually does anything, but I'll
-			leave it for the sake of completeness.*/
-			void Flash(FlashOperation operation);
-
 			void BlitOntoSurface(Surface& src,
 								 const std::pair<std::array<int, 2>, std::array<int, 2>>& dst_rect_info,
 								 const std::pair<std::array<int, 2>, std::array<int, 2>>& src_rect_info);
@@ -213,6 +209,22 @@ namespace SDML
 			void Update();
 
 			void UpdateRects(const std::vector<std::pair<std::array<int, 2>, std::array<int, 2>>>& rects_info);
+
+			void Show();
+
+			void Hide();
+
+			void Maximize();
+
+			void Minimize();
+
+			void Restore();
+
+			void Raise();
+
+			/*Not sure this function actually does anything, but I'll
+			leave it for the sake of completeness.*/
+			void Flash(FlashOperation operation);
 		};
 
 		Window FindWindow(uint32_t windowID);

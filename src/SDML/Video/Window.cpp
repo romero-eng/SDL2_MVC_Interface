@@ -505,31 +505,6 @@ int SDML::Video::Window::GetDisplayModeRefreshRate() const
 }
 
 
-void SDML::Video::Window::Flash(FlashOperation operation)
-{
-	SDL_FlashOperation internal_SDL_operation;
-	switch(operation)
-	{
-		case FlashOperation::CANCEL:
-			internal_SDL_operation = SDL_FLASH_CANCEL;
-            break;
-		case FlashOperation::BRIEFLY:
-			internal_SDL_operation = SDL_FLASH_BRIEFLY;
-            break;
-		case FlashOperation::UNTIL_FOCUSED:
-			internal_SDL_operation = SDL_FLASH_UNTIL_FOCUSED;
-            break;
-	}
-
-	if(SDL_FlashWindow(this->internal_SDL_window, internal_SDL_operation) < 0)  // SDL_FlashWindow() seems to have no effect
-	{
-		throw std::runtime_error(fmt::format("Could not Flash the '{:s}' Window: {:s}",
-										  	 this->GetTitle(),
-										  	 SDL_GetError()));
-	}
-}
-
-
 void SDML::Video::Window::BlitOntoSurface(Surface& src,
 										  const std::pair<std::array<int, 2>, std::array<int, 2>>& dst_rect_info,
 										  const std::pair<std::array<int, 2>, std::array<int, 2>>& src_rect_info)
@@ -666,6 +641,49 @@ void SDML::Video::Window::UpdateRects(const std::vector<std::pair<std::array<int
 	}
 
 	delete [] rects;
+}
+
+
+void SDML::Video::Window::Show() { SDL_ShowWindow(this->internal_SDL_window); }
+
+
+void SDML::Video::Window::Hide() { SDL_HideWindow(this->internal_SDL_window); }
+
+
+void SDML::Video::Window::Maximize() { SDL_MaximizeWindow(this->internal_SDL_window); }
+
+
+void SDML::Video::Window::Minimize() { SDL_MinimizeWindow(this->internal_SDL_window); }
+
+
+void SDML::Video::Window::Restore() { SDL_RestoreWindow(this->internal_SDL_window); }
+
+
+void SDML::Video::Window::Raise() { SDL_RaiseWindow(this->internal_SDL_window); }
+
+
+void SDML::Video::Window::Flash(FlashOperation operation)
+{
+	SDL_FlashOperation internal_SDL_operation;
+	switch(operation)
+	{
+		case FlashOperation::CANCEL:
+			internal_SDL_operation = SDL_FLASH_CANCEL;
+            break;
+		case FlashOperation::BRIEFLY:
+			internal_SDL_operation = SDL_FLASH_BRIEFLY;
+            break;
+		case FlashOperation::UNTIL_FOCUSED:
+			internal_SDL_operation = SDL_FLASH_UNTIL_FOCUSED;
+            break;
+	}
+
+	if(SDL_FlashWindow(this->internal_SDL_window, internal_SDL_operation) < 0)  // SDL_FlashWindow() seems to have no effect
+	{
+		throw std::runtime_error(fmt::format("Could not Flash the '{:s}' Window: {:s}",
+										  	 this->GetTitle(),
+										  	 SDL_GetError()));
+	}
 }
 
 
