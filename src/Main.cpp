@@ -32,7 +32,15 @@ int main( int argc, char* args[] )
 	try {
 
 		SDML::Video::Window test_window {WINDOW_TITLE, WINDOW_AREA};
+		SDML::Video::Surface hello_world_surface {test_window, RELATIVE_RESOURCE_DIR/"hello_world.bmp"};
+		test_window.BlitOntoSurface(hello_world_surface);
+		test_window.Update();
+
 		SDML::Video::Window test_window_2 {WINDOW_TITLE_2, WINDOW_AREA};
+		SDML::Video::Renderer test_renderer {test_window_2};
+		SDML::Video::Texture example_texture {test_renderer, RELATIVE_RESOURCE_DIR/"texture.png"};
+		test_renderer.Copy(example_texture);
+		test_renderer.Update();
 		
 		std::optional<std::unique_ptr<SDML::Events::Event>> current_event;
 		bool quit = false;
