@@ -20,6 +20,7 @@
 constexpr std::string LOGFILE_NAME {"Test"};
 constexpr std::string WINDOW_TITLE {"Test"};
 constexpr std::array<int, 2> WINDOW_AREA {640, 480};
+const std::filesystem::path RELATIVE_RESOURCE_DIR {"res"};
 
 int main( int argc, char* args[] )
 {
@@ -29,9 +30,12 @@ int main( int argc, char* args[] )
 
 	try {
 
-		SDML::Video::Window test_window {WINDOW_TITLE, WINDOW_AREA, SDML::Video::Window::InitFlag::RESIZABLE};
+		SDML::Video::Window test_window {WINDOW_TITLE,
+										 WINDOW_AREA,
+										 SDML::Video::Window::InitFlag::RESIZABLE};
 		SDML::Video::Renderer renderer{test_window};
-		SDML::Video::Texture hello_world_texture {renderer, std::filesystem::current_path()/"res"/"texture.png"};
+		SDML::Video::Texture hello_world_texture {renderer,
+												  RELATIVE_RESOURCE_DIR/"texture.png"};
 		renderer.Copy(hello_world_texture);
 		renderer.Update();
 		

@@ -84,7 +84,7 @@ std::string SDML::Video::Surface::to_string(YUV_CONVERSION_MODE mode)
 
 SDML::Video::Surface::Surface(Window& window,
                               const std::filesystem::path& image_file): name{image_file.stem()},
-                                                                        internal_SDL_surface{SDL_ConvertSurface(IMG_Load(image_file.string().c_str()),
+                                                                        internal_SDL_surface{SDL_ConvertSurface(IMG_Load((std::filesystem::current_path()/image_file).string().c_str()),
                                                                                                                 SDL_GetWindowSurface(window.internal_SDL_window)->format,
                                                                                                                 0)},
                                                                         _internal_SDL_surface_ownership{true}

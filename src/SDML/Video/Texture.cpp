@@ -60,7 +60,7 @@ SDML::Video::Texture::Texture(Renderer& renderer,
 SDML::Video::Texture::Texture(Renderer& renderer,
                               const std::filesystem::path& image_file): name{image_file.stem()},
                                                                         internal_SDL_texture{IMG_LoadTexture(renderer.internal_SDL_renderer,
-                                                                                                             image_file.string().c_str())},
+                                                                                                             (std::filesystem::current_path()/image_file).string().c_str())},
                                                                         _internal_SDL_texture_ownership{true}
 {
     if(this->internal_SDL_texture == nullptr){
