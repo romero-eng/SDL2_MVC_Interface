@@ -3,7 +3,7 @@
 
 
 SDML::Events::MouseWheelEvent::MouseWheelEvent(const SDL_Event& event): Event(event, false),
-                                                                        window{Video::FindWindow(event.wheel.windowID)},
+                                                                        window{Video::FindWindowByID(event.wheel.windowID)},
                                                                         position{event.wheel.mouseX, event.wheel.mouseY},
                                                                         scroll{event.wheel.preciseX, event.wheel.preciseY},
                                                                         flipped{event.wheel.direction == SDL_MOUSEWHEEL_FLIPPED},

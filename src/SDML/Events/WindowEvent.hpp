@@ -53,6 +53,10 @@ namespace SDML
 
             WindowEvent(const SDL_Event& event);
 
+            Description GetDescription() const;
+
+            Video::Window GetWindow() const;
+
             std::string to_string() const override;
         };
     }

@@ -53,7 +53,7 @@ SDML::Events::KeyboardEvent::Modifier SDML::Events::KeyboardEvent::SDL_to_SDML(u
 
 
 SDML::Events::KeyboardEvent::KeyboardEvent(const SDL_Event& event): Event(event, false),
-                                                                    window{Video::FindWindow(event.key.windowID)},
+                                                                    window{Video::FindWindowByID(event.key.windowID)},
                                                                     pressed{event.key.state == SDL_PRESSED},
                                                                     scancode{SDL_GetScancodeName(event.key.keysym.scancode)},
                                                                     unicode{SDL_GetKeyName(event.key.keysym.sym)},

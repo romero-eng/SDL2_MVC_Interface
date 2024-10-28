@@ -3,6 +3,7 @@
 
 
 std::map<uint32_t, SDML::Video::Window> window_per_ID;
+std::map<uint32_t, bool> shown_status_per_window_ID;
 
 
 SDML::Video::Window::Window(const std::string& title,
@@ -63,6 +64,8 @@ SDML::Video::Window::Window(const char *title,
 												 this->GetID()));
 		}
 
+		shown_status_per_window_ID.insert({this->GetID(), true});
+
 		Logging::MainLogFile.Write(this->to_string());
 	}
 }
@@ -107,6 +110,8 @@ SDML::Video::Window::Window(const char *title,
 												 this->GetID()));
 		}
 
+		shown_status_per_window_ID.insert({this->GetID(), true});
+
 		Logging::MainLogFile.Write(this->to_string());
 	}
 }
@@ -140,7 +145,7 @@ SDML::Video::Window& SDML::Video::Window::operator=(const Window& windowToCopy)
 
 
 SDML::Video::Window::Window(Window&& windowToMove) noexcept: internal_SDL_window{windowToMove.internal_SDL_window},
-															 _internal_SDL_window_ownership{true}
+															 _internal_SDL_window_ownership{windowToMove._internal_SDL_window_ownership}
 { 
 	windowToMove.internal_SDL_window = nullptr;
 	windowToMove._internal_SDL_window_ownership = false;
@@ -151,7 +156,7 @@ SDML::Video::Window& SDML::Video::Window::operator=(Window&& windowToMove)
 {
 	if(this != &windowToMove) {
 		this->internal_SDL_window = windowToMove.internal_SDL_window;
-		this->_internal_SDL_window_ownership = true;
+		this->_internal_SDL_window_ownership = windowToMove._internal_SDL_window_ownership;
 		windowToMove.internal_SDL_window = nullptr;
 		windowToMove._internal_SDL_window_ownership = false;
 	}
@@ -647,7 +652,11 @@ void SDML::Video::Window::UpdateRects(const std::vector<std::pair<std::array<int
 void SDML::Video::Window::Show() { SDL_ShowWindow(this->internal_SDL_window); }
 
 
-void SDML::Video::Window::Hide() { SDL_HideWindow(this->internal_SDL_window); }
+void SDML::Video::Window::Hide()
+{
+	SDL_HideWindow(this->internal_SDL_window);
+	shown_status_per_window_ID[this->GetID()] = false;
+}
 
 
 void SDML::Video::Window::Maximize() { SDL_MaximizeWindow(this->internal_SDL_window); }
@@ -687,13 +696,25 @@ void SDML::Video::Window::Flash(FlashOperation operation)
 }
 
 
-SDML::Video::Window SDML::Video::FindWindow(uint32_t windowID)
+SDML::Video::Window SDML::Video::FindWindowByID(uint32_t windowID)
 {
 	if(!window_per_ID.contains(windowID)){
 		throw std::runtime_error(fmt::format("Could not find any reported window with ID #{:d}", windowID));
 	}
 
 	return window_per_ID[windowID];
+}
+
+
+bool SDML::Video::AllWindowsClosed()
+{
+	bool all_closed {true};
+	for(bool shown_status : std::views::values(shown_status_per_window_ID))
+	{
+		all_closed &= !shown_status;
+	}
+
+	return all_closed;
 }
 
 

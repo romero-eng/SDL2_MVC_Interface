@@ -5,7 +5,8 @@
 std::optional<std::unique_ptr<SDML::Events::Event>> SDML::Events::PollEvent()
 {
 	SDL_Event sdl_event;
-    std::optional<std::unique_ptr<SDML::Events::Event>> event;
+    std::optional<std::unique_ptr<SDML::Events::Event>> event {std::nullopt};
+	std::unique_ptr<SDML::Events::WindowEvent> window_event;
 
 	if(SDL_PollEvent(&sdl_event)){
     	switch(sdl_event.type) {
@@ -31,7 +32,15 @@ std::optional<std::unique_ptr<SDML::Events::Event>> SDML::Events::PollEvent()
 				event = std::make_unique<SDML::Events::TextInputEvent>(sdl_event);
 				break;
 			case SDL_WINDOWEVENT:
-				event = std::make_unique<SDML::Events::WindowEvent>(sdl_event);
+				window_event = std::make_unique<SDML::Events::WindowEvent>(sdl_event);
+				switch(window_event->GetDescription()) {
+					case WindowEvent::Description::CLOSE:
+						window_event->GetWindow().Hide();
+						break;
+					default:
+						event = std::move(window_event);
+						break;
+				}
 				break;
 			case SDL_QUIT:
 				event = std::make_unique<SDML::Events::QuitEvent>(sdl_event);
@@ -40,8 +49,6 @@ std::optional<std::unique_ptr<SDML::Events::Event>> SDML::Events::PollEvent()
 				event = std::make_unique<SDML::Events::GenericEvent>(sdl_event);
 				break;
 		}
-	} else {
-		event = std::nullopt;
 	}
 
     return event;

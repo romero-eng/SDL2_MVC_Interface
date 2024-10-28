@@ -97,7 +97,7 @@ SDML::Video::Texture& SDML::Video::Texture::operator=(const Texture& textureToCo
 
 SDML::Video::Texture::Texture(Texture&& textureToMove) noexcept: name{textureToMove.name},
                                                                  internal_SDL_texture{textureToMove.internal_SDL_texture},
-                                                                 _internal_SDL_texture_ownership{true}
+                                                                 _internal_SDL_texture_ownership{textureToMove._internal_SDL_texture_ownership}
 {
     textureToMove.name = "";
     textureToMove.internal_SDL_texture = nullptr;
@@ -110,7 +110,7 @@ SDML::Video::Texture& SDML::Video::Texture::operator=(Texture&& textureToMove)
     if(this != &textureToMove) {
         this->name = textureToMove.name;
         this->internal_SDL_texture = textureToMove.internal_SDL_texture;
-        this->_internal_SDL_texture_ownership = true;
+        this->_internal_SDL_texture_ownership = textureToMove._internal_SDL_texture_ownership;
         textureToMove.internal_SDL_texture = nullptr;
         textureToMove._internal_SDL_texture_ownership = false;
     }

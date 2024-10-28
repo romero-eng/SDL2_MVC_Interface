@@ -70,10 +70,16 @@ SDML::Events::WindowEvent::Description SDML::Events::WindowEvent::SDL_to_SDML(SD
 
 
 SDML::Events::WindowEvent::WindowEvent(const SDL_Event& event): Event{event, false},
-									  							window{Video::FindWindow(event.window.windowID)},
+									  							window{Video::FindWindowByID(event.window.windowID)},
 															    description{this->SDL_to_SDML(event)},
 																data{event.window.data1, event.window.data2}
-{ Logging::MainLogFile.Write(this->to_string()); }
+{ Logging::MainLogFile.Write(this->to_string());  }
+
+
+SDML::Events::WindowEvent::Description SDML::Events::WindowEvent::GetDescription() const { return this->description; }
+
+
+SDML::Video::Window SDML::Events::WindowEvent::GetWindow() const { return this->window; }
 
 
 std::string SDML::Events::WindowEvent::to_string() const

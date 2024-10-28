@@ -3,7 +3,7 @@
 
 
 SDML::Events::TextInputEvent::TextInputEvent(const SDL_Event& event): Event(event, false),
-                                                                      window{Video::FindWindow(event.text.windowID)},
+                                                                      window{Video::FindWindowByID(event.text.windowID)},
                                                                       text{event.text.text}
 { Logging::MainLogFile.Write(this->to_string()); }
 

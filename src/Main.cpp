@@ -19,6 +19,7 @@
 
 constexpr std::string LOGFILE_NAME {"Test"};
 constexpr std::string WINDOW_TITLE {"Test"};
+constexpr std::string WINDOW_TITLE_2 {"Test 2"};
 constexpr std::array<int, 2> WINDOW_AREA {640, 480};
 const std::filesystem::path RELATIVE_RESOURCE_DIR {"res"};
 
@@ -30,22 +31,19 @@ int main( int argc, char* args[] )
 
 	try {
 
-		SDML::Video::Window test_window {WINDOW_TITLE,
-										 WINDOW_AREA,
-										 SDML::Video::Window::InitFlag::RESIZABLE};
-		SDML::Video::Renderer renderer{test_window};
-		SDML::Video::Texture hello_world_texture {renderer,
-												  RELATIVE_RESOURCE_DIR/"texture.png"};
-		renderer.Copy(hello_world_texture);
-		renderer.Update();
+		SDML::Video::Window test_window {WINDOW_TITLE, WINDOW_AREA};
+		SDML::Video::Window test_window_2 {WINDOW_TITLE_2, WINDOW_AREA};
 		
 		std::optional<std::unique_ptr<SDML::Events::Event>> current_event;
 		bool quit = false;
 
 		while(!quit) {
 			current_event = SDML::Events::PollEvent();
-			if(current_event.has_value()){
-				quit = current_event.value()->Quit();
+			while(current_event.has_value()){
+				if(!quit) {
+					quit = current_event.value()->Quit() || SDML::Video::AllWindowsClosed();
+				}
+				current_event = SDML::Events::PollEvent();
 			}
 		}
 

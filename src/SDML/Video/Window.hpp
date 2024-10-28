@@ -15,6 +15,7 @@
 #include <map>
 #include <array>
 #include <vector>
+#include <ranges>
 #include <string_view>
 #include <iostream>
 #include <utility>
@@ -227,7 +228,9 @@ namespace SDML
 			void Flash(FlashOperation operation);
 		};
 
-		Window FindWindow(uint32_t windowID);
+		Window FindWindowByID(uint32_t windowID);
+
+		bool AllWindowsClosed();
 
 	}
 }

@@ -3,7 +3,7 @@
 
 
 SDML::Events::MouseMotionEvent::MouseMotionEvent(const SDL_Event& event): Event(event, false),
-                                                                          window{Video::FindWindow(event.motion.windowID)},
+                                                                          window{Video::FindWindowByID(event.motion.windowID)},
                                                                           position{event.motion.x, event.motion.y},
                                                                           velocity{event.motion.xrel, event.motion.yrel},
                                                                           state{event.motion.state},

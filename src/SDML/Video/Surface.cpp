@@ -127,7 +127,7 @@ SDML::Video::Surface& SDML::Video::Surface::operator=(const Surface& surfaceToCo
 
 SDML::Video::Surface::Surface(Surface&& surfaceToMove) noexcept: name{surfaceToMove.name},
                                                                  internal_SDL_surface{surfaceToMove.internal_SDL_surface},
-                                                                 _internal_SDL_surface_ownership{true}
+                                                                 _internal_SDL_surface_ownership{surfaceToMove._internal_SDL_surface_ownership}
 {
     surfaceToMove.name = "";
     surfaceToMove.internal_SDL_surface = nullptr;
@@ -140,7 +140,7 @@ SDML::Video::Surface& SDML::Video::Surface::operator=(Surface&& surfaceToMove)
     if(this != &surfaceToMove) {
         this->name = surfaceToMove.name;
         this->internal_SDL_surface = surfaceToMove.internal_SDL_surface;
-        this->_internal_SDL_surface_ownership = true;
+        this->_internal_SDL_surface_ownership = surfaceToMove._internal_SDL_surface_ownership;
         surfaceToMove.internal_SDL_surface = nullptr;
         surfaceToMove._internal_SDL_surface_ownership = false;
     }

@@ -3,7 +3,7 @@
 
 
 SDML::Events::MouseButtonEvent::MouseButtonEvent(const SDL_Event& event): Event(event, false),
-                                                                          window{Video::FindWindow(event.button.windowID)},
+                                                                          window{Video::FindWindowByID(event.button.windowID)},
                                                                           position{event.button.x, event.button.y},
                                                                           button_name{this->button_names[event.button.button - 1]},
                                                                           pressed{event.button.state == SDL_PRESSED},

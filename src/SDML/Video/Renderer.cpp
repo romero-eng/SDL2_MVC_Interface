@@ -63,7 +63,7 @@ SDML::Video::Renderer& SDML::Video::Renderer::operator=(const Renderer& renderer
 
 
 SDML::Video::Renderer::Renderer(Renderer&& rendererToMove) noexcept: internal_SDL_renderer{rendererToMove.internal_SDL_renderer},
-                                                                     _internal_SDL_renderer_ownership{true}
+                                                                     _internal_SDL_renderer_ownership{rendererToMove._internal_SDL_renderer_ownership}
 {
     rendererToMove.internal_SDL_renderer = nullptr;
     rendererToMove._internal_SDL_renderer_ownership = false;
@@ -74,7 +74,7 @@ SDML::Video::Renderer& SDML::Video::Renderer::operator=(Renderer&& rendererToMov
 {
     if(this != &rendererToMove) {
         this->internal_SDL_renderer = rendererToMove.internal_SDL_renderer;
-        this->_internal_SDL_renderer_ownership = true;
+        this->_internal_SDL_renderer_ownership = rendererToMove._internal_SDL_renderer_ownership;
         rendererToMove.internal_SDL_renderer = nullptr;
         rendererToMove._internal_SDL_renderer_ownership = false;
     }
