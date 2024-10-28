@@ -69,7 +69,7 @@ SDML::Events::WindowEvent::Description SDML::Events::WindowEvent::SDL_to_SDML(SD
 }
 
 
-SDML::Events::WindowEvent::WindowEvent(const SDL_Event& event): Event{event, false},
+SDML::Events::WindowEvent::WindowEvent(const SDL_Event& event): Event{event, Video::AllWindowsClosed()},
 									  							window{Video::FindWindowByID(event.window.windowID)},
 															    description{this->SDL_to_SDML(event)},
 																data{event.window.data1, event.window.data2}

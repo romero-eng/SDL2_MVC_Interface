@@ -21,26 +21,16 @@ constexpr std::string LOGFILE_NAME {"Test"};
 constexpr std::string WINDOW_TITLE {"Test"};
 constexpr std::string WINDOW_TITLE_2 {"Test 2"};
 constexpr std::array<int, 2> WINDOW_AREA {640, 480};
-const std::filesystem::path RELATIVE_RESOURCE_DIR {"res"};
 
 int main( int argc, char* args[] )
 {
 
 	SDML::Subsystem::Initialize(LOGFILE_NAME, SDML::Subsystem::InitFlag::VIDEO | SDML::Subsystem::InitFlag::EVENTS);
-	SDML::Image::Initialize(SDML::Image::FileType::PNG);
 
 	try {
 
 		SDML::Video::Window test_window {WINDOW_TITLE, WINDOW_AREA};
-		SDML::Video::Surface hello_world_surface {test_window, RELATIVE_RESOURCE_DIR/"hello_world.bmp"};
-		test_window.BlitOntoSurface(hello_world_surface);
-		test_window.Update();
-
 		SDML::Video::Window test_window_2 {WINDOW_TITLE_2, WINDOW_AREA};
-		SDML::Video::Renderer test_renderer {test_window_2};
-		SDML::Video::Texture example_texture {test_renderer, RELATIVE_RESOURCE_DIR/"texture.png"};
-		test_renderer.Copy(example_texture);
-		test_renderer.Update();
 		
 		std::optional<std::unique_ptr<SDML::Events::Event>> current_event;
 		bool quit = false;
@@ -48,9 +38,7 @@ int main( int argc, char* args[] )
 		while(!quit) {
 			current_event = SDML::Events::PollEvent();
 			while(current_event.has_value()){
-				if(!quit) {
-					quit = current_event.value()->Quit() || SDML::Video::AllWindowsClosed();
-				}
+				quit = quit ? quit : current_event.value()->Quit();
 				current_event = SDML::Events::PollEvent();
 			}
 		}
@@ -62,7 +50,6 @@ int main( int argc, char* args[] )
 		Logging::MainLogFile.Write(error_message.what());
 	}
 
-	SDML::Image::Quit();
 	SDML::Subsystem::Quit();
 
 	return 0;
