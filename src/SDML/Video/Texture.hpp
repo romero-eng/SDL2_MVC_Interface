@@ -93,13 +93,13 @@ namespace SDML
 
             std::array<int, 2> GetArea() const;
 
-            std::array<uint8_t, 4> GetColor() const;
+            std::array<uint8_t, 3> GetColor() const;
 
-            void SetColor(const std::array<uint8_t, 4> color);
+            std::pair<SDML::Video::Blending::Mode, uint8_t> GetBlendModeAndAlpha() const;
 
-            Blending::Mode GetBlendMode() const;
-
-            void SetBlendMode(const Blending::Mode& mode);
+            void SetColor(const std::array<uint8_t, 3> color,
+                          const Blending::Mode& mode = SDML::Video::Blending::Mode::REPLACE,
+                          uint8_t alpha = 0xFF);
 
             ScaleMode GetScaleMode() const;
 

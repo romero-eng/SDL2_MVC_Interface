@@ -104,10 +104,12 @@ std::string SDML::Video::Renderer::to_string() const
     const auto& [width, height] {this->GetArea()};
     printables.add_printable("Area", fmt::format("[Width: {:d}, Height: {:d}]", width, height));
 
-    const auto& [red, green, blue, alpha] {this->GetDrawingColor()};
-    printables.add_printable("Drawing Color", fmt::format("[Red: {:d}, Green: {:d}, Blue: {:d}, Alpha: {:d}]", red, green, blue, alpha));
+    const auto& [red, green, blue] {this->GetDrawingColor()};
+    printables.add_printable("Drawing Color", fmt::format("[Red: {:d}, Green: {:d}, Blue: {:d}]", red, green, blue));
 
-    printables.add_printable("Blend Mode", Blending::to_string(this->GetBlendMode()));
+    const auto& [blend_mode, alpha] = this->GetBlendModeAndAlpha();
+    printables.add_printable("Blend Mode", Blending::to_string(blend_mode));
+    printables.add_printable("Alpha", alpha);
 
     const auto& [viewport_top_left_point, viewport_area] {this->GetViewPort()};
     const auto& [viewPort_top_left_x, viewport_top_left_y] = viewport_top_left_point;
@@ -204,12 +206,12 @@ std::array<int, 2> SDML::Video::Renderer::GetArea() const
 }
 
 
-std::array<uint8_t, 4> SDML::Video::Renderer::GetDrawingColor() const
+std::array<uint8_t, 3> SDML::Video::Renderer::GetDrawingColor() const
 {
-    std::array<uint8_t, 4> color {};
+    std::array<uint8_t, 3> color;
 
-    if(SDL_GetRenderDrawColor(this->internal_SDL_renderer, &color[0], &color[1], &color[2], &color[3]) < 0) {
-        throw std::runtime_error(fmt::format("Could not retrieve the drawing color for the '{:s}' Renderer: {:s}",
+    if(SDL_GetRenderDrawColor(this->internal_SDL_renderer, &color[0], &color[1], &color[2], nullptr) < 0) {
+        throw std::runtime_error(fmt::format("Could not retrieve the RGB values for the '{:s}' Renderer: {:s}",
                                              this->GetName(),
                                              SDL_GetError()));
     }
@@ -218,19 +220,10 @@ std::array<uint8_t, 4> SDML::Video::Renderer::GetDrawingColor() const
 }
 
 
-void SDML::Video::Renderer::SetDrawingColor(const std::array<uint8_t, 4>& color)
-{
-    if(SDL_SetRenderDrawColor(this->internal_SDL_renderer, color[0], color[1], color[2], color[3]) < 0) {
-        throw std::runtime_error(fmt::format("Could not set the color for the '{:s}' Renderer: {:s}",
-                                             this->GetName(),
-                                             SDL_GetError()));
-    }
-}
-
-
-SDML::Video::Blending::Mode SDML::Video::Renderer::GetBlendMode() const
+std::pair<SDML::Video::Blending::Mode, uint8_t> SDML::Video::Renderer::GetBlendModeAndAlpha() const
 {
     SDL_BlendMode tmp;
+    uint8_t alpha;
 
     if(SDL_GetRenderDrawBlendMode(this->internal_SDL_renderer, &tmp) < 0) {
         throw std::runtime_error(fmt::format("Could not get the Blend Mode for the '{:s}' Renderer: {:s}",
@@ -238,14 +231,28 @@ SDML::Video::Blending::Mode SDML::Video::Renderer::GetBlendMode() const
                                              SDL_GetError()));
     }
 
-    return Blending::SDL_to_SDML(tmp);
+    if(SDL_GetRenderDrawColor(this->internal_SDL_renderer, nullptr, nullptr, nullptr, &alpha) < 0) {
+        throw std::runtime_error(fmt::format("Could not retrieve the Alpha value for the '{:s}' Renderer: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+
+    return {Blending::SDL_to_SDML(tmp), alpha};
 }
 
 
-void SDML::Video::Renderer::SetBlendMode(const Blending::Mode& mode)
+void SDML::Video::Renderer::SetDrawingColor(const std::array<uint8_t, 3>& color, const Blending::Mode& mode, uint8_t alpha)
 {
+    const auto& [red, green, blue] = color;
+
     if(SDL_SetRenderDrawBlendMode(this->internal_SDL_renderer, Blending::SDML_to_SDL(mode)) < 0) {
         throw std::runtime_error(fmt::format("Could not set the Blend Mode for the '{:s}' Renderer: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+
+    if(SDL_SetRenderDrawColor(this->internal_SDL_renderer, red, green, blue, alpha) < 0) {
+        throw std::runtime_error(fmt::format("Could not set the RGB values and Alpha value for the '{:s}' Renderer: {:s}",
                                              this->GetName(),
                                              SDL_GetError()));
     }

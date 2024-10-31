@@ -88,13 +88,13 @@ namespace SDML
 
             std::array<int, 2> GetArea() const;
 
-            std::array<uint8_t, 4> GetDrawingColor() const;
+            std::array<uint8_t, 3> GetDrawingColor() const;
 
-            void SetDrawingColor(const std::array<uint8_t, 4>& color);
+            std::pair<SDML::Video::Blending::Mode, uint8_t> GetBlendModeAndAlpha() const;
 
-            Blending::Mode GetBlendMode () const;
-
-            void SetBlendMode(const Blending::Mode& mode);
+            void SetDrawingColor(const std::array<uint8_t, 3>& color,
+                                 const Blending::Mode& mode = SDML::Video::Blending::Mode::REPLACE,
+                                 uint8_t alpha = 0xFF);
 
             std::pair<std::array<int, 2>, std::array<int, 2>> GetViewPort() const;
 

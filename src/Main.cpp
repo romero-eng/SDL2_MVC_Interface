@@ -25,7 +25,7 @@ constexpr int difference {5};
 constexpr std::array<std::array<int, 2>, 2> line {{{4, 200}, {300, 6}}};
 constexpr std::array<std::array<int, 2>, 2> modified_line {{{line[0][0], line[0][1] + difference},
 															{line[1][0], line[1][1] + difference}}};
-constexpr std::array<uint8_t, 4> WHITE {0xFF, 0xFF, 0xFF, 0xFF};
+constexpr std::array<uint8_t, 3> WHITE {0xFF, 0xFF, 0xFF};
 
 
 std::vector<std::array<int, 2>> custom_line_drawing(const std::array<std::array<int, 2>, 2> line)
@@ -117,7 +117,6 @@ int main( int argc, char* args[] )
 
 		SDML::Video::Window canvas {WINDOW_TITLE, WINDOW_AREA};
 		SDML::Video::Renderer paintbrush {canvas};
-		paintbrush.SetBlendMode(SDML::Video::Blending::Mode::REPLACE);
 		paintbrush.SetDrawingColor(WHITE);
 		paintbrush.DrawPoints(custom_line_drawing(line));
 		paintbrush.DrawLine(modified_line);

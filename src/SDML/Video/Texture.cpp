@@ -164,10 +164,12 @@ std::string SDML::Video::Texture::to_string() const
     const auto& [width, height] {this->GetArea()};
     printables.add_printable("Area", fmt::format("[Width: {:d}, Height: {:d}]", width, height));
 
-    const auto& [red, green, blue, alpha] {this->GetColor()};
-    printables.add_printable("Color", fmt::format("[Red: {:d}, Green: {:d}, Blue: {:d}, Alpha: {:d}]", red, green, blue, alpha));
+    const auto& [red, green, blue] {this->GetColor()};
+    printables.add_printable("Color", fmt::format("[Red: {:d}, Green: {:d}, Blue: {:d}]", red, green, blue));
 
-    printables.add_printable("Blend Mode", Blending::to_string(this->GetBlendMode()));
+    const auto& [blend_mode, alpha] = this->GetBlendModeAndAlpha();
+    printables.add_printable("Blend Mode", Blending::to_string(blend_mode));
+    printables.add_printable("Alpha", alpha);
     printables.add_printable("Scale Mode", scale_mode_string);
 
     return printables.print();
@@ -241,7 +243,7 @@ std::array<int, 2> SDML::Video::Texture::GetArea() const
 }
 
 
-std::array<uint8_t, 4> SDML::Video::Texture::GetColor() const
+std::array<uint8_t, 3> SDML::Video::Texture::GetColor() const
 {
     uint8_t red;
     uint8_t green;
@@ -252,36 +254,11 @@ std::array<uint8_t, 4> SDML::Video::Texture::GetColor() const
                                              SDL_GetError()));
     }
 
-    uint8_t alpha;
-    if(SDL_GetTextureAlphaMod(this->internal_SDL_texture, &alpha) < 0) {
-        throw std::runtime_error(fmt::format("Could not get the alpha value for the '{:s}' Texture: {:s}",
-                                             this->GetName(),
-                                             SDL_GetError()));
-    }
-
-    return std::array<uint8_t, 4> {red, green, blue, alpha};
+    return {red, green, blue};
 }
 
 
-void SDML::Video::Texture::SetColor(const std::array<uint8_t, 4> color)
-{
-    const auto& [red, green, blue, alpha] = color;
-
-    if(SDL_SetTextureColorMod(this->internal_SDL_texture, red, green, blue) < 0) {
-        throw std::runtime_error(fmt::format("Could not set the RGB values for the '{:s}' Texture: {:s}",
-                                             this->GetName(),
-                                             SDL_GetError()));
-    }
-
-    if(SDL_SetTextureAlphaMod(this->internal_SDL_texture, alpha) < 0) {
-        throw std::runtime_error(fmt::format("Could not set the alpha value for the '{:s}' Texture: {:s}",
-                                             this->GetName(),
-                                             SDL_GetError()));
-    }
-}
-
-
-SDML::Video::Blending::Mode SDML::Video::Texture::GetBlendMode() const
+std::pair<SDML::Video::Blending::Mode, uint8_t> SDML::Video::Texture::GetBlendModeAndAlpha() const
 {
     SDL_BlendMode tmp;
 
@@ -291,14 +268,37 @@ SDML::Video::Blending::Mode SDML::Video::Texture::GetBlendMode() const
                                        SDL_GetError()));
     }
 
-    return Blending::SDL_to_SDML(tmp);
+    uint8_t alpha;
+    if(SDL_GetTextureAlphaMod(this->internal_SDL_texture, &alpha) < 0) {
+        throw std::runtime_error(fmt::format("Could not get the alpha value for the '{:s}' Texture: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+
+    return {Blending::SDL_to_SDML(tmp), alpha};
 }
 
 
-void SDML::Video::Texture::SetBlendMode(const Blending::Mode& mode)
+void SDML::Video::Texture::SetColor(const std::array<uint8_t, 3> color,
+                                    const Blending::Mode& mode,
+                                    uint8_t alpha)
 {
+    const auto& [red, green, blue] = color;
+
+    if(SDL_SetTextureColorMod(this->internal_SDL_texture, red, green, blue) < 0) {
+        throw std::runtime_error(fmt::format("Could not set the RGB values for the '{:s}' Texture: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+
     if(SDL_SetTextureBlendMode(this->internal_SDL_texture, Blending::SDML_to_SDL(mode)) < 0) {
         throw std::runtime_error(fmt::format("Could not set the blend mode for the '{:s}' Texture: {:s}",
+                                             this->GetName(),
+                                             SDL_GetError()));
+    }
+
+    if(SDL_SetTextureAlphaMod(this->internal_SDL_texture, alpha) < 0) {
+        throw std::runtime_error(fmt::format("Could not set the alpha value for the '{:s}' Texture: {:s}",
                                              this->GetName(),
                                              SDL_GetError()));
     }
