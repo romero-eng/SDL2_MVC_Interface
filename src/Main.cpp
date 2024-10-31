@@ -24,7 +24,7 @@ constexpr std::array<uint8_t, 3> WHITE {0xFF, 0xFF, 0xFF};
 constexpr std::array<uint8_t, 3> BLACK {0x00, 0x00, 0x00};
 
 
-std::vector<std::array<int, 2>> custom_line_drawing(const std::array<std::array<int, 2>, 2> line)
+std::vector<std::array<int, 2>> custom_calculate_line_points(const std::array<std::array<int, 2>, 2> line)
 {
 	/*
 	Problem Definition:
@@ -151,6 +151,26 @@ std::vector<std::array<int, 2>> custom_line_drawing(const std::array<std::array<
 }
 
 
+std::vector<std::array<int, 2>> custom_calculate_polygon_points(const std::vector<std::array<int, 2>> vertices)
+{
+	std::vector<std::array<std::array<int, 2>, 2>> lines;
+	std::vector<std::array<int, 2>> points;
+
+	for(std::size_t i = 0; i < vertices.size() - 1; i++) {
+		lines.push_back({vertices[i], vertices[i + 1]});
+	}
+	lines.push_back({vertices[vertices.size() - 1], vertices[0]});
+
+	for(std::array<std::array<int, 2>, 2> line : lines) {
+		for(std::array<int, 2> point : custom_calculate_line_points(line)) {
+			points.push_back(point);
+		}
+	}
+
+	return points;
+}
+
+
 int main( int argc, char* args[] )
 {
 
@@ -165,24 +185,18 @@ int main( int argc, char* args[] )
 		constexpr std::array<int, 2>    top_right_point {top_left_x + length, top_left_y		 };
 		constexpr std::array<int, 2> bottom_right_point {top_left_x + length, top_left_y + length};
 		constexpr std::array<int, 2>  bottom_left_point {top_left_x, 	   	  top_left_y + length};
-		constexpr std::array<std::array<int, 2>, 2>    top_line {    top_left_point,    top_right_point};
-		constexpr std::array<std::array<int, 2>, 2>  right_line {   top_right_point, bottom_right_point};
-		constexpr std::array<std::array<int, 2>, 2> bottom_line {bottom_right_point,  bottom_left_point};
-		constexpr std::array<std::array<int, 2>, 2>   left_line { bottom_left_point,     top_left_point};
 
-		std::vector<std::array<std::array<int, 2>, 2>> lines {top_line,
-															  right_line,
-															  bottom_line,
-															  left_line};
+		std::vector<std::array<int, 2>> vertices {top_left_point,
+												  top_right_point,
+												  bottom_right_point,
+												  bottom_left_point};
 
 		SDML::Video::Window canvas {WINDOW_TITLE, WINDOW_AREA};
 		SDML::Video::Renderer paintbrush {canvas};
 		paintbrush.SetDrawingColor(WHITE);
 		paintbrush.DrawEntireTarget();
 		paintbrush.SetDrawingColor(BLACK);
-		for(std::array<std::array<int, 2>, 2> line : lines) {
-			paintbrush.DrawPoints(custom_line_drawing(line));
-		}
+		paintbrush.DrawPoints(custom_calculate_polygon_points(vertices));
 		paintbrush.Update();
 		
 		std::optional<std::unique_ptr<SDML::Events::Event>> current_event;
