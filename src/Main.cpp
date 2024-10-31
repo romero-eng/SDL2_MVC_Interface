@@ -155,15 +155,17 @@ std::vector<std::array<int, 2>> custom_calculate_polygon_points(const std::vecto
 	}
 
 	std::vector<std::array<std::array<int, 2>, 2>> lines;
-	std::vector<std::array<int, 2>> points;
 
 	for(std::size_t i = 0; i < vertices.size() - 1; i++) {
 		lines.push_back({vertices[i], vertices[i + 1]});
 	}
 	lines.push_back({vertices[vertices.size() - 1], vertices[0]});
 
+	std::vector<std::array<int, 2>> points;
+	std::vector<std::array<int, 2>> tmp_points;
 	for(std::array<std::array<int, 2>, 2> line : lines) {
-		for(std::array<int, 2> point : custom_calculate_line_points(line)) {
+		tmp_points = custom_calculate_line_points(line);
+		for(std::array<int, 2> point : std::vector<std::array<int, 2>> (tmp_points.begin(), tmp_points.end() - 1)) {
 			points.push_back(point);
 		}
 	}
