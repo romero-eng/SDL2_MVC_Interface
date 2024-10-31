@@ -23,13 +23,6 @@ constexpr std::array<int, 2> WINDOW_AREA {640, 480};
 constexpr std::array<uint8_t, 3> WHITE {0xFF, 0xFF, 0xFF};
 constexpr std::array<uint8_t, 3> BLACK {0x00, 0x00, 0x00};
 
-constexpr std::array<std::array<int, 2>, 2>  	   ascending_line {{{4, 200}, {300, 6}}};
-constexpr std::array<std::array<int, 2>, 2> 	  descending_line {{{4, 6}, {300, 200}}};
-constexpr std::array<std::array<int, 2>, 2>  steep_ascending_line {{{4, 310}, {300, 6}}};
-constexpr std::array<std::array<int, 2>, 2> steep_descending_line {{{4, 6}, {300, 310}}};
-constexpr std::array<std::array<int, 2>, 2> 	  horizontal_line {{{4, 200}, {300, 200}}};
-constexpr std::array<std::array<int, 2>, 2>   	    vertical_line {{{300, 6}, {300, 200}}};
-
 
 std::vector<std::array<int, 2>> custom_line_drawing(const std::array<std::array<int, 2>, 2> line)
 {
@@ -97,12 +90,12 @@ std::vector<std::array<int, 2>> custom_line_drawing(const std::array<std::array<
 	if(delta_y == 0) {
 		for (std::size_t n = 0; n < N; n++) {
 			points[n + 1] = points[n];
-			points[n + 1][0]++;
+			points[n + 1][0] += sgn_delta_x;
 		}
 	} else if (delta_x == 0) {
 		for (std::size_t n = 0; n < N; n++) {
 			points[n + 1] = points[n];
-			points[n + 1][1]++;
+			points[n + 1][1] += sgn_delta_y;
 		}
 	} else {
 
@@ -139,17 +132,31 @@ int main( int argc, char* args[] )
 
 	try {
 
+		constexpr int length {50};
+		constexpr int top_left_x {100};
+		constexpr int top_left_y {100};
+		constexpr std::array<int, 2>     top_left_point {top_left_x, 		  top_left_y		 };
+		constexpr std::array<int, 2>    top_right_point {top_left_x + length, top_left_y		 };
+		constexpr std::array<int, 2> bottom_right_point {top_left_x + length, top_left_y + length};
+		constexpr std::array<int, 2>  bottom_left_point {top_left_x, 	   	  top_left_y + length};
+		constexpr std::array<std::array<int, 2>, 2>    top_line {    top_left_point,    top_right_point};
+		constexpr std::array<std::array<int, 2>, 2>  right_line {   top_right_point, bottom_right_point};
+		constexpr std::array<std::array<int, 2>, 2> bottom_line {bottom_right_point,  bottom_left_point};
+		constexpr std::array<std::array<int, 2>, 2>   left_line { bottom_left_point,     top_left_point};
+
+		std::vector<std::array<std::array<int, 2>, 2>> lines {top_line,
+															  right_line,
+															  bottom_line,
+															  left_line};
+
 		SDML::Video::Window canvas {WINDOW_TITLE, WINDOW_AREA};
 		SDML::Video::Renderer paintbrush {canvas};
 		paintbrush.SetDrawingColor(WHITE);
 		paintbrush.DrawEntireTarget();
 		paintbrush.SetDrawingColor(BLACK);
-		paintbrush.DrawPoints(custom_line_drawing( 		 ascending_line));
-		paintbrush.DrawPoints(custom_line_drawing(		descending_line));
-		paintbrush.DrawPoints(custom_line_drawing( steep_ascending_line));
-		paintbrush.DrawPoints(custom_line_drawing(steep_descending_line));
-		paintbrush.DrawPoints(custom_line_drawing(		horizontal_line));
-		paintbrush.DrawPoints(custom_line_drawing(  	  vertical_line));
+		for(std::array<std::array<int, 2>, 2> line : lines) {
+			paintbrush.DrawPoints(custom_line_drawing(line));
+		}
 		paintbrush.Update();
 		
 		std::optional<std::unique_ptr<SDML::Events::Event>> current_event;
