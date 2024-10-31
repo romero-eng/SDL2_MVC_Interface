@@ -30,37 +30,63 @@ std::vector<std::array<int, 2>> custom_line_drawing(const std::array<std::array<
 	Problem Definition:
 	-------------------
 
-		Draw a discretized version of the line defined by the points {(x1, y1), (x1, y1)}
-		Assume a non-steep slope (slope < 1)
+		Draw a discretized version of the line (y = mx + b) defined by the points {(x1, y1), (x1, y1)}
 
 	Algorithm:
 	----------
 
-		Δx = x2 - x1
+		Basically, for a non-steep monotonically increasing line, step along the x-axis, and
+		for each step, increment the y-value in case the actual line goes above the midpoint.
+		The equations below are a generalized formalization of this procedure for all non-steep
+		lines (for steep lines, switch the x and y axes).
 
-		Δy = y2 - y1
+		1)  define: Δx = x2 - x1
 
-		for n=1 to n=N:
-		---------------
+		2)  define: Δy = y2 - y1
 
-			x[n + 1] = x[n] + sgn(Δx), where x[0] = x_1 and x[N + 1] = x_2
+		3)  define: x[n] = the array of points along the x-axis selected by this algorithm
+						   where the beginning and end points are defined by the user-selected
+						   points (i.e., x[0] = x_1 and x[N + 1] = x_2)
 
-						__
-					   |
-					   |  y[n] + sgn(Δy) ,  |y(x[n + 1]) - y[n]| >= 0.5
-			y[n + 1] = |														, where y[0] = y1 and y[N + 1] = y2
-					   |	  y[n]		 , 	|y(x[n + 1]) - y[n]| < 0.5
-					   |__
+		4)  define: y[n] = the array of points along the y-axis selected by this algorithm
+						   where the beginning and end points are defined by the user-selected
+						   points (i.e., y[0] = y_1 and y[N + 1] = y_2)
+
+						   WARNING: y[n] != y(x[n])
+
+								=> y(x[n]) = mx[n] + b (i.e., y(x[n]) refers to the y-coordinates of the
+														calculated points along the continuous line, not
+														to the points selected by the algorithm which
+														approximate this continuous line)
+					 		__
+						   |
+						   |	 1,  x >= 0
+		5) define sgn(x) = |
+						   |	-1,  x < 0
+						   |__
+
+		6)  for n=1 to n=N: (with N being the number of steps to take along the x-axis)
+		    ---------------
+
+			    x[n + 1] = x[n] + sgn(Δx)
+
+						    __
+					       |
+					       |  y[n] + sgn(Δy) ,  |y(x[n + 1]) - y[n]| >= 0.5
+			    y[n + 1] = |
+					       |	  y[n]		 , 	|y(x[n + 1]) - y[n]| < 0.5
+					       |__
 
 	Computational Optimization:
 	---------------------------
 
-		|y(x[n + 1]) - y[n]| >= 0.5  --------->  2|(n + 1)Δy - (N + 1)*Δy[n]| >= (N + 1), where Δy[n] = y[n] - y[0]
+		The calculation of the decision on whether or not to increment along the y-axis
+		is computationally optimized as below:
 
-	For non-steep slopes:
-	---------------------
+				|y(x[n + 1]) - y[n]| >= 0.5  --------->  2|(n + 1)Δy - (N + 1)*(y[n] - y[0])| >= (N + 1)
 
-		Switch the x and y-axes within the algorithm
+		How this transformation is both equivalent and more computationally efficient is an
+		exercise left up to the reader.
 
 	*/
 
