@@ -94,9 +94,6 @@ std::vector<std::array<int, 2>> custom_calculate_line_points(const std::array<st
     const auto& [x1, y1] = point_1;
     const auto& [x2, y2] = point_2;
 
-	std::cout << fmt::format("Drawing Line: ({:d}, {:d}), ({:d}, {:d})",
-							 x1, y1, x2, y2) <<  std::endl;
-
 	if (point_1 == point_2) {
 		throw std::runtime_error("Cannot calculate a drawn line between the same two points");
 	}
@@ -153,6 +150,10 @@ std::vector<std::array<int, 2>> custom_calculate_line_points(const std::array<st
 
 std::vector<std::array<int, 2>> custom_calculate_polygon_points(const std::vector<std::array<int, 2>> vertices)
 {
+	if(vertices.size() < 3) {
+		throw std::runtime_error("A polygon can only be defined with a minimum of three vertices");
+	}
+
 	std::vector<std::array<std::array<int, 2>, 2>> lines;
 	std::vector<std::array<int, 2>> points;
 
@@ -178,25 +179,12 @@ int main( int argc, char* args[] )
 
 	try {
 
-		constexpr int length {50};
-		constexpr int top_left_x {100};
-		constexpr int top_left_y {100};
-		constexpr std::array<int, 2>     top_left_point {top_left_x, 		  top_left_y		 };
-		constexpr std::array<int, 2>    top_right_point {top_left_x + length, top_left_y		 };
-		constexpr std::array<int, 2> bottom_right_point {top_left_x + length, top_left_y + length};
-		constexpr std::array<int, 2>  bottom_left_point {top_left_x, 	   	  top_left_y + length};
-
-		std::vector<std::array<int, 2>> vertices {top_left_point,
-												  top_right_point,
-												  bottom_right_point,
-												  bottom_left_point};
-
 		SDML::Video::Window canvas {WINDOW_TITLE, WINDOW_AREA};
 		SDML::Video::Renderer paintbrush {canvas};
 		paintbrush.SetDrawingColor(WHITE);
 		paintbrush.DrawEntireTarget();
 		paintbrush.SetDrawingColor(BLACK);
-		paintbrush.DrawPoints(custom_calculate_polygon_points(vertices));
+		paintbrush.DrawPoints(custom_calculate_polygon_points({{50, 50}, {100, 50}, {100, 100}}));
 		paintbrush.Update();
 		
 		std::optional<std::unique_ptr<SDML::Events::Event>> current_event;
