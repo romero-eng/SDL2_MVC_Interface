@@ -20,12 +20,15 @@
 constexpr std::string LOGFILE_NAME {"Test"};
 constexpr std::string WINDOW_TITLE {"Test"};
 constexpr std::array<int, 2> WINDOW_AREA {640, 480};
-
-constexpr int difference {5};
-constexpr std::array<std::array<int, 2>, 2> line {{{4, 200}, {300, 6}}};
-constexpr std::array<std::array<int, 2>, 2> modified_line {{{line[0][0], line[0][1] + difference},
-															{line[1][0], line[1][1] + difference}}};
 constexpr std::array<uint8_t, 3> WHITE {0xFF, 0xFF, 0xFF};
+constexpr std::array<uint8_t, 3> BLACK {0x00, 0x00, 0x00};
+
+constexpr std::array<std::array<int, 2>, 2>  	   ascending_line {{{4, 200}, {300, 6}}};
+constexpr std::array<std::array<int, 2>, 2> 	  descending_line {{{4, 6}, {300, 200}}};
+constexpr std::array<std::array<int, 2>, 2>  steep_ascending_line {{{4, 310}, {300, 6}}};
+constexpr std::array<std::array<int, 2>, 2> steep_descending_line {{{4, 6}, {300, 310}}};
+constexpr std::array<std::array<int, 2>, 2> 	  horizontal_line {{{4, 200}, {300, 200}}};
+constexpr std::array<std::array<int, 2>, 2>   	    vertical_line {{{300, 6}, {300, 200}}};
 
 
 std::vector<std::array<int, 2>> custom_line_drawing(const std::array<std::array<int, 2>, 2> line)
@@ -51,15 +54,15 @@ std::vector<std::array<int, 2>> custom_line_drawing(const std::array<std::array<
 
 						__
 					   |
-					   |  y[n] + sgn(Δy) ,  sgn(Δy)[y(x[n + 1]) - y[n]] >= 0.5
+					   |  y[n] + sgn(Δy) ,  |y(x[n + 1]) - y[n]| >= 0.5
 			y[n + 1] = |														, where y[0] = y1 and y[N + 1] = y2
-					   |	  y[n]		 , 	sgn(Δy)[y(x[n + 1]) - y[n]] < 0.5
+					   |	  y[n]		 , 	|y(x[n + 1]) - y[n]| < 0.5
 					   |__
 
 	Computational Optimization:
 	---------------------------
 
-		sgn(Δy)[y(x[n + 1]) - y[n]] >= 0.5  --------->  2[(n + 1)Δy - (N + 1)*Δy[n]] >= sgn(Δy)*(N + 1), where Δy[n] = y[n] - y[0]
+		|y(x[n + 1]) - y[n]| >= 0.5  --------->  2|(n + 1)Δy - (N + 1)*Δy[n]| >= (N + 1), where Δy[n] = y[n] - y[0]
 
 	For non-steep slopes:
 	---------------------
@@ -72,37 +75,58 @@ std::vector<std::array<int, 2>> custom_line_drawing(const std::array<std::array<
     const auto& [x1, y1] = point_1;
     const auto& [x2, y2] = point_2;
 
+	std::cout << fmt::format("Drawing Line: ({:d}, {:d}), ({:d}, {:d})",
+							 x1, y1, x2, y2) <<  std::endl;
+
+	if (point_1 == point_2) {
+		throw std::runtime_error("Cannot calculate a drawn line between the same two points");
+	}
+
     int delta_y {y2 - y1};
     int delta_x {x2 - x1};
+
 	int sgn_delta_y {y2 >= y1 ? 1 : -1};
 	int sgn_delta_x {x2 >= x1 ? 1 : -1};
     bool steep_slope {std::abs(delta_y) > std::abs(delta_x)};
-    std::size_t N {static_cast<std::size_t>(steep_slope ? std::abs(delta_y) - 1 : std::abs(delta_x) - 1)};
+    std::size_t N {static_cast<std::size_t>(steep_slope ? std::abs(delta_y) : std::abs(delta_x)) - 1};
 
-    std::vector<std::array<int, 2>> points(N + 2);
+	std::vector<std::array<int, 2>> points (N + 2);
     points[0] = point_1;
-    points[N + 1] = point_2;
+	points[N + 1] = point_2;
 
-    int tmp_n_plus_one;
-    int tmp_N_plus_one {static_cast<int>(N) + 1};
+	if(delta_y == 0) {
+		for (std::size_t n = 0; n < N; n++) {
+			points[n + 1] = points[n];
+			points[n + 1][0]++;
+		}
+	} else if (delta_x == 0) {
+		for (std::size_t n = 0; n < N; n++) {
+			points[n + 1] = points[n];
+			points[n + 1][1]++;
+		}
+	} else {
+
+	    int tmp_n_plus_one;
+    	int tmp_N_plus_one {static_cast<int>(N) + 1};
  
-    for(std::size_t n = 0; n < N; n++) {
+	    for(std::size_t n = 0; n < N; n++) {
 
-        points[n + 1] = points[n];
-        tmp_n_plus_one = static_cast<int>(n) + 1;
+	        points[n + 1] = points[n];
+    	    tmp_n_plus_one = static_cast<int>(n) + 1;
 
-        if(steep_slope) {
-            if ((std::abs(tmp_n_plus_one*delta_x - tmp_N_plus_one*(points[n][0] - points[0][0])) << 1) >= tmp_N_plus_one) {
-                points[n + 1][0] += sgn_delta_x;
-            }
-            points[n + 1][1] += sgn_delta_y;
-        } else {
-            if ((std::abs(tmp_n_plus_one*delta_y - tmp_N_plus_one*(points[n][1] - points[0][1])) << 1) >= tmp_N_plus_one) {
-                points[n + 1][1] += sgn_delta_y;
-            }
-            points[n + 1][0] += sgn_delta_x;
-        }
-    }
+	        if(steep_slope) {
+        	    if ((std::abs(tmp_n_plus_one*delta_x - tmp_N_plus_one*(points[n][0] - points[0][0])) << 1) >= tmp_N_plus_one) {
+        	        points[n + 1][0] += sgn_delta_x;
+            	}
+            	points[n + 1][1] += sgn_delta_y;
+    	    } else {
+	            if ((std::abs(tmp_n_plus_one*delta_y - tmp_N_plus_one*(points[n][1] - points[0][1])) << 1) >= tmp_N_plus_one) {
+            	    points[n + 1][1] += sgn_delta_y;
+    	        }
+        	    points[n + 1][0] += sgn_delta_x;
+        	}
+    	}
+	}
 
     return points;
 }
@@ -118,8 +142,14 @@ int main( int argc, char* args[] )
 		SDML::Video::Window canvas {WINDOW_TITLE, WINDOW_AREA};
 		SDML::Video::Renderer paintbrush {canvas};
 		paintbrush.SetDrawingColor(WHITE);
-		paintbrush.DrawPoints(custom_line_drawing(line));
-		paintbrush.DrawLine(modified_line);
+		paintbrush.DrawEntireTarget();
+		paintbrush.SetDrawingColor(BLACK);
+		paintbrush.DrawPoints(custom_line_drawing( 		 ascending_line));
+		paintbrush.DrawPoints(custom_line_drawing(		descending_line));
+		paintbrush.DrawPoints(custom_line_drawing( steep_ascending_line));
+		paintbrush.DrawPoints(custom_line_drawing(steep_descending_line));
+		paintbrush.DrawPoints(custom_line_drawing(		horizontal_line));
+		paintbrush.DrawPoints(custom_line_drawing(  	  vertical_line));
 		paintbrush.Update();
 		
 		std::optional<std::unique_ptr<SDML::Events::Event>> current_event;
