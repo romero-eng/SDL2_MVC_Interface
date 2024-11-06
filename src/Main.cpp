@@ -45,7 +45,7 @@ std::array<double, 2> operator*(const std::array<std::array<double, 2>, 2>& matr
 }
 
 
-std::vector<std::array<int, 2>> custom_calculate_line_points(const std::array<std::array<int, 2>, 2> line)
+std::vector<std::array<int, 2>> custom_calculate_line_points(const std::array<std::array<int, 2>, 2>& line)
 {
 	/*
 	Problem Definition:
