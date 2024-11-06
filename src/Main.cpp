@@ -195,9 +195,9 @@ std::vector<std::array<int, 2>> custom_calculate_polygon_boundary_points(const s
 }
 
 
-std::vector<std::array<int, 2>> custom_scan_lines_for_within_shape_points(bool orthogonal_axis_first,
-                                                                          const std::vector<std::array<int, 2>>& boundary_points,
-																		  const std::optional<std::vector<std::array<int, 2>>>& orthogonal_axis_points = std::nullopt)
+std::vector<std::array<int, 2>> custom_scan_lines_for_within_boundary_points(bool orthogonal_axis_first,
+                                                                             const std::vector<std::array<int, 2>>& boundary_points,
+																		     const std::optional<std::vector<std::array<int, 2>>>& orthogonal_axis_points = std::nullopt)
 {
 
 	// Initialization of numerous variables needed for up-coming for loops
@@ -218,7 +218,7 @@ std::vector<std::array<int, 2>> custom_scan_lines_for_within_shape_points(bool o
 	bool keep_going;
 
 	// Reorganize the boundary points from coordinates into scan line boundary points
-	// mapped to corresponding orthogonal axis points
+	// mapped to corresponding orthogonal axis points.
     std::map<int, std::vector<int>> reorganized_boundary_points;
     for(std::array<int, 2> point : boundary_points) {
         if(reorganized_boundary_points.contains(point[orthogonal_axis])) {
@@ -380,26 +380,35 @@ std::vector<std::array<double, 2>> custom_translate_and_rotate_vectors(std::vect
 }
 
 
-std::vector<std::array<int, 2>> custom_calculate_arrow_boundary_points(double W_r,
-																	   double W_t,
-																	   double H_r,
-																	   double H_t,
-																	   std::array<double, 2> center,
-																	   double angle_degrees)
+std::tuple<std::vector<std::array<int, 2>>,
+		   std::vector<std::array<int, 2>>> custom_calculate_arrow_boundary_points(double W_r,
+																				   double W_t,
+																				   double H_r,
+																				   double H_t,
+																				   std::array<double, 2> center,
+																				   double angle_degrees)
 {
 	if(W_r <= W_t) {
 		throw std::runtime_error("W_r must be greater than W_t");
 	}
 
-	return custom_calculate_polygon_boundary_points(custom_round_double_vectors_to_int_vectors(custom_translate_and_rotate_vectors({{		      0, 	   H_r},
-																																	{(W_r - W_t)/2, 	   H_r},
-													 																				{(W_r - W_t)/2,         0},
-													 																				{(W_r + W_t)/2,   	     0},
-													 																				{(W_r + W_t)/2, 	   H_r},
-													 																				{	   	    W_r, 	   H_r},
-													 																				{	 	  W_r/2, H_r + H_t}},
-																																   angle_degrees,
-																																   center)));
+	std::vector<std::array<int, 2>> vertices {custom_round_double_vectors_to_int_vectors(custom_translate_and_rotate_vectors({{		      0, 	    H_r},
+																															  {(W_r - W_t)/2, 	    H_r},
+													 																		  {(W_r - W_t)/2,         0},
+													 																		  {(W_r + W_t)/2,   	  0},
+													 																		  {(W_r + W_t)/2, 	    H_r},
+													 																		  {	   	     W_r, 	    H_r},
+													 																		  {	 	   W_r/2, H_r + H_t}},
+																															 angle_degrees,
+																															 center))};
+
+	std::vector<std::array<int, 2>> boundary_points {custom_calculate_polygon_boundary_points(vertices)};
+
+	std::vector<std::array<int, 2>> within_boundary_points {custom_scan_lines_for_within_boundary_points(false, boundary_points)};
+	within_boundary_points = custom_scan_lines_for_within_boundary_points(true, boundary_points, within_boundary_points);
+
+	return {boundary_points,
+			within_boundary_points};
 }
 
 
@@ -410,9 +419,7 @@ int main( int argc, char* args[] )
 
 	try {
 
-		std::vector<std::array<int, 2>> arrow_boundary_points {custom_calculate_arrow_boundary_points(50, 20, 40, 20, {50, 100}, 30)};
-		std::vector<std::array<int, 2>> arrow_shape_points {custom_scan_lines_for_within_shape_points(false, arrow_boundary_points)};
-		arrow_shape_points = custom_scan_lines_for_within_shape_points(true, arrow_boundary_points, arrow_shape_points);
+		const auto& [arrow_boundary_points, arrow_within_boundary_points] = custom_calculate_arrow_boundary_points(50, 20, 40, 20, {50, 100}, 30);
 
 		SDML::Video::Window canvas {WINDOW_TITLE, WINDOW_AREA};
 		SDML::Video::Renderer paintbrush {canvas};
@@ -420,11 +427,12 @@ int main( int argc, char* args[] )
 		paintbrush.DrawEntireTarget();
 		paintbrush.SetDrawingColor(BLACK);
 		paintbrush.DrawPoints(arrow_boundary_points);
-		paintbrush.DrawPoints(arrow_shape_points);
-		/*paintbrush.SetDrawingColor(RED);
-		paintbrush.DrawLine(std::array<std::array<int, 2>, 2> {{{0, 110}, {WINDOW_AREA[0], 110}}});
-		paintbrush.DrawLine(std::array<std::array<int, 2>, 2> {{{96, 0}, {96, WINDOW_AREA[1]}}});
-		paintbrush.DrawLine(std::array<std::array<int, 2>, 2> {{{113, 0}, {113, WINDOW_AREA[1]}}});*/
+		paintbrush.DrawPoints(arrow_within_boundary_points);
+		//paintbrush.SetDrawingColor(RED);
+		//paintbrush.DrawLine(std::array<std::array<int, 2>, 2> {{{0, 110}, {WINDOW_AREA[0], 110}}});
+		//paintbrush.DrawLine(std::array<std::array<int, 2>, 2> {{{96, 0}, {96, WINDOW_AREA[1]}}});
+		//paintbrush.DrawLine(std::array<std::array<int, 2>, 2> {{{113, 0}, {113, WINDOW_AREA[1]}}});
+		//paintbrush.DrawLine(std::array<std::array<int, 2>, 2> {{{83, 0}, {83, WINDOW_AREA[1]}}});
 		paintbrush.Update();
 		
 		std::optional<std::unique_ptr<SDML::Events::Event>> current_event;
