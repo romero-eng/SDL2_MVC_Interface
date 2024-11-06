@@ -195,9 +195,9 @@ std::vector<std::array<int, 2>> custom_calculate_polygon_boundary_points(const s
 }
 
 
-std::vector<std::array<int, 2>> custom_scan_lines_for_within_boundary_points(bool orthogonal_axis_first,
-                                                                             const std::vector<std::array<int, 2>>& boundary_points,
-																		     const std::optional<std::vector<std::array<int, 2>>>& orthogonal_axis_points = std::nullopt)
+std::vector<std::array<int, 2>> custom_double_sided_even_odd_ray_casting(bool orthogonal_axis_first,
+                                                                         const std::vector<std::array<int, 2>>& boundary_points,
+																	     const std::optional<std::vector<std::array<int, 2>>>& orthogonal_axis_points = std::nullopt)
 {
 
 	// Initialization of numerous variables needed for up-coming for loops
@@ -404,8 +404,8 @@ std::tuple<std::vector<std::array<int, 2>>,
 
 	std::vector<std::array<int, 2>> boundary_points {custom_calculate_polygon_boundary_points(vertices)};
 
-	std::vector<std::array<int, 2>> within_boundary_points {custom_scan_lines_for_within_boundary_points(false, boundary_points)};
-	within_boundary_points = custom_scan_lines_for_within_boundary_points(true, boundary_points, within_boundary_points);
+	std::vector<std::array<int, 2>> within_boundary_points {custom_double_sided_even_odd_ray_casting(false, boundary_points)};
+	within_boundary_points = custom_double_sided_even_odd_ray_casting(true, boundary_points, within_boundary_points);
 
 	return {boundary_points,
 			within_boundary_points};
