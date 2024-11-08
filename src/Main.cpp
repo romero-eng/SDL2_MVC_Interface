@@ -16,6 +16,7 @@
 #include <iostream>
 #include <memory>
 #include <deque>
+#include <numeric>
 
 
 constexpr std::string LOGFILE_NAME {"Test"};
@@ -343,6 +344,112 @@ std::vector<std::array<int, 2>> custom_double_sided_even_odd_ray_casting(bool or
 }
 
 
+std::vector<double> custom_wrap_angles(std::vector<double>& angles) {
+
+    std::vector<double> wrapped_angles (angles.size());
+
+    int wraps {0};
+    double current_angle;
+    double previous_angle;
+    double direct_angle_diff;
+    double complementary_angle_diff;
+    double shortest_angle_diff;
+    bool counter_clockwise_wrap;
+    bool clockwise_wrap;
+
+    for(std::size_t angle_index = 0; angle_index < angles.size(); angle_index++) {
+
+        if(angle_index > 0) {
+
+            /*
+            ============================================================================================================================
+            ============================================================================================================================
+            */
+
+            current_angle  = angles[angle_index];
+            previous_angle = angles[angle_index - 1];
+            current_angle  +=  current_angle < 0 ? 360 : 0;
+            previous_angle += previous_angle < 0 ? 360 : 0;
+
+            direct_angle_diff = current_angle - previous_angle;
+            complementary_angle_diff = (direct_angle_diff >= 0 ? -1 : 1)*(360 - std::abs(direct_angle_diff));
+            shortest_angle_diff = std::abs(direct_angle_diff) < std::abs(complementary_angle_diff) ? direct_angle_diff : complementary_angle_diff;
+
+            counter_clockwise_wrap = shortest_angle_diff > 0 ? current_angle < previous_angle : false;
+            clockwise_wrap = shortest_angle_diff <= 0 ? current_angle > previous_angle : false;
+
+            if(counter_clockwise_wrap) {
+                wraps++;
+            } else if (clockwise_wrap) {
+                wraps--;
+            }
+        }
+
+        wrapped_angles[angle_index] = angles[angle_index] + (angles[angle_index] < 0 ? 360 : 0);
+        wrapped_angles[angle_index] += (wrapped_angles[angle_index] !=0 ? 360*wraps : 0);
+    }
+
+    return wrapped_angles;
+}
+
+
+int custom_calculate_winding_number(const std::vector<std::array<int, 2>>& vertices,
+                                const std::array<int, 2>& point)
+{
+    std::vector<double> angles (vertices.size());
+
+    std::transform(vertices.begin(),
+                   vertices.end(),
+                   angles.begin(),
+                   [&point](std::array<int, 2> vertex){ return (180/M_PI)*std::atan2(vertex[1] - point[1],
+                                                                                     vertex[0] - point[0]); });
+
+    angles.push_back(angles[0]);
+
+    std::vector<double> wrapped_angles {custom_wrap_angles(angles)};
+
+    double winding_number = (std::reduce(wrapped_angles.begin() + 1, wrapped_angles.end()) - std::reduce(wrapped_angles.begin(), wrapped_angles.end() - 1))/360;
+
+    return static_cast<int>(winding_number);
+}
+
+
+std::vector<std::array<int, 2>> custom_calculate_intersections(std::vector<std::array<int, 2>> vertices)
+{
+    std::size_t num_iterations {vertices.size() - 1};
+    std::vector<std::array<int, 2>> intersections;
+    std::array<int, 2>  first_tmp_vertex;
+    std::array<int, 2> second_tmp_vertex;
+    bool  first_tmp_vertex_not_already_a_vertex;
+    bool second_tmp_vertex_not_already_a_vertex;
+    bool  first_tmp_vertex_not_already_an_intersection;
+    bool second_tmp_vertex_not_already_an_intersection;
+
+    for(std::size_t iteration = 0; iteration < num_iterations; iteration++) {
+        std::array<int, 2> current_vertex = vertices.back();
+        for(std::array<int, 2> vertex : vertices) {
+
+            first_tmp_vertex  = {current_vertex[0],         vertex[1]};
+            second_tmp_vertex = {        vertex[0], current_vertex[1]};
+            first_tmp_vertex_not_already_a_vertex  = std::find(vertices.begin(), vertices.end(),  first_tmp_vertex) == vertices.end();
+            second_tmp_vertex_not_already_a_vertex = std::find(vertices.begin(), vertices.end(), second_tmp_vertex) == vertices.end();
+            first_tmp_vertex_not_already_an_intersection  = std::find(intersections.begin(), intersections.end(),  first_tmp_vertex) == intersections.end();
+            second_tmp_vertex_not_already_an_intersection = std::find(intersections.begin(), intersections.end(), second_tmp_vertex) == intersections.end();
+
+            if(first_tmp_vertex_not_already_a_vertex && first_tmp_vertex_not_already_an_intersection) {
+                intersections.push_back( first_tmp_vertex);
+            }
+            if(second_tmp_vertex_not_already_a_vertex && second_tmp_vertex_not_already_an_intersection) {
+                intersections.push_back(second_tmp_vertex);
+            }
+        }
+        vertices.pop_back();
+    }
+
+    return intersections;
+}
+
+
 std::vector<std::array<int, 2>> custom_round_double_vectors_to_int_vectors(const std::vector<std::array<double, 2>> double_vertices)
 {
 	std::vector<std::array<int, 2>> int_vertices (double_vertices.size());
@@ -407,6 +514,12 @@ std::tuple<std::vector<std::array<int, 2>>,
 	std::vector<std::array<int, 2>> within_boundary_points {custom_double_sided_even_odd_ray_casting(false, boundary_points)};
 	within_boundary_points = custom_double_sided_even_odd_ray_casting(true, boundary_points, within_boundary_points);
 
+	for(std::array<int, 2> intersection : custom_calculate_intersections(vertices)) {
+		if(custom_calculate_winding_number(vertices, intersection) != 0) {
+			within_boundary_points.push_back(intersection);
+		}
+	}
+
 	return {boundary_points,
 			within_boundary_points};
 }
@@ -428,11 +541,16 @@ int main( int argc, char* args[] )
 		paintbrush.SetDrawingColor(BLACK);
 		paintbrush.DrawPoints(arrow_boundary_points);
 		paintbrush.DrawPoints(arrow_within_boundary_points);
-		//paintbrush.SetDrawingColor(RED);
+		paintbrush.SetDrawingColor(RED);
 		//paintbrush.DrawLine(std::array<std::array<int, 2>, 2> {{{0, 110}, {WINDOW_AREA[0], 110}}});
+		//paintbrush.DrawLine(std::array<std::array<int, 2>, 2> {{{0, 111}, {WINDOW_AREA[0], 111}}});
+		//paintbrush.DrawLine(std::array<std::array<int, 2>, 2> {{{0, 117}, {WINDOW_AREA[0], 117}}});
+		//paintbrush.DrawLine(std::array<std::array<int, 2>, 2> {{{0, 135}, {WINDOW_AREA[0], 135}}});
+		//paintbrush.DrawLine(std::array<std::array<int, 2>, 2> {{{0, 93}, {WINDOW_AREA[0], 93}}});
+		//paintbrush.DrawLine(std::array<std::array<int, 2>, 2> {{{83, 0}, {83, WINDOW_AREA[1]}}});
+
 		//paintbrush.DrawLine(std::array<std::array<int, 2>, 2> {{{96, 0}, {96, WINDOW_AREA[1]}}});
 		//paintbrush.DrawLine(std::array<std::array<int, 2>, 2> {{{113, 0}, {113, WINDOW_AREA[1]}}});
-		//paintbrush.DrawLine(std::array<std::array<int, 2>, 2> {{{83, 0}, {83, WINDOW_AREA[1]}}});
 		paintbrush.Update();
 		
 		std::optional<std::unique_ptr<SDML::Events::Event>> current_event;
