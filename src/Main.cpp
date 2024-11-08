@@ -170,7 +170,7 @@ std::vector<std::array<int, 2>> custom_calculate_line_points(const std::array<st
 }
 
 
-std::vector<std::array<int, 2>> custom_calculate_polygon_boundary_points(const std::vector<std::array<int, 2>> vertices)
+std::vector<std::array<int, 2>> custom_calculate_polygon_boundary_points(std::vector<std::array<int, 2>>& vertices)
 {
 	if(vertices.size() < 3) {
 		throw std::runtime_error("A polygon can only be defined with a minimum of three vertices");
@@ -183,16 +183,42 @@ std::vector<std::array<int, 2>> custom_calculate_polygon_boundary_points(const s
 	}
 	lines.push_back({vertices[vertices.size() - 1], vertices[0]});
 
-	std::vector<std::array<int, 2>> points;
-	std::vector<std::array<int, 2>> tmp_points;
+	std::vector<std::array<int, 2>> boundary_points;
+	std::array<int, 2> tmp_point;
+	std::vector<std::array<int, 2>> tmp_boundary_points;
+	bool boundary_point_is_vertex;
+	bool vertex_is_not_already_vertex;
+
 	for(std::array<std::array<int, 2>, 2> line : lines) {
-		tmp_points = custom_calculate_line_points(line);
-		for(std::array<int, 2> point : std::vector<std::array<int, 2>> (tmp_points.begin(), tmp_points.end() - 1)) {
-			points.push_back(point);
+
+		tmp_boundary_points = custom_calculate_line_points(line);
+		tmp_boundary_points = std::vector<std::array<int, 2>> (tmp_boundary_points.begin(), tmp_boundary_points.end() - 1);
+
+		for(std::array<int, 2> potential_vertex : tmp_boundary_points) {
+			for(int x : {-1, 0, 1}){
+				for(int y : {-1, 0, 1}) {
+					if(!(x == 0 && y == 0)) {
+
+						tmp_point = {potential_vertex[0] + x, potential_vertex[1] + y};
+
+						if(std::find(boundary_points.begin(), boundary_points.end(), tmp_point) != boundary_points.end()) {
+							if(vertex_is_not_already_vertex = std::find(vertices.begin(), vertices.end(), tmp_point) == vertices.end()) {
+								vertices.push_back(potential_vertex);
+							}
+
+						}
+					}
+				}
+			}
 		}
+
+		for(std::array<int, 2> boundary_point : tmp_boundary_points) {
+			boundary_points.push_back(boundary_point);
+		}
+
 	}
 
-	return points;
+	return boundary_points;
 }
 
 
@@ -354,17 +380,10 @@ std::vector<double> custom_wrap_angles(std::vector<double>& angles) {
     double direct_angle_diff;
     double complementary_angle_diff;
     double shortest_angle_diff;
-    bool counter_clockwise_wrap;
-    bool clockwise_wrap;
 
     for(std::size_t angle_index = 0; angle_index < angles.size(); angle_index++) {
 
         if(angle_index > 0) {
-
-            /*
-            ============================================================================================================================
-            ============================================================================================================================
-            */
 
             current_angle  = angles[angle_index];
             previous_angle = angles[angle_index - 1];
@@ -375,12 +394,9 @@ std::vector<double> custom_wrap_angles(std::vector<double>& angles) {
             complementary_angle_diff = (direct_angle_diff >= 0 ? -1 : 1)*(360 - std::abs(direct_angle_diff));
             shortest_angle_diff = std::abs(direct_angle_diff) < std::abs(complementary_angle_diff) ? direct_angle_diff : complementary_angle_diff;
 
-            counter_clockwise_wrap = shortest_angle_diff > 0 ? current_angle < previous_angle : false;
-            clockwise_wrap = shortest_angle_diff <= 0 ? current_angle > previous_angle : false;
-
-            if(counter_clockwise_wrap) {
+            if(shortest_angle_diff > 0 ? current_angle < previous_angle : false) {
                 wraps++;
-            } else if (clockwise_wrap) {
+            } else if (shortest_angle_diff <= 0 ? current_angle > previous_angle : false) {
                 wraps--;
             }
         }
@@ -538,19 +554,10 @@ int main( int argc, char* args[] )
 		SDML::Video::Renderer paintbrush {canvas};
 		paintbrush.SetDrawingColor(WHITE);
 		paintbrush.DrawEntireTarget();
+		paintbrush.SetDrawingColor(RED);
+		paintbrush.DrawPoints(arrow_within_boundary_points);
 		paintbrush.SetDrawingColor(BLACK);
 		paintbrush.DrawPoints(arrow_boundary_points);
-		paintbrush.DrawPoints(arrow_within_boundary_points);
-		paintbrush.SetDrawingColor(RED);
-		//paintbrush.DrawLine(std::array<std::array<int, 2>, 2> {{{0, 110}, {WINDOW_AREA[0], 110}}});
-		//paintbrush.DrawLine(std::array<std::array<int, 2>, 2> {{{0, 111}, {WINDOW_AREA[0], 111}}});
-		//paintbrush.DrawLine(std::array<std::array<int, 2>, 2> {{{0, 117}, {WINDOW_AREA[0], 117}}});
-		//paintbrush.DrawLine(std::array<std::array<int, 2>, 2> {{{0, 135}, {WINDOW_AREA[0], 135}}});
-		//paintbrush.DrawLine(std::array<std::array<int, 2>, 2> {{{0, 93}, {WINDOW_AREA[0], 93}}});
-		//paintbrush.DrawLine(std::array<std::array<int, 2>, 2> {{{83, 0}, {83, WINDOW_AREA[1]}}});
-
-		//paintbrush.DrawLine(std::array<std::array<int, 2>, 2> {{{96, 0}, {96, WINDOW_AREA[1]}}});
-		//paintbrush.DrawLine(std::array<std::array<int, 2>, 2> {{{113, 0}, {113, WINDOW_AREA[1]}}});
 		paintbrush.Update();
 		
 		std::optional<std::unique_ptr<SDML::Events::Event>> current_event;
