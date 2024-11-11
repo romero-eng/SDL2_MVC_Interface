@@ -10,6 +10,7 @@
 #include "SDML/Video/Texture.hpp"
 #include "SDML/Events/Event.hpp"
 #include "SDML/Events/EventMisc.hpp"
+#include "Custom/LinearAlgebra.hpp"
 
 // C++ Standard Libraries
 #include <filesystem>
@@ -25,25 +26,6 @@ constexpr std::array<int, 2> WINDOW_AREA {640, 480};
 constexpr std::array<uint8_t, 3> WHITE {0xFF, 0xFF, 0xFF};
 constexpr std::array<uint8_t, 3> BLACK {0x00, 0x00, 0x00};
 constexpr std::array<uint8_t, 3> RED {0xFF, 0x00, 0x00};
-
-
-std::array<double, 2> operator+(const std::array<double, 2>& first_vector,
-								const std::array<double, 2>& second_vector) {
-	return {first_vector[0] + second_vector[0],
-			first_vector[1] + second_vector[1]};
-}
-
-
-double operator*(const std::array<double, 2>& first_vector,
-								const std::array<double, 2>& second_vector) {
-	return {first_vector[0]*second_vector[0] + first_vector[1]*second_vector[1]};
-}
-
-
-std::array<double, 2> operator*(const std::array<std::array<double, 2>, 2>& matrix,
-								const std::array<double, 2>& vector) {
-	return {matrix[0]*vector, matrix[1]*vector};
-}
 
 
 std::vector<std::array<int, 2>> custom_calculate_line_points(const std::array<std::array<int, 2>, 2>& line)
@@ -466,43 +448,6 @@ std::vector<std::array<int, 2>> custom_calculate_intersections(std::vector<std::
 }
 
 
-std::vector<std::array<int, 2>> custom_round_double_vectors_to_int_vectors(const std::vector<std::array<double, 2>> double_vertices)
-{
-	std::vector<std::array<int, 2>> int_vertices (double_vertices.size());
-
-	for(std::size_t n = 0; n < double_vertices.size(); n++){
-		int_vertices[n] = {static_cast<int>(std::round(double_vertices[n][0])),
-						   static_cast<int>(std::round(double_vertices[n][1]))};
-	}
-
-	return int_vertices;
-}
-
-
-std::array<std::array<double, 2>, 2> custom_rotation_matrix(double angle_degrees)
-{
-	double angle_radians {(M_PI/180)*angle_degrees};
-
-	return {{{ std::cos(angle_radians), std::sin(angle_radians)},
-			 {-std::sin(angle_radians), std::cos(angle_radians)}}};
-}
-
-
-std::vector<std::array<double, 2>> custom_translate_and_rotate_vectors(std::vector<std::array<double, 2>> vectors,
-																	   double angle_degrees,
-																	   std::array<double, 2> center)
-{
-	std::vector<std::array<double, 2>> new_vectors (vectors.size());
-	std::array<std::array<double, 2>, 2> rotation_matrix {custom_rotation_matrix(angle_degrees)};
-
-	for(std::size_t n = 0; n < vectors.size(); n++) {
-		new_vectors[n] = rotation_matrix*vectors[n] + center;
-	}
-
-	return new_vectors;
-}
-
-
 std::tuple<std::vector<std::array<int, 2>>,
 		   std::vector<std::array<int, 2>>> custom_calculate_arrow_boundary_points(double W_r,
 																				   double W_t,
@@ -515,15 +460,15 @@ std::tuple<std::vector<std::array<int, 2>>,
 		throw std::runtime_error("W_r must be greater than W_t");
 	}
 
-	std::vector<std::array<int, 2>> vertices {custom_round_double_vectors_to_int_vectors(custom_translate_and_rotate_vectors({{		      0, 	    H_r},
-																															  {(W_r - W_t)/2, 	    H_r},
-													 																		  {(W_r - W_t)/2,         0},
-													 																		  {(W_r + W_t)/2,   	  0},
-													 																		  {(W_r + W_t)/2, 	    H_r},
-													 																		  {	   	     W_r, 	    H_r},
-													 																		  {	 	   W_r/2, H_r + H_t}},
-																															 angle_degrees,
-																															 center))};
+	std::vector<std::array<int, 2>> vertices {Custom::LinearAlgebra::round_double_vectors_to_int_vectors(Custom::LinearAlgebra::translate_and_rotate_vectors({{		      0, 	    H_r},
+																																							  {(W_r - W_t)/2, 	    H_r},
+																		 																					  {(W_r - W_t)/2,         0},
+																	 																						  {(W_r + W_t)/2,   	  0},
+																	 																						  {(W_r + W_t)/2, 	    H_r},
+																	 																						  {	   	     W_r, 	    H_r},
+																	 																						  {	 	   W_r/2, H_r + H_t}},
+																																							 angle_degrees,
+																																							 center))};
 
 	std::vector<std::array<int, 2>> boundary_points {custom_calculate_polygon_boundary_points(vertices)};
 
