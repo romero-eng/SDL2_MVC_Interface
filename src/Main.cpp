@@ -177,8 +177,7 @@ std::tuple<std::vector<std::array<int, 2>>,
 
 	std::vector<std::array<int, 2>> boundary_points {Custom::PointInShape::calculate_polygon_boundary_points(vertices)};
 
-	std::vector<std::array<int, 2>> within_boundary_points {Custom::PointInShape::double_sided_even_odd_ray_casting(false, boundary_points)};
-	within_boundary_points = Custom::PointInShape::double_sided_even_odd_ray_casting(true, boundary_points, within_boundary_points);
+	std::vector<std::array<int, 2>> within_boundary_points {Custom::PointInShape::even_odd_ray_casting(boundary_points)};
 
 	for(std::array<int, 2> intersection : Custom::PointInShape::calculate_intersections(vertices)) {
 		if(Custom::PointInShape::calculate_winding_number(vertices, intersection) != 0) {

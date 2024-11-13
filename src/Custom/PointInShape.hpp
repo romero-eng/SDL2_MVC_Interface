@@ -19,9 +19,7 @@ namespace Custom {
 
         std::vector<std::array<int, 2>> calculate_polygon_boundary_points(std::vector<std::array<int, 2>>& vertices);
 
-        std::vector<std::array<int, 2>> double_sided_even_odd_ray_casting(bool orthogonal_axis_first,
-                                                                          const std::vector<std::array<int, 2>>& boundary_points,
-		    															  const std::optional<std::vector<std::array<int, 2>>>& orthogonal_axis_points = std::nullopt);
+        std::vector<std::array<int, 2>> even_odd_ray_casting(const std::vector<std::array<int, 2>>& boundary_points);
 
         std::vector<double> wrap_angles(std::vector<double>& angles);
 

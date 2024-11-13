@@ -128,60 +128,60 @@ std::map<int, std::vector<std::deque<int>>> collate_points_along_scanlines(std::
 }
 
 
-std::vector<std::array<int, 2>> Custom::PointInShape::double_sided_even_odd_ray_casting(bool orthogonal_axis_first,
-                                                                                        const std::vector<std::array<int, 2>>& boundary_coordinates,
-															    	    	            const std::optional<std::vector<std::array<int, 2>>>& orthogonal_axis_points)
+std::vector<std::array<int, 2>> Custom::PointInShape::even_odd_ray_casting(const std::vector<std::array<int, 2>>& boundary_coordinates)
 {
     std::vector<std::array<int, 2>> within_shape_points;
-    if(orthogonal_axis_points.has_value()) {
-        within_shape_points = orthogonal_axis_points.value();
-    }
-    int num_boundary_crossings;
-    int num_boundary_crossings_reversed;
 
-	std::size_t min_boundary_point;
-	std::size_t max_boundary_point;
+    int num_right_sided_boundary_crossings;
+    int num_left_sided_boundary_crossings;
+    int num_up_sided_boundary_crossings;
+    int num_down_sided_boundary_crossings;
 
-    std::map<int, std::vector<int>> scanlines_per_orthogonal_axis_point {map_2D_coordinates_to_scanlines(boundary_coordinates, orthogonal_axis_first)};
-    std::map<int, std::vector<std::deque<int>>> scanline_boundaries_per_orthogonal_line {collate_points_along_scanlines(scanlines_per_orthogonal_axis_point)};
-	std::optional<std::map<int, std::vector<int>>> reorganized_orthogonal_axis_points {orthogonal_axis_points.has_value() ? std::make_optional(map_2D_coordinates_to_scanlines(orthogonal_axis_points.value(), orthogonal_axis_first)) : std::nullopt};
+    std::size_t min_x_axis_boundary_point;
+    std::size_t max_x_axis_boundary_point;
 
-    for(auto& [orthogonal_axis_point, boundaries] : scanline_boundaries_per_orthogonal_line) {
+    std::map<int, std::vector<int>> vertical_scanline_per_y_axis_point {map_2D_coordinates_to_scanlines(boundary_coordinates, false)};
+    std::map<int, std::vector<std::deque<int>>> horizontal_boundaries_per_x_axis_point {collate_points_along_scanlines(map_2D_coordinates_to_scanlines(boundary_coordinates, true))};
 
-		min_boundary_point = \
-			static_cast<std::size_t>(*std::min_element(scanlines_per_orthogonal_axis_point[orthogonal_axis_point].begin(),
-													   scanlines_per_orthogonal_axis_point[orthogonal_axis_point].end()));
+    for(auto& [y_axis_point, vertical_boundaries] : collate_points_along_scanlines(vertical_scanline_per_y_axis_point)) {
 
-		max_boundary_point = \
-			static_cast<std::size_t>(*std::max_element(scanlines_per_orthogonal_axis_point[orthogonal_axis_point].begin(),
-							 						   scanlines_per_orthogonal_axis_point[orthogonal_axis_point].end()));
+		min_x_axis_boundary_point = \
+			static_cast<std::size_t>(*std::min_element(vertical_scanline_per_y_axis_point[y_axis_point].begin(),
+													   vertical_scanline_per_y_axis_point[y_axis_point].end()));
 
-        for(std::size_t point = min_boundary_point; point < max_boundary_point; point++) {
+		max_x_axis_boundary_point = \
+			static_cast<std::size_t>(*std::max_element(vertical_scanline_per_y_axis_point[y_axis_point].begin(),
+							 						   vertical_scanline_per_y_axis_point[y_axis_point].end()));
 
-			if(reorganized_orthogonal_axis_points.has_value() ? std::find(reorganized_orthogonal_axis_points.value()[orthogonal_axis_point].begin(),
-                                                                          reorganized_orthogonal_axis_points.value()[orthogonal_axis_point].end(),
-                                                                          point) == reorganized_orthogonal_axis_points.value()[orthogonal_axis_point].end() : true) {
+        for(std::size_t x_axis_point = min_x_axis_boundary_point; x_axis_point < max_x_axis_boundary_point; x_axis_point++) {
 
-            	num_boundary_crossings = 0;
-            	num_boundary_crossings_reversed = 0;
+            num_right_sided_boundary_crossings = 0;
+            num_left_sided_boundary_crossings = 0;
+            num_up_sided_boundary_crossings = 0;
+            num_down_sided_boundary_crossings = 0;
 
-            	for(std::deque<int> boundary : boundaries) {
-                	if(point > static_cast<std::size_t>(boundary.front())) {
-                    	num_boundary_crossings++;
-                	}
-                	if(point < static_cast<std::size_t>(boundary.back())) {
-                    	num_boundary_crossings_reversed++;
-                	}
-            	}
+            for(std::deque<int> vertical_boundary : vertical_boundaries) {
+                if(x_axis_point > static_cast<std::size_t>(vertical_boundary.front())) {
+                    num_right_sided_boundary_crossings++;
+                }
+                if(x_axis_point < static_cast<std::size_t>(vertical_boundary.back())) {
+                    num_left_sided_boundary_crossings++;
+                }
+            }
 
-            	if(num_boundary_crossings % 2 && num_boundary_crossings_reversed % 2) {
-                	if(orthogonal_axis_first) {
-                    	within_shape_points.push_back({orthogonal_axis_point, static_cast<int>(point)});
-                	} else {
-                    	within_shape_points.push_back({static_cast<int>(point), orthogonal_axis_point});
-                	}
-            	}
-			}
+            for(std::deque<int> horizontal_boundary : horizontal_boundaries_per_x_axis_point[static_cast<int>(x_axis_point)]) {
+                if(y_axis_point > horizontal_boundary.front()) {
+                    num_up_sided_boundary_crossings++;
+                }
+                if(y_axis_point < horizontal_boundary.back()) {
+                    num_down_sided_boundary_crossings++;
+                }
+            }
+
+            if((num_right_sided_boundary_crossings % 2 && num_left_sided_boundary_crossings % 2) || (num_up_sided_boundary_crossings % 2 && num_down_sided_boundary_crossings % 2)) {
+                within_shape_points.push_back({static_cast<int>(x_axis_point), y_axis_point});
+            }
+
         }
     }
 
