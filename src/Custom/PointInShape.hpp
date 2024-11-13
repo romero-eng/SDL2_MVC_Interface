@@ -21,10 +21,8 @@ namespace Custom {
 
         std::vector<std::array<int, 2>> even_odd_ray_casting(const std::vector<std::array<int, 2>>& boundary_points);
 
-        std::vector<double> wrap_angles(std::vector<double>& angles);
-
-        int calculate_winding_number(const std::vector<std::array<int, 2>>& vertices,
-                                     const std::array<int, 2>& point);
+        int winding_number(const std::vector<std::array<int, 2>>& vertices,
+                           const std::array<int, 2>& point);
 
         std::vector<std::array<int, 2>> calculate_intersections(std::vector<std::array<int, 2>> vertices);
 

@@ -189,7 +189,7 @@ std::vector<std::array<int, 2>> Custom::PointInShape::even_odd_ray_casting(const
 }
 
 
-std::vector<double> Custom::PointInShape::wrap_angles(std::vector<double>& angles)
+std::vector<double> wrap_angles(std::vector<double>& angles)
 {
     std::vector<double> wrapped_angles (angles.size());
 
@@ -228,8 +228,8 @@ std::vector<double> Custom::PointInShape::wrap_angles(std::vector<double>& angle
 }
 
 
-int Custom::PointInShape::calculate_winding_number(const std::vector<std::array<int, 2>>& vertices,
-                                                   const std::array<int, 2>& point)
+int Custom::PointInShape::winding_number(const std::vector<std::array<int, 2>>& vertices,
+                                         const std::array<int, 2>& point)
 {
     std::vector<double> angles (vertices.size());
 

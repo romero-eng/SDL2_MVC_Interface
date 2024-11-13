@@ -180,7 +180,7 @@ std::tuple<std::vector<std::array<int, 2>>,
 	std::vector<std::array<int, 2>> within_boundary_points {Custom::PointInShape::even_odd_ray_casting(boundary_points)};
 
 	for(std::array<int, 2> intersection : Custom::PointInShape::calculate_intersections(vertices)) {
-		if(Custom::PointInShape::calculate_winding_number(vertices, intersection) != 0) {
+		if(Custom::PointInShape::winding_number(vertices, intersection) != 0) {
 			within_boundary_points.push_back(intersection);
 		}
 	}
