@@ -24,7 +24,7 @@ namespace Custom {
         int winding_number(const std::vector<std::array<int, 2>>& vertices,
                            const std::array<int, 2>& point);
 
-        std::vector<std::array<int, 2>> calculate_intersections(std::vector<std::array<int, 2>> vertices);
+        std::vector<std::array<int, 2>> find_vertex_intersections(std::vector<std::array<int, 2>> vertices);
 
     }
 

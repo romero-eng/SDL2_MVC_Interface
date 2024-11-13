@@ -249,7 +249,7 @@ int Custom::PointInShape::winding_number(const std::vector<std::array<int, 2>>& 
 }
 
 
-std::vector<std::array<int, 2>> Custom::PointInShape::calculate_intersections(std::vector<std::array<int, 2>> vertices)
+std::vector<std::array<int, 2>> Custom::PointInShape::find_vertex_intersections(std::vector<std::array<int, 2>> vertices)
 {
     std::size_t num_iterations {vertices.size() - 1};
     std::vector<std::array<int, 2>> intersections;
