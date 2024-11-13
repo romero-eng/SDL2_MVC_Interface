@@ -175,7 +175,12 @@ std::tuple<std::vector<std::array<int, 2>>,
 																																							 angle_degrees,
 																																							 center))};
 
-	std::vector<std::array<int, 2>> boundary_points {Custom::PointInShape::calculate_polygon_boundary_points(vertices)};
+	std::vector<std::array<int, 2>> boundary_points;
+	std::vector<std::array<int, 2>> extra_vertices;
+	std::tie(boundary_points, extra_vertices) = Custom::PointInShape::calculate_polygon_boundary_points(vertices);
+	for(std::array<int, 2> extra_vertex : extra_vertices) {
+		vertices.push_back(extra_vertex);
+	}
 
 	std::vector<std::array<int, 2>> within_boundary_points {Custom::PointInShape::even_odd_ray_casting(boundary_points)};
 

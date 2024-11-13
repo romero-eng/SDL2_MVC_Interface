@@ -2,7 +2,8 @@
 #include "PointInShape.hpp"
 
 
-std::vector<std::array<int, 2>> Custom::PointInShape::calculate_polygon_boundary_points(std::vector<std::array<int, 2>>& vertices)
+std::tuple<std::vector<std::array<int, 2>>,
+           std::vector<std::array<int, 2>>> Custom::PointInShape::calculate_polygon_boundary_points(const std::vector<std::array<int, 2>>& vertices)
 {
 	if(vertices.size() < 3) {
 		throw std::runtime_error("A polygon can only be defined with a minimum of three vertices");
@@ -18,6 +19,7 @@ std::vector<std::array<int, 2>> Custom::PointInShape::calculate_polygon_boundary
 	std::vector<std::array<int, 2>> boundary_points;
 	std::array<int, 2> tmp_point;
 	std::vector<std::array<int, 2>> tmp_boundary_points;
+    std::vector<std::array<int, 2>> extra_vertices;
 
 	for(std::array<std::array<int, 2>, 2> line : lines) {
 
@@ -33,7 +35,7 @@ std::vector<std::array<int, 2>> Custom::PointInShape::calculate_polygon_boundary
 
 						if(std::find(boundary_points.begin(), boundary_points.end(), tmp_point) != boundary_points.end()) {
 							if(std::find(vertices.begin(), vertices.end(), tmp_point) == vertices.end()) {
-								vertices.push_back(potential_vertex);
+								extra_vertices.push_back(potential_vertex);
 							}
 
 						}
@@ -48,7 +50,7 @@ std::vector<std::array<int, 2>> Custom::PointInShape::calculate_polygon_boundary
 
 	}
 
-	return boundary_points;
+	return {boundary_points, extra_vertices};
 }
 
 

@@ -17,7 +17,8 @@ namespace Custom {
 
     namespace PointInShape {    
 
-        std::vector<std::array<int, 2>> calculate_polygon_boundary_points(std::vector<std::array<int, 2>>& vertices);
+        std::tuple<std::vector<std::array<int, 2>>,
+                   std::vector<std::array<int, 2>>> calculate_polygon_boundary_points(const std::vector<std::array<int, 2>>& vertices);
 
         std::vector<std::array<int, 2>> even_odd_ray_casting(const std::vector<std::array<int, 2>>& boundary_points);
 
