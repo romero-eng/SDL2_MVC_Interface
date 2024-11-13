@@ -189,6 +189,42 @@ std::vector<std::array<int, 2>> Custom::PointInShape::even_odd_ray_casting(const
 }
 
 
+std::vector<std::array<int, 2>> Custom::PointInShape::find_vertex_intersections(std::vector<std::array<int, 2>> vertices)
+{
+    std::size_t num_iterations {vertices.size() - 1};
+    std::vector<std::array<int, 2>> intersections;
+    std::array<int, 2>  first_tmp_vertex;
+    std::array<int, 2> second_tmp_vertex;
+    bool  first_tmp_vertex_not_already_a_vertex;
+    bool second_tmp_vertex_not_already_a_vertex;
+    bool  first_tmp_vertex_not_already_an_intersection;
+    bool second_tmp_vertex_not_already_an_intersection;
+
+    for(std::size_t iteration = 0; iteration < num_iterations; iteration++) {
+        std::array<int, 2> current_vertex = vertices.back();
+        for(std::array<int, 2> vertex : vertices) {
+
+            first_tmp_vertex  = {current_vertex[0],         vertex[1]};
+            second_tmp_vertex = {        vertex[0], current_vertex[1]};
+            first_tmp_vertex_not_already_a_vertex  = std::find(vertices.begin(), vertices.end(),  first_tmp_vertex) == vertices.end();
+            second_tmp_vertex_not_already_a_vertex = std::find(vertices.begin(), vertices.end(), second_tmp_vertex) == vertices.end();
+            first_tmp_vertex_not_already_an_intersection  = std::find(intersections.begin(), intersections.end(),  first_tmp_vertex) == intersections.end();
+            second_tmp_vertex_not_already_an_intersection = std::find(intersections.begin(), intersections.end(), second_tmp_vertex) == intersections.end();
+
+            if(first_tmp_vertex_not_already_a_vertex && first_tmp_vertex_not_already_an_intersection) {
+                intersections.push_back( first_tmp_vertex);
+            }
+            if(second_tmp_vertex_not_already_a_vertex && second_tmp_vertex_not_already_an_intersection) {
+                intersections.push_back(second_tmp_vertex);
+            }
+        }
+        vertices.pop_back();
+    }
+
+    return intersections;
+}
+
+
 std::vector<double> wrap_angles(std::vector<double>& angles)
 {
     std::vector<double> wrapped_angles (angles.size());
@@ -246,42 +282,6 @@ int Custom::PointInShape::winding_number(const std::vector<std::array<int, 2>>& 
     double winding_number = (std::reduce(wrapped_angles.begin() + 1, wrapped_angles.end()) - std::reduce(wrapped_angles.begin(), wrapped_angles.end() - 1))/360;
 
     return static_cast<int>(winding_number);
-}
-
-
-std::vector<std::array<int, 2>> Custom::PointInShape::find_vertex_intersections(std::vector<std::array<int, 2>> vertices)
-{
-    std::size_t num_iterations {vertices.size() - 1};
-    std::vector<std::array<int, 2>> intersections;
-    std::array<int, 2>  first_tmp_vertex;
-    std::array<int, 2> second_tmp_vertex;
-    bool  first_tmp_vertex_not_already_a_vertex;
-    bool second_tmp_vertex_not_already_a_vertex;
-    bool  first_tmp_vertex_not_already_an_intersection;
-    bool second_tmp_vertex_not_already_an_intersection;
-
-    for(std::size_t iteration = 0; iteration < num_iterations; iteration++) {
-        std::array<int, 2> current_vertex = vertices.back();
-        for(std::array<int, 2> vertex : vertices) {
-
-            first_tmp_vertex  = {current_vertex[0],         vertex[1]};
-            second_tmp_vertex = {        vertex[0], current_vertex[1]};
-            first_tmp_vertex_not_already_a_vertex  = std::find(vertices.begin(), vertices.end(),  first_tmp_vertex) == vertices.end();
-            second_tmp_vertex_not_already_a_vertex = std::find(vertices.begin(), vertices.end(), second_tmp_vertex) == vertices.end();
-            first_tmp_vertex_not_already_an_intersection  = std::find(intersections.begin(), intersections.end(),  first_tmp_vertex) == intersections.end();
-            second_tmp_vertex_not_already_an_intersection = std::find(intersections.begin(), intersections.end(), second_tmp_vertex) == intersections.end();
-
-            if(first_tmp_vertex_not_already_a_vertex && first_tmp_vertex_not_already_an_intersection) {
-                intersections.push_back( first_tmp_vertex);
-            }
-            if(second_tmp_vertex_not_already_a_vertex && second_tmp_vertex_not_already_an_intersection) {
-                intersections.push_back(second_tmp_vertex);
-            }
-        }
-        vertices.pop_back();
-    }
-
-    return intersections;
 }
 
 
