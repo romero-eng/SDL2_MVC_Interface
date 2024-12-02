@@ -2,10 +2,6 @@
 #include "Polygon.hpp"
 
 
-<<<<<<< Updated upstream:src/Custom/PointInShape.cpp
-std::tuple<std::vector<std::array<int, 2>>,
-           std::vector<std::array<int, 2>>> Custom::PointInShape::calculate_polygon_boundary_points(const std::vector<std::array<int, 2>>& vertices)
-=======
 std::vector<std::array<int, 2>> calculate_line_points(const std::array<std::array<int, 2>, 2>& line)
 {
 	/*
@@ -132,7 +128,6 @@ std::vector<std::array<int, 2>> calculate_line_points(const std::array<std::arra
 
 std::tuple<std::vector<std::array<int, 2>>,
            std::vector<std::array<int, 2>>> calculate_boundary_points(const std::vector<std::array<int, 2>>& vertices)
->>>>>>> Stashed changes:src/Custom/Polygon.cpp
 {
 	if(vertices.size() < 3) {
 		throw std::runtime_error("A polygon can only be defined with a minimum of three vertices");
