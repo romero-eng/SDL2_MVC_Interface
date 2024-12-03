@@ -32,8 +32,7 @@ constexpr double W_r = 50;
 constexpr double W_t = 20;
 constexpr double H_r = 40;
 constexpr double H_t = 20;
-constexpr std::array<double, 2> center = {50, 100};
-constexpr double angle_degrees = 30;
+constexpr double angle_degrees = 10;
 
 
 int main( int argc, char* args[] )
@@ -48,19 +47,30 @@ int main( int argc, char* args[] )
 		paintbrush.SetDrawingColor(WHITE);
 		paintbrush.DrawEntireTarget();
 
+		Custom::LinearAlgebra::Vector2D first_vertex   {			0, 	     H_r};
+		Custom::LinearAlgebra::Vector2D second_vertex  {(W_r - W_t)/2, 	     H_r};
+		Custom::LinearAlgebra::Vector2D third_vertex   {(W_r - W_t)/2,         0};
+		Custom::LinearAlgebra::Vector2D fourth_vertex  {(W_r + W_t)/2,   	   0};
+		Custom::LinearAlgebra::Vector2D fifth_vertex   {(W_r + W_t)/2, 	     H_r};
+		Custom::LinearAlgebra::Vector2D sixth_vertex   {	   	  W_r, 	     H_r};
+		Custom::LinearAlgebra::Vector2D seventh_vertex {	 	W_r/2, H_r + H_t};
+		Custom::LinearAlgebra::Vector2D center {50, 100};
+
+		double angle_radians {(M_PI/180)*angle_degrees};
+		Custom::LinearAlgebra::Matrix2D rotation {{ std::cos(angle_radians), std::sin(angle_radians)},
+												  {-std::sin(angle_radians), std::cos(angle_radians)}};
+
 		std::vector<std::array<int, 2>> arrow_boundary_points;
 		std::vector<std::array<int, 2>> arrow_within_boundary_points;
 		std::tie(arrow_boundary_points,
 				 arrow_within_boundary_points) = \
-				 Custom::Polygon::calculate_points(Custom::LinearAlgebra::round_double_vectors_to_int_vectors(Custom::LinearAlgebra::translate_and_rotate_vectors({{		    0, 	     H_r},
-																																								   {(W_r - W_t)/2, 	     H_r},
-																		 																						   {(W_r - W_t)/2,         0},
-																	 																							   {(W_r + W_t)/2,   	   0},
-																	 																							   {(W_r + W_t)/2, 	     H_r},
-																	 																							   {	   	W_r  , 	     H_r},
-																	 																							   {	 	W_r/2, H_r + H_t}},
-																																								  angle_degrees,
-																																								  center)));
+				 Custom::Polygon::calculate_points({(rotation*first_vertex + center).round(),
+				 									(rotation*second_vertex + center).round(),
+				 									(rotation*third_vertex + center).round(),
+				 									(rotation*fourth_vertex + center).round(),
+				 									(rotation*fifth_vertex + center).round(),
+				 									(rotation*sixth_vertex + center).round(),
+				 									(rotation*seventh_vertex + center).round()});
 		paintbrush.SetDrawingColor(RED);
 		paintbrush.DrawPoints(arrow_within_boundary_points);
 		paintbrush.SetDrawingColor(BLACK);
