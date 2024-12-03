@@ -2,10 +2,10 @@
 #include "LinearAlgebra.hpp"
 
 
-constexpr Custom::LinearAlgebra::Vector2D::Vector2D(double x, double y) : x{x}, y{y} {}
+Custom::LinearAlgebra::Vector2D::Vector2D(double x, double y) : x{x}, y{y} {}
 
 
-constexpr Custom::LinearAlgebra::Vector2D::Vector2D() : Vector2D(0, 0) {}
+Custom::LinearAlgebra::Vector2D::Vector2D() : Vector2D(0, 0) {}
 
 
 std::array<int, 2> Custom::LinearAlgebra::Vector2D::round() { return {static_cast<int>(x), static_cast<int>(y)}; }
