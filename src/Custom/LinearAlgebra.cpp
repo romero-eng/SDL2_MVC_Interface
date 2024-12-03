@@ -2,19 +2,7 @@
 #include "LinearAlgebra.hpp"
 
 
-Custom::LinearAlgebra::Vector2D::Vector2D(double x, double y) : x{x}, y{y} {}
-
-
-Custom::LinearAlgebra::Vector2D::Vector2D() : Vector2D(0, 0) {}
-
-
 std::array<int, 2> Custom::LinearAlgebra::Vector2D::round() { return {static_cast<int>(x), static_cast<int>(y)}; }
-
-
-Custom::LinearAlgebra::Matrix2D::Matrix2D(Vector2D left_column, Vector2D right_column): left_column{left_column}, right_column{right_column} {}
-
-
-Custom::LinearAlgebra::Matrix2D::Matrix2D(): Matrix2D({}, {}) {}
 
 
 Custom::LinearAlgebra::Vector2D operator+(const Custom::LinearAlgebra::Vector2D& addend_1,

@@ -17,9 +17,9 @@ namespace Custom {
 			double x;
 			double y;
 
-			Vector2D(double x, double y);
+			constexpr Vector2D(double x, double y) : x{x}, y{y} {}
 
-			Vector2D();
+			constexpr Vector2D() : Vector2D(0, 0) {}
 
 			std::array<int, 2> round();
 
@@ -32,9 +32,9 @@ namespace Custom {
 			Vector2D left_column;
 			Vector2D right_column;
 
-			Matrix2D(Vector2D first, Vector2D second);
+			constexpr Matrix2D(Vector2D left_column, Vector2D right_column): left_column{left_column}, right_column{right_column} {}
 
-			Matrix2D();
+			constexpr Matrix2D(): Matrix2D({}, {}) {}
 
 		};
 	}
