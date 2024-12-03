@@ -178,7 +178,7 @@ std::tuple<std::vector<std::array<int, 2>>,
 }
 
 
-std::map<int, std::vector<int>> map_2D_coordinates_to_scanlines(std::vector<std::array<int, 2>> coordinates,
+std::map<int, std::vector<int>> map_2D_coordinates_to_scanlines(std::vector<std::array<int, 2>> points,
                                                                 bool orthogonal_axis_first)
 {
     std::size_t orthogonal_axis {static_cast<std::size_t>(orthogonal_axis_first ?  0 : 1)};
@@ -186,11 +186,11 @@ std::map<int, std::vector<int>> map_2D_coordinates_to_scanlines(std::vector<std:
     std::map<int, std::vector<int>> scanline_per_orthogonal_axis_point;
     std::size_t scanning_axis = static_cast<std::size_t>(std::abs(static_cast<int>(orthogonal_axis) - 1));
 
-    for(std::array<int, 2> coordinate : coordinates) {
-        if(scanline_per_orthogonal_axis_point.contains(coordinate[orthogonal_axis])) {
-            scanline_per_orthogonal_axis_point[coordinate[orthogonal_axis]].push_back(coordinate[scanning_axis]);
+    for(std::array<int, 2> point : points) {
+        if(scanline_per_orthogonal_axis_point.contains(point[orthogonal_axis])) {
+            scanline_per_orthogonal_axis_point[point[orthogonal_axis]].push_back(point[scanning_axis]);
         } else {
-            scanline_per_orthogonal_axis_point.emplace(coordinate[orthogonal_axis], std::vector<int> {coordinate[scanning_axis]});
+            scanline_per_orthogonal_axis_point.emplace(point[orthogonal_axis], std::vector<int> {point[scanning_axis]});
         }
     }
 
@@ -254,7 +254,7 @@ std::map<int, std::vector<std::deque<int>>> collate_points_along_scanlines(std::
 }
 
 
-std::vector<std::array<int, 2>> even_odd_ray_casting(const std::vector<std::array<int, 2>>& boundary_coordinates)
+std::vector<std::array<int, 2>> even_odd_ray_casting(const std::vector<std::array<int, 2>>& boundary_points)
 {
     std::vector<std::array<int, 2>> within_shape_points;
 
@@ -266,8 +266,8 @@ std::vector<std::array<int, 2>> even_odd_ray_casting(const std::vector<std::arra
     std::size_t min_x_axis_boundary_point;
     std::size_t max_x_axis_boundary_point;
 
-    std::map<int, std::vector<int>> vertical_scanline_per_y_axis_point {map_2D_coordinates_to_scanlines(boundary_coordinates, false)};
-    std::map<int, std::vector<std::deque<int>>> horizontal_boundaries_per_x_axis_point {collate_points_along_scanlines(map_2D_coordinates_to_scanlines(boundary_coordinates, true))};
+    std::map<int, std::vector<int>> vertical_scanline_per_y_axis_point {map_2D_coordinates_to_scanlines(boundary_points, false)};
+    std::map<int, std::vector<std::deque<int>>> horizontal_boundaries_per_x_axis_point {collate_points_along_scanlines(map_2D_coordinates_to_scanlines(boundary_points, true))};
 
     for(auto& [y_axis_point, vertical_boundaries] : collate_points_along_scanlines(vertical_scanline_per_y_axis_point)) {
 
