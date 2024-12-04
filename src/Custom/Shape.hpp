@@ -11,7 +11,6 @@
 #include <algorithm>
 #include <numeric>
 
-std::vector<std::array<int, 2>> custom_calculate_line_points(const std::array<std::array<int, 2>, 2>& line);
 
 namespace Custom {
 
