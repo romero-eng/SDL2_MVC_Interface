@@ -1,5 +1,5 @@
 #if defined(__linux__) || defined(_WIN32) || defined(__APPLE__)
-#include "Polygon.hpp"
+#include "Shape.hpp"
 
 
 std::vector<std::array<int, 2>> calculate_line_points(const std::array<std::array<int, 2>, 2>& line)
