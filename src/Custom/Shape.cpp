@@ -359,6 +359,42 @@ std::vector<std::array<int, 2>> calculate_line_points(const std::array<std::arra
 }
 
 
+std::vector<std::array<int, 2>> calculate_circle_boundary_points(int r, int x_c, int y_c)
+{
+    int next_x;
+    bool decrement_by_one;
+    bool keep_going {true};
+
+	std::vector<int> x;
+	x.push_back(r);
+
+    while(keep_going) {
+
+        decrement_by_one = ((r*r - static_cast<int>(x.size()*x.size()) - x[x.size() - 1]*x[x.size() - 1] + x[x.size() - 1]) << 2) < 1;
+        next_x = x[x.size() - 1] - (decrement_by_one ? 1 : 0);
+        keep_going = next_x >= static_cast<int>(x.size());
+
+        if(keep_going) {
+            x.push_back(next_x);
+        }
+    }
+
+	std::vector<std::array<int, 2>> points (8*x.size());
+    for(std::size_t i = 0; i < x.size(); i++) {
+        points[8*i    ] = { 			   x[i] + x_c,  static_cast<int>(i) + y_c}; //   first octant
+        points[8*i + 1] = { static_cast<int>(i) + x_c,  			   x[i] + y_c}; //  second octant
+        points[8*i + 2] = {-static_cast<int>(i) + x_c,  			   x[i] + y_c}; //   third octant
+        points[8*i + 3] = {				  -x[i] + x_c,  static_cast<int>(i) + y_c}; //  fourth octant
+        points[8*i + 4] = {				  -x[i] + x_c, -static_cast<int>(i) + y_c}; //   fifth octant
+        points[8*i + 5] = {-static_cast<int>(i) + x_c, 				  -x[i] + y_c}; //   sixth octant
+        points[8*i + 6] = { static_cast<int>(i) + x_c, 				  -x[i] + y_c}; // seventh octant
+        points[8*i + 7] = { 			   x[i] + x_c, -static_cast<int>(i) + y_c}; //  eighth octant
+    }
+
+    return points;
+}
+
+
 std::tuple<std::vector<std::array<int, 2>>,
            std::vector<std::array<int, 2>>> calculate_polygon_boundary_points(const std::vector<std::array<int, 2>>& vertices)
 {
@@ -433,6 +469,9 @@ std::tuple<std::vector<std::array<int, 2>>,
 	return {boundary_points,
 			within_boundary_points};
 }
+
+
+std::vector<std::array<int, 2>> Custom::Shape::calculate_circle_points(int r, int x_c, int y_c) { return calculate_circle_boundary_points(r, x_c, y_c); }
 
 
 #else

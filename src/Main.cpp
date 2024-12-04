@@ -29,42 +29,6 @@ constexpr std::array<uint8_t, 3> BLACK {0x00, 0x00, 0x00};
 constexpr std::array<uint8_t, 3> RED {0xFF, 0x00, 0x00};
 
 
-std::vector<std::array<int, 2>> calculate_circle_boundary_points(int r, int x_c, int y_c)
-{
-    int next_x;
-    bool decrement_by_one;
-    bool keep_going {true};
-
-	std::vector<int> x;
-	x.push_back(r);
-
-    while(keep_going) {
-
-        decrement_by_one = ((r*r - static_cast<int>(x.size()*x.size()) - x[x.size() - 1]*x[x.size() - 1] + x[x.size() - 1]) << 2) < 1;
-        next_x = x[x.size() - 1] - (decrement_by_one ? 1 : 0);
-        keep_going = next_x >= x.size();
-
-        if(keep_going) {
-            x.push_back(next_x);
-        }
-    }
-
-	std::vector<std::array<int, 2>> points (8*x.size());
-    for(std::size_t i = 0; i < x.size(); i++) {
-        points[8*i    ] = { 			   x[i] + x_c,  static_cast<int>(i) + y_c}; //   first octant
-        points[8*i + 1] = { static_cast<int>(i) + x_c,  			   x[i] + y_c}; //  second octant
-        points[8*i + 2] = {-static_cast<int>(i) + x_c,  			   x[i] + y_c}; //   third octant
-        points[8*i + 3] = {				  -x[i] + x_c,  static_cast<int>(i) + y_c}; //  fourth octant
-        points[8*i + 4] = {				  -x[i] + x_c, -static_cast<int>(i) + y_c}; //   fifth octant
-        points[8*i + 5] = {-static_cast<int>(i) + x_c, 				  -x[i] + y_c}; //   sixth octant
-        points[8*i + 6] = { static_cast<int>(i) + x_c, 				  -x[i] + y_c}; // seventh octant
-        points[8*i + 7] = { 			   x[i] + x_c, -static_cast<int>(i) + y_c}; //  eighth octant
-    }
-
-    return points;
-}
-
-
 std::vector<std::array<int, 2>> calculate_arrow_vertex_points(double W_r,
 															  double W_t,
 															  double H_r,
@@ -126,7 +90,7 @@ int main( int argc, char* args[] )
 		paintbrush.SetDrawingColor(BLACK);
 		paintbrush.DrawPoints(arrow_boundary_points);
 
-		std::vector<std::array<int, 2>> circle_points {calculate_circle_boundary_points(45, 200, 300)};
+		std::vector<std::array<int, 2>> circle_points {Custom::Shape::calculate_circle_points(45, 200, 300)};
 		paintbrush.DrawPoints(circle_points);
 
 		paintbrush.Update();
