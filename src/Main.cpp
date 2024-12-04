@@ -33,7 +33,7 @@ std::vector<std::array<int, 2>> calculate_arrow_vertex_points(double W_r,
 															  double W_t,
 															  double H_r,
 															  double H_t,
-															  Custom::LinearAlgebra::Vector2D center,
+															  const Custom::LinearAlgebra::Vector2D& center,
 															  double angle_degrees)
 {
 	if(W_r <= W_t) {
@@ -66,12 +66,15 @@ std::vector<std::array<int, 2>> calculate_arrow_vertex_points(double W_r,
 int main( int argc, char* args[] )
 {
 
-	constexpr double W_r = 50;
-	constexpr double W_t = 20;
-	constexpr double H_r = 40;
-	constexpr double H_t = 20;
-	constexpr Custom::LinearAlgebra::Vector2D center {50, 100};
-	constexpr double angle_degrees = -10;
+	constexpr double W_r {50};
+	constexpr double W_t {20};
+	constexpr double H_r {40};
+	constexpr double H_t {20};
+	constexpr Custom::LinearAlgebra::Vector2D arrow_center {50, 100};
+	constexpr double angle_degrees {-30};
+
+	constexpr int radius {45};
+	constexpr Custom::LinearAlgebra::Vector2D circle_center {200, 300};
 
 	SDML::Subsystem::Initialize(LOGFILE_NAME, SDML::Subsystem::InitFlag::VIDEO | SDML::Subsystem::InitFlag::EVENTS);
 
@@ -84,7 +87,7 @@ int main( int argc, char* args[] )
 
 		std::vector<std::array<int, 2>> arrow_boundary_points;
 		std::vector<std::array<int, 2>> arrow_within_boundary_points;
-		std::tie(arrow_boundary_points, arrow_within_boundary_points) = Custom::Shape::calculate_polygon_points(calculate_arrow_vertex_points(W_r, W_t, H_r, H_t, center, angle_degrees));
+		std::tie(arrow_boundary_points, arrow_within_boundary_points) = Custom::Shape::calculate_polygon_points(calculate_arrow_vertex_points(W_r, W_t, H_r, H_t, arrow_center, angle_degrees));
 		paintbrush.SetDrawingColor(RED);
 		paintbrush.DrawPoints(arrow_within_boundary_points);
 		paintbrush.SetDrawingColor(BLACK);
@@ -92,7 +95,7 @@ int main( int argc, char* args[] )
 
 		std::vector<std::array<int, 2>> circle_boundary_points;
 		std::vector<std::array<int, 2>> circle_within_boundary_points;
-		std::tie(circle_boundary_points, circle_within_boundary_points) = Custom::Shape::calculate_circle_points(115, 300, 200);
+		std::tie(circle_boundary_points, circle_within_boundary_points) = Custom::Shape::calculate_circle_points(radius, circle_center.round());
 		paintbrush.SetDrawingColor(RED);
 		paintbrush.DrawPoints(circle_within_boundary_points);
 		paintbrush.SetDrawingColor(BLACK);

@@ -2,9 +2,6 @@
 #include "LinearAlgebra.hpp"
 
 
-std::array<int, 2> Custom::LinearAlgebra::Vector2D::round() { return {static_cast<int>(x), static_cast<int>(y)}; }
-
-
 Custom::LinearAlgebra::Vector2D operator+(const Custom::LinearAlgebra::Vector2D& addend_1,
 										  const Custom::LinearAlgebra::Vector2D& addend_2)
 { return {addend_1.x + addend_2.x,

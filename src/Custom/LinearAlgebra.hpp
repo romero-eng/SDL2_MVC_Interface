@@ -21,7 +21,7 @@ namespace Custom {
 
 			constexpr Vector2D() : Vector2D(0, 0) {}
 
-			std::array<int, 2> round();
+			constexpr std::array<int, 2> round() const { return {static_cast<int>(x), static_cast<int>(y)}; }
 
 		};
 

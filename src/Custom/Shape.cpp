@@ -359,18 +359,18 @@ std::vector<std::array<int, 2>> calculate_line_points(const std::array<std::arra
 }
 
 
-std::vector<std::array<int, 2>> calculate_circle_boundary_points(int r, std::array<int, 2> center)
+std::vector<std::array<int, 2>> calculate_circle_boundary_points(int radius, const std::array<int, 2>& center)
 {
     int next_x;
     bool decrement_by_one;
     bool keep_going {true};
 
 	std::vector<int> x;
-	x.push_back(r);
+	x.push_back(radius);
 
     while(keep_going) {
 
-        decrement_by_one = ((r*r - static_cast<int>(x.size()*x.size()) - x[x.size() - 1]*x[x.size() - 1] + x[x.size() - 1]) << 2) < 1;
+        decrement_by_one = ((radius*radius - static_cast<int>(x.size()*x.size()) - x[x.size() - 1]*x[x.size() - 1] + x[x.size() - 1]) << 2) < 1;
         next_x = x[x.size() - 1] - (decrement_by_one ? 1 : 0);
         keep_going = next_x >= static_cast<int>(x.size());
 
@@ -472,9 +472,10 @@ std::tuple<std::vector<std::array<int, 2>>,
 
 
 std::tuple<std::vector<std::array<int, 2>>,
-           std::vector<std::array<int, 2>>> Custom::Shape::calculate_circle_points(int r, int x_c, int y_c)
+           std::vector<std::array<int, 2>>> Custom::Shape::calculate_circle_points(int radius,
+                                                                                   const std::array<int, 2>& center)
 {
-    std::vector<std::array<int, 2>> boundary_points {calculate_circle_boundary_points(r, {x_c, y_c})};
+    std::vector<std::array<int, 2>> boundary_points {calculate_circle_boundary_points(radius, center)};
     std::vector<std::array<int, 2>> within_boundary_points {even_odd_ray_casting(boundary_points)};
 
     return {boundary_points, within_boundary_points};
