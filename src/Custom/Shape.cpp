@@ -359,7 +359,7 @@ std::vector<std::array<int, 2>> calculate_line_points(const std::array<std::arra
 }
 
 
-std::vector<std::array<int, 2>> calculate_circle_boundary_points(int r, int x_c, int y_c)
+std::vector<std::array<int, 2>> calculate_circle_boundary_points(int r, std::array<int, 2> center)
 {
     int next_x;
     bool decrement_by_one;
@@ -381,14 +381,14 @@ std::vector<std::array<int, 2>> calculate_circle_boundary_points(int r, int x_c,
 
 	std::vector<std::array<int, 2>> points (8*x.size());
     for(std::size_t i = 0; i < x.size(); i++) {
-        points[8*i    ] = { 			   x[i] + x_c,  static_cast<int>(i) + y_c}; //   first octant
-        points[8*i + 1] = { static_cast<int>(i) + x_c,  			   x[i] + y_c}; //  second octant
-        points[8*i + 2] = {-static_cast<int>(i) + x_c,  			   x[i] + y_c}; //   third octant
-        points[8*i + 3] = {				  -x[i] + x_c,  static_cast<int>(i) + y_c}; //  fourth octant
-        points[8*i + 4] = {				  -x[i] + x_c, -static_cast<int>(i) + y_c}; //   fifth octant
-        points[8*i + 5] = {-static_cast<int>(i) + x_c, 				  -x[i] + y_c}; //   sixth octant
-        points[8*i + 6] = { static_cast<int>(i) + x_c, 				  -x[i] + y_c}; // seventh octant
-        points[8*i + 7] = { 			   x[i] + x_c, -static_cast<int>(i) + y_c}; //  eighth octant
+        points[8*i    ] = { 			   x[i] + center[0],  static_cast<int>(i) + center[1]}; //   first octant
+        points[8*i + 1] = { static_cast<int>(i) + center[0],  			     x[i] + center[1]}; //  second octant
+        points[8*i + 2] = {-static_cast<int>(i) + center[0],  			     x[i] + center[1]}; //   third octant
+        points[8*i + 3] = {				  -x[i] + center[0],  static_cast<int>(i) + center[1]}; //  fourth octant
+        points[8*i + 4] = {				  -x[i] + center[0], -static_cast<int>(i) + center[1]}; //   fifth octant
+        points[8*i + 5] = {-static_cast<int>(i) + center[0], 				-x[i] + center[1]}; //   sixth octant
+        points[8*i + 6] = { static_cast<int>(i) + center[0], 				-x[i] + center[1]}; // seventh octant
+        points[8*i + 7] = { 			   x[i] + center[0], -static_cast<int>(i) + center[1]}; //  eighth octant
     }
 
     return points;
@@ -474,7 +474,7 @@ std::tuple<std::vector<std::array<int, 2>>,
 std::tuple<std::vector<std::array<int, 2>>,
            std::vector<std::array<int, 2>>> Custom::Shape::calculate_circle_points(int r, int x_c, int y_c)
 {
-    std::vector<std::array<int, 2>> boundary_points {calculate_circle_boundary_points(r, x_c, y_c)};
+    std::vector<std::array<int, 2>> boundary_points {calculate_circle_boundary_points(r, {x_c, y_c})};
     std::vector<std::array<int, 2>> within_boundary_points {even_odd_ray_casting(boundary_points)};
 
     return {boundary_points, within_boundary_points};
