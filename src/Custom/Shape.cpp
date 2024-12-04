@@ -2,182 +2,6 @@
 #include "Shape.hpp"
 
 
-std::vector<std::array<int, 2>> calculate_line_points(const std::array<std::array<int, 2>, 2>& line)
-{
-	/*
-	Problem Definition:
-	-------------------
-
-		Draw a discretized version of the line (y = mx + b) defined by the points {(x1, y1), (x1, y1)}
-
-	Algorithm:
-	----------
-
-		Basically, for a non-steep monotonically increasing line, step along the x-axis, and
-		for each step, increment the y-value in case the actual line goes above the midpoint.
-		The equations below are a generalized formalization of this procedure for all non-steep
-		lines (for steep lines, switch the x and y axes).
-
-		1)  define: Δx = x2 - x1
-
-		2)  define: Δy = y2 - y1
-
-		3)  define: x[n] = the array of points along the x-axis selected by this algorithm
-						   where the beginning and end points are defined by the user-selected
-						   points (i.e., x[0] = x_1 and x[N + 1] = x_2)
-
-		4)  define: y[n] = the array of points along the y-axis selected by this algorithm
-						   where the beginning and end points are defined by the user-selected
-						   points (i.e., y[0] = y_1 and y[N + 1] = y_2)
-
-						   WARNING: y[n] != y(x[n])
-
-								=> y(x[n]) = mx[n] + b (i.e., y(x[n]) refers to the y-coordinates of the
-														calculated points along the continuous line, not
-														to the points selected by the algorithm which
-														approximate this continuous line)
-					 		__
-						   |
-	 					   |	 1,  x >= 0
-		5) define sgn(x) = |
-						   |	-1,  x < 0
-						   |__
-
-		6)  for n=1 to n=N: (with N being the number of steps to take along the x-axis)
-		    ---------------
-
-			    x[n + 1] = x[n] + sgn(Δx)
-
-						    __
-					       |
-					       |  y[n] + sgn(Δy) ,  |y(x[n + 1]) - y[n]| >= 0.5
-			    y[n + 1] = |
-					       |	  y[n]		 , 	|y(x[n + 1]) - y[n]| < 0.5
-					       |__
-
-	Computational Optimization:
-	---------------------------
-
-		The calculation of the decision on whether or not to increment along the y-axis
-		is computationally optimized as below:
-
-				|y(x[n + 1]) - y[n]| >= 0.5  --------->  2|(n + 1)Δy - (N + 1)*(y[n] - y[0])| >= (N + 1)
-
-		How this transformation is both equivalent and more computationally efficient is an
-		exercise left up to the reader.
-
-	*/
-
-	const auto& [point_1, point_2] = line;
-    const auto& [x1, y1] = point_1;
-    const auto& [x2, y2] = point_2;
-
-	if (point_1 == point_2) {
-		throw std::runtime_error("Cannot calculate a drawn line between the same two points");
-	}
-
-    int delta_y {y2 - y1};
-    int delta_x {x2 - x1};
-
-	int sgn_delta_y {y2 >= y1 ? 1 : -1};
-	int sgn_delta_x {x2 >= x1 ? 1 : -1};
-    bool steep_slope {std::abs(delta_y) > std::abs(delta_x)};
-    std::size_t N {static_cast<std::size_t>(steep_slope ? std::abs(delta_y) : std::abs(delta_x)) - 1};
-
-	std::vector<std::array<int, 2>> points (N + 2);
-    points[0] = point_1;
-	points[N + 1] = point_2;
-
-	if(delta_y == 0) {
-		for (std::size_t n = 0; n < N; n++) {
-			points[n + 1] = points[n];
-			points[n + 1][0] += sgn_delta_x;
-		}
-	} else if (delta_x == 0) {
-		for (std::size_t n = 0; n < N; n++) {
-			points[n + 1] = points[n];
-			points[n + 1][1] += sgn_delta_y;
-		}
-	} else {
-
-	    int tmp_n_plus_one;
-    	int tmp_N_plus_one {static_cast<int>(N) + 1};
- 
-	    for(std::size_t n = 0; n < N; n++) {
-
-	        points[n + 1] = points[n];
-    	    tmp_n_plus_one = static_cast<int>(n) + 1;
-
-	        if(steep_slope) {
-        	    if ((std::abs(tmp_n_plus_one*delta_x - tmp_N_plus_one*(points[n][0] - points[0][0])) << 1) >= tmp_N_plus_one) {
-        	        points[n + 1][0] += sgn_delta_x;
-            	}
-            	points[n + 1][1] += sgn_delta_y;
-    	    } else {
-	            if ((std::abs(tmp_n_plus_one*delta_y - tmp_N_plus_one*(points[n][1] - points[0][1])) << 1) >= tmp_N_plus_one) {
-            	    points[n + 1][1] += sgn_delta_y;
-    	        }
-        	    points[n + 1][0] += sgn_delta_x;
-        	}
-    	}
-	}
-
-    return points;
-}
-
-
-std::tuple<std::vector<std::array<int, 2>>,
-           std::vector<std::array<int, 2>>> calculate_boundary_points(const std::vector<std::array<int, 2>>& vertices)
-{
-	if(vertices.size() < 3) {
-		throw std::runtime_error("A polygon can only be defined with a minimum of three vertices");
-	}
-
-	std::vector<std::array<std::array<int, 2>, 2>> lines;
-
-	for(std::size_t i = 0; i < vertices.size() - 1; i++) {
-		lines.push_back({vertices[i], vertices[i + 1]});
-	}
-	lines.push_back({vertices[vertices.size() - 1], vertices[0]});
-
-	std::vector<std::array<int, 2>> boundary_points;
-	std::array<int, 2> tmp_point;
-	std::vector<std::array<int, 2>> tmp_boundary_points;
-    std::vector<std::array<int, 2>> extra_vertices;
-
-	for(std::array<std::array<int, 2>, 2> line : lines) {
-
-		tmp_boundary_points = calculate_line_points(line);
-		tmp_boundary_points = std::vector<std::array<int, 2>> (tmp_boundary_points.begin(), tmp_boundary_points.end() - 1);
-
-		for(std::array<int, 2> potential_vertex : tmp_boundary_points) {
-			for(int x : {-1, 0, 1}){
-				for(int y : {-1, 0, 1}) {
-					if(!(x == 0 && y == 0)) {
-
-						tmp_point = {potential_vertex[0] + x, potential_vertex[1] + y};
-
-						if(std::find(boundary_points.begin(), boundary_points.end(), tmp_point) != boundary_points.end()) {
-							if(std::find(vertices.begin(), vertices.end(), tmp_point) == vertices.end()) {
-								extra_vertices.push_back(potential_vertex);
-							}
-
-						}
-					}
-				}
-			}
-		}
-
-		for(std::array<int, 2> boundary_point : tmp_boundary_points) {
-			boundary_points.push_back(boundary_point);
-		}
-
-	}
-
-	return {boundary_points, extra_vertices};
-}
-
-
 std::map<int, std::vector<int>> map_2D_coordinates_to_scanlines(std::vector<std::array<int, 2>> points,
                                                                 bool orthogonal_axis_first)
 {
@@ -411,13 +235,189 @@ int winding_number(const std::vector<std::array<int, 2>>& vertices,
 }
 
 
+std::vector<std::array<int, 2>> calculate_line_points(const std::array<std::array<int, 2>, 2>& line)
+{
+	/*
+	Problem Definition:
+	-------------------
+
+		Draw a discretized version of the line (y = mx + b) defined by the points {(x1, y1), (x1, y1)}
+
+	Algorithm:
+	----------
+
+		Basically, for a non-steep monotonically increasing line, step along the x-axis, and
+		for each step, increment the y-value in case the actual line goes above the midpoint.
+		The equations below are a generalized formalization of this procedure for all non-steep
+		lines (for steep lines, switch the x and y axes).
+
+		1)  define: Δx = x2 - x1
+
+		2)  define: Δy = y2 - y1
+
+		3)  define: x[n] = the array of points along the x-axis selected by this algorithm
+						   where the beginning and end points are defined by the user-selected
+						   points (i.e., x[0] = x_1 and x[N + 1] = x_2)
+
+		4)  define: y[n] = the array of points along the y-axis selected by this algorithm
+						   where the beginning and end points are defined by the user-selected
+						   points (i.e., y[0] = y_1 and y[N + 1] = y_2)
+
+						   WARNING: y[n] != y(x[n])
+
+								=> y(x[n]) = mx[n] + b (i.e., y(x[n]) refers to the y-coordinates of the
+														calculated points along the continuous line, not
+														to the points selected by the algorithm which
+														approximate this continuous line)
+					 		__
+						   |
+	 					   |	 1,  x >= 0
+		5) define sgn(x) = |
+						   |	-1,  x < 0
+						   |__
+
+		6)  for n=1 to n=N: (with N being the number of steps to take along the x-axis)
+		    ---------------
+
+			    x[n + 1] = x[n] + sgn(Δx)
+
+						    __
+					       |
+					       |  y[n] + sgn(Δy) ,  |y(x[n + 1]) - y[n]| >= 0.5
+			    y[n + 1] = |
+					       |	  y[n]		 , 	|y(x[n + 1]) - y[n]| < 0.5
+					       |__
+
+	Computational Optimization:
+	---------------------------
+
+		The calculation of the decision on whether or not to increment along the y-axis
+		is computationally optimized as below:
+
+				|y(x[n + 1]) - y[n]| >= 0.5  --------->  2|(n + 1)Δy - (N + 1)*(y[n] - y[0])| >= (N + 1)
+
+		How this transformation is both equivalent and more computationally efficient is an
+		exercise left up to the reader.
+
+	*/
+
+	const auto& [point_1, point_2] = line;
+    const auto& [x1, y1] = point_1;
+    const auto& [x2, y2] = point_2;
+
+	if (point_1 == point_2) {
+		throw std::runtime_error("Cannot calculate a drawn line between the same two points");
+	}
+
+    int delta_y {y2 - y1};
+    int delta_x {x2 - x1};
+
+	int sgn_delta_y {y2 >= y1 ? 1 : -1};
+	int sgn_delta_x {x2 >= x1 ? 1 : -1};
+    bool steep_slope {std::abs(delta_y) > std::abs(delta_x)};
+    std::size_t N {static_cast<std::size_t>(steep_slope ? std::abs(delta_y) : std::abs(delta_x)) - 1};
+
+	std::vector<std::array<int, 2>> points (N + 2);
+    points[0] = point_1;
+	points[N + 1] = point_2;
+
+	if(delta_y == 0) {
+		for (std::size_t n = 0; n < N; n++) {
+			points[n + 1] = points[n];
+			points[n + 1][0] += sgn_delta_x;
+		}
+	} else if (delta_x == 0) {
+		for (std::size_t n = 0; n < N; n++) {
+			points[n + 1] = points[n];
+			points[n + 1][1] += sgn_delta_y;
+		}
+	} else {
+
+	    int tmp_n_plus_one;
+    	int tmp_N_plus_one {static_cast<int>(N) + 1};
+ 
+	    for(std::size_t n = 0; n < N; n++) {
+
+	        points[n + 1] = points[n];
+    	    tmp_n_plus_one = static_cast<int>(n) + 1;
+
+	        if(steep_slope) {
+        	    if ((std::abs(tmp_n_plus_one*delta_x - tmp_N_plus_one*(points[n][0] - points[0][0])) << 1) >= tmp_N_plus_one) {
+        	        points[n + 1][0] += sgn_delta_x;
+            	}
+            	points[n + 1][1] += sgn_delta_y;
+    	    } else {
+	            if ((std::abs(tmp_n_plus_one*delta_y - tmp_N_plus_one*(points[n][1] - points[0][1])) << 1) >= tmp_N_plus_one) {
+            	    points[n + 1][1] += sgn_delta_y;
+    	        }
+        	    points[n + 1][0] += sgn_delta_x;
+        	}
+    	}
+	}
+
+    return points;
+}
+
+
 std::tuple<std::vector<std::array<int, 2>>,
-		   std::vector<std::array<int, 2>>> Custom::Polygon::calculate_points(std::vector<std::array<int, 2>> vertices)
+           std::vector<std::array<int, 2>>> calculate_polygon_boundary_points(const std::vector<std::array<int, 2>>& vertices)
+{
+	if(vertices.size() < 3) {
+		throw std::runtime_error("A polygon can only be defined with a minimum of three vertices");
+	}
+
+	std::vector<std::array<std::array<int, 2>, 2>> lines;
+
+	for(std::size_t i = 0; i < vertices.size() - 1; i++) {
+		lines.push_back({vertices[i], vertices[i + 1]});
+	}
+	lines.push_back({vertices[vertices.size() - 1], vertices[0]});
+
+	std::vector<std::array<int, 2>> boundary_points;
+	std::array<int, 2> tmp_point;
+	std::vector<std::array<int, 2>> tmp_boundary_points;
+    std::vector<std::array<int, 2>> extra_vertices;
+
+	for(std::array<std::array<int, 2>, 2> line : lines) {
+
+		tmp_boundary_points = calculate_line_points(line);
+		tmp_boundary_points = std::vector<std::array<int, 2>> (tmp_boundary_points.begin(), tmp_boundary_points.end() - 1);
+
+		for(std::array<int, 2> potential_vertex : tmp_boundary_points) {
+			for(int x : {-1, 0, 1}){
+				for(int y : {-1, 0, 1}) {
+					if(!(x == 0 && y == 0)) {
+
+						tmp_point = {potential_vertex[0] + x, potential_vertex[1] + y};
+
+						if(std::find(boundary_points.begin(), boundary_points.end(), tmp_point) != boundary_points.end()) {
+							if(std::find(vertices.begin(), vertices.end(), tmp_point) == vertices.end()) {
+								extra_vertices.push_back(potential_vertex);
+							}
+
+						}
+					}
+				}
+			}
+		}
+
+		for(std::array<int, 2> boundary_point : tmp_boundary_points) {
+			boundary_points.push_back(boundary_point);
+		}
+
+	}
+
+	return {boundary_points, extra_vertices};
+}
+
+
+std::tuple<std::vector<std::array<int, 2>>,
+		   std::vector<std::array<int, 2>>> Custom::Shape::calculate_polygon_points(std::vector<std::array<int, 2>> vertices)
 {
 
 	std::vector<std::array<int, 2>> boundary_points;
 	std::vector<std::array<int, 2>> extra_vertices;
-	std::tie(boundary_points, extra_vertices) = calculate_boundary_points(vertices);
+	std::tie(boundary_points, extra_vertices) = calculate_polygon_boundary_points(vertices);
 	for(std::array<int, 2> extra_vertex : extra_vertices) {
 		vertices.push_back(extra_vertex);
 	}

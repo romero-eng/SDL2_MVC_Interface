@@ -15,10 +15,10 @@ std::vector<std::array<int, 2>> custom_calculate_line_points(const std::array<st
 
 namespace Custom {
 
-    namespace Polygon {
+    namespace Shape {
 
         std::tuple<std::vector<std::array<int, 2>>,
-		           std::vector<std::array<int, 2>>> calculate_points(std::vector<std::array<int, 2>> vertices);
+		           std::vector<std::array<int, 2>>> calculate_polygon_points(std::vector<std::array<int, 2>> vertices);
 
     }
 

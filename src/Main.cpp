@@ -120,7 +120,7 @@ int main( int argc, char* args[] )
 
 		std::vector<std::array<int, 2>> arrow_boundary_points;
 		std::vector<std::array<int, 2>> arrow_within_boundary_points;
-		std::tie(arrow_boundary_points, arrow_within_boundary_points) = Custom::Polygon::calculate_points(calculate_arrow_vertex_points(W_r, W_t, H_r, H_t, center, angle_degrees));
+		std::tie(arrow_boundary_points, arrow_within_boundary_points) = Custom::Shape::calculate_polygon_points(calculate_arrow_vertex_points(W_r, W_t, H_r, H_t, center, angle_degrees));
 		paintbrush.SetDrawingColor(RED);
 		paintbrush.DrawPoints(arrow_within_boundary_points);
 		paintbrush.SetDrawingColor(BLACK);
