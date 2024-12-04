@@ -19,7 +19,8 @@ namespace Custom {
         std::tuple<std::vector<std::array<int, 2>>,
 		           std::vector<std::array<int, 2>>> calculate_polygon_points(std::vector<std::array<int, 2>> vertices);
 
-        std::vector<std::array<int, 2>> calculate_circle_points(int r, int x_c, int y_c);
+        std::tuple<std::vector<std::array<int, 2>>,
+                   std::vector<std::array<int, 2>>> calculate_circle_points(int r, int x_c, int y_c);
 
     }
 

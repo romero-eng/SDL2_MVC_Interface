@@ -471,7 +471,14 @@ std::tuple<std::vector<std::array<int, 2>>,
 }
 
 
-std::vector<std::array<int, 2>> Custom::Shape::calculate_circle_points(int r, int x_c, int y_c) { return calculate_circle_boundary_points(r, x_c, y_c); }
+std::tuple<std::vector<std::array<int, 2>>,
+           std::vector<std::array<int, 2>>> Custom::Shape::calculate_circle_points(int r, int x_c, int y_c)
+{
+    std::vector<std::array<int, 2>> boundary_points {calculate_circle_boundary_points(r, x_c, y_c)};
+    std::vector<std::array<int, 2>> within_boundary_points {even_odd_ray_casting(boundary_points)};
+
+    return {boundary_points, within_boundary_points};
+}
 
 
 #else

@@ -90,8 +90,13 @@ int main( int argc, char* args[] )
 		paintbrush.SetDrawingColor(BLACK);
 		paintbrush.DrawPoints(arrow_boundary_points);
 
-		std::vector<std::array<int, 2>> circle_points {Custom::Shape::calculate_circle_points(45, 200, 300)};
-		paintbrush.DrawPoints(circle_points);
+		std::vector<std::array<int, 2>> circle_boundary_points;
+		std::vector<std::array<int, 2>> circle_within_boundary_points;
+		std::tie(circle_boundary_points, circle_within_boundary_points) = Custom::Shape::calculate_circle_points(115, 300, 200);
+		paintbrush.SetDrawingColor(RED);
+		paintbrush.DrawPoints(circle_within_boundary_points);
+		paintbrush.SetDrawingColor(BLACK);
+		paintbrush.DrawPoints(circle_boundary_points);
 
 		paintbrush.Update();
 		
