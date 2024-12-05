@@ -2,14 +2,8 @@
 #define POLYGON_H
 
 // C++ Standard Libraries
-#include <stdexcept>
 #include <vector>
 #include <array>
-#include <map>
-#include <deque>
-#include <cmath>
-#include <algorithm>
-#include <numeric>
 
 // Custom Code from this project
 #include "PIC.hpp"
