@@ -67,6 +67,7 @@ std::vector<std::array<int, 2>> Graphics::Contour::circle(int radius,
 {
     int next_x;
     bool decrement_by_one;
+	int radius_squared {radius*radius};
     bool keep_going {true};
 
 	std::vector<int> x;
@@ -74,7 +75,7 @@ std::vector<std::array<int, 2>> Graphics::Contour::circle(int radius,
 
     while(keep_going) {
 
-        decrement_by_one = ((radius*radius - static_cast<int>(x.size()*x.size()) - x[x.size() - 1]*x[x.size() - 1] + x[x.size() - 1]) << 2) < 1;
+        decrement_by_one = ((radius_squared - static_cast<int>(x.size()*x.size()) - x[x.size() - 1]*x[x.size() - 1] + x[x.size() - 1]) << 2) < 1;
         next_x = x[x.size() - 1] - (decrement_by_one ? 1 : 0);
         keep_going = next_x >= static_cast<int>(x.size());
 

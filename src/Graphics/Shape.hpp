@@ -21,7 +21,6 @@ namespace Graphics {
                    std::vector<std::array<int, 2>>> circle(int radius, const std::array<int, 2>& center);
 
     }
-
 }
 
 #endif
