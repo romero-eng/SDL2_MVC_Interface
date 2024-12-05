@@ -1,13 +1,13 @@
 #ifndef POLYGON_H
 #define POLYGON_H
 
-// C++ Standard Libraries
-#include <vector>
-#include <array>
-
 // Custom Code from this project
 #include "PIC.hpp"
 #include "Contour.hpp"
+
+// C++ Standard Libraries
+#include <vector>
+#include <array>
 
 
 namespace Graphics {
