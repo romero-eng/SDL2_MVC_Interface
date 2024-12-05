@@ -21,11 +21,10 @@ namespace Graphics {
     namespace Shape {
 
         std::tuple<std::vector<std::array<int, 2>>,
-		           std::vector<std::array<int, 2>>> calculate_polygon_points(std::vector<std::array<int, 2>> vertices);
+		           std::vector<std::array<int, 2>>> polygon(std::vector<std::array<int, 2>> vertices);
 
         std::tuple<std::vector<std::array<int, 2>>,
-                   std::vector<std::array<int, 2>>> calculate_circle_points(int radius,
-                                                                            const std::array<int, 2>& center);
+                   std::vector<std::array<int, 2>>> circle(int radius, const std::array<int, 2>& center);
 
     }
 
