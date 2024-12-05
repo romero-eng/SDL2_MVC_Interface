@@ -6,7 +6,7 @@
 #include <vector>
 #include <cmath>
 
-namespace Custom {
+namespace Math {
 
 	namespace LinearAlgebra {
 
@@ -40,32 +40,32 @@ namespace Custom {
 	}
 }
 
-Custom::LinearAlgebra::Vector2D operator+(const Custom::LinearAlgebra::Vector2D& addend_1,
-										  const Custom::LinearAlgebra::Vector2D& addend_2);
+Math::LinearAlgebra::Vector2D operator+(const Math::LinearAlgebra::Vector2D& addend_1,
+										const Math::LinearAlgebra::Vector2D& addend_2);
 
-Custom::LinearAlgebra::Vector2D operator-(const Custom::LinearAlgebra::Vector2D& minuend,
-										  const Custom::LinearAlgebra::Vector2D& subtrahend);
+Math::LinearAlgebra::Vector2D operator-(const Math::LinearAlgebra::Vector2D& minuend,
+										const Math::LinearAlgebra::Vector2D& subtrahend);
 
-Custom::LinearAlgebra::Matrix2D operator+(const Custom::LinearAlgebra::Matrix2D& addend_1,
-										  const Custom::LinearAlgebra::Matrix2D& addend_2);
+Math::LinearAlgebra::Matrix2D operator+(const Math::LinearAlgebra::Matrix2D& addend_1,
+										const Math::LinearAlgebra::Matrix2D& addend_2);
 
-Custom::LinearAlgebra::Matrix2D operator-(const Custom::LinearAlgebra::Matrix2D& first,
-										  const Custom::LinearAlgebra::Matrix2D& second);
+Math::LinearAlgebra::Matrix2D operator-(const Math::LinearAlgebra::Matrix2D& first,
+										const Math::LinearAlgebra::Matrix2D& second);
 
-Custom::LinearAlgebra::Vector2D operator*(const Custom::LinearAlgebra::Vector2D& vector,
-										  double scalar);
+Math::LinearAlgebra::Vector2D operator*(const Math::LinearAlgebra::Vector2D& vector,
+										double scalar);
 
-Custom::LinearAlgebra::Matrix2D operator*(const Custom::LinearAlgebra::Matrix2D& matrix,
-										  double scalar);
+Math::LinearAlgebra::Matrix2D operator*(const Math::LinearAlgebra::Matrix2D& matrix,
+										double scalar);
 
-double operator*(const Custom::LinearAlgebra::Vector2D& first,
-				 const Custom::LinearAlgebra::Vector2D& second);
+double operator*(const Math::LinearAlgebra::Vector2D& first,
+				 const Math::LinearAlgebra::Vector2D& second);
 
-Custom::LinearAlgebra::Vector2D operator*(const Custom::LinearAlgebra::Matrix2D& matrix,
-										  const Custom::LinearAlgebra::Vector2D& vector);
+Math::LinearAlgebra::Vector2D operator*(const Math::LinearAlgebra::Matrix2D& matrix,
+										const Math::LinearAlgebra::Vector2D& vector);
 
-Custom::LinearAlgebra::Matrix2D operator*(const Custom::LinearAlgebra::Matrix2D& first,
-										  const Custom::LinearAlgebra::Matrix2D& second);
+Math::LinearAlgebra::Matrix2D operator*(const Math::LinearAlgebra::Matrix2D& first,
+										const Math::LinearAlgebra::Matrix2D& second);
 
 
 #endif

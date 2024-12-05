@@ -33,31 +33,31 @@ std::vector<std::array<int, 2>> calculate_arrow_vertex_points(double W_r,
 															  double W_t,
 															  double H_r,
 															  double H_t,
-															  const Custom::LinearAlgebra::Vector2D& center,
+															  const Math::LinearAlgebra::Vector2D& center,
 															  double angle_degrees)
 {
 	if(W_r <= W_t) {
 		throw std::runtime_error("W_r must be greater than W_t");
 	}
 
-	std::vector<Custom::LinearAlgebra::Vector2D> arrow_vertices {{ 0           , H_r      },
-																 {(W_r - W_t)/2, H_r      },
-																 {(W_r - W_t)/2, 0        },
-																 {(W_r + W_t)/2, 0        },
-																 {(W_r + W_t)/2, H_r      },
-																 {(W_r      )  , H_r      },
-																 {(W_r      )/2, H_r + H_t}};
+	std::vector<Math::LinearAlgebra::Vector2D> arrow_vertices {{ 0           , H_r      },
+															   {(W_r - W_t)/2, H_r      },
+															   {(W_r - W_t)/2, 0        },
+															   {(W_r + W_t)/2, 0        },
+															   {(W_r + W_t)/2, H_r      },
+															   {(W_r      )  , H_r      },
+															   {(W_r      )/2, H_r + H_t}};
 
 	double angle_radians {(M_PI/180)*angle_degrees};
 
-	Custom::LinearAlgebra::Matrix2D rotation_matrix {{ std::cos((M_PI/180)*angle_degrees), std::sin((M_PI/180)*angle_degrees)},
-													 {-std::sin((M_PI/180)*angle_degrees), std::cos((M_PI/180)*angle_degrees)}};
+	Math::LinearAlgebra::Matrix2D rotation_matrix {{ std::cos((M_PI/180)*angle_degrees), std::sin((M_PI/180)*angle_degrees)},
+												   {-std::sin((M_PI/180)*angle_degrees), std::cos((M_PI/180)*angle_degrees)}};
 
 	std::vector<std::array<int, 2>> arrow_vertex_points (arrow_vertices.size());
 	std::transform(arrow_vertices.cbegin(),
 				   arrow_vertices.cend(),
 				   arrow_vertex_points.begin(),
-				   [&rotation_matrix, &center](Custom::LinearAlgebra::Vector2D vertex){ return (rotation_matrix*vertex + center).round(); });
+				   [&rotation_matrix, &center](Math::LinearAlgebra::Vector2D vertex){ return (rotation_matrix*vertex + center).round(); });
 	
 	return arrow_vertex_points;
 }
@@ -70,11 +70,11 @@ int main( int argc, char* args[] )
 	constexpr double W_t {20};
 	constexpr double H_r {40};
 	constexpr double H_t {20};
-	constexpr Custom::LinearAlgebra::Vector2D arrow_center {50, 100};
+	constexpr Math::LinearAlgebra::Vector2D arrow_center {50, 100};
 	constexpr double angle_degrees {-30};
 
 	constexpr int radius {45};
-	constexpr Custom::LinearAlgebra::Vector2D circle_center {200, 300};
+	constexpr Math::LinearAlgebra::Vector2D circle_center {200, 300};
 
 	SDML::Subsystem::Initialize(LOGFILE_NAME, SDML::Subsystem::InitFlag::VIDEO | SDML::Subsystem::InitFlag::EVENTS);
 
