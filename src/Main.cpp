@@ -11,7 +11,7 @@
 #include "SDML/Events/Event.hpp"
 #include "SDML/Events/EventMisc.hpp"
 #include "Custom/LinearAlgebra.hpp"
-#include "Custom/Shape.hpp"
+#include "Graphics/Shape.hpp"
 
 // C++ Standard Libraries
 #include <filesystem>
