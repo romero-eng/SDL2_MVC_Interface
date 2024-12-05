@@ -13,6 +13,7 @@
 
 // Custom Code from this project
 #include "PIS.hpp"
+#include "Contour.hpp"
 
 
 namespace Graphics {
