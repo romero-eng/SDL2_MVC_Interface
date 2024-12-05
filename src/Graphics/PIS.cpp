@@ -78,7 +78,7 @@ std::map<int, std::vector<std::deque<int>>> collate_points_along_scanlines(std::
 }
 
 
-std::vector<std::array<int, 2>> Graphics::PointInShape::even_odd_ray_casting(const std::vector<std::array<int, 2>>& boundary_points)
+std::vector<std::array<int, 2>> Graphics::PointInContour::even_odd_ray_casting(const std::vector<std::array<int, 2>>& boundary_points)
 {
     std::vector<std::array<int, 2>> within_shape_points;
 
@@ -139,7 +139,7 @@ std::vector<std::array<int, 2>> Graphics::PointInShape::even_odd_ray_casting(con
 }
 
 
-std::vector<std::array<int, 2>> Graphics::PointInShape::find_vertex_intersections(std::vector<std::array<int, 2>> vertices)
+std::vector<std::array<int, 2>> Graphics::PointInContour::find_vertex_intersections(std::vector<std::array<int, 2>> vertices)
 {
     std::size_t num_iterations {vertices.size() - 1};
     std::vector<std::array<int, 2>> intersections;
@@ -214,8 +214,8 @@ std::vector<double> wrap_angles(std::vector<double>& angles)
 }
 
 
-int Graphics::PointInShape::winding_number(const std::vector<std::array<int, 2>>& vertices,
-                                           const std::array<int, 2>& point)
+int Graphics::PointInContour::winding_number(const std::vector<std::array<int, 2>>& vertices,
+                                             const std::array<int, 2>& point)
 {
     std::vector<double> angles (vertices.size());
 

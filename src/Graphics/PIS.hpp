@@ -1,5 +1,5 @@
-#ifndef POINT_IN_SHAPE_H
-#define POINT_IN_SHAPE_H
+#ifndef POINT_IN_CONTOUR_H
+#define POINT_IN_CONTOUR_H
 
 // C++ Standard Libraries
 #include <array>
@@ -13,7 +13,7 @@
 
 namespace Graphics
 {
-    namespace PointInShape
+    namespace PointInContour
     {
         std::vector<std::array<int, 2>> even_odd_ray_casting(const std::vector<std::array<int, 2>>& boundary_points);
 
