@@ -85,17 +85,13 @@ int main( int argc, char* args[] )
 		paintbrush.SetDrawingColor(WHITE);
 		paintbrush.DrawEntireTarget();
 
-		std::vector<std::array<int, 2>> arrow_boundary_points;
-		std::vector<std::array<int, 2>> arrow_within_boundary_points;
-		std::tie(arrow_boundary_points, arrow_within_boundary_points) = Custom::Shape::calculate_polygon_points(calculate_arrow_vertex_points(W_r, W_t, H_r, H_t, arrow_center, angle_degrees));
+		const auto& [arrow_boundary_points, arrow_within_boundary_points] = Custom::Shape::calculate_polygon_points(calculate_arrow_vertex_points(W_r, W_t, H_r, H_t, arrow_center, angle_degrees));
 		paintbrush.SetDrawingColor(RED);
 		paintbrush.DrawPoints(arrow_within_boundary_points);
 		paintbrush.SetDrawingColor(BLACK);
 		paintbrush.DrawPoints(arrow_boundary_points);
 
-		std::vector<std::array<int, 2>> circle_boundary_points;
-		std::vector<std::array<int, 2>> circle_within_boundary_points;
-		std::tie(circle_boundary_points, circle_within_boundary_points) = Custom::Shape::calculate_circle_points(radius, circle_center.round());
+		const auto& [circle_boundary_points, circle_within_boundary_points] = Custom::Shape::calculate_circle_points(radius, circle_center.round());
 		paintbrush.SetDrawingColor(RED);
 		paintbrush.DrawPoints(circle_within_boundary_points);
 		paintbrush.SetDrawingColor(BLACK);
