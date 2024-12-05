@@ -1,6 +1,9 @@
 #ifndef POINT_IN_CONTOUR_H
 #define POINT_IN_CONTOUR_H
 
+// Custom Code from this project
+#include "../Math/Misc.hpp"
+
 // C++ Standard Libraries
 #include <array>
 #include <vector>
@@ -8,7 +11,6 @@
 #include <deque>
 #include <algorithm>
 #include <numeric>
-#include <cmath>
 
 
 namespace Graphics
