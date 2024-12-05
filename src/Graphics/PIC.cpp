@@ -1,5 +1,5 @@
 #if defined(__linux__) || defined(_WIN32) || defined(__APPLE__)
-#include "PIS.hpp"
+#include "PIC.hpp"
 
 
 std::map<int, std::vector<int>> map_2D_coordinates_to_scanlines(std::vector<std::array<int, 2>> points,
