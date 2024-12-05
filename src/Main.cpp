@@ -10,7 +10,7 @@
 #include "SDML/Video/Texture.hpp"
 #include "SDML/Events/Event.hpp"
 #include "SDML/Events/EventMisc.hpp"
-#include "Custom/LinearAlgebra.hpp"
+#include "Math/LinearAlgebra.hpp"
 #include "Graphics/Shape.hpp"
 
 // C++ Standard Libraries
