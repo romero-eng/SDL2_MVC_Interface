@@ -384,7 +384,7 @@ std::tuple<std::vector<std::array<int, 2>>,
 
 
 std::tuple<std::vector<std::array<int, 2>>,
-		   std::vector<std::array<int, 2>>> Custom::Shape::calculate_polygon_points(std::vector<std::array<int, 2>> vertices)
+		   std::vector<std::array<int, 2>>> Graphics::Shape::calculate_polygon_points(std::vector<std::array<int, 2>> vertices)
 {
     const auto& [boundary_points, extra_vertices] = calculate_polygon_boundary_points(vertices);
 
@@ -406,8 +406,8 @@ std::tuple<std::vector<std::array<int, 2>>,
 
 
 std::tuple<std::vector<std::array<int, 2>>,
-           std::vector<std::array<int, 2>>> Custom::Shape::calculate_circle_points(int radius,
-                                                                                   const std::array<int, 2>& center)
+           std::vector<std::array<int, 2>>> Graphics::Shape::calculate_circle_points(int radius,
+                                                                                     const std::array<int, 2>& center)
 {
     std::vector<std::array<int, 2>> boundary_points {calculate_circle_boundary_points(radius, center)};
     std::vector<std::array<int, 2>> within_boundary_points {even_odd_ray_casting(boundary_points)};

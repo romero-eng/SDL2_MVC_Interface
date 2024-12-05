@@ -12,7 +12,7 @@
 #include <numeric>
 
 
-namespace Custom {
+namespace Graphics {
 
     namespace Shape {
 
@@ -20,7 +20,7 @@ namespace Custom {
 		           std::vector<std::array<int, 2>>> calculate_polygon_points(std::vector<std::array<int, 2>> vertices);
 
         std::tuple<std::vector<std::array<int, 2>>,
-                   std::vector<std::array<int, 2>>> calculate_circle_points(int r,
+                   std::vector<std::array<int, 2>>> calculate_circle_points(int radius,
                                                                             const std::array<int, 2>& center);
 
     }
