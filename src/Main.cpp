@@ -13,8 +13,6 @@
 #include "Math/LinearAlgebra.hpp"
 #include "Graphics/Shape.hpp"
 
-#include "Graphics/Contour.hpp"
-
 // C++ Standard Libraries
 #include <filesystem>
 #include <iostream>
