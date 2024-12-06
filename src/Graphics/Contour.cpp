@@ -100,6 +100,69 @@ std::vector<std::array<int, 2>> Graphics::Contour::circle(int radius,
 }
 
 
+std::vector<std::array<int, 2>> Graphics::Contour::ellipse(int x_axis_radius,
+													 	   int y_axis_radius,
+														   std::array<int, 2> center)
+{
+    bool decrement_by_one;
+	int x_axis_radius_squared {x_axis_radius*x_axis_radius};
+	int y_axis_radius_squared {y_axis_radius*y_axis_radius};
+	int composite_radius_squared {x_axis_radius_squared*y_axis_radius_squared};
+	double  first_octant_threshold {y_axis_radius_squared/std::sqrt(x_axis_radius_squared + y_axis_radius_squared)};
+	double second_octant_threshold {x_axis_radius_squared/std::sqrt(x_axis_radius_squared + y_axis_radius_squared)};
+
+    int next_x;
+	std::vector<int> x;
+	x.push_back(x_axis_radius);
+    bool keep_going {true};
+
+    while(keep_going) {
+
+        decrement_by_one = ((composite_radius_squared - x_axis_radius_squared*static_cast<int>(x.size()*x.size()) - y_axis_radius_squared*x[x.size() - 1]*x[x.size() - 1] + y_axis_radius_squared*x[x.size() - 1]) << 2) < y_axis_radius_squared;
+        next_x = x[x.size() - 1] - (decrement_by_one ? 1 : 0);
+        keep_going = static_cast<double>(x.size()) < first_octant_threshold;
+
+        if(keep_going) {
+            x.push_back(next_x);
+        }
+    }
+
+	int next_y;
+	std::vector<int> y;
+	y.push_back(y_axis_radius);
+	keep_going = true;
+
+    while(keep_going) {
+
+        decrement_by_one = ((composite_radius_squared - y_axis_radius_squared*static_cast<int>(y.size()*y.size()) - x_axis_radius_squared*y[y.size() - 1]*y[y.size() - 1] + x_axis_radius_squared*y[y.size() - 1]) << 2) < x_axis_radius_squared;
+        next_y = y[y.size() - 1] - (decrement_by_one ? 1 : 0);
+        keep_going = static_cast<double>(y.size()) < second_octant_threshold;
+
+        if(keep_going) {
+            y.push_back(next_y);
+        }
+    }
+
+	std::vector<std::array<int, 2>> first_quadrant_points (x.size() + y.size());
+	for(std::size_t i = 0; i < x.size(); i++) {
+		first_quadrant_points[i] = {x[i], static_cast<int>(i)};
+	}
+	for(std::size_t i = 0; i < y.size(); i++) {
+		first_quadrant_points[i + x.size()] = {static_cast<int>(i), y[i]};
+	}
+
+	std::vector<std::array<int, 2>> points (4*first_quadrant_points.size());
+	for(std::size_t i = 0; i < first_quadrant_points.size(); i++) {
+		points[4*i    ] = { first_quadrant_points[i][0] + center[0],  first_quadrant_points[i][1] + center[1]};
+		points[4*i + 1] = {-first_quadrant_points[i][0] + center[0],  first_quadrant_points[i][1] + center[1]};
+		points[4*i + 2] = {-first_quadrant_points[i][0] + center[0], -first_quadrant_points[i][1] + center[1]};
+		points[4*i + 3] = { first_quadrant_points[i][0] + center[0], -first_quadrant_points[i][1] + center[1]};
+	}
+
+	return points;
+}
+
+
 std::tuple<std::vector<std::array<int, 2>>,
            std::vector<std::array<int, 2>>> Graphics::Contour::polygon(const std::vector<std::array<int, 2>>& vertices)
 {

@@ -34,6 +34,18 @@ std::tuple<std::vector<std::array<int, 2>>,
 }
 
 
+std::tuple<std::vector<std::array<int, 2>>,
+           std::vector<std::array<int, 2>>> Graphics::Shape::ellipse(int x_axis_radius,
+															 	     int y_axis_radius,
+																     std::array<int, 2> center)
+{
+    std::vector<std::array<int, 2>> boundary_points {Contour::ellipse(x_axis_radius, y_axis_radius, center)};
+    std::vector<std::array<int, 2>> within_boundary_points {PointInContour::even_odd_ray_casting(boundary_points)};
+
+    return {boundary_points, within_boundary_points};
+}
+
+
 #else
 #error "This file is only meant to be compiled on a Windows, Macintosh, or Linux OS"
 #endif

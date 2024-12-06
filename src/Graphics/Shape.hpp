@@ -19,7 +19,11 @@ namespace Graphics {
 
         std::tuple<std::vector<std::array<int, 2>>,
                    std::vector<std::array<int, 2>>> circle(int radius, const std::array<int, 2>& center);
-
+        
+        std::tuple<std::vector<std::array<int, 2>>,
+                   std::vector<std::array<int, 2>>> ellipse(int x_axis_radius,
+											    	 	    int y_axis_radius,
+												    	    std::array<int, 2> center);
     }
 }
 
