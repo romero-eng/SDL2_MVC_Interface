@@ -65,8 +65,7 @@ std::vector<std::array<int, 2>> calculate_arrow_vertex_points(double W_r,
 
 std::vector<std::array<int, 2>> ellipse(int x_axis_radius,
 									 	int y_axis_radius,
-									 	int x_c,
-									 	int y_c)
+										std::array<int, 2> center)
 {
     bool decrement_by_one;
 	int x_axis_radius_squared {x_axis_radius*x_axis_radius};
@@ -117,10 +116,10 @@ std::vector<std::array<int, 2>> ellipse(int x_axis_radius,
 
 	std::vector<std::array<int, 2>> points (4*first_quadrant_points.size());
 	for(std::size_t i = 0; i < first_quadrant_points.size(); i++) {
-		points[4*i    ] = { first_quadrant_points[i][0] + x_c,  first_quadrant_points[i][1] + y_c};
-		points[4*i + 1] = {-first_quadrant_points[i][0] + x_c,  first_quadrant_points[i][1] + y_c};
-		points[4*i + 2] = {-first_quadrant_points[i][0] + x_c, -first_quadrant_points[i][1] + y_c};
-		points[4*i + 3] = { first_quadrant_points[i][0] + x_c, -first_quadrant_points[i][1] + y_c};
+		points[4*i    ] = { first_quadrant_points[i][0] + center[0],  first_quadrant_points[i][1] + center[1]};
+		points[4*i + 1] = {-first_quadrant_points[i][0] + center[0],  first_quadrant_points[i][1] + center[1]};
+		points[4*i + 2] = {-first_quadrant_points[i][0] + center[0], -first_quadrant_points[i][1] + center[1]};
+		points[4*i + 3] = { first_quadrant_points[i][0] + center[0], -first_quadrant_points[i][1] + center[1]};
 	}
 
 	return points;
@@ -139,6 +138,10 @@ int main( int argc, char* args[] )
 
 	constexpr int radius {45};
 	constexpr Math::LinearAlgebra::Vector2D circle_center {200, 300};
+
+	constexpr int x_axis_radius {80};
+	constexpr int y_axis_radius {15};
+	constexpr Math::LinearAlgebra::Vector2D ellipse_center {300, 400};
 
 	SDML::Subsystem::Initialize(LOGFILE_NAME, SDML::Subsystem::InitFlag::VIDEO | SDML::Subsystem::InitFlag::EVENTS);
 
@@ -161,7 +164,7 @@ int main( int argc, char* args[] )
 		paintbrush.SetDrawingColor(BLACK);
 		paintbrush.DrawPoints(circle_boundary_points);
 
-		paintbrush.DrawPoints(ellipse(80, 15, 300, 400));
+		paintbrush.DrawPoints(ellipse(x_axis_radius, y_axis_radius, ellipse_center.round()));
 
 		paintbrush.Update();
 		
