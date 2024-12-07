@@ -65,27 +65,18 @@ std::vector<std::array<int, 2>> Graphics::Contour::line(const std::array<std::ar
 std::vector<std::array<int, 2>> Graphics::Contour::circle(int radius,
                                                           const std::array<int, 2>& center)
 {
-    int next_x;
-    bool decrement_by_one;
-	int radius_squared {radius*radius};
-    bool keep_going {true};
+	const int threshold {1 - (radius*radius << 2)};
+	const std::size_t N {static_cast<std::size_t>(radius/std::sqrt(2)) + 1};
 
-	std::vector<int> x;
-	x.push_back(radius);
+	std::vector<int> x (N + 1);
+	x[0] = radius;
 
-    while(keep_going) {
-
-        decrement_by_one = ((radius_squared - static_cast<int>(x.size()*x.size()) - x[x.size() - 1]*x[x.size() - 1] + x[x.size() - 1]) << 2) < 1;
-        next_x = x[x.size() - 1] - (decrement_by_one ? 1 : 0);
-        keep_going = next_x >= static_cast<int>(x.size());
-
-        if(keep_going) {
-            x.push_back(next_x);
-        }
+    for(std::size_t n = 0; n < N; n++) {
+        x[n + 1] = x[n] - (((x[n] - static_cast<int>((n + 1)*(n + 1)) - x[n]*x[n]) << 2) < threshold ? 1 : 0);
     }
 
-	std::vector<std::array<int, 2>> points (8*x.size());
-    for(std::size_t i = 0; i < x.size(); i++) {
+	std::vector<std::array<int, 2>> points (8*(N + 1));
+    for(std::size_t i = 0; i < N + 1; i++) {
         points[8*i    ] = { 			   x[i] + center[0],  static_cast<int>(i) + center[1]}; //   first octant
         points[8*i + 1] = { static_cast<int>(i) + center[0],  			     x[i] + center[1]}; //  second octant
         points[8*i + 2] = {-static_cast<int>(i) + center[0],  			     x[i] + center[1]}; //   third octant
@@ -110,8 +101,8 @@ std::vector<std::array<int, 2>> Graphics::Contour::ellipse(int x_axis_radius,
 	const int first_octant_threshold {y_axis_radius_squared - (composite_radius_squared << 2)};
 	const int second_octant_threshold {x_axis_radius_squared - (composite_radius_squared << 2)};
 	const double composite_radius_norm {std::sqrt(x_axis_radius_squared + y_axis_radius_squared)};
-	const std::size_t N {static_cast<std::size_t>(y_axis_radius_squared/composite_radius_norm)};
-	const std::size_t M {static_cast<std::size_t>(x_axis_radius_squared/composite_radius_norm)};
+	const std::size_t N {static_cast<std::size_t>(y_axis_radius_squared/composite_radius_norm) + 1};
+	const std::size_t M {static_cast<std::size_t>(x_axis_radius_squared/composite_radius_norm) + 1};
 	const std::size_t offset {N + 1};
 	const std::size_t I {offset + M + 1};
 
