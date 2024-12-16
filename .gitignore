@@ -4,6 +4,9 @@
 # Customly-created log files
 *.log
 
+# Any Pictures
+*.png
+
 # Windows Subsystem for Linux Configuration Files
 /wsl_config
 
