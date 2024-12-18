@@ -5,15 +5,17 @@ import matplotlib.pyplot as plt
 def plot_ellipse(a, b, theta_deg, square_lim, x_step, save=True): 
 
     theta_rad = (np.pi/180)*(theta_deg % 360)
+    sin_2_theta = np.sin(2*theta_rad)
+    cos_2_theta = np.cos(2*theta_rad)
 
-    norm_sq = (a*a - b*b)*np.square(np.cos(theta_rad)) + b*b
+    norm_sq = ((a*a - b*b)/2)*(1 + cos_2_theta) + b*b
 
     coeffs = \
-        [(a*a/2)*np.sin(2*theta_rad)/norm_sq,
-         a*b*np.square(np.sin(theta_rad))/norm_sq,
-         a*a*b*b*np.square(np.square(np.cos(theta_rad)))/norm_sq,
-         (b*b)*(a*a + b*b)*(np.square(np.square(np.cos(theta_rad)) - (b*b/(2*(a*a + b*b)))) - np.square(b*b/(2*(a*a + b*b))))/np.square(norm_sq),
-         (a*b*b*b/2)*np.sin(2*theta_rad)*np.square(np.cos(theta_rad)/norm_sq)]
+        [a*a*sin_2_theta/(2*norm_sq),
+         a*b*(1 - cos_2_theta)/(2*norm_sq),
+         a*a*b*b*np.square(1 + cos_2_theta)/(4*norm_sq),
+         (b*b)*(a*a + b*b)*(np.square((a*a/(a*a + b*b)) + cos_2_theta) - np.square(b*b/(a*a + b*b)))/np.square(2*norm_sq),
+         a*b*b*b*sin_2_theta*(1 + cos_2_theta)/np.square(2*norm_sq)]
 
     upper = 1 if theta_rad < np.pi else -1
     right = 1 if theta_rad <= np.pi/2 or theta_rad >= 3*np.pi/2 else -1
@@ -45,15 +47,17 @@ def plot_ellipse(a, b, theta_deg, square_lim, x_step, save=True):
 def plot_ellipse_v2(a, b, theta_deg, square_lim, y_step, save=True):
 
     theta_rad = (np.pi/180)*(theta_deg % 360)
+    sin_2_theta = np.sin(2*theta_rad)
+    cos_2_theta = np.cos(2*theta_rad)
 
     norm_sq = (b*b - a*a)*np.square(np.cos(theta_rad)) + np.square(a)
 
     coeffs = \
-        [(b*b/2)*np.sin(2*theta_rad)/norm_sq,
-         a*b*np.square(np.sin(theta_rad))/norm_sq,
-         a*a*b*b*np.square(np.square(np.cos(theta_rad)))/norm_sq,
-         a*a*(a*a + b*b)*(np.square(np.square(np.cos(theta_rad)) - (a*a/(2*(a*a + b*b)))) - np.square(a*a/(2*(a*a + b*b))))/np.square(norm_sq),
-         (a*a*a*b/2)*np.sin(2*theta_rad)*np.square(np.cos(theta_rad)/norm_sq)]
+        [b*b*sin_2_theta/(2*norm_sq),
+         a*b*(1 - cos_2_theta)/(2*norm_sq),
+         a*a*b*b*np.square(1 + cos_2_theta)/(4*norm_sq),
+         a*a*(a*a + b*b)*(np.square((b*b/(a*a + b*b)) + cos_2_theta) - np.square(a*a/(a*a + b*b)))/np.square(2*norm_sq),
+         a*a*a*b*sin_2_theta*(1 + cos_2_theta)/np.square(2*norm_sq)]
 
     lower = 1 if theta_rad > np.pi else -1
     right = 1 if theta_rad <= np.pi/2 or theta_rad >= 3*np.pi/2 else -1
