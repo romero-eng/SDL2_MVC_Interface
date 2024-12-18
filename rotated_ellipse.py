@@ -5,31 +5,31 @@ import matplotlib.pyplot as plt
 def plot_ellipse(a, b, theta_deg, square_lim, x_step, save=True): 
 
     theta_rad = (np.pi/180)*(theta_deg % 360)
-    sin_theta_rad = np.sin(theta_rad)
-    cos_theta_rad = np.cos(theta_rad)
 
-    A = a*cos_theta_rad
-    B = b*sin_theta_rad
-    norm_sq = np.square(A) + np.square(B)
-    norm = np.sqrt(norm_sq)
+    norm_sq = (a*a - b*b)*np.square(np.cos(theta_rad)) + b*b
 
-    nsign = lambda t: 1 - 2*np.heaviside(t, 1)
-    x = lambda x_prime, sign: (a/norm_sq)*(A*x_prime + sign*B*np.sqrt(norm_sq - np.square(x_prime)))
-    y = lambda x_prime, sign: nsign(x_prime - nsign(theta_rad - np.pi)*sign*A)*nsign(theta_rad - np.pi)*(b/a)*np.sqrt(np.square(a) - np.square(x(x_prime, sign)))
-    y_prime = lambda x_prime, sign: x(x_prime, sign)*sin_theta_rad + y(x_prime, sign)*cos_theta_rad
+    A = (a*a/2)*np.sin(2*theta_rad)/norm_sq
+    B = a*b*np.square(np.sin(theta_rad))/norm_sq
+    G = a*a*b*b*np.square(np.square(np.cos(theta_rad)))/norm_sq
+    H = (b*b)*(a*a + b*b)*(np.square(np.square(np.cos(theta_rad)) - (b*b/(2*(a*a + b*b)))) - np.square(b*b/(2*(a*a + b*b))))/np.square(norm_sq)
+    K = (a*b*b*b/2)*np.sin(2*theta_rad)*np.square(np.cos(theta_rad)/norm_sq)
+
+    upper = 1 if theta_rad < np.pi else -1
+    right = 1 if theta_rad <= np.pi/2 or theta_rad >= 3*np.pi/2 else -1
+    sgn = lambda x, sign : -np.sign(x - upper*sign*a*np.cos(theta_rad))*upper*right
+
+    y = lambda x, sign: A*x + sign*B*np.sqrt(norm_sq - np.square(x)) + sgn(x, sign)*np.sqrt(G - H*np.square(x) - 2*sign*K*x*np.sqrt(norm_sq - np.square(x)))
 
     fig, axs = plt.subplots(1)
 
-    x_prime = np.arange(-norm, norm, x_step)
+    x = np.arange(-np.sqrt(norm_sq), np.sqrt(norm_sq), x_step)
 
-    axs.plot(x_prime, y_prime(x_prime,  1))
-    axs.plot(x_prime, y_prime(x_prime, -1))
+    axs.plot(x, y(x,  1))
+    axs.plot(x, y(x, -1))
 
     axs.set_xlim([-square_lim, square_lim])
     axs.set_ylim([-square_lim, square_lim])
     axs.grid()
-    #axs.axvline( A, color='k')
-    #axs.axvline(-A, color='k')
 
     fig.supylabel('Y')
     fig.supxlabel('X')
@@ -45,28 +45,30 @@ def plot_ellipse_v2(a, b, theta_deg, square_lim, y_step, save=True):
 
     theta_rad = (np.pi/180)*(theta_deg % 360)
 
-    A = a*np.sin(theta_rad)
-    B = b*np.cos(theta_rad)
-    norm_sq = np.square(A) + np.square(B)
-    norm = np.sqrt(norm_sq)
+    norm_sq = (b*b - a*a)*np.square(np.cos(theta_rad)) + np.square(a)
 
-    nsign = lambda t: 1 - 2*np.heaviside(t, 1)
-    y = lambda y_prime, sign : (b/norm_sq)*(B*y_prime - sign*A*np.sqrt(norm_sq - np.square(y_prime)))
-    x = lambda y_prime, sign :  -nsign(y_prime + nsign(theta_rad - np.pi)*sign*B)*nsign(theta_rad - np.pi)*(a/b)*np.sqrt(np.square(b) - np.square(y(y_prime, sign)))
-    x_prime = lambda y_prime, sign : x(y_prime, sign)*np.cos(theta_rad) - y(y_prime, sign)*np.sin(theta_rad)
+    F = (b*b/2)*np.sin(2*theta_rad)/norm_sq
+    E = a*b*np.square(np.sin(theta_rad))/norm_sq
+    L = a*a*b*b*np.square(np.square(np.cos(theta_rad)))/norm_sq
+    M = a*a*(a*a + b*b)*(np.square(np.square(np.cos(theta_rad)) - (a*a/(2*(a*a + b*b)))) - np.square(a*a/(2*(a*a + b*b))))/np.square(norm_sq)
+    N = (a*a*a*b/2)*np.sin(2*theta_rad)*np.square(np.cos(theta_rad)/norm_sq)
+
+    lower = 1 if theta_rad > np.pi else -1
+    right = 1 if theta_rad <= np.pi/2 or theta_rad >= 3*np.pi/2 else -1
+    sgn = lambda y, sign : -np.sign(y - lower*sign*b*np.cos(theta_rad))*lower*right
+
+    x = lambda y, sign: -F*y + sign*E*np.sqrt(norm_sq - np.square(y)) + sgn(y, sign)*np.sqrt(L - M*np.square(y) + 2*sign*N*y*np.sqrt(norm_sq - np.square(y)))
 
     fig, axs = plt.subplots(1)
 
-    y_prime =  np.arange(-norm, norm, y_step)
+    y =  np.arange(-np.sqrt(norm_sq), np.sqrt(norm_sq), y_step)
 
-    axs.plot(x_prime(y_prime,  1), y_prime)
-    axs.plot(x_prime(y_prime, -1), y_prime)
+    axs.plot(x(y,  1), y)
+    axs.plot(x(y, -1), y)
 
     axs.set_xlim([-square_lim, square_lim])
     axs.set_ylim([-square_lim, square_lim])
     axs.grid()
-    #axs.axhline( B, color='k')
-    #axs.axhline(-B, color='k')
 
     fig.supylabel('Y')
     fig.supxlabel('X')
