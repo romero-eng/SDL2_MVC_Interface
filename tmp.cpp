@@ -21,11 +21,11 @@ std::ostream& operator<<(std::ostream& output, std::vector<std::array<int, 2>> p
 }
 
 
-std::vector<std::array<int, 2>> ellipse(int x_axis_radius,
-                                        int y_axis_radius,
-                                        double theta_deg,
-                                        int x_c,
-                                        int y_c)
+std::vector<std::array<int, 2>> rotated_ellipse(int x_axis_radius,
+                                                int y_axis_radius,
+                                                double theta_deg,
+                                                int x_c,
+                                                int y_c)
 {
     double theta_rad {(M_PI/180)*(std::fmod(theta_deg, 360) + (theta_deg > 0 ? 0 : 360))};
 
