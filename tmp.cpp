@@ -107,7 +107,6 @@ std::vector<std::array<int, 2>> rotated_ellipse(int x_axis_radius,
     double y_slope;
     double x_slope;
     int y_slope_sign;
-    int x_slope_sign;
     bool increment;
     bool y_increment;
     bool x_increment;
@@ -130,7 +129,6 @@ std::vector<std::array<int, 2>> rotated_ellipse(int x_axis_radius,
         y_slope = dy_dx(static_cast<double>(upper_arc_points[upper_arc_points.size() - 1][0]));
         x_slope = dx_dy(static_cast<double>(upper_arc_points[upper_arc_points.size() - 1][1]), -static_cast<double>(y_slope_sign));
         y_slope_sign = static_cast<int>(y_slope/std::abs(y_slope));
-        x_slope_sign = static_cast<int>(x_slope/std::abs(x_slope));
 
         if (std::abs(y_slope) < std::abs(x_slope)) {
 
@@ -171,8 +169,8 @@ std::vector<std::array<int, 2>> rotated_ellipse(int x_axis_radius,
 
 int main()
 {
-    std::vector<std::array<int, 2>> boundary_points {rotated_ellipse(20, 50, 45, 0, 0)};
-    // std::cout << boundary_points << std::endl;
+    std::vector<std::array<int, 2>> boundary_points {rotated_ellipse(20, 50, 45, 0.1, 0)};
+    std::cout << boundary_points << std::endl;
 
     return 1;
 }
