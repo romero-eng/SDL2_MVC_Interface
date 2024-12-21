@@ -108,6 +108,7 @@ std::vector<std::array<int, 2>> rotated_ellipse(int x_axis_radius,
     double x_slope;
     int y_slope_sign;
     int x_slope_sign;
+    bool increment;
     bool peaked;
     bool keep_going {true};
     double y_stop {y(x_norm)};
@@ -115,48 +116,37 @@ std::vector<std::array<int, 2>> rotated_ellipse(int x_axis_radius,
     std::vector<std::array<int, 2>> upper_arc_points;
     upper_arc_points.push_back({static_cast<int>(-std::floor(x_norm)), static_cast<int>(round(y(-std::floor(x_norm))))});
 
-    std::size_t n {0}; 
     while(keep_going) {
 
-        y_slope = dy_dx(static_cast<double>(upper_arc_points[n][0]));
-        x_slope = dx_dy(static_cast<double>(upper_arc_points[n][1]), -static_cast<double>(y_slope_sign));
+        y_slope = dy_dx(static_cast<double>(upper_arc_points[upper_arc_points.size() - 1][0]));
+        x_slope = dx_dy(static_cast<double>(upper_arc_points[upper_arc_points.size() - 1][1]), -static_cast<double>(y_slope_sign));
         y_slope_sign = static_cast<int>(y_slope/std::abs(y_slope));
         x_slope_sign = static_cast<int>(x_slope/std::abs(x_slope));
 
-        /*std::cout << fmt::format("(x[n]: {:d}, y[n]: {:d}), (x(y[n]): {:f}, y(x[n]): {:f}), dy/dx = {:f}, dx/dy = {:f}, y(x[n + 1]) = {:f}, y(x[n]) = {:f}, {:s}",
-                                 upper_arc_points[n][0],
-                                 upper_arc_points[n][1],
-                                 x(static_cast<double>(upper_arc_points[n][1]), -static_cast<double>(y_slope_sign)),
-                                 y(static_cast<double>(upper_arc_points[n][0])),
-                                 y_slope,
-                                 x_slope,
-                                 y(static_cast<double>(upper_arc_points[n][0] + 1)),
-                                 static_cast<double>(upper_arc_points[n][1]),
-                                 keep_going ? "True" : "False") << std::endl;*/
-
         if (std::abs(y_slope) < std::abs(x_slope)) {
-            if(upper_arc_points[n][1] + 1 < y_norm) {
-                upper_arc_points.push_back({upper_arc_points[n][0] + 1,
-                                            upper_arc_points[n][1] + y_slope_sign*(y_slope_sign*(y(static_cast<double>(upper_arc_points[n][0] + 1)) - static_cast<double>(upper_arc_points[n][1])) > 0.5 ? 1 : 0)});
+
+            if(y_slope_sign > 0 && upper_arc_points[upper_arc_points.size() - 1][1]  + 1 > y_norm) {
+                increment = false;
             } else {
-                upper_arc_points.push_back({upper_arc_points[n][0] + 1,
-                                            upper_arc_points[n][1]});
+                increment = y_slope_sign*(y(static_cast<double>(upper_arc_points[upper_arc_points.size() - 1][0] + 1)) - static_cast<double>(upper_arc_points[upper_arc_points.size() - 1][1])) > 0.5;
             }
+
+            upper_arc_points.push_back({upper_arc_points[upper_arc_points.size() - 1][0] + 1,
+                                        upper_arc_points[upper_arc_points.size() - 1][1] + y_slope_sign*(increment ? 1 : 0)});
         } else {
-            upper_arc_points.push_back({upper_arc_points[n][0] + (x(static_cast<double>(upper_arc_points[n][1] + 1), -static_cast<double>(y_slope_sign)) - static_cast<double>(upper_arc_points[n][0]) > 0.5 ? 1 : 0),
-                                        upper_arc_points[n][1] + y_slope_sign});
+
+            increment = x(static_cast<double>(upper_arc_points[upper_arc_points.size() - 1][1] + 1), -static_cast<double>(y_slope_sign)) - static_cast<double>(upper_arc_points[upper_arc_points.size() - 1][0]) > 0.5;
+
+            upper_arc_points.push_back({upper_arc_points[upper_arc_points.size() - 1][0] + (increment ? 1 : 0),
+                                        upper_arc_points[upper_arc_points.size() - 1][1] + y_slope_sign});
         }
 
         if(!peaked){
-            peaked = upper_arc_points[n + 1][1] < upper_arc_points[n][1];
+            peaked = upper_arc_points[upper_arc_points.size() - 1][1] < upper_arc_points[upper_arc_points.size() - 2][1];
         } else {
-            keep_going = upper_arc_points[n + 1][1] > y_stop && upper_arc_points[n + 1][0] < x_norm;
+            keep_going = upper_arc_points[upper_arc_points.size() - 1][1] > y_stop && upper_arc_points[upper_arc_points.size() - 1][0] < x_norm;
         }
-
-        n++;
     }
-
-    // std::cout << upper_arc_points << std::endl;
 
     std::vector<std::array<int, 2>> points (2*upper_arc_points.size());
     for(std::size_t n = 0; n < upper_arc_points.size(); n++) {
@@ -170,8 +160,8 @@ std::vector<std::array<int, 2>> rotated_ellipse(int x_axis_radius,
 
 int main()
 {
-    std::vector<std::array<int, 2>> boundary_points {rotated_ellipse(20, 50, 8, 0, 0)};
-    std::cout << boundary_points << std::endl;
+    std::vector<std::array<int, 2>> boundary_points {rotated_ellipse(20, 50, 30, 0, 0)};
+    // std::cout << boundary_points << std::endl;
 
     return 1;
 }
