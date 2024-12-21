@@ -150,7 +150,7 @@ std::vector<std::array<int, 2>> rotated_ellipse(int x_axis_radius,
 
 int main()
 {
-    std::cout << ellipse(20, 50, 10, 0, 0) << std::endl;
+    std::cout << rotated_ellipse(20, 50, 10, 0, 0) << std::endl;
 
     return 1;
 }
