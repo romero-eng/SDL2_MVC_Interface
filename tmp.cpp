@@ -112,7 +112,7 @@ std::vector<std::array<int, 2>> ellipse(int x_axis_radius,
     double y_stop {y(x_norm)};
 
     std::vector<std::array<int, 2>> upper_arc_points;
-    upper_arc_points.push_back({static_cast<int>(round(-x_norm)), static_cast<int>(round(y(round(-x_norm))))});
+    upper_arc_points.push_back({static_cast<int>(-std::floor(x_norm)), static_cast<int>(round(y(-std::floor(x_norm))))});
 
     while(keep_going) {
 
@@ -150,7 +150,7 @@ std::vector<std::array<int, 2>> ellipse(int x_axis_radius,
 
 int main()
 {
-    std::cout << ellipse(20, 50, 30, 0, 0) << std::endl;
+    std::cout << ellipse(20, 50, 10, 0, 0) << std::endl;
 
     return 1;
 }
