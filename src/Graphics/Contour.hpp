@@ -25,8 +25,7 @@ namespace Graphics
         std::vector<std::array<int, 2>> rotated_ellipse(int x_axis_radius,
                                                         int y_axis_radius,
                                                         double theta_deg,
-                                                        int x_c,
-                                                        int y_c);
+                                                        std::array<int, 2> center);
 
         std::tuple<std::vector<std::array<int, 2>>,
                    std::vector<std::array<int, 2>>> polygon(const std::vector<std::array<int, 2>>& vertices);

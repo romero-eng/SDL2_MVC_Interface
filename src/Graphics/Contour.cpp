@@ -140,8 +140,7 @@ std::vector<std::array<int, 2>> Graphics::Contour::ellipse(int x_axis_radius,
 std::vector<std::array<int, 2>> Graphics::Contour::rotated_ellipse(int x_axis_radius,
     				                                               int y_axis_radius,
                     				                               double theta_deg,
-                                    			        	       int x_c,
-                                                				   int y_c)
+                                                                   std::array<int, 2> center)
 {
     double theta_rad {(M_PI/180)*(std::fmod(theta_deg, 360) + (theta_deg > 0 ? 0 : 360))};
 
@@ -265,8 +264,8 @@ std::vector<std::array<int, 2>> Graphics::Contour::rotated_ellipse(int x_axis_ra
 
     std::vector<std::array<int, 2>> points (2*upper_arc_points.size());
     for(std::size_t n = 0; n < upper_arc_points.size(); n++) {
-        points[2*n    ] = { upper_arc_points[n][0] + x_c,  upper_arc_points[n][1] + y_c};
-        points[2*n + 1] = {-upper_arc_points[n][0] + x_c, -upper_arc_points[n][1] + y_c};
+        points[2*n    ] = { upper_arc_points[n][0] + center[0],  upper_arc_points[n][1] + center[1]};
+        points[2*n + 1] = {-upper_arc_points[n][0] + center[0], -upper_arc_points[n][1] + center[1]};
     }
 
     return points;
