@@ -132,7 +132,7 @@ std::vector<std::array<int, 2>> rotated_ellipse(int x_axis_radius,
 
         if (std::abs(y_slope) < std::abs(x_slope)) {
 
-            if(y_slope_sign > 0 && upper_arc_points[upper_arc_points.size() - 1][1]  + 1 > y_norm) {
+            if(y_slope_sign > 0 && upper_arc_points[upper_arc_points.size() - 1][1] + 1 >= y_norm) {
                 y_increment = false;
             } else {
                 y_increment = y_slope_sign*(y(static_cast<double>(upper_arc_points[upper_arc_points.size() - 1][0] + 1)) - static_cast<double>(upper_arc_points[upper_arc_points.size() - 1][1])) > 0.5;
@@ -143,7 +143,12 @@ std::vector<std::array<int, 2>> rotated_ellipse(int x_axis_radius,
         } else {
 
             y_increment = true;
-            x_increment = x(static_cast<double>(upper_arc_points[upper_arc_points.size() - 1][1] + 1), -static_cast<double>(y_slope_sign)) - static_cast<double>(upper_arc_points[upper_arc_points.size() - 1][0]) > 0.5;
+
+            if (upper_arc_points[upper_arc_points.size() - 1][0] + 1 >= x_norm) {
+                x_increment = false;
+            } else {
+                x_increment = x(static_cast<double>(upper_arc_points[upper_arc_points.size() - 1][1] + 1), -static_cast<double>(y_slope_sign)) - static_cast<double>(upper_arc_points[upper_arc_points.size() - 1][0]) > 0.5;
+            }
 
         }
 
@@ -169,7 +174,7 @@ std::vector<std::array<int, 2>> rotated_ellipse(int x_axis_radius,
 
 int main()
 {
-    std::vector<std::array<int, 2>> boundary_points {rotated_ellipse(20, 50, 45, 0.1, 0)};
+    std::vector<std::array<int, 2>> boundary_points {rotated_ellipse(20, 50, -1, 0, 0)};
     std::cout << boundary_points << std::endl;
 
     return 1;
