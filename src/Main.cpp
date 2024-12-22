@@ -80,6 +80,11 @@ int main( int argc, char* args[] )
 	constexpr int y_axis_radius {15};
 	constexpr Math::LinearAlgebra::Vector2D ellipse_center {300, 400};
 
+	constexpr int x_r_axis_radius {20};
+	constexpr int y_r_axis_radius {50};
+	constexpr double rotation_angle {45};
+	constexpr Math::LinearAlgebra::Vector2D rotated_ellipse_center {300, 150};
+
 	SDML::Subsystem::Initialize(LOGFILE_NAME, SDML::Subsystem::InitFlag::VIDEO | SDML::Subsystem::InitFlag::EVENTS);
 
 	try {
@@ -107,7 +112,7 @@ int main( int argc, char* args[] )
 		paintbrush.SetDrawingColor(BLACK);
 		paintbrush.DrawPoints(ellipse_boundary_points);
 
-		const auto& [rotated_ellipse_boundary_points, rotated_ellipse_within_boundary_points] = Graphics::Shape::rotated_ellipse(20, 50, 45, {300, 150});
+		const auto& [rotated_ellipse_boundary_points, rotated_ellipse_within_boundary_points] = Graphics::Shape::rotated_ellipse(x_r_axis_radius, y_r_axis_radius, rotation_angle, rotated_ellipse_center.round());
 		paintbrush.SetDrawingColor(RED);
 		paintbrush.DrawPoints(rotated_ellipse_within_boundary_points);
 		paintbrush.SetDrawingColor(BLACK);
