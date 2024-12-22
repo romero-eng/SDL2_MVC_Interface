@@ -24,6 +24,12 @@ namespace Graphics {
                    std::vector<std::array<int, 2>>> ellipse(int x_axis_radius,
 											    	 	    int y_axis_radius,
 												    	    std::array<int, 2> center);
+        
+        std::tuple<std::vector<std::array<int, 2>>,
+                   std::vector<std::array<int, 2>>> rotated_ellipse(int x_axis_radius,
+        											    	 	    int y_axis_radius,
+                                                                    double theta_deg,
+		        										    	    std::array<int, 2> center);
     }
 }
 

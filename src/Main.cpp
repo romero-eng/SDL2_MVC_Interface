@@ -107,7 +107,11 @@ int main( int argc, char* args[] )
 		paintbrush.SetDrawingColor(BLACK);
 		paintbrush.DrawPoints(ellipse_boundary_points);
 
-		paintbrush.DrawPoints(Graphics::Contour::rotated_ellipse(20, 50, 45, {300, 150}));
+		const auto& [rotated_ellipse_boundary_points, rotated_ellipse_within_boundary_points] = Graphics::Shape::rotated_ellipse(20, 50, 45, {300, 150});
+		paintbrush.SetDrawingColor(RED);
+		paintbrush.DrawPoints(rotated_ellipse_within_boundary_points);
+		paintbrush.SetDrawingColor(BLACK);
+		paintbrush.DrawPoints(rotated_ellipse_boundary_points);
 
 		paintbrush.Update();
 		

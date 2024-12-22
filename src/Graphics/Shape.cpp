@@ -44,6 +44,18 @@ std::tuple<std::vector<std::array<int, 2>>,
 
     return {boundary_points, within_boundary_points};
 }
+        
+std::tuple<std::vector<std::array<int, 2>>,
+    	   std::vector<std::array<int, 2>>> Graphics::Shape::rotated_ellipse(int x_axis_radius,
+        													    		     int y_axis_radius,
+                                                    		                 double theta_deg,
+		        										    			     std::array<int, 2> center)
+{
+    std::vector<std::array<int, 2>> boundary_points {Contour::rotated_ellipse(x_axis_radius, y_axis_radius, theta_deg, center)};
+    std::vector<std::array<int, 2>> within_boundary_points {PointInContour::even_odd_ray_casting(boundary_points)};
+
+    return {boundary_points, within_boundary_points};
+}
 
 
 #else
