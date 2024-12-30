@@ -11,9 +11,7 @@
 
 **Rotated Ellipse Drawing Algorithm**
 
-1. Use std::list (i.e., linked list) instead of std::vector (i.e., dynamic vector)
-
-2. Created nested functions for calculating rotated ellipse to get past numerical instability
+1.  Refactor to get rid of numerical instability
 
 **Even-Odd Ray-casting**
 

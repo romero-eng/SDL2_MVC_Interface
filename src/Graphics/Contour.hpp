@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <array>
 #include <vector>
+#include <list>
 #include <algorithm>
 #include <cmath>
 
