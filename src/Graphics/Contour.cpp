@@ -217,17 +217,11 @@ std::vector<std::array<int, 2>> Graphics::Contour::rotated_ellipse(int x_axis_ra
     bool y_increment;
     bool x_increment;
     bool keep_going {true};
-    double y_stop {y(x_norm)};
+    int y_stop  {static_cast<int>(std::ceil(  A_x*x_norm + ( x_norm <= upper*A ? 1 : -1)*upper*right*std::sqrt(C_x - D_x*x_norm_sq)))};
+    int y_start {static_cast<int>(std::round(-A_x*x_norm + (-x_norm <= upper*A ? 1 : -1)*upper*right*std::sqrt(C_x - D_x*x_norm_sq)))};
 
     std::list<std::array<int, 2>> upper_arc_points;
-
-    if(std::isnan(y_stop)) {
-        double epsilon = 0.00001;
-        y_stop = y(x_norm - epsilon);
-        upper_arc_points.push_back({static_cast<int>(-std::floor(x_norm - epsilon)), static_cast<int>(round(y(-(x_norm - epsilon))))});
-    } else {
-        upper_arc_points.push_back({static_cast<int>(-std::floor(x_norm)), static_cast<int>(round(y(-x_norm)))});
-    }
+    upper_arc_points.push_back({static_cast<int>(-std::floor(x_norm)), y_start});
 
     while(keep_going) {
 
