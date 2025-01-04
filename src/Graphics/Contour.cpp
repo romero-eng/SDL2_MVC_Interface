@@ -2,6 +2,10 @@
 #include "Contour.hpp"
 
 
+#include <iostream>
+#include <fmt/format.h>
+
+
 std::vector<std::array<int, 2>> Graphics::Contour::line(const std::array<std::array<int, 2>, 2>& line)
 {
 	const auto& [point_1, point_2] = line;
@@ -213,29 +217,23 @@ std::vector<std::array<int, 2>> Graphics::Contour::rotated_ellipse(int x_axis_ra
     bool y_increment;
     bool x_increment;
     bool keep_going {true};
-    double y_stop {y(x_norm)};
+    int y_stop  {static_cast<int>(std::ceil(  A_x*x_norm + ( x_norm <= upper*A ? 1 : -1)*upper*right*std::sqrt(C_x - D_x*x_norm_sq)))};
+    int y_start {static_cast<int>(std::round(-A_x*x_norm + (-x_norm <= upper*A ? 1 : -1)*upper*right*std::sqrt(C_x - D_x*x_norm_sq)))};
 
-    std::vector<std::array<int, 2>> upper_arc_points;
-
-    if(std::isnan(y_stop)) {
-        double epsilon = 0.00001;
-        y_stop = y(x_norm - epsilon);
-        upper_arc_points.push_back({static_cast<int>(-std::floor(x_norm - epsilon)), static_cast<int>(round(y(-(x_norm - epsilon))))});
-    } else {
-        upper_arc_points.push_back({static_cast<int>(-std::floor(x_norm)), static_cast<int>(round(y(-x_norm)))});
-    }
+    std::list<std::array<int, 2>> upper_arc_points;
+    upper_arc_points.push_back({static_cast<int>(-std::floor(x_norm)), y_start});
 
     while(keep_going) {
 
-        y_slope = dy_dx(upper_arc_points[upper_arc_points.size() - 1][0]);
+        y_slope = dy_dx(upper_arc_points.back()[0]);
         y_slope_sign = y_slope > 0 ? 1 : -1;
 
         if (std::abs(y_slope) < 1) {
 
-            if(y_slope_sign > 0 && upper_arc_points[upper_arc_points.size() - 1][1] + 1 >= y_norm) {
+            if(y_slope_sign > 0 && upper_arc_points.back()[1] + 1 >= y_norm) {
                 y_increment = false;
             } else {
-                y_increment = y_slope_sign*(y(upper_arc_points[upper_arc_points.size() - 1][0] + 1) - upper_arc_points[upper_arc_points.size() - 1][1]) > 0.5;
+                y_increment = y_slope_sign*(y(upper_arc_points.back()[0] + 1) - upper_arc_points.back()[1]) > 0.5;
             }
 
             x_increment = true;
@@ -244,28 +242,30 @@ std::vector<std::array<int, 2>> Graphics::Contour::rotated_ellipse(int x_axis_ra
 
             y_increment = true;
 
-            if (upper_arc_points[upper_arc_points.size() - 1][0] + 1 >= x_norm) {
+            if (upper_arc_points.back()[0] + 1 >= x_norm) {
                 x_increment = false;
             } else {
-                x_increment = x(upper_arc_points[upper_arc_points.size() - 1][1] + y_slope_sign, -y_slope_sign) - upper_arc_points[upper_arc_points.size() - 1][0] > 0.5;
+                x_increment = x(upper_arc_points.back()[1] + y_slope_sign, -y_slope_sign) - upper_arc_points.back()[0] > 0.5;
             }
 
             if(y_slope_sign < 0) {
-                keep_going = upper_arc_points[upper_arc_points.size() - 1][1] > y_stop && upper_arc_points[upper_arc_points.size() - 1][0] < x_norm;
+                keep_going = upper_arc_points.back()[1] > y_stop && upper_arc_points.back()[0] < x_norm;
             }
 
         }
 
         if (keep_going) {
-            upper_arc_points.push_back({upper_arc_points[upper_arc_points.size() - 1][0] + (x_increment ? 1 : 0),
-                                        upper_arc_points[upper_arc_points.size() - 1][1] + y_slope_sign*(y_increment ? 1 : 0)});
+            upper_arc_points.push_back({upper_arc_points.back()[0] + (x_increment ? 1 : 0),
+                                        upper_arc_points.back()[1] + y_slope_sign*(y_increment ? 1 : 0)});
         }
     }
 
-    std::vector<std::array<int, 2>> points (2*upper_arc_points.size());
-    for(std::size_t n = 0; n < upper_arc_points.size(); n++) {
-        points[2*n    ] = { upper_arc_points[n][0] + center[0],  upper_arc_points[n][1] + center[1]};
-        points[2*n + 1] = {-upper_arc_points[n][0] + center[0], -upper_arc_points[n][1] + center[1]};
+    std::size_t N {upper_arc_points.size()};
+    std::vector<std::array<int, 2>> points (2*N);
+    for(std::size_t n = 0; n < N; n++) {
+        points[2*n    ] = { upper_arc_points.front()[0] + center[0],  upper_arc_points.front()[1] + center[1]};
+        points[2*n + 1] = {-upper_arc_points.front()[0] + center[0], -upper_arc_points.front()[1] + center[1]};
+        upper_arc_points.pop_front();
     }
 
     return points;

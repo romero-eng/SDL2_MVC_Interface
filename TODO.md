@@ -8,3 +8,13 @@
 
 **Renderer Class**:
 1. Implement Rendering of Geometry (i.e., [SDL_RenderGeometry()](https://wiki.libsdl.org/SDL2/SDL_RenderGeometry) and [SDL_RenderGeometryRaw()](https://wiki.libsdl.org/SDL2/SDL_RenderGeometryRaw))
+
+**Rotated Ellipse Drawing Algorithm**
+
+1.  Refactor to get rid of numerical instability
+
+**Even-Odd Ray-casting**
+
+1. Rewrite even-odd ray-casting to be more clear and potentially use less resources
+
+2. Maybe rewrite circle and unrotated ellipses to automatically give spaces?
